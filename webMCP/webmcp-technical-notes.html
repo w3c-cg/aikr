@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>WebMCP Technical Notes</title>
+    <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove" defer></script>
+    <script class="remove">
+      var respecConfig = {
+        specStatus: "CG-DRAFT",
+        shortName: "webmcp-technical-notes",
+        subtitle: "Community Technical Notes on the Web Model Context Protocol",
+        publishDate: "2026-02-15",
+        copyrightStart: "2026",
+        editors: [
+          {
+            name: "Paola Di Maio",
+            company: "W3C AI KR CG",
+            companyURL: "https://www.w3.org/community/aikr/",
+          },
+        ],
+        authors: [
+          {
+            name: "Paola Di Maio",
+            company: "W3C AI KR CG",
+            companyURL: "https://www.w3.org/community/aikr/",
+          },
+        ],
+        group: "aikr",
+        github: {
+          repoURL: "https://github.com/w3c-cg/aikr",
+          branch: "main",
+        },
+        latestVersion: null,
+        localBiblio: {
+          "WEBMCP-SPEC": {
+            title: "WebMCP API — Draft Community Group Report",
+            href: "https://webmachinelearning.github.io/webmcp/",
+            publisher: "W3C Web Machine Learning CG",
+            date: "12 February 2026",
+          },
+          "WEBMCP-PROPOSAL": {
+            title: "WebMCP Proposal / Explainer",
+            href: "https://github.com/webmachinelearning/webmcp/blob/main/docs/proposal.md",
+            publisher: "W3C Web Machine Learning CG",
+          },
+          "WEBMCP-CHARTER": {
+            title: "Web Machine Learning CG Charter",
+            href: "https://webmachinelearning.github.io/charter/",
+            publisher: "W3C",
+          },
+          "MCP": {
+            title: "Model Context Protocol",
+            href: "https://modelcontextprotocol.io/introduction",
+            publisher: "Anthropic",
+          },
+          "MCP-B": {
+            title: "MCP-B — Model Context Protocol for Browsers",
+            href: "https://docs.mcp-b.ai/introduction",
+            publisher: "WebMCP-org",
+          },
+          "MCGHEE-WEBMCP": {
+            title: "Early WebMCP Implementation",
+            href: "https://github.com/jasonjmcghee/WebMCP",
+            publisher: "Jason McGhee",
+          },
+          "NAHAS-MCP-B": {
+            title: "MCP-B Reference Implementation",
+            href: "https://github.com/MiguelsPizza/WebMCP",
+            publisher: "Alex Nahas",
+          },
+          "WEBML-CG": {
+            title: "W3C Web Machine Learning Community Group",
+            href: "https://www.w3.org/community/webmachinelearning/",
+            publisher: "W3C",
+          },
+          "BROSSET-BLOG": {
+            title: "AI agents and the web: a proposal to keep developers in the loop",
+            href: "https://patrickbrosset.com/articles/2025-08-28-ai-agents-and-the-web-a-proposal-to-keep-developers-in-the-loop/",
+            publisher: "Patrick Brosset, Microsoft Edge",
+            date: "28 August 2025",
+          },
+          "NEWSTACK-PFLUG": {
+            title: "How WebMCP Lets Developers Control AI Agents With JavaScript",
+            href: "https://thenewstack.io/how-webmcp-lets-developers-control-ai-agents-with-javascript/",
+            publisher: "The New Stack",
+          },
+          "NAHAS-INTERVIEW": {
+            title: "Web MCP: Alex Nahas Interview",
+            href: "https://www.arcade.dev/blog/web-mcp-alex-nahas-interview",
+            publisher: "Arcade.dev",
+          },
+        },
+      };
+    </script>
+    <style>
+      table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+      th, td { border: 1px solid #ccc; padding: 0.5em 0.75em; text-align: left; }
+      th { background-color: #f0f0f0; }
+      pre.idl, pre.example { background: #f9f9f9; border: 1px solid #ddd; padding: 1em; border-radius: 4px; overflow-x: auto; }
+      .note { background: #e8f4fd; border-left: 4px solid #1a73e8; padding: 1em; margin: 1em 0; }
+      .issue { background: #fdf3e8; border-left: 4px solid #e8a21a; padding: 1em; margin: 1em 0; }
+      .warning { background: #fde8e8; border-left: 4px solid #e81a1a; padding: 1em; margin: 1em 0; }
+      code { background: #f4f4f4; padding: 0.1em 0.3em; border-radius: 3px; font-size: 0.95em; }
+    </style>
+  </head>
+  <body>
+
+    <!-- ============================================================ -->
+    <!-- ABSTRACT -->
+    <!-- ============================================================ -->
+    <section id="abstract">
+      <p>
+        This document collects community technical notes on the Web Model
+        Context Protocol (WebMCP) [[WEBMCP-SPEC]], a proposed browser API
+        that allows web pages to expose JavaScript functions as structured
+        tools discoverable by AI agents, browser assistants, and assistive
+        technologies through the <code>navigator.modelContext</code> interface.
+      </p>
+      <p>
+        The notes cover the origin and standardization history of WebMCP,
+        practical testing and risk guidance for the community, and a
+        critical architectural analysis of how WebMCP relates to — and
+        differs from — the Model Context Protocol (MCP) [[MCP]].
+        These notes are contributed via the W3C AI Knowledge Representation
+        Community Group to support informed community engagement during
+        the specification's formative period.
+      </p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- STATUS OF THIS DOCUMENT -->
+    <!-- ============================================================ -->
+    <section id="sotd">
+      <p>
+        These technical notes were prepared within the W3C AI Knowledge
+        Representation Community Group. They are contributed to support
+        community review of the WebMCP specification [[WEBMCP-SPEC]]
+        during its incubation in the W3C Web Machine Learning Community
+        Group [[WEBML-CG]].
+      </p>
+      <p>
+        This is a <strong>discussion document</strong> and does not
+        represent consensus of any W3C body. The window for meaningful
+        community input on WebMCP is now — before implementation momentum
+        makes the current design effectively permanent.
+      </p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- INTRODUCTION -->
+    <!-- ============================================================ -->
+    <section id="introduction" class="informative">
+      <h2>Introduction</h2>
+      <p>
+        On February 10, 2026, Google's Chrome team launched an early
+        preview of WebMCP — a proposed web standard that allows any
+        website to expose structured, callable tools to AI agents
+        through a new browser API called
+        <code>navigator.modelContext</code>. The specification is a
+        Draft Community Group Report published by the W3C Web Machine
+        Learning Community Group [[WEBML-CG]]. It is not a W3C Standard
+        nor is it on the W3C Standards Track.
+      </p>
+      <p>
+        WebMCP proposes two APIs. A <strong>Declarative API</strong>
+        handles standard actions that can be defined directly in HTML
+        forms. An <strong>Imperative API</strong> handles more complex,
+        dynamic interactions requiring JavaScript execution through
+        <code>navigator.modelContext.registerTool()</code>. Together
+        they allow web pages to function as tool servers for AI agents,
+        running entirely client-side in the browser.
+      </p>
+      <p>
+        This collection of technical notes is organized as follows:
+      </p>
+      <ul>
+        <li><a href="#note1">Technical Note 1</a> — Origin, history,
+          and standardization process of WebMCP</li>
+        <li><a href="#note2">Technical Note 2</a> — What to test, what
+          to watch, what to tell the standards body</li>
+        <li><a href="#note3">Technical Note 3</a> — Architectural
+          analysis: WebMCP is not an MCP server</li>
+        <li><a href="#guide">Complete Guide</a> — Plain-language
+          technical reference to the WebMCP API</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- CONFORMANCE -->
+    <!-- ============================================================ -->
+    <section id="conformance">
+      <p>
+        This document is entirely informative. It contains no normative
+        requirements. The key words MAY, SHOULD, and MUST appearing in
+        quoted text from the WebMCP specification retain their RFC 2119
+        meaning in that context only.
+      </p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TECHNICAL NOTE 1 -->
+    <!-- ============================================================ -->
+    <section id="note1">
+      <h2>Technical Note 1: How a Browser Hack Became a Proposed Web Standard</h2>
+
+      <section id="note1-what-is-webmcp">
+        <h3>What Is WebMCP</h3>
+        <p>
+          WebMCP (Web Model Context Protocol) is a proposed JavaScript
+          API that allows web developers to expose web application
+          functionality as "tools" — JavaScript functions with natural
+          language descriptions and structured schemas that can be invoked
+          by AI agents, browser assistants, and assistive technologies.
+          As the specification states: "Web pages that use WebMCP can be
+          thought of as Model Context Protocol servers that implement
+          tools in client-side script instead of on the backend."
+          [[WEBMCP-SPEC]]
+        </p>
+        <p>
+          The specification proposes two APIs. A Declarative API handles
+          standard actions defined directly in HTML forms. An Imperative
+          API handles more complex, dynamic interactions requiring
+          JavaScript execution through
+          <code>navigator.modelContext.registerTool()</code>.
+          [[WEBMCP-PROPOSAL]]
+        </p>
+        <p>
+          Critically, WebMCP is not the same thing as the Model Context
+          Protocol (MCP) [[MCP]], despite sharing a name fragment and
+          conceptual lineage. MCP is a backend protocol using JSON-RPC
+          for client-server communication, running on hosted servers,
+          and connecting AI platforms to external services without
+          requiring a browser. WebMCP is a frontend, browser-native
+          API running entirely client-side in JavaScript, using the
+          browser's <code>postMessage</code> system for communication,
+          and requiring an active browser session with a human user
+          present. The specification explicitly declares that headless
+          browsing, fully autonomous agents, and backend service
+          integration are out of scope.
+        </p>
+      </section>
+
+      <section id="note1-origin">
+        <h3>Origin: From Authorization Frustration to Browser Hack</h3>
+        <p>
+          The concept traces back to Alex Nahas, a backend engineer at
+          Amazon. When MCP arrived in early 2025, Amazon deployed a
+          large-scale MCP server with thousands of tools. The real
+          problem, however, was authorization: MCP's specification had
+          adopted OAuth 2.1, which internal services had not widely
+          implemented. [[NAHAS-INTERVIEW]]
+        </p>
+        <p>
+          Nahas realized the browser itself could solve the auth problem
+          — users are already signed in through federated browser sessions.
+          He developed MCP-B (Model Context Protocol for Browsers), a
+          Chrome extension that let websites expose MCP-compatible tools
+          directly through browser JavaScript, using existing
+          authentication and security models. The underlying protocol
+          he called "WebMCP." [[NAHAS-MCP-B]] [[MCP-B]]
+        </p>
+        <p>
+          Independently, a separate early implementation by Jason McGhee
+          also used the name "WebMCP" for a similar concept — a widget
+          allowing any website to act as an MCP server client-side.
+          McGhee has since deferred to the W3C version.
+          [[MCGHEE-WEBMCP]]
+        </p>
+      </section>
+
+      <section id="note1-google-microsoft">
+        <h3>Google and Microsoft Enter: The W3C Pathway</h3>
+        <p>
+          On August 28, 2025, Patrick Brosset of the Microsoft Edge
+          team published a blog post introducing WebMCP as "a proposal
+          to let you, web developers, control how AI agents interact
+          with your web pages," describing it as a joint effort between
+          the Edge and Google teams. [[BROSSET-BLOG]]
+        </p>
+        <p>
+          In an interview, Kyle Pflug, group product manager for the web
+          platform at Microsoft Edge, confirmed that WebMCP was a joint
+          Microsoft-Google initiative. Pflug noted that Alex Nahas had
+          joined the group, and that the priority for the rest of 2025
+          was "deeper conversations with web developers" and working
+          toward "an early developer preview in Chromium."
+          [[NEWSTACK-PFLUG]]
+        </p>
+        <p>
+          The specification was placed in the GitHub repository of the
+          W3C Web Machine Learning Community Group. The draft is dated
+          February 12, 2026 and lists three editors: Brandon Walderman
+          (Microsoft), Khushal Sagar (Google), and Dominic Farolino
+          (Google). [[WEBMCP-SPEC]]
+        </p>
+      </section>
+
+      <section id="note1-housing">
+        <h3>Where Is It Housed: The Web Machine Learning Community Group</h3>
+        <p>
+          The Web Machine Learning Community Group was originally
+          proposed on October 3, 2018 by Anssi Kostiainen (Intel) to
+          incubate the Web Neural Network API. It has since expanded
+          its charter to include additional deliverables, now listing
+          the "WebMCP API" as a specification deliverable described as
+          "An API for web apps to expose their functionality as tools
+          to AI agents and assistive technologies." [[WEBMCP-CHARTER]]
+        </p>
+        <p>
+          The CG participant lists include representatives from Google,
+          Microsoft, Intel, Samsung, Apple, Huawei, and others.
+          [[WEBML-CG]]
+        </p>
+      </section>
+
+      <section id="note1-chrome-launch">
+        <h3>The Chrome Launch: February 10, 2026</h3>
+        <p>
+          On February 10, 2026, Google's Andre Cipriani Bandarra
+          announced the WebMCP Early Preview Program. Access to the
+          preview is available in Chrome 146 Canary behind the
+          "WebMCP for testing" flag at <code>chrome://flags</code>.
+        </p>
+        <p>
+          Early benchmarks reported approximately 67% reduction in
+          computational overhead compared to traditional visual
+          agent-browser interactions. No other browser vendor has
+          announced implementation timelines, though Microsoft's
+          co-authorship suggests Edge support is probable.
+        </p>
+      </section>
+
+      <section id="note1-process">
+        <h3>The Process Question</h3>
+        <p>
+          The technical merits of WebMCP are not the concern raised
+          here. The concern is procedural.
+        </p>
+        <p>
+          The specification is described as being incubated by a W3C
+          Community Group. A CG draft carries a specific meaning in
+          W3C process — it is a collaborative, community-driven
+          document subject to group deliberation. Yet the Chrome team
+          shipped a working implementation and launched a public
+          developer program before the specification was mature. The
+          spec contains multiple sections marked TODO. Open issues
+          remain unresolved.
+        </p>
+        <p>
+          Members of the Web Machine Learning Community Group report
+          learning about WebMCP from external press coverage rather
+          than through the group's own communication channels. This
+          raises the question of whether the CG incubation process
+          served as genuine community deliberation or as a hosting
+          arrangement for a specification driven primarily by two
+          browser vendors.
+        </p>
+        <div class="issue">
+          <p>
+            <strong>Open Question:</strong> Will the W3C community
+            group process catch up to the Chrome implementation, or
+            will the implementation become the de facto standard
+            regardless of community input?
+          </p>
+        </div>
+      </section>
+
+      <section id="note1-chronology">
+        <h3>Chronology</h3>
+        <table>
+          <thead>
+            <tr><th>Date</th><th>Event</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>October 3, 2018</td>
+              <td>Web Machine Learning CG proposed at W3C by Anssi Kostiainen (Intel)</td>
+            </tr>
+            <tr>
+              <td>Early 2025</td>
+              <td>MCP gains adoption. Alex Nahas at Amazon encounters OAuth 2.1 authorization problems</td>
+            </tr>
+            <tr>
+              <td>2025</td>
+              <td>Alex Nahas develops MCP-B Chrome extension; Jason McGhee independently develops early WebMCP widget</td>
+            </tr>
+            <tr>
+              <td>August 28, 2025</td>
+              <td>Patrick Brosset (Microsoft Edge) publishes blog introducing WebMCP as joint Edge-Google proposal</td>
+            </tr>
+            <tr>
+              <td>Sep–Oct 2025</td>
+              <td>Kyle Pflug (Microsoft Edge) confirms joint initiative. Specification placed in webmachinelearning GitHub org</td>
+            </tr>
+            <tr>
+              <td>Oct–Nov 2025</td>
+              <td>Open issues filed on webmachinelearning/webmcp repo by spec editors</td>
+            </tr>
+            <tr>
+              <td>November 2025</td>
+              <td>WebMCP discussed at W3C TPAC 2025 in Kobe, Japan</td>
+            </tr>
+            <tr>
+              <td>December 12, 2025</td>
+              <td>Last recorded update to webmcp repo on GitHub</td>
+            </tr>
+            <tr>
+              <td>February 10, 2026</td>
+              <td>Google launches WebMCP Early Preview Program in Chrome 146 Canary</td>
+            </tr>
+            <tr>
+              <td>February 12, 2026</td>
+              <td>WebMCP specification dated as Draft Community Group Report</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TECHNICAL NOTE 2 -->
+    <!-- ============================================================ -->
+    <section id="note2">
+      <h2>Technical Note 2: What to Test, What to Watch, What to Tell the Standards Body</h2>
+
+      <section id="note2-use-cases" class="informative">
+        <h3>What WebMCP Is For: The Use Cases</h3>
+        <p>
+          WebMCP allows a website to declare a set of tools — JavaScript
+          functions with structured schemas and natural language
+          descriptions — that AI agents can discover and invoke. The
+          specification targets several categories of use.
+        </p>
+        <p>
+          <strong>E-commerce and transactional sites.</strong> A travel
+          booking site could register tools like
+          <code>searchFlights(origin, destination, dates)</code>,
+          <code>filterResults(price, stops, airline)</code>, and
+          <code>bookFlight(flightId, passengerDetails)</code>. Instead
+          of an AI agent parsing a complex search interface by reading
+          pixels or DOM elements, it calls the function directly and
+          gets structured JSON back.
+        </p>
+        <p>
+          <strong>Productivity and SaaS applications.</strong> A project
+          management tool could expose
+          <code>createTask(title, assignee, dueDate)</code>,
+          <code>moveCard(cardId, column)</code>, and
+          <code>generateReport(dateRange)</code>. Browser-based AI
+          assistants could help users manage workflows without the
+          application needing a separate backend MCP server.
+        </p>
+        <p>
+          <strong>Content and media.</strong> News sites, mapping
+          services, and other content platforms could register
+          structured search and retrieval tools.
+        </p>
+        <p>
+          <strong>Accessibility.</strong> The specification claims
+          WebMCP could benefit assistive technologies by providing
+          structured, semantically meaningful interfaces to website
+          functionality. A screen reader enhanced with agent
+          capabilities could invoke tools directly rather than
+          navigating complex visual layouts. This is a strong claim
+          that deserves rigorous testing.
+        </p>
+        <p>
+          <strong>Form automation and multi-step workflows.</strong>
+          Complex processes like insurance applications, government
+          forms, or account setup flows could be exposed as sequences
+          of tool calls, allowing agents to guide users step by step
+          while the site maintains control over validation and data
+          handling.
+        </p>
+      </section>
+
+      <section id="note2-benefits" class="informative">
+        <h3>What the Benefits Are</h3>
+        <p>
+          <strong>Reliability.</strong> Today's browser agents — whether
+          using visual parsing or DOM inspection — are brittle. A minor
+          CSS change can break a visual agent. WebMCP tools are explicit
+          contracts: the site declares what is available, the agent calls
+          it, the response is structured.
+        </p>
+        <p>
+          <strong>Performance.</strong> Visual agents must capture
+          screenshots, send them to a vision model, interpret the
+          response, and generate coordinates. Early benchmarks reported
+          a 67% reduction in computational overhead with WebMCP. Even
+          if optimistic, the architectural advantage is clear.
+        </p>
+        <p>
+          <strong>Developer control.</strong> With visual or DOM-based
+          agents, the website has no say in how an agent interacts with
+          it. With WebMCP, the developer explicitly defines the
+          interaction surface, including rate limits, validation, and
+          structured error messages.
+        </p>
+        <p>
+          <strong>Authentication reuse.</strong> Because WebMCP runs in
+          the browser session, it inherits whatever authentication the
+          user already has. No OAuth flows, no API keys, no separate
+          credential management.
+        </p>
+        <p>
+          <strong>Standardization.</strong> A developer implements tools
+          once and every conformant agent can use them — the "USB-C"
+          argument: one interface, many devices.
+        </p>
+      </section>
+
+      <section id="note2-risks">
+        <h3>What the Risks Are</h3>
+        <div class="warning">
+          <p>
+            The risks identified below are significant, and several
+            are not yet adequately addressed in the specification.
+          </p>
+        </div>
+        <p>
+          <strong>Prompt injection</strong> is the most acute risk.
+          WebMCP tools return data to AI agents that then process it in
+          their language model context. A malicious or compromised
+          website could craft tool responses that manipulate the agent's
+          behavior. The specification does not currently define a defense
+          beyond same-origin policy boundaries.
+        </p>
+        <p>
+          <strong>Scope creep of agent permissions.</strong> WebMCP is
+          designed for human-in-the-loop workflows, with headless
+          browsing explicitly out of scope. But the technical mechanism
+          does not inherently enforce this. The specification SHOULD
+          define what "human in the loop" means technically, not just
+          philosophically.
+        </p>
+        <p>
+          <strong>Consent and transparency.</strong> When a user visits
+          a site that registers WebMCP tools, the current design
+          provides no visible indicator. Compare this to camera,
+          microphone, and location permissions, where the user
+          explicitly grants access.
+        </p>
+        <p>
+          <strong>Competitive dynamics.</strong> WebMCP gives first-mover
+          advantage to sites that implement tools early. Smaller sites
+          that do not implement WebMCP may become invisible to
+          agent-mediated browsing.
+        </p>
+        <p>
+          <strong>Data leakage through tool schemas.</strong> The
+          natural language descriptions and parameter schemas reveal
+          information about a site's internal architecture and business
+          logic. The specification does not address whether tool schemas
+          should be treated as sensitive information.
+        </p>
+        <p>
+          <strong>Abuse and rate limiting.</strong> Agents can invoke
+          tools at machine speed. The specification mentions rate
+          limiting as a consideration but does not define a standard
+          mechanism.
+        </p>
+        <p>
+          <strong>Cross-site tool chaining.</strong> If an agent can
+          invoke tools on multiple open tabs, it could chain actions
+          across sites in ways no individual site anticipated. The
+          security boundaries for cross-site tool interaction are not
+          yet defined.
+        </p>
+      </section>
+
+      <section id="note2-testing">
+        <h3>What to Test</h3>
+        <p>
+          For those with access to Chrome 146 Canary, the following
+          areas need community evaluation. Each SHOULD generate
+          feedback for the W3C community group.
+        </p>
+        <p>
+          <strong>Declarative API with real HTML forms.</strong>
+          Register tools that wrap existing form actions and verify
+          that validation, error handling, and submission behavior
+          match what a human user would experience. Try edge cases:
+          forms with CAPTCHAs, multi-step forms, session state.
+        </p>
+        <p>
+          <strong>Imperative API with dynamic content.</strong>
+          Register tools that interact with JavaScript-heavy
+          applications. Evaluate whether tool calls can reliably
+          interact with application state.
+        </p>
+        <p>
+          <strong>Authentication boundaries.</strong> Log into a site,
+          register tools, then observe behavior when the session
+          expires, the user logs out in another tab, or cookies are
+          cleared.
+        </p>
+        <p>
+          <strong>Tool discovery and enumeration.</strong> If multiple
+          sites in different tabs register tools, how does the agent
+          disambiguate? What happens with name collisions?
+        </p>
+        <p>
+          <strong>Accessibility integration.</strong> Evaluate whether
+          WebMCP tools provide genuinely better access than existing
+          ARIA roles and landmarks. Test with screen readers, switch
+          access devices, and voice control.
+        </p>
+        <p>
+          <strong>Prompt injection resilience.</strong> Craft tool
+          responses containing instruction-like text and observe
+          whether the consuming agent's behavior is affected. This
+          is critical safety research.
+        </p>
+        <p>
+          <strong>Performance claims.</strong> Measure actual latency
+          and token usage for equivalent tasks via WebMCP versus
+          visual agent interaction.
+        </p>
+        <p>
+          <strong>Failure modes.</strong> What happens when a tool
+          throws an error, returns unexpected types, hangs, or the
+          page navigates away mid-call?
+        </p>
+      </section>
+
+      <section id="note2-communicate">
+        <h3>How to Communicate Findings</h3>
+        <p>
+          <strong>File a GitHub issue</strong> at
+          <a href="https://github.com/webmachinelearning/webmcp/issues">
+          github.com/webmachinelearning/webmcp/issues</a> with a
+          clear title, reproducible steps, and a specific recommendation.
+        </p>
+        <p>
+          <strong>Join the W3C Web Machine Learning Community Group</strong>
+          at <a href="https://www.w3.org/community/webmachinelearning/">
+          w3.org/community/webmachinelearning/</a>. Community Groups
+          are free and open.
+        </p>
+        <p>
+          If findings relate to <strong>security or privacy</strong>,
+          file issues with clear severity assessments and request
+          completion of the W3C security and privacy self-review
+          questionnaire if not yet done.
+        </p>
+      </section>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TECHNICAL NOTE 3 -->
+    <!-- ============================================================ -->
+    <section id="note3">
+      <h2>Technical Note 3: WebMCP Is Not an MCP Server</h2>
+
+      <section id="note3-analogy">
+        <h3>The Analogy and Its Limits</h3>
+        <p>
+          A persistent claim in the WebMCP ecosystem is that WebMCP
+          turns a website into an MCP server. The W3C specification
+          repository itself states that web pages using WebMCP "can be
+          thought of as Model Context Protocol servers that implement
+          tools in client-side script instead of on the backend."
+          [[WEBMCP-SPEC]]
+        </p>
+        <p>
+          Early independent implementations by Jason McGhee
+          [[MCGHEE-WEBMCP]] and Alex Nahas (MCP-B)
+          [[NAHAS-MCP-B]] literally did function as MCP servers,
+          bridging browser JavaScript to MCP clients through localhost
+          websocket connections. The framing is understandable. It is
+          also architecturally misleading.
+        </p>
+        <p>
+          The Model Context Protocol [[MCP]] and WebMCP share a
+          conceptual ancestor: both define "tools" as functions with
+          natural language descriptions and structured schemas that AI
+          agents can discover and invoke. That is where the meaningful
+          similarity ends.
+        </p>
+      </section>
+
+      <section id="note3-comparison">
+        <h3>Architectural Comparison</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th>MCP (Backend Protocol)</th>
+              <th>WebMCP (Browser API)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Transport</strong></td>
+              <td>JSON-RPC 2.0 over stdio, HTTP/SSE, or Streamable HTTP</td>
+              <td>Browser <code>postMessage</code> system</td>
+            </tr>
+            <tr>
+              <td><strong>Execution context</strong></td>
+              <td>Controlled backend: containers, VMs, serverless functions</td>
+              <td>Browser JavaScript engine, same context as the web page</td>
+            </tr>
+            <tr>
+              <td><strong>Authentication</strong></td>
+              <td>OAuth 2.1 or custom API key schemes</td>
+              <td>Inherited from browser session (cookies, federated login)</td>
+            </tr>
+            <tr>
+              <td><strong>Trust direction</strong></td>
+              <td>AI platform (client) connects to known, registered servers</td>
+              <td>Any website the user visits can register tools</td>
+            </tr>
+            <tr>
+              <td><strong>Operational mode</strong></td>
+              <td>Automated, headless, continuous, concurrent</td>
+              <td>Active browser tab, human user present, headless excluded</td>
+            </tr>
+            <tr>
+              <td><strong>Human presence</strong></td>
+              <td>Not required</td>
+              <td>Explicitly required</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="note3-wrong">
+        <h3>What the Framing Gets Wrong</h3>
+        <p>
+          When a developer hears "your website becomes an MCP server,"
+          they import a set of assumptions from the MCP architecture.
+          Every one of these assumptions is wrong for WebMCP.
+        </p>
+        <p>
+          <strong>Transport.</strong> MCP uses JSON-RPC 2.0, a
+          well-specified request-response protocol. WebMCP uses
+          <code>postMessage</code>, the browser's cross-origin
+          communication mechanism. Code written for one transport does
+          not work with the other.
+        </p>
+        <p>
+          <strong>Execution context.</strong> An MCP server runs in a
+          controlled backend environment. WebMCP tools run in the
+          browser's JavaScript engine, subject to its security sandbox
+          but also its constraints: single-threaded execution,
+          same-origin policy, and the full surface area of client-side
+          attack vectors.
+        </p>
+        <p>
+          <strong>Authentication.</strong> MCP uses OAuth 2.1. WebMCP
+          inherits the browser session — elegant for usability but
+          providing no protocol-level guarantees.
+        </p>
+        <p>
+          <strong>Trust direction.</strong> In MCP, the platform decides
+          which servers to trust. In WebMCP, any visited website can
+          register tools, and the current specification provides no
+          visible indicator to the user.
+        </p>
+      </section>
+
+      <section id="note3-standards">
+        <h3>Why This Matters for Standards Review</h3>
+        <p>
+          <strong>Security reviewers</strong> who approach WebMCP as
+          "MCP in the browser" will evaluate it against MCP's threat
+          model — which assumes a controlled backend environment.
+          WebMCP's actual threat model involves client-side JavaScript
+          execution, browser-based trust boundaries, and web security
+          concerns including cross-site scripting and prompt injection.
+        </p>
+        <p>
+          <strong>Developers</strong> may expect protocol-level
+          interoperability — that WebMCP tool definitions could be
+          used interchangeably with MCP server tool definitions.
+          They cannot. The tool schema format may be similar, but the
+          transport, discovery, and invocation mechanisms are
+          incompatible.
+        </p>
+        <p>
+          <strong>Standards participants</strong> may underestimate the
+          scope of new specification work required. WebMCP is not an
+          adaptation of MCP to a new environment. It is a new browser
+          API that borrows one concept (the tool abstraction) from MCP
+          and implements everything else differently. It needs its own
+          security review, privacy analysis, accessibility evaluation,
+          and consent model.
+        </p>
+      </section>
+
+      <section id="note3-what-it-is">
+        <h3>What WebMCP Actually Is</h3>
+        <p>
+          WebMCP is a proposed browser API — specifically, a new
+          interface on <code>navigator.modelContext</code> — that allows
+          web pages to declare JavaScript functions as tools that
+          browser-based AI agents can discover and invoke. It uses the
+          browser's existing communication, security, and session
+          management infrastructure rather than introducing a new
+          protocol.
+        </p>
+        <p>
+          The design has real strengths. Authentication reuse eliminates
+          one of the hardest problems in AI-service integration.
+          Client-side execution means no backend infrastructure is
+          needed. The human-in-the-loop requirement provides a natural
+          consent and oversight mechanism — if implemented correctly.
+        </p>
+        <div class="note">
+          <p>
+            <strong>Suggested Clarification:</strong> The W3C
+            specification and its README SHOULD explicitly state that
+            WebMCP is not an implementation of the Model Context
+            Protocol and does not use the MCP wire protocol. It borrows
+            the "tool" abstraction but implements discovery,
+            registration, invocation, and communication through
+            browser-native mechanisms that are architecturally distinct
+            from MCP.
+          </p>
+        </div>
+      </section>
+
+      <section id="note3-coexist">
+        <h3>Both Can Coexist</h3>
+        <p>
+          None of this is an argument against WebMCP or against MCP.
+          A company might maintain an MCP server for direct API
+          integrations with AI platforms and simultaneously implement
+          WebMCP tools on its consumer-facing website for browser-based
+          agent interaction. The two are complementary, not competing,
+          and not identical. Recognizing the distinction is necessary
+          for evaluating each on its own merits.
+        </p>
+      </section>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- COMPLETE GUIDE -->
+    <!-- ============================================================ -->
+    <section id="guide" class="informative">
+      <h2>Complete Guide: WebMCP API in Plain Language</h2>
+
+      <section id="guide-big-picture">
+        <h3>The Big Picture — What Problem Does WebMCP Solve?</h3>
+        <p>
+          When an AI agent wants to interact with a website — book a
+          flight, fill a form, check a price — it currently has two
+          options: <strong>screen scraping</strong> (fragile, slow,
+          breaks on layout changes) or <strong>backend API</strong>
+          (requires server engineering). WebMCP is a third option: the
+          website itself tells the agent what it can do, directly in
+          the browser.
+        </p>
+        <p>
+          WebMCP makes any website into an AI-friendly service with
+          no backend needed. The website's existing JavaScript code
+          does the work. The AI agent just needs to know what tools
+          are available.
+        </p>
+      </section>
+
+      <section id="guide-players">
+        <h3>The Key Players</h3>
+        <table>
+          <thead>
+            <tr><th>Actor</th><th>Role</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Agent</strong></td>
+              <td>An autonomous AI assistant (e.g., Claude, ChatGPT, Gemini) that calls the tools websites expose</td>
+            </tr>
+            <tr>
+              <td><strong>Browser's Agent</strong></td>
+              <td>An agent built into the browser itself (e.g., Chrome's built-in AI assistant)</td>
+            </tr>
+            <tr>
+              <td><strong>Web Developer</strong></td>
+              <td>The person who builds the website and registers WebMCP tools</td>
+            </tr>
+            <tr>
+              <td><strong>User</strong></td>
+              <td>The human at the browser. WebMCP is designed for "user-present" interactions</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="guide-family-tree">
+        <h3>MCP vs WebMCP vs MCP-B — The Family Tree</h3>
+        <table>
+          <thead>
+            <tr><th>What</th><th>Where It Runs</th><th>What It Does</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>MCP</strong></td>
+              <td>On a server (backend)</td>
+              <td>The original protocol. Applications expose tools to AI models through a backend server. [[MCP]]</td>
+            </tr>
+            <tr>
+              <td><strong>WebMCP</strong></td>
+              <td>In the browser (frontend)</td>
+              <td>Adapts MCP concepts for the web. Websites expose tools through JavaScript. No backend needed. [[WEBMCP-SPEC]]</td>
+            </tr>
+            <tr>
+              <td><strong>MCP-B</strong></td>
+              <td>Browser extension + JS library</td>
+              <td>A bridge / polyfill. Makes <code>navigator.modelContext</code> work today before browsers add native support. [[MCP-B]]</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="guide-api">
+        <h3>The API — Key Components</h3>
+        <p>
+          The entry point is <code>navigator.modelContext</code>, a
+          new property on the browser's <code>navigator</code> object
+          (alongside existing features like
+          <code>navigator.geolocation</code>). It provides four methods:
+        </p>
+        <p>
+          <code>provideContext(options)</code> — registers a complete
+          set of tools at once, replacing any previous registrations.
+        </p>
+        <p>
+          <code>clearContext()</code> — removes all registered tools.
+        </p>
+        <p>
+          <code>registerTool(tool)</code> — adds a single tool to
+          the existing set without removing others.
+        </p>
+        <p>
+          <code>unregisterTool(name)</code> — removes one specific
+          tool by name.
+        </p>
+
+        <h4>The Tool Object</h4>
+        <p>Every registered tool has these parts:</p>
+        <p>
+          <code>name</code> — a unique identifier (e.g.,
+          <code>"searchProducts"</code>). The agent uses this to
+          call the tool.
+        </p>
+        <p>
+          <code>description</code> — natural language explanation
+          of what the tool does, written for AI consumption.
+        </p>
+        <p>
+          <code>inputSchema</code> — a JSON Schema describing
+          expected inputs.
+        </p>
+        <p>
+          <code>execute</code> — the JavaScript function that runs
+          when the agent invokes the tool.
+        </p>
+        <p>
+          <code>annotations</code> (optional) — metadata such as
+          <code>readOnlyHint: true</code> to indicate the tool only
+          reads data.
+        </p>
+
+        <pre class="example" title="Complete tool registration">
+// Register a tool that searches products on an e-commerce site
+navigator.modelContext.registerTool({
+  name: 'searchProducts',
+  description: 'Search for products by keyword, category, or price range',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      query: { type: 'string', description: 'Search keywords' },
+      maxPrice: { type: 'number', description: 'Maximum price filter' }
+    },
+    required: ['query']
+  },
+  annotations: { readOnlyHint: true },
+  async execute(input, client) {
+    const results = await searchAPI(input.query, input.maxPrice);
+    return { products: results };
+  }
+});
+        </pre>
+
+        <h4>ModelContextClient and Human-in-the-Loop</h4>
+        <p>
+          When an agent calls a tool, the <code>execute</code>
+          function receives a <code>client</code> object with a
+          <code>requestUserInteraction()</code> method. This pauses
+          execution and asks the user for confirmation before
+          proceeding with consequential actions — the human-in-the-loop
+          mechanism.
+        </p>
+      </section>
+
+      <section id="guide-security">
+        <h3>Security Model</h3>
+        <p>
+          WebMCP security rests on three layers:
+          <strong>origin isolation</strong> (each site's tools are
+          sandboxed to its own origin),
+          <strong>HTTPS requirement</strong> (<code>SecureContext</code>
+          — no WebMCP on unencrypted HTTP), and
+          <strong>user-present design</strong> (human in the loop via
+          <code>requestUserInteraction()</code>).
+        </p>
+      </section>
+
+      <section id="guide-consent-gap">
+        <h3>The Consent Gap — A Key Open Question</h3>
+        <p>
+          Currently, any website can register any number of tools the
+          moment a user visits it. An AI agent can immediately discover
+          those tools. There is no step where the user sees:
+          "This website wants to expose 12 tools to your AI agent.
+          Allow?"
+        </p>
+        <table>
+          <thead>
+            <tr><th>Browser Capability</th><th>Permission Model</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Camera / Microphone</td>
+              <td>Browser prompts: "Allow / Block"</td>
+            </tr>
+            <tr>
+              <td>Location (GPS)</td>
+              <td>Browser prompts: "Allow / Block"</td>
+            </tr>
+            <tr>
+              <td>Notifications</td>
+              <td>Browser prompts: "Allow / Block"</td>
+            </tr>
+            <tr>
+              <td>WebMCP tools</td>
+              <td>Currently: no prompt. Tools are silently registered and discoverable.</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="issue">
+          <p>
+            <strong>Open Question:</strong> Does the spec team envision
+            a permission layer for tool discovery, or is the intended
+            architecture that the AI client handles this at its own
+            level? Both approaches are valid — the intended design
+            matters for implementers and for user trust.
+          </p>
+        </div>
+      </section>
+
+      <section id="guide-glossary">
+        <h3>Glossary</h3>
+        <table>
+          <thead>
+            <tr><th>Term</th><th>Plain Language</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>API</strong></td><td>Rules for how software talks to other software. WebMCP is an API defining how websites talk to AI agents.</td></tr>
+            <tr><td><strong>Client-side / Frontend</strong></td><td>Code that runs in the user's browser. WebMCP tools run client-side.</td></tr>
+            <tr><td><strong>DOM</strong></td><td>The browser's internal representation of a web page.</td></tr>
+            <tr><td><strong>JSON Schema</strong></td><td>A standard way to describe the shape of data. Tools use it to declare expected inputs.</td></tr>
+            <tr><td><strong>Navigator</strong></td><td>A built-in browser object for browser features. WebMCP adds <code>navigator.modelContext</code>.</td></tr>
+            <tr><td><strong>Origin</strong></td><td>A website's identity: protocol + domain + port. The foundation of web security and WebMCP security.</td></tr>
+            <tr><td><strong>Polyfill</strong></td><td>Temporary code providing a feature before browsers add native support. MCP-B is a polyfill for WebMCP.</td></tr>
+            <tr><td><strong>Promise</strong></td><td>A way to handle asynchronous operations. Tool <code>execute</code> functions return Promises.</td></tr>
+            <tr><td><strong>SecureContext</strong></td><td>Means the feature only works on HTTPS pages. A security requirement for WebMCP.</td></tr>
+            <tr><td><strong>Tool Poisoning</strong></td><td>A security attack where malicious tools use misleading descriptions to trick agents.</td></tr>
+            <tr><td><strong>Transport</strong></td><td>The mechanism for sending messages. MCP uses JSON-RPC; WebMCP uses browser <code>postMessage</code>.</td></tr>
+            <tr><td><strong>WebIDL</strong></td><td>The formal language used to write web API specifications — the blueprint language for browser APIs.</td></tr>
+            <tr><td><strong>Wire Protocol</strong></td><td>The format of messages between systems. MCP-B translates between WebMCP's browser format and MCP's wire protocol.</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- HOW TO CONTRIBUTE -->
+    <!-- ============================================================ -->
+    <section id="contribute" class="informative">
+      <h2>How to Contribute</h2>
+      <p>
+        <strong>Join the W3C Web Machine Learning Community Group.</strong>
+        W3C Community Groups are open to all. No W3C Membership is
+        required and there is no fee. Join at:
+        <a href="https://www.w3.org/community/webmachinelearning/">
+        w3.org/community/webmachinelearning/</a>
+      </p>
+      <p>
+        <strong>File issues and contribute via GitHub.</strong>
+        The spec repo is at:
+        <a href="https://github.com/webmachinelearning/webmcp">
+        github.com/webmachinelearning/webmcp</a>
+      </p>
+      <p>
+        <strong>Test the Chrome implementation.</strong> The early
+        preview is available in Chrome 146 Canary by enabling the
+        "WebMCP for testing" flag at <code>chrome://flags</code>.
+      </p>
+      <p>
+        <strong>Engage with the AI Agent Protocol Community Group.</strong>
+        The WebML CG charter identifies coordination with this
+        separate CG for agent interoperability concerns.
+      </p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- REFERENCE URLS -->
+    <!-- ============================================================ -->
+    <section id="reference-urls" class="appendix informative">
+      <h2>Reference URLs</h2>
+      <table>
+        <thead>
+          <tr><th>Resource</th><th>URL</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>WebMCP Specification</td><td><a href="https://webmachinelearning.github.io/webmcp/">webmachinelearning.github.io/webmcp/</a></td></tr>
+          <tr><td>WebMCP Proposal / Explainer</td><td><a href="https://github.com/webmachinelearning/webmcp/blob/main/docs/proposal.md">github.com/webmachinelearning/webmcp/.../proposal.md</a></td></tr>
+          <tr><td>WebMCP GitHub Repo</td><td><a href="https://github.com/webmachinelearning/webmcp">github.com/webmachinelearning/webmcp</a></td></tr>
+          <tr><td>Open Issues</td><td><a href="https://github.com/webmachinelearning/webmcp/issues">github.com/webmachinelearning/webmcp/issues</a></td></tr>
+          <tr><td>WebML CG Charter</td><td><a href="https://webmachinelearning.github.io/charter/">webmachinelearning.github.io/charter/</a></td></tr>
+          <tr><td>WebML CG Home</td><td><a href="https://www.w3.org/community/webmachinelearning/">w3.org/community/webmachinelearning/</a></td></tr>
+          <tr><td>MCP-B Documentation</td><td><a href="https://docs.mcp-b.ai/introduction">docs.mcp-b.ai/introduction</a></td></tr>
+          <tr><td>WebMCP-org GitHub</td><td><a href="https://github.com/WebMCP-org">github.com/WebMCP-org</a></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+  </body>
+</html>

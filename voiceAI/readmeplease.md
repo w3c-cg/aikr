@@ -9,6 +9,7 @@
 ## Overview
 
 This document set contains two companion versions of the **Configurable Voice Interaction Standards Framework**, a proposal to standardize controls for voice-driven web interfaces. Both documents are formatted using [W3C ReSpec](https://respec.org/) and render as proper W3C Community Group Draft specifications when opened in a modern browser (Chrome or Firefox recommended).
+It is shared in the context of Smart Voice Agents workshop *https://www.w3.org/2025/10/smartagents-workshop/online.html
 
 The two versions serve different purposes at different stages of the standardization discussion.
 

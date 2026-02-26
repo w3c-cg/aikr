@@ -1,1 +1,37 @@
+PROPOSED NEW TYPES *USED IN V1 OF THE VOICE STANDARD DRAFT SPEC BUT NOT FOUND BY RESPEC
 
+Couldn't find "VoiceInteractionState" in this document or other cited documents: [dom], [fetch], [html], [infra], [url], and [webidl].
+
+How to fix: See search matches for "VoiceInteractionState" or Learn about this error.
+
+Occurred 2 times at:
+
+    <a> element
+    <a> element
+
+(plugin: "core/xref")
+Couldn't find "VoiceTask" in this document or other cited documents: [dom], [fetch], [html], [infra], [url], and [webidl].
+
+How to fix: See search matches for "VoiceTask" or Learn about this error.
+
+Occurred 1 times at:
+
+    <a> element
+
+(plugin: "core/xref")
+Couldn't find "VoiceTaskResult" in this document or other cited documents: [dom], [fetch], [html], [infra], [url], and [webidl].
+
+How to fix: See search matches for "VoiceTaskResult" or Learn about this error.
+
+Occurred 1 times at:
+
+    <a> element
+
+(plugin: "core/xref")
+Couldn't find "VoiceHistoryEntry" in this document or other cited documents: [dom], [fetch], [html], [infra], [url], and [webidl].
+
+How to fix: See search matches for "VoiceHistoryEntry" or Learn about this error.
+
+Occurred 1 times at:
+
+    <a> element

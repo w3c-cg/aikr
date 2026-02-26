@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Configurable Voice Interaction Standards Framework</title>
+    <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove" defer></script>
+    <script class="remove">
+      var respecConfig = {
+        specStatus: "CG-DRAFT",
+        shortName: "voice-interaction-standards",
+        subtitle: "Proposed Standards for Configurable Voice Interactions on the Web",
+        publishDate: "2026-01-29",
+        copyrightStart: "2025",
+        editors: [
+          {
+            name: "Paola Di Maio",
+            company: "W3C AI KR CG",
+            companyURL: "https://www.w3.org/community/aikr/",
+          },
+        ],
+        authors: [
+          {
+            name: "Paola Di Maio",
+            company: "W3C AI KR CG",
+            companyURL: "https://www.w3.org/community/aikr/",
+          },
+        ],
+        group: "aikr",
+        github: {
+          repoURL: "https://github.com/w3c-cg/voice-interaction-standards",
+          branch: "main",
+        },
+        edDraftURI:
+          "https://docs.google.com/document/d/1gbEBIR3YDw1lu5mu6FbKkUBaMH282QNbgDdsf2jWokM/edit",
+        latestVersion: null,
+        xref: "web-platform",
+        localBiblio: {
+          "WEB-SPEECH-API": {
+            title: "Web Speech API",
+            href: "https://wicg.github.io/speech-api/",
+            publisher: "WICG",
+          },
+          "MEDIA-SESSION": {
+            title: "Media Session Standard",
+            href: "https://www.w3.org/TR/mediasession/",
+            publisher: "W3C",
+          },
+          "WCAG22": {
+            title:
+              "Web Content Accessibility Guidelines (WCAG) 2.2",
+            href: "https://www.w3.org/TR/WCAG22/",
+            publisher: "W3C",
+          },
+          "WEB-WORKERS": {
+            title: "Web Workers",
+            href: "https://html.spec.whatwg.org/multipage/workers.html",
+            publisher: "WHATWG",
+          },
+          "SERVICE-WORKERS": {
+            title: "Service Workers",
+            href: "https://www.w3.org/TR/service-workers/",
+            publisher: "W3C",
+          },
+          "WEB-APP-MANIFEST": {
+            title: "Web Application Manifest",
+            href: "https://www.w3.org/TR/appmanifest/",
+            publisher: "W3C",
+          },
+        },
+      };
+    </script>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 1em 0;
+      }
+      th, td {
+        border: 1px solid #ccc;
+        padding: 0.5em 0.75em;
+        text-align: left;
+      }
+      th {
+        background-color: #f0f0f0;
+      }
+      pre.idl,
+      pre.example {
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 1em;
+        border-radius: 4px;
+        overflow-x: auto;
+      }
+      .note {
+        background: #e8f4fd;
+        border-left: 4px solid #1a73e8;
+        padding: 1em;
+        margin: 1em 0;
+      }
+      .issue {
+        background: #fdf3e8;
+        border-left: 4px solid #e8a21a;
+        padding: 1em;
+        margin: 1em 0;
+      }
+      code {
+        background: #f4f4f4;
+        padding: 0.1em 0.3em;
+        border-radius: 3px;
+        font-size: 0.95em;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Abstract -->
+    <section id="abstract">
+      <p>
+        This document outlines a proposed standards framework for configurable
+        voice interactions on the web, extending W3C efforts such as the
+        Web Speech API [[WEB-SPEECH-API]]. The framework aims to standardize
+        controls for voice-driven user interfaces (e.g., virtual assistants,
+        podcasts, voice-enabled web applications), addressing gaps in timing,
+        state management, context, user preferences, task handling, and error
+        recovery.
+      </p>
+      <p>
+        Six API components are proposed: Temporal Control, Interaction State
+        Machine, Context Management, Configuration Schema, Task Queue, and
+        Recovery Protocol. Each builds upon or complements existing W3C
+        standards to provide a coherent, interoperable platform for
+        voice-driven web experiences.
+      </p>
+    </section>
+
+    <!-- Status of This Document (custom content) -->
+    <section id="sotd">
+      <p>
+        These notes are part of a Voice AI white paper by Paola Di Maio.
+        They were shared for discussion with Patric and Francois of the
+        W3C WebDX CG (via email, 29 January 2026) to explore possible
+        usefulness and relevance to the WebDX Community Group.
+      </p>
+      <p>
+        This is a <strong>discussion draft</strong> and does not represent
+        consensus of the W3C AI Knowledge Representation Community Group
+        or any other W3C body. Feedback is welcome.
+      </p>
+    </section>
+
+    <!-- Introduction -->
+    <section id="introduction" class="informative">
+      <h2>Introduction</h2>
+      <p>
+        Voice-driven web applications—from browser-based virtual assistants
+        to interactive podcasts and AI-powered conversational interfaces—are
+        proliferating rapidly. However, the current landscape suffers from
+        significant fragmentation. Differences between implementations
+        (e.g., Chrome vs. Safari Speech APIs) lead to poor user experience
+        and increased developer burden.
+      </p>
+      <p>
+        The code snippets and API proposals in this document outline a
+        hypothetical "Proposed Standards Framework" for configurable voice
+        interactions on the web. They aim to standardize controls for
+        voice-driven UIs, addressing gaps in:
+      </p>
+      <ul>
+        <li>Temporal control of voice playback</li>
+        <li>Interaction state management</li>
+        <li>Conversation context continuity</li>
+        <li>User and application preferences</li>
+        <li>Asynchronous task handling during voice sessions</li>
+        <li>Session recovery after errors or disconnections</li>
+      </ul>
+      <p>
+        Without standards, developers are forced to reinvent solutions,
+        risking security (e.g., unhandled states) and privacy issues
+        (e.g., context persistence). Building on W3C foundations ensures
+        interoperability, boosts accessibility (e.g., for non-visual users),
+        and accelerates adoption in domains such as e-commerce and education.
+      </p>
+      <p>
+        A W3C working group could prototype these proposals in 6–12 months,
+        starting with polyfills. This document recommends prioritizing
+        Temporal Control and Recovery Protocol first for maximum impact.
+      </p>
+    </section>
+
+    <!-- Conformance -->
+    <section id="conformance">
+      <p>
+        As well as sections marked as non-normative, all authoring guidelines,
+        diagrams, examples, and notes in this specification are non-normative.
+        Everything else in this specification is normative.
+      </p>
+    </section>
+
+    <!-- Section 1: Temporal Control API -->
+    <section id="temporal-control-api">
+      <h2>Temporal Control API</h2>
+      <p>
+        The Temporal Control API provides precise user control over spoken
+        content, mimicking media player controls but applied to voice
+        synthesis and AI-generated audio output. This enables users to
+        perform actions such as skipping filler in AI responses or replaying
+        important information.
+      </p>
+      <p>
+        This API builds on the existing Media Session API [[MEDIA-SESSION]]
+        and extends it for voice-specific use cases.
+      </p>
+
+      <section id="temporal-control-interface">
+        <h3>Interface Definition</h3>
+        <pre class="idl">
+[Exposed=Window]
+interface VoicePlaybackController {
+  undefined pause();
+  undefined resume();
+  undefined rewind(double seconds);
+  undefined fastForward(double seconds);
+  undefined setSpeed(double rate);
+  double getCurrentTime();
+};
+        </pre>
+      </section>
+
+      <section id="temporal-control-methods">
+        <h3>Methods</h3>
+
+        <section id="pause-method">
+          <h4><code>pause()</code></h4>
+          <p>
+            Halts audio playback mid-response, preserving the current
+            position. The user agent MUST maintain the playback position
+            so that <code>resume()</code> can continue from the same point.
+          </p>
+        </section>
+
+        <section id="resume-method">
+          <h4><code>resume()</code></h4>
+          <p>
+            Resumes playback from the pause point. If <code>pause()</code>
+            has not been called, calling <code>resume()</code> SHOULD have
+            no effect.
+          </p>
+        </section>
+
+        <section id="rewind-method">
+          <h4><code>rewind(seconds)</code></h4>
+          <p>
+            Moves the playback position backward by the specified number
+            of <var>seconds</var>. If the resulting position would be
+            negative, the position MUST be clamped to zero.
+          </p>
+        </section>
+
+        <section id="fastforward-method">
+          <h4><code>fastForward(seconds)</code></h4>
+          <p>
+            Skips forward by the given number of <var>seconds</var>.
+            If the resulting position exceeds the total duration, the
+            playback SHOULD complete or stop at the end.
+          </p>
+        </section>
+
+        <section id="setspeed-method">
+          <h4><code>setSpeed(rate)</code></h4>
+          <p>
+            Adjusts playback speed. The <var>rate</var> parameter accepts
+            values from <code>0.5</code> (half-speed) to <code>2.0</code>
+            (double-speed). User agents MAY support wider ranges.
+          </p>
+        </section>
+
+        <section id="getcurrenttime-method">
+          <h4><code>getCurrentTime()</code></h4>
+          <p>
+            Returns the elapsed time in seconds from the start of the
+            current voice output segment.
+          </p>
+        </section>
+      </section>
+
+      <section id="temporal-control-relationship" class="informative">
+        <h3>Relationship to Existing Standards</h3>
+        <p>
+          This pattern closely mimics the HTML5 <code>MediaElement</code> API,
+          where properties like <code>pause()</code>, <code>play()</code>,
+          <code>currentTime</code>, and <code>playbackRate</code> enable
+          interactive controls for web-based media. In custom voice wrappers
+          (e.g., React players or Gradio demos), the interface is abstracted
+          into a <code>playback</code> object for cleaner voice-command
+          integration, such as "pause playback" or "rewind 10 seconds."
+        </p>
+        <p>
+          The <code>SpeechSynthesis</code> interface in the Web Speech API
+          [[WEB-SPEECH-API]] already provides <code>pause()</code>,
+          <code>resume()</code>, and <code>cancel()</code> methods, as well
+          as a <code>rate</code> property. This proposal extends that
+          capability with rewind, fast-forward, and precise time tracking.
+        </p>
+      </section>
+    </section>
+
+    <!-- Section 2: Interaction State Machine -->
+    <section id="interaction-state-machine">
+      <h2>Interaction State Machine</h2>
+      <p>
+        The Interaction State Machine defines the application states during
+        voice exchanges, with user-triggered transitions. This ensures
+        predictable UI feedback (e.g., visual indicators) and prevents
+        confusion in real-time voice applications.
+      </p>
+      <p>
+        This API partially builds on the <code>SpeechRecognition</code>
+        interface in [[WEB-SPEECH-API]].
+      </p>
+
+      <section id="state-machine-states">
+        <h3>Defined States</h3>
+        <pre class="example" title="Voice Interaction States">
+enum VoiceInteractionState {
+  "listening",    // User is speaking
+  "thinking",     // User is formulating
+  "responding",   // System is speaking
+  "processing"    // Background work in progress
+};
+        </pre>
+
+        <table>
+          <thead>
+            <tr>
+              <th>State</th>
+              <th>Description</th>
+              <th>Typical UI Indicator</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>listening</code></td>
+              <td>The user is actively speaking; the system is capturing input.</td>
+              <td>Pulsing microphone icon</td>
+            </tr>
+            <tr>
+              <td><code>thinking</code></td>
+              <td>The user is formulating a response; the system waits.</td>
+              <td>Dimmed or paused indicator</td>
+            </tr>
+            <tr>
+              <td><code>responding</code></td>
+              <td>The system is speaking or producing voice output.</td>
+              <td>Speaker/waveform animation</td>
+            </tr>
+            <tr>
+              <td><code>processing</code></td>
+              <td>Background work is in progress (e.g., API call, computation).</td>
+              <td>Loading spinner</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="state-machine-interface">
+        <h3>Interface Definition</h3>
+        <pre class="idl">
+[Exposed=Window]
+interface VoiceInteractionStateMachine : EventTarget {
+  readonly attribute VoiceInteractionState currentState;
+  undefined transitionTo(VoiceInteractionState newState);
+  attribute EventHandler onstatechange;
+};
+        </pre>
+      </section>
+    </section>
+
+    <!-- Section 3: Context Management API -->
+    <section id="context-management-api">
+      <h2>Context Management API</h2>
+      <p>
+        The Context Management API handles conversation continuity across
+        sessions or interruptions. This is vital for complex tasks such as
+        booking travel, multi-step workflows, or long-running voice sessions.
+      </p>
+      <p>
+        No existing W3C standard directly addresses this need; it represents
+        a custom requirement for voice-driven web applications.
+      </p>
+
+      <section id="context-interface">
+        <h3>Interface Definition</h3>
+        <pre class="idl">
+[Exposed=Window]
+interface VoiceContext {
+  undefined bookmark(DOMString label);
+  undefined switch(VoiceContext newContext);
+  undefined restore(DOMString bookmarkLabel);
+  DOMString getSummary();
+  Promise&lt;undefined&gt; persist();
+};
+        </pre>
+      </section>
+
+      <section id="context-methods">
+        <h3>Methods</h3>
+
+        <section id="bookmark-method">
+          <h4><code>bookmark(label)</code></h4>
+          <p>
+            Saves a state snapshot of the current conversation context,
+            identified by the given <var>label</var>. User agents MUST
+            ensure that bookmarks are retrievable by label.
+          </p>
+        </section>
+
+        <section id="switch-method">
+          <h4><code>switch(newContext)</code></h4>
+          <p>
+            Loads a different <code>VoiceContext</code>, allowing the user
+            to transition between conversation threads or topics.
+          </p>
+        </section>
+
+        <section id="restore-method">
+          <h4><code>restore(bookmarkLabel)</code></h4>
+          <p>
+            Returns to a previously saved state identified by
+            <var>bookmarkLabel</var>.
+          </p>
+        </section>
+
+        <section id="getsummary-method">
+          <h4><code>getSummary()</code></h4>
+          <p>
+            Generates and returns a textual summary or recap of the
+            current conversation context.
+          </p>
+        </section>
+
+        <section id="persist-method">
+          <h4><code>persist()</code></h4>
+          <p>
+            Saves the current context to persistent storage (e.g.,
+            <code>localStorage</code>, IndexedDB, or a server-side store).
+            This method returns a Promise that resolves when the persist
+            operation is complete.
+          </p>
+        </section>
+      </section>
+
+      <div class="note">
+        <p>
+          <strong>Privacy Consideration:</strong> Persistent context storage
+          introduces privacy risks. Implementations SHOULD provide clear
+          user controls for viewing, exporting, and deleting stored context
+          data, consistent with privacy-by-design principles.
+        </p>
+      </div>
+    </section>
+
+    <!-- Section 4: Configuration Schema -->
+    <section id="configuration-schema">
+      <h2>Configuration Schema</h2>
+      <p>
+        The Configuration Schema defines a JSON-based structure for user
+        and application preferences that customize voice interaction
+        behavior. This builds upon the Web App Manifest [[WEB-APP-MANIFEST]]
+        pattern of declarative JSON configuration.
+      </p>
+
+      <section id="config-format">
+        <h3>Schema Definition</h3>
+        <pre class="example" title="Voice Interaction Configuration Object">
+{
+  "pauseTimeout": 3000,
+  "interruptionStyle": "patient",
+  "thinkingMode": "explicit",
+  "speedPreference": 1.0,
+  "backgroundProcessing": true
+}
+        </pre>
+      </section>
+
+      <section id="config-properties">
+        <h3>Properties</h3>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>pauseTimeout</code></td>
+              <td><code>unsigned long</code></td>
+              <td><code>3000</code></td>
+              <td>Milliseconds before the system assumes the user has completed speaking.</td>
+            </tr>
+            <tr>
+              <td><code>interruptionStyle</code></td>
+              <td><code>DOMString</code></td>
+              <td><code>"patient"</code></td>
+              <td>
+                Defines how the system handles interruptions.
+                <code>"patient"</code> ignores minor interruptions;
+                <code>"eager"</code> responds immediately to any input.
+              </td>
+            </tr>
+            <tr>
+              <td><code>thinkingMode</code></td>
+              <td><code>DOMString</code></td>
+              <td><code>"explicit"</code></td>
+              <td>
+                <code>"explicit"</code> shows a visible "I'm thinking…"
+                indicator; <code>"implicit"</code> processes silently.
+              </td>
+            </tr>
+            <tr>
+              <td><code>speedPreference</code></td>
+              <td><code>double</code></td>
+              <td><code>1.0</code></td>
+              <td>Default playback speed for voice output (0.5 to 2.0).</td>
+            </tr>
+            <tr>
+              <td><code>backgroundProcessing</code></td>
+              <td><code>boolean</code></td>
+              <td><code>true</code></td>
+              <td>Whether to allow background task execution during voice sessions.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </section>
+
+    <!-- Section 5: Task Queue API -->
+    <section id="task-queue-api">
+      <h2>Task Queue API</h2>
+      <p>
+        The Task Queue API manages asynchronous operations during voice
+        sessions. It enables non-blocking task execution (e.g., sending an
+        email while the voice assistant continues speaking), with status
+        checks and cancellation support.
+      </p>
+      <p>
+        This API builds on existing patterns from Web Workers [[WEB-WORKERS]]
+        and the JavaScript Promises model.
+      </p>
+
+      <section id="task-queue-interface">
+        <h3>Interface Definition</h3>
+        <pre class="idl">
+[Exposed=Window]
+interface VoiceTaskQueue {
+  DOMString enqueue(VoiceTask task);
+  VoiceTaskStatus getStatus(DOMString taskId);
+  undefined onComplete(DOMString taskId, VoiceTaskCallback callback);
+  undefined cancel(DOMString taskId);
+};
+
+callback VoiceTaskCallback = undefined (VoiceTaskResult result);
+
+enum VoiceTaskStatus {
+  "queued",
+  "running",
+  "completed",
+  "failed",
+  "cancelled"
+};
+        </pre>
+      </section>
+
+      <section id="task-queue-methods">
+        <h3>Methods</h3>
+
+        <section id="enqueue-method">
+          <h4><code>enqueue(task)</code></h4>
+          <p>
+            Adds an asynchronous task to the queue. Returns a unique
+            <var>taskId</var> string that can be used for status queries
+            and cancellation.
+          </p>
+        </section>
+
+        <section id="getstatus-method">
+          <h4><code>getStatus(taskId)</code></h4>
+          <p>
+            Returns the current status of the task identified by
+            <var>taskId</var>.
+          </p>
+        </section>
+
+        <section id="oncomplete-method">
+          <h4><code>onComplete(taskId, callback)</code></h4>
+          <p>
+            Registers a callback to be invoked when the specified task
+            completes (whether successfully or with an error).
+          </p>
+        </section>
+
+        <section id="cancel-method">
+          <h4><code>cancel(taskId)</code></h4>
+          <p>
+            Requests cancellation of the specified task. If the task has
+            already completed, this method SHOULD have no effect.
+          </p>
+        </section>
+      </section>
+    </section>
+
+    <!-- Section 6: Recovery Protocol -->
+    <section id="recovery-protocol">
+      <h2>Recovery Protocol</h2>
+      <p>
+        The Recovery Protocol provides resilience for voice sessions,
+        restoring state after crashes, disconnections, or other failures.
+        It builds partially on Service Workers [[SERVICE-WORKERS]] patterns
+        for offline and recovery capabilities.
+      </p>
+
+      <section id="recovery-interface">
+        <h3>Interface Definition</h3>
+        <pre class="idl">
+[Exposed=Window]
+interface VoiceSessionRecovery {
+  DOMString summarize();
+  Promise&lt;undefined&gt; saveState();
+  Promise&lt;undefined&gt; restoreState();
+  sequence&lt;VoiceHistoryEntry&gt; getHistory();
+};
+        </pre>
+      </section>
+
+      <section id="recovery-methods">
+        <h3>Methods</h3>
+
+        <section id="summarize-method">
+          <h4><code>summarize()</code></h4>
+          <p>
+            Returns a human-readable summary of the current session state,
+            suitable for resuming a conversation after interruption.
+          </p>
+        </section>
+
+        <section id="savestate-method">
+          <h4><code>saveState()</code></h4>
+          <p>
+            Persists the current session state to durable storage.
+            Implementations SHOULD save state automatically at regular
+            intervals and on significant state transitions.
+          </p>
+        </section>
+
+        <section id="restorestate-method">
+          <h4><code>restoreState()</code></h4>
+          <p>
+            Restores the most recently saved session state, allowing
+            seamless resumption after a failure.
+          </p>
+        </section>
+
+        <section id="gethistory-method">
+          <h4><code>getHistory()</code></h4>
+          <p>
+            Returns an ordered sequence of history entries for the
+            current session, enabling review and navigation of past
+            interactions.
+          </p>
+        </section>
+      </section>
+
+      <div class="note">
+        <p>
+          <strong>Storage Consideration:</strong> Implementations SHOULD
+          implement a retention policy to prevent unbounded storage growth.
+          Expired or low-priority history entries MAY be pruned automatically.
+        </p>
+      </div>
+    </section>
+
+    <!-- Comparison & Evaluation -->
+    <section id="comparison" class="informative">
+      <h2>Comparison and Evaluation</h2>
+      <p>
+        The following table summarizes each proposed API component in terms
+        of its relationship to existing standards, key benefits, potential
+        drawbacks, and assessed usefulness.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>API / Feature</th>
+            <th>Builds on Existing Standards?</th>
+            <th>Key Benefits</th>
+            <th>Potential Drawbacks</th>
+            <th>Usefulness (1–5)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Temporal Control</td>
+            <td>Yes (Media Session API)</td>
+            <td>Precise user control; accessibility</td>
+            <td>Browser consistency challenges</td>
+            <td><strong>5</strong> – Essential for UX</td>
+          </tr>
+          <tr>
+            <td>Interaction State Machine</td>
+            <td>Partial (SpeechRecognition)</td>
+            <td>Clear feedback; reduces errors</td>
+            <td>Overkill for simple apps</td>
+            <td><strong>4</strong> – Highly valuable</td>
+          </tr>
+          <tr>
+            <td>Context Management</td>
+            <td>No (Custom need)</td>
+            <td>Long-session support; multi-device</td>
+            <td>Privacy risks with persistence</td>
+            <td><strong>5</strong> – Game-changer</td>
+          </tr>
+          <tr>
+            <td>Configuration Schema</td>
+            <td>Yes (Web App Manifest)</td>
+            <td>Personalization; cross-app harmony</td>
+            <td>Vendor lock-in if inflexible</td>
+            <td><strong>4</strong> – User-centric</td>
+          </tr>
+          <tr>
+            <td>Task Queue</td>
+            <td>Yes (Web Workers, Promises)</td>
+            <td>Non-blocking ops; reliability</td>
+            <td>Complexity in async error handling</td>
+            <td><strong>4</strong> – Practical</td>
+          </tr>
+          <tr>
+            <td>Recovery Protocol</td>
+            <td>Partial (Service Workers)</td>
+            <td>Crash-proof sessions; offline OK</td>
+            <td>Storage bloat over time</td>
+            <td><strong>5</strong> – Critical for production</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Relevant Existing Web Standards -->
+    <section id="existing-standards" class="informative">
+      <h2>Relevant Existing Web Standards</h2>
+      <p>
+        The following existing web standards provide the foundation upon
+        which this framework is proposed:
+      </p>
+
+      <section id="html5-media">
+        <h3>HTML5 Media Elements</h3>
+        <p>
+          The HTML5 <code>&lt;audio&gt;</code> and <code>&lt;video&gt;</code>
+          elements support <code>pause()</code>, <code>play()</code>,
+          <code>currentTime</code>, and <code>playbackRate</code> natively,
+          providing the foundational playback control model.
+        </p>
+      </section>
+
+      <section id="web-speech-api-existing">
+        <h3>Web Speech API</h3>
+        <p>
+          The <code>SpeechSynthesis</code> interface [[WEB-SPEECH-API]]
+          handles text-to-speech playback with <code>pause()</code>,
+          <code>resume()</code>, <code>cancel()</code>, and
+          <code>rate</code> adjustment. It requires custom UIs for full
+          controls per WCAG 2.2 [[WCAG22]] accessibility requirements
+          (e.g., pause/stop/volume).
+        </p>
+      </section>
+
+      <section id="media-session-existing">
+        <h3>Media Session API</h3>
+        <p>
+          The Media Session API [[MEDIA-SESSION]] enables voice/OS
+          integration for play/pause/seek via system notifications, making
+          it ideal for voice assistants and platform-level media controls.
+        </p>
+      </section>
+    </section>
+
+    <!-- Voice AI Usage -->
+    <section id="voice-ai-usage" class="informative">
+      <h2>Voice AI Usage Patterns</h2>
+      <p>
+        The proposed playback controls represent a de facto standard in
+        voice-enabled AI due to browser consistency and WCAG compliance.
+        These patterns are observed in implementations such as Chrome's
+        "Listen to this page" feature (play/pause/rewind/fast-forward)
+        and Google Assistant media responses
+        (play/pause/stop/start over).
+      </p>
+      <p>
+        For custom voice AI applications (e.g., Gradio/LLM demos), these
+        controls can be wrapped in a <code>playback</code> object as
+        proposed in this specification. While no formal "voice AI standard"
+        exists beyond the foundational APIs, the patterns described here
+        are interoperable across platforms including OpenAI Voice and
+        Web Speech implementations.
+      </p>
+    </section>
+
+    <!-- Publishing Path -->
+    <section id="publishing-path" class="informative">
+      <h2>Proposed Publishing Path</h2>
+      <p>
+        The recommended approach for advancing this framework is:
+      </p>
+      <ol>
+        <li>
+          Propose as a W3C Community Group specification or WHATWG extension
+          to the Media Session / Web Speech standards.
+        </li>
+        <li>
+          Develop a polyfill repository demonstrating voice commands
+          integrated with ontology and knowledge representation tools.
+        </li>
+        <li>
+          Gather implementation experience and community feedback.
+        </li>
+        <li>
+          Refine and advance toward a formal Working Group specification
+          if sufficient interest and support exist.
+        </li>
+      </ol>
+      <p>
+        A W3C working group could prototype this in 6–12 months, beginning
+        with polyfills. Prioritizing the Temporal Control API and Recovery
+        Protocol is recommended for maximum initial impact.
+      </p>
+    </section>
+
+    <!-- Accessibility -->
+    <section id="accessibility" class="informative">
+      <h2>Accessibility Considerations</h2>
+      <p>
+        All proposed APIs SHOULD be implemented with accessibility as a
+        primary concern, consistent with WCAG 2.2 [[WCAG22]] requirements.
+        Key considerations include:
+      </p>
+      <ul>
+        <li>
+          Voice playback controls MUST be operable via keyboard and
+          assistive technologies.
+        </li>
+        <li>
+          State transitions in the Interaction State Machine MUST be
+          announced to screen readers via ARIA live regions or equivalent.
+        </li>
+        <li>
+          Configuration options SHOULD include accessibility-relevant
+          preferences such as speech rate and pause duration.
+        </li>
+      </ul>
+    </section>
+
+    <!-- Security & Privacy -->
+    <section id="security-privacy">
+      <h2>Security and Privacy Considerations</h2>
+      <p>
+        Implementations of this framework MUST address the following
+        security and privacy concerns:
+      </p>
+      <ul>
+        <li>
+          <strong>Context persistence:</strong> Stored conversation data
+          MUST be protected with appropriate access controls.
+          Implementations SHOULD encrypt persisted data at rest.
+        </li>
+        <li>
+          <strong>Cross-origin concerns:</strong> Context and state data
+          MUST NOT be accessible across origins without explicit user
+          consent.
+        </li>
+        <li>
+          <strong>User consent:</strong> Applications MUST obtain
+          user consent before persisting conversation context or
+          session history.
+        </li>
+        <li>
+          <strong>Data minimization:</strong> Implementations SHOULD
+          collect and retain only the minimum data necessary for the
+          stated purpose.
+        </li>
+      </ul>
+    </section>
+
+    <!-- Appendix: References -->
+    <section id="references" class="appendix informative">
+      <h2>External References</h2>
+      <p>
+        The following external resources informed this proposal:
+      </p>
+      <ul>
+        <li>
+          <a href="https://web.dev/articles/media-session">Media Session API – web.dev</a>
+        </li>
+        <li>
+          <a href="https://platform.openai.com/docs/guides/voice-agents">OpenAI Voice Agents Guide</a>
+        </li>
+        <li>
+          <a href="https://blog.greeden.me/en/2025/08/19/implementation-guide-how-to-operate-speech-playback-compliant-with-wcag-2-2-requirements-ui-design-code-examples-and-checklist/">WCAG 2.2 Speech Playback Compliance Guide</a>
+        </li>
+        <li>
+          <a href="https://developers.google.com/assistant/conversational/prompts-media">Google Assistant Media Prompts</a>
+        </li>
+        <li>
+          <a href="https://support.google.com/chrome/answer/14768725?hl=en">Chrome "Listen to this page" feature</a>
+        </li>
+      </ul>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>W3C AI Knowledge Representation Community Group</title>
+  <link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2021/W3C-CG-DRAFT" />
+  <style>
+    body {
+      max-width: 52em;
+      margin: 0 auto;
+      padding: 0 1.5em 4em;
+      font-family: sans-serif;
+      color: #333;
+    }
+
+    /* ---- HEAD BLOCK ---- */
+    .head {
+      border-bottom: 2px solid #005a9c;
+      padding-bottom: 1.2em;
+      margin-bottom: 2em;
+    }
+    .head img { float: left; margin-right: 1.2em; margin-top: 0.3em; }
+    .head h1 {
+      font-size: 1.6em;
+      color: #005a9c;
+      margin: 0 0 0.3em 0;
+      clear: none;
+    }
+    .head p { font-size: 0.9em; margin: 0.2em 0; clear: both; }
+    .head a { color: #005a9c; }
+
+    /* ---- INTRO ---- */
+    .intro {
+      background: #f0f4fa;
+      border-left: 4px solid #005a9c;
+      padding: 0.8em 1.2em;
+      margin: 1.5em 0 2em;
+      font-size: 0.95em;
+    }
+
+    /* ---- DELIVERABLES GRID ---- */
+    h2 {
+      border-bottom: 1px solid #005a9c;
+      color: #005a9c;
+      padding-bottom: 0.25em;
+      margin-top: 2em;
+    }
+
+    .deliverables {
+      list-style: none;
+      padding: 0;
+      margin: 1em 0;
+    }
+    .deliverables li {
+      border: 1px solid #ccd6e8;
+      border-radius: 4px;
+      padding: 0.9em 1.2em;
+      margin-bottom: 0.8em;
+      background: #fafcff;
+      transition: background 0.15s;
+    }
+    .deliverables li:hover { background: #eef3fb; }
+
+    .deliverables .doc-title {
+      font-size: 1.05em;
+      font-weight: bold;
+    }
+    .deliverables .doc-title a {
+      color: #005a9c;
+      text-decoration: none;
+    }
+    .deliverables .doc-title a:hover { text-decoration: underline; }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.72em;
+      font-weight: bold;
+      padding: 0.15em 0.5em;
+      border-radius: 3px;
+      margin-left: 0.5em;
+      vertical-align: middle;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .tag-draft  { background: #fff3cd; color: #7a5000; border: 1px solid #e6b800; }
+    .tag-note   { background: #d4edda; color: #155724; border: 1px solid #28a745; }
+    .tag-editor { background: #d1ecf1; color: #0c5460; border: 1px solid #17a2b8; }
+
+    .deliverables .doc-meta {
+      font-size: 0.83em;
+      color: #555;
+      margin-top: 0.35em;
+    }
+    .deliverables .doc-desc {
+      font-size: 0.88em;
+      color: #444;
+      margin-top: 0.4em;
+    }
+
+    /* ---- CONTRIBUTE ---- */
+    .contribute {
+      background: #f8f8f8;
+      border: 1px solid #ddd;
+      padding: 0.8em 1.2em;
+      margin-top: 2.5em;
+      font-size: 0.88em;
+      border-radius: 3px;
+    }
+    .contribute a { color: #005a9c; }
+
+    /* ---- FOOTER ---- */
+    footer {
+      margin-top: 3em;
+      padding-top: 1em;
+      border-top: 1px solid #ccc;
+      font-size: 0.82em;
+      color: #666;
+    }
+    footer a { color: #005a9c; }
+  </style>
+</head>
+<body>
+
+<div class="head">
+  <a href="https://www.w3.org/community/aikr/">
+    <img src="https://www.w3.org/community/src/templates/wordpress/StoryTeller/img/cgbg-logo.svg"
+         alt="W3C Community Group" width="100" height="46" />
+  </a>
+  <h1>W3C AI Knowledge Representation<br/>Community Group</h1>
+  <p>
+    <a href="https://www.w3.org/community/aikr/">https://www.w3.org/community/aikr/</a>
+    &nbsp;&bull;&nbsp;
+    <a href="https://github.com/w3c-cg/aikr">GitHub repository</a>
+    &nbsp;&bull;&nbsp;
+    <a href="https://lists.w3.org/Archives/Public/public-aikr/">Mailing list</a>
+  </p>
+</div>
+
+<div class="intro">
+  <p>
+    The <strong>W3C AI Knowledge Representation Community Group (AI KR CG)</strong>
+    develops vocabularies, ontologies, and technical notes for representing
+    knowledge in AI systems, with a focus on agent interoperability, semantic alignment,
+    and standards readiness across the Web ecosystem.
+  </p>
+  <p>
+    This page lists published and in-progress deliverables.
+    All documents are Community Group Drafts unless otherwise noted.
+    They are not W3C Standards and are not on the W3C Standards Track.
+  </p>
+</div>
+
+
+<h2>Deliverables</h2>
+
+<ul class="deliverables">
+
+  <!-- AGONALIGN -->
+  <li>
+    <div class="doc-title">
+      <a href="agonalign/">Agent Ontology Alignment: IDL Agent Ontology and HMAS Ontology Stack</a>
+      <span class="tag tag-draft">CG-Draft</span>
+    </div>
+    <div class="doc-meta">
+      Editor: Paola Di Maio &nbsp;&bull;&nbsp; Published: 8 March 2026
+    </div>
+    <div class="doc-desc">
+      Formal method for ontology alignment with a use-case mapping between the
+      IDL Agent Ontology and the HMAS Core, Interaction, and Regulation ontologies.
+      Defines semantic correspondences (subClassOf, equivalentClass, property mappings)
+      for agent system interoperability.
+    </div>
+  </li>
+
+  <!-- VOICE AI -->
+  <li>
+    <div class="doc-title">
+      <a href="voiceAI/">Voice AI Framework: Requirements and Design Principles</a>
+      <span class="tag tag-editor">Editor's Draft</span>
+    </div>
+    <div class="doc-meta">
+      Editor: Paola Di Maio &nbsp;&bull;&nbsp; In progress
+    </div>
+    <div class="doc-desc">
+      Analysis of documented failures in voice AI deployments and a proposed
+      configurable framework for voice AI user experience.
+      Informed by the W3C Smart Agents Workshop (February 2026).
+    </div>
+  </li>
+
+  <!-- WebMCP -->
+  <li>
+    <div class="doc-title">
+      <a href="webMCP/">WebMCP Technical Notes</a>
+      <span class="tag tag-editor">Editor's Draft</span>
+    </div>
+    <div class="doc-meta">
+      Editor: Paola Di Maio &nbsp;&bull;&nbsp; In progress
+    </div>
+    <div class="doc-desc">
+      Technical notes on the W3C Web Machine Learning (WebMCP) specification,
+      covering security, model cards, interoperability, and quality infrastructure
+      for MCP-compliant systems.
+    </div>
+  </li>
+
+</ul>
+
+<div class="contribute">
+  <strong>Contributing:</strong>
+  This repository is open for contributions.
+  Please read the
+  <a href="https://github.com/w3c-cg/aikr/blob/main/CONTRIBUTING.md">contributing guidelines</a>
+  and
+  <a href="https://github.com/w3c-cg/aikr/blob/main/CODE_OF_CONDUCT.md">code of conduct</a>
+  before participating.
+  File issues and pull requests via
+  <a href="https://github.com/w3c-cg/aikr">GitHub</a>
+  or post to the
+  <a href="https://lists.w3.org/Archives/Public/public-aikr/">public mailing list</a>.
+</div>
+
+
+<footer>
+  <p>
+    Copyright &copy; 2026 the Contributors to the W3C AI Knowledge Representation Community Group,
+    published under the
+    <a href="https://www.w3.org/community/about/process/cla/">W3C Community Contributor License Agreement</a>.
+    &nbsp;&bull;&nbsp;
+    <a href="https://www.w3.org/community/">W3C Community and Business Groups</a>
+  </p>
+</footer>
+
+</body>
+</html>

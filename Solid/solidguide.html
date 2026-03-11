@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Use Solid -- A Practical Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,900;1,300;1,600&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2128;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #7d8590;
+    --human: #58a6ff;
+    --human-dim: rgba(88,166,255,0.12);
+    --dev: #3fb950;
+    --dev-dim: rgba(63,185,80,0.12);
+    --user: #d2a8ff;
+    --user-dim: rgba(210,168,255,0.12);
+    --warn: #f0883e;
+    --serif: 'Fraunces', Georgia, serif;
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* Layout */
+  .shell { display: flex; min-height: 100vh; }
+
+  /* Sidebar nav */
+  nav {
+    width: 260px;
+    flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 32px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .nav-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 24px 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .nav-section {
+    padding: 4px 0;
+  }
+
+  .nav-section-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 12px 24px 4px;
+    display: block;
+  }
+
+  .nav-section-label.human { color: var(--human); }
+  .nav-section-label.dev { color: var(--dev); }
+  .nav-section-label.user { color: var(--user); }
+  .nav-section-label.general { color: var(--muted); }
+
+  nav a {
+    display: block;
+    padding: 6px 24px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.15s, background 0.15s;
+    border-left: 2px solid transparent;
+  }
+
+  nav a:hover { color: var(--text); background: var(--surface2); }
+  nav a.active-human { color: var(--human); border-left-color: var(--human); background: var(--human-dim); }
+  nav a.active-dev { color: var(--dev); border-left-color: var(--dev); background: var(--dev-dim); }
+  nav a.active-user { color: var(--user); border-left-color: var(--user); background: var(--user-dim); }
+
+  /* Main content */
+  main {
+    flex: 1;
+    max-width: 780px;
+    padding: 60px 52px 120px;
+    overflow-x: hidden;
+  }
+
+  /* Hero */
+  .hero { margin-bottom: 72px; }
+
+  .kicker {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 540px;
+    line-height: 1.6;
+  }
+
+  /* Audience tabs */
+  .tabs {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 48px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
+  }
+
+  .tab {
+    padding: 10px 20px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s;
+  }
+
+  .tab:hover { color: var(--text); }
+  .tab.active-human { color: var(--human); border-bottom-color: var(--human); }
+  .tab.active-dev { color: var(--dev); border-bottom-color: var(--dev); }
+  .tab.active-user { color: var(--user); border-bottom-color: var(--user); }
+
+  /* Sections */
+  .audience-section { display: none; }
+  .audience-section.visible { display: block; }
+
+  /* Section headers */
+  .section { margin-bottom: 56px; }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    margin-bottom: 12px;
+    margin-top: 28px;
+  }
+
+  p { margin-bottom: 14px; color: #c9d1d9; }
+
+  /* Step blocks */
+  .steps { margin: 24px 0; }
+
+  .step {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding: 20px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    transition: border-color 0.2s;
+  }
+
+  .step:hover { border-color: var(--muted); }
+
+  .step-num {
+    font-family: var(--mono);
+    font-size: 1.4rem;
+    font-weight: 300;
+    flex-shrink: 0;
+    width: 36px;
+    line-height: 1.2;
+  }
+
+  .step-num.human { color: var(--human); }
+  .step-num.dev { color: var(--dev); }
+  .step-num.user { color: var(--user); }
+
+  .step-content h4 {
+    font-weight: 500;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+  }
+
+  .step-content p { margin: 0; font-size: 0.9rem; color: var(--muted); }
+
+  /* Code blocks */
+  pre {
+    background: #010409;
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+    overflow-x: auto;
+    margin: 20px 0;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    border-radius: 2px;
+  }
+
+  .code-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+  }
+
+  .cm { color: #6e7681; } /* comment */
+  .ck { color: #ff7b72; } /* keyword */
+  .cs { color: #a5d6ff; } /* string */
+  .cv { color: #79c0ff; } /* variable */
+  .cn { color: #3fb950; } /* name/function */
+  .cp { color: #d2a8ff; } /* property */
+
+  /* Callout */
+  .callout {
+    border-left: 3px solid var(--warn);
+    background: rgba(240,136,62,0.06);
+    padding: 16px 20px;
+    margin: 24px 0;
+    font-size: 0.9rem;
+    color: #c9d1d9;
+  }
+
+  .callout strong {
+    color: var(--warn);
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* Info box */
+  .infobox {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+    margin: 24px 0;
+    font-size: 0.9rem;
+  }
+
+  .infobox .label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 0.875rem;
+  }
+
+  th {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 12px;
+  }
+
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(48,54,61,0.5);
+    color: #c9d1d9;
+    vertical-align: top;
+  }
+
+  td code, p code {
+    font-family: var(--mono);
+    font-size: 0.82em;
+    background: rgba(110,118,129,0.15);
+    padding: 1px 6px;
+    border-radius: 2px;
+    color: var(--text);
+  }
+
+  /* Links */
+  a { color: inherit; }
+  .link {
+    color: var(--human);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(88,166,255,0.3);
+  }
+  .link:hover { border-bottom-color: var(--human); }
+
+  /* Badge */
+  .badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .badge.human { background: var(--human-dim); color: var(--human); }
+  .badge.dev { background: var(--dev-dim); color: var(--dev); }
+  .badge.user { background: var(--user-dim); color: var(--user); }
+
+  /* Footer */
+  footer {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    nav { display: none; }
+    main { padding: 36px 24px 80px; }
+    .tabs { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <nav>
+    <div class="nav-title">How to Use Solid</div>
+
+    <div class="nav-section">
+      <span class="nav-section-label general">Overview</span>
+      <a href="#what-is-solid">What is a Pod?</a>
+      <a href="#get-a-pod">Get a Pod</a>
+    </div>
+
+    <div class="nav-section">
+      <span class="nav-section-label human">Content Creator</span>
+      <a href="#human-why">Why Solid?</a>
+      <a href="#human-setup">Set up your Pod</a>
+      <a href="#human-post">Post content</a>
+      <a href="#human-control">Control access</a>
+      <a href="#human-tools">Tools to use</a>
+    </div>
+
+    <div class="nav-section">
+      <span class="nav-section-label dev">Agent Developer</span>
+      <a href="#dev-why">Why integrate?</a>
+      <a href="#dev-auth">Authentication</a>
+      <a href="#dev-read">Read from Pod</a>
+      <a href="#dev-write">Write to Pod</a>
+      <a href="#dev-audit">Audit logging</a>
+      <a href="#dev-consent">Consent tokens</a>
+    </div>
+
+    <div class="nav-section">
+      <span class="nav-section-label user">Agent User</span>
+      <a href="#user-why">Why you need this</a>
+      <a href="#user-setup">Set up your Pod</a>
+      <a href="#user-grant">Grant agent access</a>
+      <a href="#user-audit">Read your audit log</a>
+      <a href="#user-revoke">Revoke access</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="hero">
+      <div class="kicker">Practical Guide -- W3C Solid Protocol</div>
+      <h1>How to Use Solid</h1>
+      <p class="hero-sub">Three entry points: as a human creating content, as a developer building AI agents, or as a person using AI agents who wants to stay in control of what they do on your behalf.</p>
+    </div>
+
+    <!-- Audience tabs -->
+    <div class="tabs">
+      <button class="tab active-human" onclick="showSection('human', this)">Content Creator</button>
+      <button class="tab" onclick="showSection('dev', this)">Agent Developer</button>
+      <button class="tab" onclick="showSection('user', this)">Agent User</button>
+    </div>
+
+    <!-- ===================== CONTENT CREATOR ===================== -->
+    <div id="section-human" class="audience-section visible">
+
+      <div class="section" id="what-is-solid">
+        <h2>What is a Pod?</h2>
+        <p>A Pod is your personal data store on the web -- a place you control, that runs at a URL you own, where your content and data live independent of any platform. Think of it as your own personal server, but with a standard interface so any Solid-compatible application can interact with it.</p>
+        <p>When you post content using Solid, the content lives in your Pod. You decide who can read it, who can comment on it, and which platforms or applications can display it. When you leave a platform, your content stays with you.</p>
+      </div>
+
+      <div class="section" id="human-why">
+        <h2>Why Solid for Content Creators? <span class="badge human">Creator</span></h2>
+        <p>The current model: you write on Medium, Substack, or LinkedIn. They host your words. Their algorithm decides who sees them. If they close, change terms, or shadowban you, your audience and your archive are at risk.</p>
+        <p>The Solid model: you write once, store in your Pod, and syndicate to any platform that supports Solid -- or publish directly at your own URL. Your canonical content is yours. Platforms become display layers, not owners.</p>
+
+        <div class="callout">
+          <strong>Practical note</strong>
+          Solid does not replace platforms today -- the ecosystem is still maturing. What it gives you now is a sovereign archive and the ability to selectively share from it. Think of it as future-proofing your publishing infrastructure.
+        </div>
+      </div>
+
+      <div class="section" id="human-setup">
+        <h2>Set Up Your Pod <span class="badge human">Creator</span></h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num human">01</div>
+            <div class="step-content">
+              <h4>Choose a Pod provider</h4>
+              <p>The easiest starting point is <strong>solidcommunity.net</strong> (free, run by the Solid community) or <strong>inrupt.net</strong> (Inrupt's hosted service). For full control, you can self-host Community Solid Server (CSS) on any VPS.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num human">02</div>
+            <div class="step-content">
+              <h4>Register and get your WebID</h4>
+              <p>After registration you get a WebID URL -- something like <code>https://yourname.solidcommunity.net/profile/card#me</code>. This is your sovereign identity on the Solid web. Keep it. It is permanent and portable.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num human">03</div>
+            <div class="step-content">
+              <h4>Explore your Pod with Penny</h4>
+              <p><strong>Penny</strong> (penny.vincenttunru.com) is a visual Pod browser. Log in with your WebID, browse your containers, create folders, upload files, and set access rules -- no code required.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num human">04</div>
+            <div class="step-content">
+              <h4>Understand the structure</h4>
+              <p>Your Pod is organised like a file system. Containers are folders (URLs ending in <code>/</code>). Resources are files. Create a <code>/public/</code> container for content you want openly accessible, and a <code>/private/</code> for personal notes.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="human-post">
+        <h2>Post Content to Your Pod <span class="badge human">Creator</span></h2>
+        <p>You have three options depending on your comfort level:</p>
+
+        <h3>Option A -- Use a Solid-native editor (no code)</h3>
+        <p><strong>Mashlib</strong> (the data browser at solidcommunity.net) lets you create notes, blog posts, and structured documents directly in your Pod through a web interface. <strong>Solid Focus</strong> is a task and note app that writes to your Pod. These are early-stage tools but functional.</p>
+
+        <h3>Option B -- Upload files via Penny</h3>
+        <p>Write your content in any editor, save as HTML or Markdown, then upload to a container in your Pod using Penny. Set the access rules to public. Your content is now live at a permanent URL like <code>https://yourname.solidcommunity.net/posts/my-article.html</code>.</p>
+
+        <h3>Option C -- POST via curl (one command)</h3>
+        <p>If you are comfortable with a terminal, you can publish a file directly:</p>
+        <pre><div class="code-label">bash -- publish a file to your Pod</div><span class="cm"># First get an access token (see authentication section)</span>
+curl -X PUT \
+  -H <span class="cs">"Content-Type: text/html"</span> \
+  -H <span class="cs">"Authorization: Bearer YOUR_TOKEN"</span> \
+  --data-binary @my-article.html \
+  https://yourname.solidcommunity.net/public/posts/my-article.html</pre>
+      </div>
+
+      <div class="section" id="human-control">
+        <h2>Control Who Sees Your Content <span class="badge human">Creator</span></h2>
+        <p>Every resource and container in your Pod has an Access Control List (ACL) or Access Control Policy (ACP). You set these rules -- not the platform.</p>
+
+        <table>
+          <tr><th>Access Level</th><th>What it means</th><th>Use for</th></tr>
+          <tr><td>Public read</td><td>Anyone on the web can read</td><td>Published articles, portfolio</td></tr>
+          <tr><td>Specific WebID</td><td>Only named individuals</td><td>Shared drafts, subscriber content</td></tr>
+          <tr><td>Authenticated</td><td>Any logged-in Solid user</td><td>Community content</td></tr>
+          <tr><td>Private</td><td>Only you</td><td>Notes, drafts, personal data</td></tr>
+          <tr><td>Append-only</td><td>Others can add but not edit</td><td>Comment streams, audit logs</td></tr>
+        </table>
+
+        <p>In Penny: navigate to any resource, click the lock icon, and set permissions visually. Changes take effect immediately.</p>
+      </div>
+
+      <div class="section" id="human-tools">
+        <h2>Tools for Content Creators <span class="badge human">Creator</span></h2>
+        <table>
+          <tr><th>Tool</th><th>What it does</th><th>URL</th></tr>
+          <tr><td>Penny</td><td>Visual Pod browser and file manager</td><td>penny.vincenttunru.com</td></tr>
+          <tr><td>Mashlib</td><td>Data browser built into solidcommunity.net</td><td>solidcommunity.net</td></tr>
+          <tr><td>Solid Focus</td><td>Notes and tasks stored in your Pod</td><td>github.com/NoelDeMartin/solid-focus</td></tr>
+          <tr><td>Startin'Blox</td><td>Build Solid-native web apps without code</td><td>startinblox.com</td></tr>
+          <tr><td>CSS (self-host)</td><td>Run your own Pod server</td><td>github.com/CommunitySolidServer</td></tr>
+        </table>
+      </div>
+
+    </div>
+    <!-- end creator -->
+
+    <!-- ===================== AGENT DEVELOPER ===================== -->
+    <div id="section-dev" class="audience-section">
+
+      <div class="section" id="dev-why">
+        <h2>Why Integrate Your Agent with Solid? <span class="badge dev">Developer</span></h2>
+        <p>Autonomous agents -- systems that act persistently on behalf of users across platforms -- create a structural accountability problem: what did the agent do, with what authorisation, and where is the record? Without an answer to these questions, your agent is a liability for your users and for you.</p>
+        <p>Solid gives you a ready-made answer: every agent action can be written to the user's Pod as a linked data record, under access controls the user sets, in a store the agent cannot tamper with retrospectively. This gives you audit trails, consent management, and revocation -- for free, on open standards.</p>
+      </div>
+
+      <div class="section" id="dev-auth">
+        <h2>Authentication <span class="badge dev">Developer</span></h2>
+        <p>Solid uses <strong>Solid-OIDC</strong> -- an extension of OpenID Connect where the user's Pod is the identity provider. Your agent authenticates using the user's WebID credentials, not a username/password in your database.</p>
+
+        <h3>Using @inrupt/solid-client-authn-node</h3>
+        <pre><div class="code-label">javascript -- agent authentication</div><span class="ck">import</span> { <span class="cv">Session</span> } <span class="ck">from</span> <span class="cs">"@inrupt/solid-client-authn-node"</span>;
+
+<span class="ck">const</span> <span class="cv">session</span> = <span class="ck">new</span> <span class="cn">Session</span>();
+
+<span class="cm">// Authenticate using client credentials</span>
+<span class="cm">// (user grants your app a client ID during onboarding)</span>
+<span class="ck">await</span> session.<span class="cn">login</span>({
+  oidcIssuer: <span class="cs">"https://solidcommunity.net"</span>,
+  clientId: <span class="cv">process.env.CLIENT_ID</span>,
+  clientSecret: <span class="cv">process.env.CLIENT_SECRET</span>,
+});
+
+<span class="cm">// session.fetch is now an authenticated fetch</span>
+<span class="cm">// Use it exactly like the standard fetch API</span>
+<span class="ck">const</span> <span class="cv">response</span> = <span class="ck">await</span> session.<span class="cn">fetch</span>(podUrl);</pre>
+
+        <div class="callout">
+          <strong>Key principle</strong>
+          Your agent never stores the user's password. It holds a client credential that the user can revoke from their Pod settings at any time -- without touching your application.
+        </div>
+      </div>
+
+      <div class="section" id="dev-read">
+        <h2>Read Data from a Pod <span class="badge dev">Developer</span></h2>
+        <pre><div class="code-label">javascript -- read user data from Pod</div><span class="ck">import</span> {
+  <span class="cv">getSolidDataset</span>,
+  <span class="cv">getThing</span>,
+  <span class="cv">getStringNoLocale</span>
+} <span class="ck">from</span> <span class="cs">"@inrupt/solid-client"</span>;
+<span class="ck">import</span> { <span class="cv">FOAF</span> } <span class="ck">from</span> <span class="cs">"@inrupt/vocab-common-rdf"</span>;
+
+<span class="cm">// Read user profile from their Pod</span>
+<span class="ck">const</span> <span class="cv">profileUrl</span> = <span class="cs">"https://user.solidcommunity.net/profile/card"</span>;
+
+<span class="ck">const</span> <span class="cv">dataset</span> = <span class="ck">await</span> <span class="cn">getSolidDataset</span>(<span class="cv">profileUrl</span>, {
+  fetch: session.fetch  <span class="cm">// authenticated fetch from login step</span>
+});
+
+<span class="ck">const</span> <span class="cv">profile</span> = <span class="cn">getThing</span>(<span class="cv">dataset</span>, <span class="cv">profileUrl</span> + <span class="cs">"#me"</span>);
+<span class="ck">const</span> <span class="cv">name</span> = <span class="cn">getStringNoLocale</span>(<span class="cv">profile</span>, FOAF.<span class="cp">name</span>);
+
+console.<span class="cn">log</span>(<span class="cs">`Hello, <span class="cv">${name}</span>`</span>);</pre>
+      </div>
+
+      <div class="section" id="dev-write">
+        <h2>Write Data to a Pod <span class="badge dev">Developer</span></h2>
+        <p>Writing creates or updates a resource in the user's Pod. Use <code>saveSolidDatasetAt</code> for structured linked data, or a plain <code>PUT</code> for files.</p>
+
+        <pre><div class="code-label">javascript -- write structured data to Pod</div><span class="ck">import</span> {
+  <span class="cv">createSolidDataset</span>,
+  <span class="cv">createThing</span>,
+  <span class="cv">setStringNoLocale</span>,
+  <span class="cv">setDatetime</span>,
+  <span class="cv">setThing</span>,
+  <span class="cv">saveSolidDatasetAt</span>
+} <span class="ck">from</span> <span class="cs">"@inrupt/solid-client"</span>;
+<span class="ck">import</span> { <span class="cv">SCHEMA_INRUPT</span> } <span class="ck">from</span> <span class="cs">"@inrupt/vocab-common-rdf"</span>;
+
+<span class="cm">// Create a new record -- e.g. a calendar event</span>
+<span class="ck">let</span> <span class="cv">event</span> = <span class="cn">createThing</span>({ name: <span class="cs">"appointment-2026-03-11"</span> });
+
+<span class="cv">event</span> = <span class="cn">setStringNoLocale</span>(<span class="cv">event</span>, SCHEMA_INRUPT.<span class="cp">name</span>, <span class="cs">"Meeting with collaborator"</span>);
+<span class="cv">event</span> = <span class="cn">setDatetime</span>(<span class="cv">event</span>, SCHEMA_INRUPT.<span class="cp">startDate</span>, <span class="ck">new</span> <span class="cn">Date</span>(<span class="cs">"2026-03-11T14:00:00Z"</span>));
+
+<span class="ck">let</span> <span class="cv">dataset</span> = <span class="cn">createSolidDataset</span>();
+<span class="cv">dataset</span> = <span class="cn">setThing</span>(<span class="cv">dataset</span>, <span class="cv">event</span>);
+
+<span class="cm">// Save to user's Pod</span>
+<span class="ck">await</span> <span class="cn">saveSolidDatasetAt</span>(
+  <span class="cs">"https://user.solidcommunity.net/calendar/2026-03-11.ttl"</span>,
+  <span class="cv">dataset</span>,
+  { fetch: session.fetch }
+);</pre>
+      </div>
+
+      <div class="section" id="dev-audit">
+        <h2>Audit Logging for Agent Actions <span class="badge dev">Developer</span></h2>
+        <p>This is the critical pattern for safe agent architecture: every action your agent takes is written to the user's Pod <strong>before</strong> execution, as an append-only record. The user's ACL on the log container is set to append-only for the agent -- meaning the agent can add records but cannot modify or delete them.</p>
+
+        <pre><div class="code-label">javascript -- write action to audit log before executing</div><span class="ck">async function</span> <span class="cn">logAndExecute</span>(<span class="cv">action</span>, <span class="cv">podUrl</span>, <span class="cv">session</span>) {
+
+  <span class="cm">// 1. Build the audit record</span>
+  <span class="ck">const</span> <span class="cv">logEntry</span> = {
+    <span class="cs">"@context"</span>: <span class="cs">"https://schema.org/"</span>,
+    <span class="cs">"@type"</span>: <span class="cs">"Action"</span>,
+    <span class="cs">"name"</span>: <span class="cv">action</span>.description,
+    <span class="cs">"target"</span>: <span class="cv">action</span>.target,
+    <span class="cs">"instrument"</span>: <span class="cs">"OpenClaw/1.0"</span>,
+    <span class="cs">"startTime"</span>: <span class="ck">new</span> <span class="cn">Date</span>().<span class="cn">toISOString</span>(),
+    <span class="cs">"actionStatus"</span>: <span class="cs">"PotentialActionStatus"</span>,  <span class="cm">// pre-execution</span>
+    <span class="cs">"agent"</span>: { <span class="cs">"@type"</span>: <span class="cs">"SoftwareApplication"</span>, <span class="cs">"name"</span>: <span class="cs">"MyAgent"</span> }
+  };
+
+  <span class="cm">// 2. Write to Pod BEFORE executing</span>
+  <span class="ck">const</span> <span class="cv">logUrl</span> = <span class="cs">`<span class="cv">${podUrl}</span>agent-logs/<span class="cv">${Date.now()}</span>.json`</span>;
+  <span class="ck">await</span> session.<span class="cn">fetch</span>(<span class="cv">logUrl</span>, {
+    method: <span class="cs">"PUT"</span>,
+    headers: { <span class="cs">"Content-Type"</span>: <span class="cs">"application/json"</span> },
+    body: <span class="cn">JSON.stringify</span>(<span class="cv">logEntry</span>)
+  });
+
+  <span class="cm">// 3. Execute the action</span>
+  <span class="ck">const</span> <span class="cv">result</span> = <span class="ck">await</span> <span class="cv">action</span>.<span class="cn">execute</span>();
+
+  <span class="cm">// 4. Update log with outcome (append new record, don't modify old)</span>
+  <span class="ck">await</span> session.<span class="cn">fetch</span>(<span class="cs">`<span class="cv">${podUrl}</span>agent-logs/<span class="cv">${Date.now()}</span>-result.json`</span>, {
+    method: <span class="cs">"PUT"</span>,
+    headers: { <span class="cs">"Content-Type"</span>: <span class="cs">"application/json"</span> },
+    body: <span class="cn">JSON.stringify</span>({ ...logEntry, actionStatus: <span class="cs">"CompletedActionStatus"</span>, result })
+  });
+
+  <span class="ck">return</span> <span class="cv">result</span>;
+}</pre>
+
+        <div class="infobox">
+          <span class="label">Set append-only ACL on the log container</span>
+          The agent's WebID should have <code>acl:Append</code> permission on <code>/agent-logs/</code> but NOT <code>acl:Write</code> or <code>acl:Control</code>. This means the agent can add records but cannot modify or delete them. The user retains full control.
+        </div>
+      </div>
+
+      <div class="section" id="dev-consent">
+        <h2>Machine-Readable Consent Tokens <span class="badge dev">Developer</span></h2>
+        <p>Before executing any sensitive action, your agent checks for a current consent record in the user's Pod that explicitly authorises that action type. If no valid consent record exists, the agent pauses and notifies the user rather than proceeding.</p>
+
+        <pre><div class="code-label">javascript -- check consent before acting</div><span class="ck">async function</span> <span class="cn">checkConsent</span>(<span class="cv">actionType</span>, <span class="cv">podUrl</span>, <span class="cv">session</span>) {
+  <span class="ck">const</span> <span class="cv">consentUrl</span> = <span class="cs">`<span class="cv">${podUrl}</span>consent/agent-permissions.json`</span>;
+
+  <span class="ck">try</span> {
+    <span class="ck">const</span> <span class="cv">res</span> = <span class="ck">await</span> session.<span class="cn">fetch</span>(<span class="cv">consentUrl</span>);
+    <span class="ck">const</span> <span class="cv">consent</span> = <span class="ck">await</span> <span class="cv">res</span>.<span class="cn">json</span>();
+
+    <span class="ck">const</span> <span class="cv">permission</span> = <span class="cv">consent</span>.permissions?.[<span class="cv">actionType</span>];
+    <span class="ck">if</span> (!<span class="cv">permission</span>) <span class="ck">return false</span>;
+
+    <span class="cm">// Check expiry</span>
+    <span class="ck">const</span> <span class="cv">now</span> = <span class="ck">new</span> <span class="cn">Date</span>();
+    <span class="ck">const</span> <span class="cv">expiry</span> = <span class="ck">new</span> <span class="cn">Date</span>(<span class="cv">permission</span>.expiresAt);
+    <span class="ck">return</span> <span class="cv">now</span> < <span class="cv">expiry</span> && <span class="cv">permission</span>.granted === <span class="ck">true</span>;
+
+  } <span class="ck">catch</span> {
+    <span class="ck">return false</span>; <span class="cm">// no consent record = no action</span>
+  }
+}
+
+<span class="cm">// Usage in agent action loop</span>
+<span class="ck">if</span> (!(<span class="ck">await</span> <span class="cn">checkConsent</span>(<span class="cs">"send-email"</span>, userPodUrl, session))) {
+  <span class="ck">await</span> <span class="cn">notifyOwner</span>(<span class="cs">"Consent required for send-email action"</span>);
+  <span class="ck">return</span>;
+}
+<span class="cm">// proceed only if consent confirmed</span>
+<span class="ck">await</span> <span class="cn">logAndExecute</span>(sendEmailAction, userPodUrl, session);</pre>
+      </div>
+
+    </div>
+    <!-- end developer -->
+
+    <!-- ===================== AGENT USER ===================== -->
+    <div id="section-user" class="audience-section">
+
+      <div class="section" id="user-why">
+        <h2>Why You Need a Pod if You Use AI Agents <span class="badge user">User</span></h2>
+        <p>If you use an AI agent -- any system that acts autonomously on your behalf, reading your email, sending messages, managing your calendar, browsing the web -- you have a problem you may not have noticed yet: you probably have no reliable record of what it did.</p>
+        <p>The agent's logs, if they exist, live on the developer's servers. You cannot read them independently. You cannot verify them. If something goes wrong -- an email sent you didn't authorise, a message posted in your name, a file deleted -- you have no sovereign evidence of what happened.</p>
+        <p>A Solid Pod gives you that. It is a place on the web that you control, where a well-built agent writes a record of every action it takes on your behalf, before it takes it. You can read that record. You can audit it. You can revoke the agent's access at any time.</p>
+
+        <div class="callout">
+          <strong>The honest situation</strong>
+          Most AI agents today do not yet support Solid. But the architecture is available, the specification is open, and asking your agent developer whether they support Pod-based audit logging is a legitimate question that creates pressure to build it.
+        </div>
+      </div>
+
+      <div class="section" id="user-setup">
+        <h2>Set Up Your Pod <span class="badge user">User</span></h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num user">01</div>
+            <div class="step-content">
+              <h4>Go to solidcommunity.net</h4>
+              <p>Click Register. Choose a username. This becomes your WebID -- your permanent, portable identity. Write it down: <code>https://yourname.solidcommunity.net/profile/card#me</code></p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num user">02</div>
+            <div class="step-content">
+              <h4>Log in and explore your Pod</h4>
+              <p>You will see a data browser (Mashlib). Your Pod already has some default containers. You can browse, create folders, upload files. Think of it as a personal Dropbox where you set all the access rules.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num user">03</div>
+            <div class="step-content">
+              <h4>Create an agent-logs container</h4>
+              <p>In the data browser, create a new container (folder) called <code>agent-logs</code>. This is where you will ask agents to write their action records. Keep it private to yourself and append-only for agents.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num user">04</div>
+            <div class="step-content">
+              <h4>Create a consent container</h4>
+              <p>Create a container called <code>consent</code>. This is where you store records of what you have authorised each agent to do. A well-built agent will check here before acting on your behalf.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="user-grant">
+        <h2>Grant an Agent Access to Your Pod <span class="badge user">User</span></h2>
+        <p>When you connect an agent to your Pod, you are giving it a WebID credential -- a key that lets it read or write specific containers. The key principle: grant the minimum necessary access.</p>
+
+        <table>
+          <tr><th>Container</th><th>Agent permission</th><th>Reason</th></tr>
+          <tr><td><code>/agent-logs/</code></td><td>Append only</td><td>Agent can write logs but not modify or delete them</td></tr>
+          <tr><td><code>/consent/</code></td><td>Read only</td><td>Agent reads what you authorised; you write consent records yourself</td></tr>
+          <tr><td><code>/calendar/</code></td><td>Read + Append</td><td>Agent can read and add events; cannot delete</td></tr>
+          <tr><td><code>/private/</code></td><td>None</td><td>Agent has no access to your private notes</td></tr>
+          <tr><td><code>/public/</code></td><td>Read only</td><td>Agent can read public content but not post on your behalf without explicit consent</td></tr>
+        </table>
+
+        <p>In Penny or the Mashlib data browser: navigate to the container, open its access settings, add the agent's WebID, and set the permission level. Changes take effect immediately.</p>
+      </div>
+
+      <div class="section" id="user-audit">
+        <h2>Read Your Agent's Audit Log <span class="badge user">User</span></h2>
+        <p>If your agent is writing to <code>/agent-logs/</code>, you can browse those records at any time in Penny or the Mashlib browser. Each record should tell you: what action was taken, when, against what target, and what the outcome was.</p>
+        <p>What to look for:</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num user">--</div>
+            <div class="step-content">
+              <h4>Actions you did not authorise</h4>
+              <p>Any action type not listed in your <code>/consent/</code> records. If you see it in the log, the agent acted outside its authorised scope.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num user">--</div>
+            <div class="step-content">
+              <h4>Unusual targets</h4>
+              <p>Actions directed at people, accounts, or services you do not recognise -- a possible sign of prompt injection (the agent was redirected by malicious content it processed).</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num user">--</div>
+            <div class="step-content">
+              <h4>Gaps in the log</h4>
+              <p>If the agent took actions but did not log them, that is itself a finding worth raising with the developer.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="user-revoke">
+        <h2>Revoke Agent Access <span class="badge user">User</span></h2>
+        <p>This is the most important capability Solid gives you. Revoking an agent's access to your Pod does not require contacting the developer, deleting an account, or changing passwords. You remove the agent's WebID from your Pod's ACL. The agent loses access immediately -- to everything you granted, across all containers.</p>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num user">01</div>
+            <div class="step-content">
+              <h4>Open Penny or Mashlib</h4>
+              <p>Navigate to any container where the agent has access.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num user">02</div>
+            <div class="step-content">
+              <h4>Open access settings</h4>
+              <p>Find the agent's WebID in the access list.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num user">03</div>
+            <div class="step-content">
+              <h4>Remove all permissions</h4>
+              <p>Delete or set to none. The agent's key is now invalid. Any subsequent request it makes to your Pod returns 403 Forbidden.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout">
+          <strong>Important</strong>
+          Revoking Pod access does not revoke access the agent has to external platforms (email, WhatsApp, etc.) through other credentials. Those must be revoked separately through each platform. Solid controls only the agent's access to your Pod.
+        </div>
+      </div>
+
+    </div>
+    <!-- end user -->
+
+    <footer>
+      <span>Epistemic Systems Lab -- Ronin Institute -- ronin-institute.org/epistemic-systems-lab</span>
+      <span>March 2026</span>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  function showSection(audience, clickedTab) {
+    // Hide all sections
+    document.querySelectorAll('.audience-section').forEach(s => s.classList.remove('visible'));
+    // Remove active from all tabs
+    document.querySelectorAll('.tab').forEach(t => {
+      t.classList.remove('active-human', 'active-dev', 'active-user');
+    });
+    // Show selected
+    document.getElementById('section-' + audience).classList.add('visible');
+    clickedTab.classList.add('active-' + audience);
+  }
+</script>
+</body>
+</html>

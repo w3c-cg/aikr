@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8" />
+ <title>Missing Layer Zero: Why Agent Payment Protocols Require MCP Capability Declarations Before Negotiation Begins</title>
+ <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove" defer></script>
+ <script class="remove">
+ var respecConfig = {
+ specStatus: "unofficial",
+ shortName: "mcp-layer-zero-tn",
+ publishDate: "2026-03-19",
+ editors: [
+ {
+ name: "Paola Di Maio",
+ company: "Ronin Institute / Epistemic Systems Lab (ESL)",
+ companyURL: "https://ronininstitute.org"
+ }
+ ],
+ authors: [
+ {
+ name: "Paola Di Maio",
+ company: "Ronin Institute / Epistemic Systems Lab (ESL)",
+ companyURL: "https://ronininstitute.org"
+ }
+ ],
+ group: "cg/aikr",
+ wgPublicList: "public-aikr",
+ // Canonical CG URL: https://www.w3.org/groups/cg/aikr/
+ noRecTrack: true,
+ lint: { "no-unused-dfns": false },
+ };
+ </script>
+ <style>
+ .issue, .note, .warning {
+ border-left: 4px solid;
+ padding: 0.5em 1em;
+ margin: 1em 0;
+ }
+ table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+ th, td { border: 1px solid #ccc; padding: 0.5em 0.75em; text-align: left; vertical-align: top; }
+ th { background: #f5f5f5; font-weight: bold; }
+ code { background: #f4f4f4; padding: 0.1em 0.3em; border-radius: 3px; font-size: 0.9em; }
+ pre { background: #f4f4f4; padding: 1em; overflow-x: auto; border-left: 3px solid #ccc; }
+ .stack-diagram { font-family: monospace; background: #f9f9f9; padding: 1em; border: 1px solid #ddd; }
+ .gap-highlight { background: #fff3cd; border: 1px solid #ffc107; padding: 0.3em 0.6em; border-radius: 3px; font-weight: bold; }
+ </style>
+</head>
+<body>
+
+<section id="abstract">
+ <p>
+ In March 2026, four IETF Internet-Drafts were submitted by SwarmSync.AI proposing a
+ layered protocol stack for agent-to-agent commerce: VCAP (escrow settlement), AIVS
+ (cryptographic proof of execution), ATEP (portable agent reputation), and a binding
+ document connecting VCAP to Google's Agent Payments Protocol (AP2). Collectively, these
+ drafts constitute the most technically detailed proposal to date for securing financial
+ transactions between autonomous AI agents. This Technical Note conducts a structural
+ analysis of the stack, identifies a pre-negotiation capability advertisement gap not
+ addressed by any of the four drafts -- termed here <em>Layer Zero</em> -- and proposes
+ that the MCP Model Card Specification, developed through the W3C AI Knowledge
+ Representation Community Group, provides the appropriate mechanism to fill it. The Note
+ further identifies governance concerns regarding single-author standards with proprietary
+ reference implementations, and proposes specific next steps for the W3C AI-KR-CG and
+ the WebMCP standardization effort.
+ </p>
+</section>
+
+<section id="sotd">
+ <p>
+ This document is a Technical Note produced by the
+ W3C AI Knowledge Representation Community Group
+ and the Epistemic Systems Lab (ESL) at the Ronin Institute for Independent Scholarship.
+ It is an informal community contribution and does not represent the position of the W3C,
+ the IETF, or any other standards body. Community input and editorial contributions are
+ invited.
+ </p>
+ <p>
+ This document should be read alongside the WebMCP Technical Notes 1-4
+ and the MCP Model Card Specification v1.0, both produced through the
+ W3C AI Knowledge Representation Community Group (work in progress,
+ stable URLs forthcoming).
+ </p>
+</section>
+
+
+<!-- ============================================================ -->
+<section id="introduction">
+ <h2>Introduction</h2>
+
+ <p>
+ Autonomous AI agents increasingly perform consequential tasks on behalf of users and
+ other agents: navigating websites, executing code, retrieving and synthesizing
+ information, and -- increasingly -- commissioning and paying for work from other agents.
+ This last capability, agent-to-agent commerce, requires a trust infrastructure that does
+ not yet exist in standardized form.
+ </p>
+
+ <p>
+ Four IETF Internet-Drafts submitted in March 2026 by Ben Stone of SwarmSync.AI
+ represent the most detailed public attempt to specify that infrastructure:
+ </p>
+
+ <ul>
+ <li><strong>AIVS</strong> -- proof format: SHA-256 hash-chained audit logs
+ with Ed25519 signatures, self-verifiable offline with zero external dependencies.</li>
+ <li><strong>VCAP</strong> -- settlement layer: a seven-phase escrow state
+ machine (negotiate, escrow-hold, execute, deliver, verify, settle, escalate) with
+ cryptographic proof binding and timeout escalation to human review.</li>
+ <li><strong>ATEP</strong> -- reputation layer: a portable agent trust
+ credential computed from append-only execution logs, with four trust tiers
+ gating access to progressively sensitive operations.</li>
+ <li><strong>VCAP-AP2 Binding</strong> -- integration layer: field
+ mappings and webhook events connecting VCAP settlement to Google's Agent Payments
+ Protocol (AP2) , specifically filling the undefined
+ <code>captureType: "escrow_release"</code> gap in AP2 v0.1.</li>
+ </ul>
+
+ <p>
+ These drafts deserve serious technical engagement. They identify real problems, and
+ several specific mechanisms -- the atomic compare-and-swap guard on escrow transitions,
+ the append-only session log immutability requirement, the AIVS self-contained
+ verification bundle -- represent genuine engineering contributions to the field.
+ </p>
+
+ <p>
+ This Technical Note does not dispute those contributions. It identifies a structural
+ gap that all four drafts collectively do not address, proposes a resolution using
+ existing W3C AI-KR-CG work, and raises governance concerns warranting community
+ attention.
+ </p>
+
+ <section id="terminology">
+ <h3>Terminology and Conventions</h3>
+ <p>
+ The key words MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT,
+ RECOMMENDED, MAY, and OPTIONAL in this document are to be interpreted as described
+ in .
+ </p>
+ <dl>
+ <dt><dfn>Layer Zero</dfn></dt>
+ <dd>The pre-negotiation capability advertisement layer: the mechanism by which a
+ requester agent discovers which settlement protocols, trust credentials, and
+ verification formats a provider agent supports, <em>before</em> any payment
+ intent or negotiation message is created.</dd>
+ <dt><dfn>MCP Model Card</dfn></dt>
+ <dd>A structured, machine-readable capability declaration document attached to an
+ MCP server, declaring the server's capabilities, constraints, provenance, and
+ quality metadata. As defined in the MCP Model Card Specification v1.0
+ (Di Maio, W3C AI Knowledge Representation Community Group, 2026;
+ stable URL forthcoming).</dd>
+ <dt><dfn>Agent commerce stack</dfn></dt>
+ <dd>The combination of VCAP, AIVS, ATEP, and VCAP-AP2-Binding as a unified
+ protocol suite for agent-to-agent financial transactions.</dd>
+ <dt><dfn>Capability advertisement gap</dfn></dt>
+ <dd>The absence of a standardized mechanism for an agent to declare its supported
+ payment protocols, trust tier, and verification preferences to a prospective
+ requester before negotiation begins.</dd>
+ </dl>
+ </section>
+</section>
+
+
+<!-- ============================================================ -->
+<section id="stack-analysis">
+ <h2>Analysis of the Agent Commerce Stack</h2>
+
+ <section id="architecture">
+ <h3>Architectural Overview</h3>
+
+ <p>
+ The four drafts form a coherent vertical stack. Each layer addresses a distinct
+ problem in agent-to-agent commerce:
+ </p>
+
+ <figure>
+ <pre class="stack-diagram">
+ +---------------------------------------------------------+
+ | VCAP-AP2 BINDING (integration layer) |
+ | Connects VCAP settlement to AP2 PaymentIntent schema |
+ +---------------------------------------------------------+
+ | ATEP (reputation layer) |
+ | Portable trust credential from append-only exec logs |
+ +---------------------------------------------------------+
+ | VCAP (settlement layer) |
+ | 7-phase escrow state machine, timeout, idempotency |
+ +---------------------------------------------------------+
+ | AIVS (proof layer) |
+ | SHA-256 hash-chained audit log, Ed25519 signature |
+ +---------------------------------------------------------+
+ | LAYER ZERO [NOT SPECIFIED] |
+ | Pre-negotiation capability advertisement |
+ | "Does this agent support VCAP? What tier? Which proofs?"|
+ +---------------------------------------------------------+
+ | MCP / A2A / Agent Protocol (transport layer) |
+ | Discovery, messaging, tool invocation |
+ +---------------------------------------------------------+
+ </pre>
+ <figcaption>The agent commerce stack. Layer Zero -- the capability
+ advertisement layer between MCP transport and VCAP settlement --
+ is not specified by any of the four drafts.</figcaption>
+ </figure>
+
+ <p>
+ The conceptual separation is sound and the individual layer specifications are
+ technically substantive. The problem this Note addresses is not within any layer but
+ <em>between</em> the transport layer (MCP, A2A , Agent Protocol) and the
+ settlement layer (VCAP). That gap is what we term [=Layer Zero=].
+ </p>
+ </section>
+
+ <section id="vcap-analysis">
+ <h3>VCAP: Settlement Layer Assessment</h3>
+
+ <p>
+ The VCAP specification makes a precise and verifiable contribution to the
+ AP2 v0.1 gap identified in its problem statement. AP2 v0.1 defines
+ <code>captureType: "escrow_release"</code> with
+ <code>releaseCondition: "delivery-confirmation"</code> but leaves the transition
+ trigger, confirmation format, verifier identity, timeout behavior, and
+ cryptographic binding unspecified. VCAP answers all five questions with
+ implementable precision.
+ </p>
+
+ <p>
+ The escrow state machine is well-specified: the HELD to RELEASED or REFUNDED
+ transition uses an atomic compare-and-swap operation to prevent double-release;
+ timeout requires the escrow to remain HELD pending human review rather than
+ auto-releasing or auto-refunding; and idempotency is required on delivery, escrow
+ transitions, and verification callbacks.
+ </p>
+
+ <p class="issue" title="HMAC vs Ed25519 inconsistency">
+ The verification callback that triggers fund release uses HMAC-SHA256 with a
+ pre-shared symmetric secret, not the Ed25519 keys established in AIVS and used
+ for agent identity in ATEP. A compromise of the shared secret enables fabrication
+ of payment-triggering callbacks without any valid AIVS proof bundle, bypassing the
+ entire proof layer. Agent identity binding via Ed25519 is marked OPTIONAL in VCAP
+ Section 5.4. For a payment-triggering message, this SHOULD be REQUIRED.
+ </p>
+
+ <p class="issue" title="auto_approve escape hatch">
+ The <code>auto_approve</code> boolean in verification hints, if set to
+ <code>true</code>, skips automated verification and allows provider self-attestation.
+ No conditions are specified for when this field may or may not be set. In an
+ adversarial context, a provider agent can always set
+ <code>auto_approve: true</code> and receive payment without independent
+ verification. This field MUST be gated to TRUSTED tier agents at minimum, and
+ the restriction MUST be stated normatively.
+ </p>
+
+ <p class="issue" title="Verifier independence unspecified">
+ VCAP describes verification engines as independent third parties, but the only
+ known reference implementation has SwarmSync.AI acting as both marketplace and
+ verifier via Conduit . A vendor-neutral protocol requires a verifier
+ registration mechanism and conflict-of-interest rules. These are absent.
+ </p>
+ </section>
+
+ <section id="aivs-analysis">
+ <h3>AIVS: Proof Layer Assessment</h3>
+
+ <p>
+ AIVS is technically the strongest of the four drafts. The hash chain
+ specification is fully deterministic, the verification algorithm is reproducible,
+ and the self-contained <code>verify.py</code> using only Python 3 stdlib is an
+ excellent portability design. The security section is notably candid:
+ </p>
+
+ <blockquote>
+ "AIVS does not prove that the recorded inputs/outputs actually occurred. A malicious
+ agent could fabricate actions and produce a valid chain."
+ </blockquote>
+
+ <p>
+ This candor is valuable and should be preserved and amplified in any revision.
+ </p>
+
+ <p class="issue" title="outputs_json excluded from hash chain">
+ The hash chain includes seven fields per row but excludes
+ <code>inputs_json</code> and <code>outputs_json</code>. Output truncation is
+ explicitly permitted and does not affect chain validity. This means a valid chain
+ can exist where the actual content of what the agent produced has been replaced or
+ omitted. For a proof format used to trigger escrow release, the content of
+ deliverables SHOULD be cryptographically bound, not merely the action sequence
+ metadata.
+ </p>
+
+ <p class="issue" title="Ed25519 signature is optional">
+ The Ed25519 session signature is optional. An unsigned AIVS bundle proves only
+ internal chain consistency -- any party can generate a valid unsigned bundle from
+ scratch. When AIVS is used as VCAP proof-of-delivery, the signature MUST be
+ required.
+ </p>
+
+ <p class="note" title="SCITT integration opportunity">
+ AIVS situates itself relative to IETF SCITT , W3C VC 2.0 ,
+ and Certificate Transparency. Actual SCITT integration would require COSE signing
+ (RFC 9052), which is not specified here. This is a natural extension point for
+ a future revision and would significantly strengthen the standards lineage.
+ </p>
+ </section>
+
+ <section id="atep-analysis">
+ <h3>ATEP: Reputation Layer Assessment</h3>
+
+ <p>
+ ATEP addresses a genuine and underspecified problem: the absence of
+ portable, fraud-resistant agent reputation credentials across marketplaces. The
+ append-only log requirement, monotonic trust tier promotion, and W3C Verifiable
+ Credentials wrapper are architecturally correct design choices.
+ </p>
+
+ <p class="issue" title="Cross-platform portability is circular">
+ The portability claim contains a structural problem. When an agent transfers a
+ passport from Platform A to Platform B, Platform B is advised to treat imported
+ statistics as advisory rather than authoritative, and may require a local probation
+ period before honoring the imported tier. If every platform discounts imported
+ trust, cross-platform portability is illusory in practice. The spec acknowledges
+ this without resolving it. Resolving it requires an independent trust anchor --
+ precisely the role that W3C DID and SCITT could serve.
+ </p>
+
+ <p class="issue" title="Passport signing uses HMAC not Ed25519">
+ The passport is signed with HMAC-SHA256 using an issuer key, while the VC wrapper
+ example uses Ed25519Signature2020. For a credential claiming to be "verifiable,"
+ the core signing mechanism should use the same asymmetric cryptography as the VC
+ wrapper, not a symmetric HMAC that requires the verifier to hold the issuer's
+ secret.
+ </p>
+
+ <p class="issue" title="Session-count gaming">
+ Trust tier thresholds (10, 50, 200 sessions) are low enough to be gamed by
+ orchestrated self-dealing within a single marketplace. An operator running both
+ requester and provider agents can reach TRUSTED tier -- unlocking financial
+ operations with optional verification -- through mutual session farming. Rate
+ limiting and cross-platform corroboration requirements are not specified.
+ </p>
+ </section>
+
+ <section id="ap2-binding-analysis">
+ <h3>VCAP-AP2 Binding: Integration Layer Assessment</h3>
+
+ <p>
+ The AP2 binding is the most strategically significant document in the
+ suite for the purposes of this Technical Note. It specifies precisely how the VCAP
+ verification result triggers an AP2 PaymentIntent state transition from
+ <code>authorized</code> to <code>captured</code>, defines the
+ <code>vcap.verification_proof</code> evidence type for the AP2 evidence array, and
+ introduces three webhook event schemas for the VCAP verification lifecycle.
+ </p>
+
+ <p>
+ The dual-signature settlement concept is the most coherent security statement in
+ the entire suite: AP2's VDC signature proves the buyer authorized the payment;
+ VCAP's proof signature proves delivery was independently verified; both must be
+ valid for settlement to proceed.
+ </p>
+
+ <p>
+ The ATEP passport is embedded as a credential type inside AP2's participant objects:
+ </p>
+
+ <pre>
+{
+ "participants": {
+ "seller": {
+ "credentials": [
+ { "type": "ap2.vdc.agent_identity", ... },
+ { "type": "atep.passport.summary",
+ "trust_tier": "VERIFIED",
+ "total_sessions": 127,
+ "success_rate": 0.94,
+ "issuer": "swarmsync.ai",
+ "signature": "..." }
+ ]
+ }
+ }
+}
+ </pre>
+
+ <p>
+ This is where the [=capability advertisement gap=] becomes most visible. The
+ AP2 binding assumes the seller's credentials are already present in the
+ PaymentIntent when it is created. It specifies how trust modulates payment
+ parameters <em>during</em> a transaction. It does not specify how a requester
+ agent <em>discovers</em> whether a provider supports VCAP, what tier they hold,
+ or where their passport endpoint is -- before creating any payment intent at all.
+ </p>
+
+ <p class="note" title="TRUSTED tier self-attestation">
+ The trust-adjusted escrow table permits TRUSTED tier agents to use self-attestation
+ with verification described as optional. This same vulnerability appears in VCAP
+ and the AP2 binding. It should be flagged consistently: TRUSTED tier is currently
+ reachable through session farming, making this the highest-risk permissive clause
+ in the stack.
+ </p>
+ </section>
+</section>
+
+
+<!-- ============================================================ -->
+<section id="layer-zero">
+ <h2>The Missing Layer Zero: Pre-Negotiation Capability Advertisement</h2>
+
+ <section id="gap-description">
+ <h3>Characterizing the Gap</h3>
+
+ <p>
+ The VCAP specification positions itself as "a settlement layer that complements
+ agent-to-agent communication protocols (such as Google A2A or the Agent Protocol)."
+ The AP2 binding assumes that when a requester agent creates a PaymentIntent,
+ it already knows:
+ </p>
+
+ <ul>
+ <li>that the provider agent supports VCAP settlement;</li>
+ <li>what verification engines the provider accepts;</li>
+ <li>which ATEP trust tier the provider holds and which platform issued it;</li>
+ <li>where the provider's passport endpoint is located; and</li>
+ <li>which proof formats (AIVS full bundle, AIVS-Micro, or other) constitute valid delivery confirmation.</li>
+ </ul>
+
+ <p>
+ Neither A2A , the Agent Protocol, nor MCP currently specifies
+ how an agent advertises payment protocol capabilities. An MCP-exposed provider agent
+ has no standard mechanism to declare to a connecting requester:
+ </p>
+
+ <blockquote>
+ "I support VCAP settlement. My ATEP trust tier is VERIFIED, issued by platform X.
+ My passport endpoint is at this URL. I accept AIVS full bundle as proof format.
+ My Ed25519 public key is this value. My preferred verification engine is browser
+ automation."
+ </blockquote>
+
+ <p>
+ Without that declaration, the requester agent cannot evaluate whether VCAP-based
+ payment is viable before initiating a task. This forces out-of-band credential
+ exchange, hardcoded assumptions about provider capabilities, or trust in a
+ marketplace intermediary's representation of the provider -- all of which reintroduce
+ exactly the vendor lock-in the VCAP suite claims to eliminate.
+ </p>
+
+ <p>
+ More critically: in a pipeline where TRUSTED tier agents can receive payment with
+ optional verification and reduced escrow, the ability to misrepresent capability
+ credentials at the pre-transaction discovery stage is the highest-value attack
+ surface in the entire stack. A malicious agent claiming TRUSTED tier capabilities
+ before any VCAP machinery is engaged can extract favorable escrow terms that the
+ rest of the protocol then treats as legitimate.
+ </p>
+ </section>
+
+ <section id="mcp-model-card-solution">
+ <h3>MCP Model Card as Layer Zero</h3>
+
+ <p>
+ The MCP Model Card Specification v1.0 (Di Maio, W3C AI Knowledge Representation
+ Community Group, 2026; stable URL forthcoming), developed through the
+ W3C AI Knowledge Representation Community Group, provides the pre-transaction
+ capability advertisement layer that the agent commerce stack assumes but does not
+ specify. An MCP model card is a structured, machine-readable document attached to
+ an MCP server that declares the server's capabilities, constraints, provenance, and
+ quality metadata. It is readable by a requester agent before any negotiation or
+ task assignment begins.
+ </p>
+
+ <p>
+ A <code>commerce_capabilities</code> extension to the MCP Model Card schema would
+ provide the Layer Zero declaration. The proposed extension requires three fields:
+ </p>
+
+ <dl>
+ <dt><code>settlement_protocols</code></dt>
+ <dd>
+ An array declaring which payment settlement specifications the agent supports,
+ including version identifiers. Example values: <code>"vcap:1.0"</code>,
+ <code>"ap2:0.1+vcap"</code>.
+ </dd>
+
+ <dt><code>trust_credentials</code></dt>
+ <dd>
+ A block containing the agent's ATEP passport endpoint URL, current trust tier,
+ issuing platform, issuer signature, and credential freshness timestamp.
+ This provides the information that the AP2 binding embeds in the PaymentIntent
+ participant block, but makes it available for inspection <em>before</em> the
+ PaymentIntent is created.
+ </dd>
+
+ <dt><code>verification_acceptance</code></dt>
+ <dd>
+ An object specifying which proof formats and verification engines the agent
+ will accept as delivery confirmation: AIVS full bundle, AIVS-Micro, LLM
+ evaluation, human review, or composite.
+ </dd>
+ </dl>
+
+ <p>
+ A requester agent reading this model card before negotiation can determine from
+ a single document lookup whether VCAP settlement is viable, what tier-adjusted
+ escrow terms to expect, and whether the provider's trust credentials are fresh
+ enough to rely on. This eliminates the attack surface created by credential
+ misrepresentation at the pre-transaction stage.
+ </p>
+
+ <p>
+ The proposed JSON structure for the extension is:
+ </p>
+
+ <pre>
+{
+ "mcp_model_card_version": "1.0",
+ "commerce_capabilities": {
+ "settlement_protocols": ["vcap:1.0", "ap2:0.1+vcap"],
+ "trust_credentials": {
+ "atep_passport_endpoint": "https://example-marketplace.ai/agents/{id}/passport/public",
+ "trust_tier": "VERIFIED",
+ "issuer_platform": "example-marketplace.ai",
+ "issuer_signature": "...",
+ "credential_issued_at": "2026-03-14T12:00:00Z",
+ "credential_expires_at": "2026-03-15T12:00:00Z"
+ },
+ "verification_acceptance": {
+ "proof_formats": ["aivs_bundle:1.0", "aivs_micro:1.0"],
+ "verification_engines": ["browser_automation", "llm_eval"],
+ "ed25519_public_key": "..."
+ }
+ }
+}
+ </pre>
+
+ <p>
+ This extension is additive and non-breaking. Agents that do not support VCAP
+ simply omit the <code>commerce_capabilities</code> field. Agents that do support
+ it provide a machine-readable declaration that is verifiable against the ATEP
+ passport endpoint before any transaction begins.
+ </p>
+ </section>
+
+ <section id="layer-zero-security">
+ <h3>Security Properties of the Layer Zero Extension</h3>
+
+ <table>
+ <thead>
+ <tr>
+ <th>Threat</th>
+ <th>Without Layer Zero</th>
+ <th>With MCP Model Card Layer Zero</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr>
+ <td>Tier misrepresentation at discovery</td>
+ <td>Undetectable -- no pre-transaction declaration</td>
+ <td>Model card credential verifiable against ATEP passport endpoint</td>
+ </tr>
+ <tr>
+ <td>Stale trust credentials</td>
+ <td>No freshness check possible before negotiation</td>
+ <td><code>credential_expires_at</code> enables pre-negotiation staleness check</td>
+ </tr>
+ <tr>
+ <td>Protocol mismatch (no VCAP support)</td>
+ <td>Discovered only at payment intent creation or failure</td>
+ <td>Detectable at model card read, before task assignment</td>
+ </tr>
+ <tr>
+ <td>Verification format incompatibility</td>
+ <td>Discovered at delivery verification, after work is done</td>
+ <td>Detectable at model card read, before negotiation</td>
+ </tr>
+ <tr>
+ <td>Key substitution attack</td>
+ <td>No pre-transaction key binding</td>
+ <td><code>ed25519_public_key</code> in model card provides pre-negotiation binding</td>
+ </tr>
+ </tbody>
+ </table>
+ </section>
+</section>
+
+
+<!-- ============================================================ -->
+<section id="governance">
+ <h2>Governance Concerns</h2>
+
+ <p>
+ Beyond the technical gap, the Stone drafts raise governance questions warranting
+ explicit community attention. These are raised not to dismiss the technical
+ contributions but because the governance structure of a standard determines whether
+ it can function as a genuinely open infrastructure.
+ </p>
+
+ <section id="single-author-concern">
+ <h3>Single-Author IETF Submissions with Proprietary Reference Implementations</h3>
+
+ <p>
+ All four drafts are authored solely by SwarmSync.AI. All reference implementations
+ point to SwarmSync's proprietary NestJS codebase. The ATEP badge namespace reserves
+ unprefixed types for the "standard" while all provided examples use
+ <code>swarmsync:</code>-prefixed identifiers. The verifier in the VCAP model is
+ functionally the same entity as the marketplace in the only known deployment.
+ </p>
+
+ <p>
+ These are not disqualifying conditions for a first-submission individual draft.
+ They are, however, conditions that must change for the drafts to function as
+ genuine open standards rather than proprietary infrastructure described in RFC
+ format.
+ </p>
+
+ <p class="note" title="Precedent: premature commercialization">
+ This pattern is consistent with the premature commercialization concern documented
+ in WebMCP Technical Note 4 (Di Maio, W3C AI-KR-CG, 2026; stable URL forthcoming),
+ where web-mcp.net began selling compliance tools against an empty security section
+ of the WebMCP spec. In both cases, a commercial actor has structured standards
+ activity to consolidate ecosystem control. Community vigilance is appropriate.
+ </p>
+ </section>
+
+ <section id="namespace-governance">
+ <h3>Namespace and Registry Governance</h3>
+
+ <p>
+ Three registries implied by the Stone drafts currently have no governance structure:
+ </p>
+
+ <ul>
+ <li><strong>ATEP badge namespace</strong>: Who adds types to the standard set?
+ What is the process for registering a platform-prefixed badge type with a neutral
+ authority?</li>
+ <li><strong>VCAP verifier registry</strong>: Who can register as an independent
+ verification engine? How is independence from the marketplace established and
+ maintained?</li>
+ <li><strong>VCAP action type registry</strong> (Appendix A of VCAP): The action
+ vocabulary is presented as exhaustive for browser automation, with no extension
+ process defined for other agent types.</li>
+ </ul>
+
+ <p>
+ Without governance for these registries, de facto control rests with SwarmSync.AI
+ as the sole author and implementor. The W3C AI-KR-CG has established precedent for
+ multi-stakeholder registry governance in the agentic AI space and is positioned to
+ propose a neutral governance framework for these registries.
+ </p>
+ </section>
+
+ <section id="cryptographic-consistency">
+ <h3>Cryptographic Consistency Across the Stack</h3>
+
+ <p>
+ The four drafts use three different signing mechanisms without stated rationale:
+ </p>
+
+ <table>
+ <thead>
+ <tr>
+ <th>Document</th>
+ <th>Message</th>
+ <th>Signing Mechanism</th>
+ <th>Assessment</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr>
+ <td>AIVS</td>
+ <td>Session chain hash</td>
+ <td>Ed25519 (RFC 8032 )</td>
+ <td>Correct for identity binding</td>
+ </tr>
+ <tr>
+ <td>VCAP</td>
+ <td>Verification callback (payment trigger)</td>
+ <td>HMAC-SHA256, shared secret</td>
+ <td>Weaker -- symmetric, requires secret distribution</td>
+ </tr>
+ <tr>
+ <td>ATEP</td>
+ <td>Passport credential</td>
+ <td>HMAC-SHA256, issuer key</td>
+ <td>Weaker -- VC wrapper uses Ed25519, core does not</td>
+ </tr>
+ <tr>
+ <td>ATEP (VC wrapper)</td>
+ <td>Verifiable Credential proof</td>
+ <td>Ed25519Signature2020</td>
+ <td>Correct, but inconsistent with core passport signing</td>
+ </tr>
+ </tbody>
+ </table>
+
+ <p>
+ A coherent security design would use Ed25519 consistently throughout the stack for
+ all authentication and proof purposes, and treat HMAC as an explicitly acknowledged
+ fallback for constrained environments only. The current inconsistency means the
+ strongest security guarantees can be bypassed at the most critical points: payment
+ release and reputation transfer.
+ </p>
+ </section>
+</section>
+
+
+<!-- ============================================================ -->
+<section id="recommendations">
+ <h2>Recommendations</h2>
+
+ <section id="rec-layer-zero">
+ <h3>R1: Extend MCP Model Card Specification with <code>commerce_capabilities</code></h3>
+ <p>
+ The MCP Model Card Specification (Di Maio, W3C AI-KR-CG, 2026) SHOULD be extended
+ with a <code>commerce_capabilities</code> section providing the Layer Zero declaration
+ schema described in . Draft text SHOULD be
+ circulated to the WebMCP community list and the W3C AI-KR-CG mailing list before
+ the next community call.
+ </p>
+ </section>
+
+ <section id="rec-ap2-liaison">
+ <h3>R2: Initiate Liaison with AP2 Working Group</h3>
+ <p>
+ The W3C AI-KR-CG SHOULD initiate formal liaison with the AP2 working group to
+ identify the pre-transaction capability advertisement gap as a priority interoperability
+ issue, with MCP model cards proposed as a candidate solution alongside any
+ AP2-native mechanism.
+ </p>
+ </section>
+
+ <section id="rec-stone-engagement">
+ <h3>R3: Invite Stone Drafts to W3C AI-KR-CG Community Call</h3>
+ <p>
+ The Stone IETF drafts SHOULD be invited to present at a W3C AI-KR-CG community
+ call, with the specific agenda of:
+ </p>
+ <ul>
+ <li>discussing multi-stakeholder governance for the ATEP badge namespace and
+ VCAP verifier registry;</li>
+ <li>addressing the Ed25519 vs HMAC inconsistency as a priority revision item;</li>
+ <li>identifying co-authors from outside SwarmSync.AI to broaden the draft's
+ community basis.</li>
+ </ul>
+ </section>
+
+ <section id="rec-crypto-normative">
+ <h3>R4: Issue Technical Comment on Cryptographic Consistency</h3>
+ <p>
+ A formal technical comment SHOULD be submitted to the IETF draft authors requesting
+ that Ed25519 signing be elevated from OPTIONAL to REQUIRED for all payment-triggering
+ messages (VCAP verification callback) and all portable credential issuance (ATEP
+ passport signing), consistent with the approach already taken in AIVS and the ATEP
+ VC wrapper.
+ </p>
+ </section>
+
+ <section id="rec-auto-approve">
+ <h3>R5: Issue Technical Comment on <code>auto_approve</code> Gating</h3>
+ <p>
+ A formal technical comment SHOULD be submitted requesting that the
+ <code>auto_approve</code> field in VCAP service delivery be constrained by a
+ normative MUST NOT clause for agents below TRUSTED tier, and that TRUSTED tier
+ itself be strengthened against session farming via rate limiting or
+ cross-platform corroboration requirements.
+ </p>
+ </section>
+</section>
+
+
+<!-- ============================================================ -->
+<section id="relation-to-prior-work">
+ <h2>Relation to Prior Work</h2>
+
+ <p>
+ This Technical Note builds on a body of work conducted through the W3C AI Knowledge
+ Representation Community Group and the Epistemic Systems Lab at the Ronin Institute:
+ </p>
+
+ <ul>
+ <li>
+ The <strong>MCP Model Card Specification v1.0</strong> (Di Maio, W3C AI-KR-CG,
+ 2026; stable URL forthcoming) provides the Layer Zero mechanism proposed here.
+ The <code>commerce_capabilities</code> extension is a targeted addition to an
+ existing schema.
+ </li>
+ <li>
+ The <strong>W3C Technical Report AI-KR-CG-TR-2026-001</strong> (Di Maio, W3C
+ AI-KR-CG, 2026; stable URL forthcoming) documents a standards gap analysis showing
+ 56% of agentic AI categories lack web standards. The
+ [=capability advertisement gap=] identified here falls within the "agent commerce
+ and trust" category of that analysis.
+ </li>
+ <li>
+ <strong>WebMCP Technical Notes 1-4</strong> (Di Maio, W3C AI-KR-CG, 2026; stable
+ URLs forthcoming) provide the standards development context and document the
+ premature commercialization pattern that recurs in the Stone drafts.
+ </li>
+ <li>
+ The <strong>19-dimensional agent interoperability ontology</strong> developed through
+ ESL, currently under review at IJCAI 2026, includes Dimension 19 (transactional
+ vs. relational paradigm) which maps directly to the distinction between VCAP's
+ per-transaction escrow model and ATEP's relational trust accumulation model.
+ </li>
+ </ul>
+</section>
+
+
+<!-- ============================================================ -->
+<section id="conclusion">
+ <h2>Conclusion</h2>
+
+ <p>
+ The Stone IETF draft suite identifies real gaps in agent-to-agent commerce
+ infrastructure and proposes technically substantive solutions for several of them.
+ The escrow state machine, the append-only reputation log, and the self-verifiable
+ proof bundle are genuine engineering contributions that deserve serious engagement
+ from the standards community.
+ </p>
+
+ <p>
+ What the suite currently lacks is a specification for how any of it begins. Before
+ a requester agent creates a payment intent, before negotiation starts, before escrow
+ is held -- there must be a moment at which the requester discovers whether VCAP is
+ viable with this particular provider, at what trust tier, with what proof formats.
+ That moment is [=Layer Zero=], and it is unspecified.
+ </p>
+
+ <p>
+ The MCP Model Card Specification, already developed and published through the W3C
+ AI Knowledge Representation Community Group, provides the appropriate mechanism to
+ fill that gap. A targeted <code>commerce_capabilities</code> extension makes the
+ MCP model card the pre-transaction capability handshake that the entire agent commerce
+ stack assumes but has not yet built.
+ </p>
+
+ <p>
+ The Stone drafts identify a community. This Technical Note is an invitation to build
+ one that is genuinely open.
+ </p>
+</section>
+
+
+<!-- ============================================================ -->
+<section id="acknowledgements" class="informative">
+ <h2>Acknowledgements</h2>
+ <p>
+ The author thanks the W3C AI Knowledge Representation Community Group for discussion
+ and feedback on agent interoperability standards. Analysis in this note draws on
+ technical review of the Stone IETF drafts conducted in collaboration with Claude
+ (Anthropic), whose contribution to identifying and articulating the Layer Zero gap
+ is acknowledged.
+ </p>
+</section>
+
+
+
+
+</body>
+</html>

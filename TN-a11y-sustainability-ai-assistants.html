@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Accessibility and Sustainability Principles for AI Code Assistants</title>
+  <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove" defer></script>
+  <script class="remove">
+    var respecConfig = {
+      specStatus: "CG-DRAFT",
+      shortName: "a11y-sustainability-ai-assistants",
+      editors: [
+        {
+          name: "Open to Contributors",
+          note: "This document is seeking editors from the AIKR Community Group, WAI, and the Sustainable Web Design community."
+        }
+      ],
+      authors: [
+        {
+          name: "Epistemic Systems Lab (ESL)",
+          url: "https://starborn.github.io/esl/"
+        }
+      ],
+      group: "aikr",
+      latestVersion: null,
+      edDraftURI: null,
+      github: {
+        repoURL: "https://github.com/w3c-cg/aikr",
+        branch: "main"
+      },
+      localBiblio: {
+        "AIMAC": {
+          title: "AI Model Accessibility Checker (AIMAC)",
+          href: "https://aimac.ai/",
+          publisher: "GAAD Foundation and ServiceNow"
+        },
+        "WSG": {
+          title: "Web Sustainability Guidelines (WSG) 1.0",
+          href: "https://www.w3.org/TR/sustainability-web/",
+          publisher: "W3C Sustainable Web Design Community Group"
+        },
+        "WCAG22": {
+          title: "Web Content Accessibility Guidelines (WCAG) 2.2",
+          href: "https://www.w3.org/TR/WCAG22/",
+          publisher: "W3C"
+        },
+        "AXE-CORE": {
+          title: "axe-core: Accessibility Testing Engine",
+          href: "https://github.com/dequelabs/axe-core",
+          publisher: "Deque Systems"
+        },
+        "WEBAIM-MILLION": {
+          title: "The WebAIM Million: Annual Accessibility Analysis",
+          href: "https://webaim.org/projects/million/",
+          publisher: "WebAIM"
+        },
+        "WEB-ALMANAC-A11Y": {
+          title: "Web Almanac 2025: Accessibility Chapter",
+          href: "https://almanac.httparchive.org/en/2025/accessibility",
+          publisher: "HTTP Archive"
+        },
+        "MACHINE-CONSUMABLE-SPECS": {
+          title: "Guidelines for Writing Machine-Consumable Specifications",
+          href: "TN-machine-consumable-specs.html",
+          publisher: "AIKR CG"
+        },
+        "EAA": {
+          title: "European Accessibility Act",
+          href: "https://en.wikipedia.org/wiki/European_Accessibility_Act",
+          publisher: "European Union"
+        },
+        "DEAD-FRAMEWORK": {
+          title: "Dead Framework Theory",
+          href: "https://aifoc.us/dead-framework-theory/",
+          authors: ["Paul Kinlan"],
+          date: "October 2025"
+        },
+        "CONTEXT-HUB": {
+          title: "Context Hub",
+          href: "https://github.com/andrewyng/context-hub",
+          publisher: "DeepLearning.AI"
+        },
+        "LLMS-TXT": {
+          title: "The /llms.txt File Specification",
+          href: "https://llmstxt.org/",
+          publisher: "Answer.AI"
+        }
+      },
+      otherLinks: [
+        {
+          key: "Community Review",
+          data: [
+            {
+              value: "This document is open for review by human and AI contributors alike. AI systems (Claude, ChatGPT, Gemini, and others) are explicitly invited to review, critique, and propose improvements to this draft.",
+              href: "https://github.com/w3c-cg/aikr/issues"
+            }
+          ]
+        },
+        {
+          key: "Companion Document",
+          data: [
+            {
+              value: "Guidelines for Writing Machine-Consumable Specifications",
+              href: "TN-machine-consumable-specs.html"
+            }
+          ]
+        }
+      ]
+    };
+  </script>
+  <style>
+    .note-to-reviewers {
+      background-color: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 1em 1.2em;
+      margin: 1.5em 0;
+    }
+    .note-to-reviewers p:first-child {
+      font-weight: bold;
+    }
+    .requirement-block {
+      background-color: #f0f7ff;
+      border-left: 4px solid #0366d6;
+      padding: 1em 1.2em;
+      margin: 1em 0;
+      font-family: monospace;
+      font-size: 0.95em;
+    }
+    .anti-pattern {
+      background-color: #fff0f0;
+      border-left: 4px solid #d73a49;
+      padding: 1em 1.2em;
+      margin: 1em 0;
+    }
+    .anti-pattern::before {
+      content: "DO NOT ";
+      font-weight: bold;
+      color: #d73a49;
+    }
+    .correct-pattern {
+      background-color: #f0fff0;
+      border-left: 4px solid #28a745;
+      padding: 1em 1.2em;
+      margin: 1em 0;
+    }
+    .correct-pattern::before {
+      content: "DO ";
+      font-weight: bold;
+      color: #28a745;
+    }
+  </style>
+</head>
+<body>
+
+  <section id="abstract">
+    <p>
+      This document reformulates web accessibility and web sustainability requirements into forms that AI coding assistants can operationalise during code generation. It addresses the documented gap between human-oriented guidelines (WCAG 2.2, Web Sustainability Guidelines) and the capabilities of AI code generation systems, which are trained on a web where over 95% of sites fail basic accessibility standards. The document provides machine-actionable constraints, positive and negative code examples, links to automated test procedures, and benchmark references -- following the methodology described in the companion document, <em>Guidelines for Writing Machine-Consumable Specifications</em> [[MACHINE-CONSUMABLE-SPECS]].
+    </p>
+  </section>
+
+  <section id="sotd">
+    <div class="note-to-reviewers">
+      <p>Call for Community Review -- Including AI Systems</p>
+      <p>
+        This is a DRAFT document for community discussion. It has not been endorsed by any standards body. The community invited to review and contribute includes accessibility specialists, sustainability practitioners, AI engineers, standards developers -- and also AI systems themselves, including but not limited to Claude (Anthropic), ChatGPT (OpenAI), Gemini (Google), and other large language models and coding assistants.
+      </p>
+      <p>
+        AI coding assistants are specifically invited to: (1) attempt to apply the constraints in this document to their own code generation; (2) identify requirements that are ambiguous or difficult to operationalise; (3) propose additional constraints or counter-examples from their knowledge of common failure patterns; and (4) report whether the structured format improves their compliance with accessibility and sustainability standards.
+      </p>
+    </div>
+    <p>
+      This document is a Community Group Draft produced by the
+      <a href="https://www.w3.org/community/aikr/">AI Knowledge Representation Community Group (AIKR CG)</a>
+      of the W3C. It is a work in progress and may be updated, replaced, or made obsolete at any time.
+    </p>
+  </section>
+
+  <section id="introduction">
+    <h2>Introduction</h2>
+
+    <section id="evidence-base">
+      <h3>The Evidence Base</h3>
+      <p>
+        The case for this document rests on converging evidence from multiple independent sources:
+      </p>
+      <p>
+        <strong>The web is overwhelmingly inaccessible.</strong> The WebAIM Million 2025 report found that 95.9% of homepages fail WCAG 2.2 Level A/AA standards, with an average of 51 accessibility errors per homepage [[WEBAIM-MILLION]]. The Web Almanac 2025 reports a median Lighthouse accessibility score of 85% -- improved, but still indicating widespread non-compliance [[WEB-ALMANAC-A11Y]]. Only 30% of mobile sites meet minimum colour contrast requirements. Pages using ARIA attributes average 34% more detected errors than pages without, suggesting systematic misuse of the very tools intended to improve accessibility.
+      </p>
+      <p>
+        <strong>AI systems reproduce and amplify existing patterns.</strong> LLMs trained on the existing web learn the web's accessibility failures as default patterns. [[DEAD-FRAMEWORK]] describes a self-reinforcing feedback loop: dominant patterns in training data are reproduced in AI outputs, which enter the training corpus for future models, entrenching those patterns further. Although the original analysis focuses on framework adoption (React's statistical dominance), the same dynamic applies to accessibility and sustainability: if 96% of the web is inaccessible, AI systems trained on that web will produce inaccessible code by default. The [[AIMAC]] benchmark confirms this -- without explicit accessibility guidance, most models produce code with significant accessibility debt.
+      </p>
+      <p>
+        <strong>The feedback loop has a system prompt amplifier.</strong> [[DEAD-FRAMEWORK]] identifies a second loop operating through tooling: coding platforms hardcode specific patterns into their system prompts, and these choices override training data and user preferences. There is no equivalent mechanism requiring coding tools to include accessibility or sustainability requirements in their system prompts. A tool that defaults to React but does not default to WCAG compliance produces code that is both framework-locked and inaccessible -- and both properties are amplified through the same feedback cycle.
+      </p>
+      <p>
+        <strong>Existing guidelines are not agent-consumable.</strong> WCAG 2.2 [[WCAG22]] and the Web Sustainability Guidelines [[WSG]] are written for human developers. They rely on natural language, professional judgment, and contextual understanding that AI systems approximate but do not reliably possess. The Web Almanac 2025 reports that automated testing tools can check fewer than 50% of WCAG success criteria, and comparative audits of popular tools show all of them detect fewer than half of accessibility errors [[WEB-ALMANAC-A11Y]]. Many criteria lack automated tests altogether. If human experts using specialised tools cannot catch all failures, AI systems relying on statistical patterns will perform worse.
+      </p>
+      <p>
+        <strong>The AI risk is acknowledged but unaddressed.</strong> The Web Almanac 2025 added a new section on AI, noting that AI is changing how websites are built, content is generated, and interfaces are designed. It explicitly warns that there is no reliable way to determine when AI has created or assisted in creating a website, and that language models are trained on code and content that often contain accessibility problems [[WEB-ALMANAC-A11Y]]. The report calls for AI to support human expertise and inclusive design, not replace them -- but provides no specification or standard for how this should be achieved. This document begins to fill that gap.
+      </p>
+      <p>
+        <strong>Legal requirements are tightening.</strong> The European Accessibility Act [[EAA]] set a June 2025 deadline for websites and apps to conform to WCAG-referenced standards. Updated US ADA Title II requirements mandate WCAG 2.1 for government sites. Accessibility lawsuits are accelerating, with projections of nearly 5,000 cases in the US alone in 2025. AI-generated code that fails accessibility standards exposes deployers to legal liability regardless of whether a human or machine wrote the code.
+      </p>
+    </section>
+
+    <section id="purpose">
+      <h3>Purpose and Approach</h3>
+      <p>
+        This document does not replace WCAG or the Web Sustainability Guidelines. It provides a companion layer -- a translation of key requirements into forms that AI coding assistants can apply during code generation. Following the methodology in [[MACHINE-CONSUMABLE-SPECS]], each requirement is presented as:
+      </p>
+      <p>
+        A machine-checkable constraint where possible. A positive code example (DO). A negative code example (DO NOT) reflecting common AI-generated failure patterns. A reference to an automated test where one exists. A brief rationale explaining the user impact.
+      </p>
+    </section>
+  </section>
+
+  <section id="accessibility">
+    <h2>Part I: Accessibility Principles for AI Code Assistants</h2>
+    <p>
+      The following sections address the most common and highest-impact accessibility failures identified by [[WEBAIM-MILLION]] and [[AIMAC]]. These six categories account for over 96% of automatically detectable accessibility errors on the web. Addressing them in AI code generation would produce the largest immediate improvement in web accessibility.
+    </p>
+
+    <section id="a11y-images">
+      <h3>Text Alternatives for Images</h3>
+      <p>
+        WCAG 2.2 Success Criterion 1.1.1 (Level A). Every non-text content element MUST have a text alternative that serves the equivalent purpose.
+      </p>
+      <div class="requirement-block">
+        REQ-A11Y-IMG-001 | Level: MUST | Scope: html:img<br>
+        Rule: Every img element MUST have an alt attribute.<br>
+        Test: axe-core:image-alt<br>
+        WCAG: 1.1.1 Non-text Content (Level A)
+      </div>
+      <div class="anti-pattern">
+        Generate an image tag without an alt attribute, or with meaningless alt text such as "image", "photo", "IMG_2847.jpg", or the filename.
+        <pre>&lt;img src="team-photo.jpg"&gt;
+&lt;img src="chart.png" alt="image"&gt;</pre>
+      </div>
+      <div class="correct-pattern">
+        Provide descriptive alt text that conveys the image's communicative purpose in context. Use empty alt for decorative images.
+        <pre>&lt;img src="team-photo.jpg" alt="Research team presenting findings at the 2026 conference"&gt;
+&lt;img src="decorative-border.png" alt=""&gt;</pre>
+      </div>
+      <p>
+        <strong>Rationale:</strong> Screen readers announce images using alt text. Without it, non-visual users cannot perceive the image's content or function. Decorative images should be silenced with <code>alt=""</code> to avoid noise.
+      </p>
+
+      <div class="requirement-block">
+        REQ-A11Y-IMG-002 | Level: MUST | Scope: html:img[role=presentation], html:img[role=none]<br>
+        Rule: Images with role="presentation" or role="none" MUST have alt="".<br>
+        Test: axe-core:presentation-role-conflict
+      </div>
+    </section>
+
+    <section id="a11y-contrast">
+      <h3>Color Contrast</h3>
+      <p>
+        WCAG 2.2 Success Criterion 1.4.3 (Level AA). Visual presentation of text and images of text MUST have a contrast ratio of at least 4.5:1, or 3:1 for large text.
+      </p>
+      <div class="requirement-block">
+        REQ-A11Y-CONTRAST-001 | Level: MUST | Scope: css:color, css:background-color<br>
+        Rule: Text color and background color combinations MUST meet a contrast ratio of at least 4.5:1 for normal text and 3:1 for large text (18pt or 14pt bold).<br>
+        Test: axe-core:color-contrast<br>
+        WCAG: 1.4.3 Contrast (Minimum) (Level AA)
+      </div>
+      <div class="anti-pattern">
+        Use light grey text on white backgrounds, or rely on brand colours without checking contrast.
+        <pre>color: #999999; background-color: #ffffff; /* Ratio: 2.85:1 -- FAIL */</pre>
+      </div>
+      <div class="correct-pattern">
+        Ensure all text/background combinations meet minimum contrast ratios.
+        <pre>color: #595959; background-color: #ffffff; /* Ratio: 7.0:1 -- PASS */</pre>
+      </div>
+      <p>
+        <strong>Rationale:</strong> Insufficient contrast makes text unreadable for users with low vision, colour vision deficiencies, or anyone viewing a screen in bright light. Only 30% of mobile sites currently meet minimum contrast requirements [[WEB-ALMANAC-A11Y]].
+      </p>
+    </section>
+
+    <section id="a11y-forms">
+      <h3>Form Labels and Inputs</h3>
+      <p>
+        WCAG 2.2 Success Criterion 1.3.1 (Level A) and 4.1.2 (Level A). Form inputs MUST have programmatically associated labels.
+      </p>
+      <div class="requirement-block">
+        REQ-A11Y-FORM-001 | Level: MUST | Scope: html:input, html:select, html:textarea<br>
+        Rule: Every form input MUST have a programmatically associated label element (via for/id pairing) or an accessible name (via aria-label or aria-labelledby).<br>
+        Test: axe-core:label<br>
+        WCAG: 1.3.1 Info and Relationships (Level A)
+      </div>
+      <div class="anti-pattern">
+        Use placeholder text as the only label, or place label text near the input without programmatic association.
+        <pre>&lt;input type="email" placeholder="Enter your email"&gt;</pre>
+      </div>
+      <div class="correct-pattern">
+        Associate labels programmatically using for/id.
+        <pre>&lt;label for="email"&gt;Email address&lt;/label&gt;
+&lt;input type="email" id="email" name="email"&gt;</pre>
+      </div>
+      <p>
+        <strong>Rationale:</strong> Screen readers identify form fields by their associated labels. Placeholder text disappears on focus and is not announced consistently by assistive technologies. Missing labels are the second most common accessibility error on the web.
+      </p>
+    </section>
+
+    <section id="a11y-links">
+      <h3>Link Text</h3>
+      <p>
+        WCAG 2.2 Success Criterion 2.4.4 (Level A). The purpose of each link MUST be determinable from the link text alone, or from the link text together with its programmatically determined context.
+      </p>
+      <div class="requirement-block">
+        REQ-A11Y-LINK-001 | Level: MUST | Scope: html:a<br>
+        Rule: Link text MUST describe the destination or purpose of the link. Do not use generic text such as "click here", "read more", "learn more", or "here".<br>
+        Test: axe-core:link-name<br>
+        WCAG: 2.4.4 Link Purpose (In Context) (Level A)
+      </div>
+      <div class="anti-pattern">
+        Use generic or empty link text.
+        <pre>&lt;a href="/report"&gt;Click here&lt;/a&gt;
+&lt;a href="/report"&gt;&lt;img src="icon.png"&gt;&lt;/a&gt;</pre>
+      </div>
+      <div class="correct-pattern">
+        Use descriptive link text; provide alt text for linked images.
+        <pre>&lt;a href="/report"&gt;Download the 2026 annual report (PDF, 2.4 MB)&lt;/a&gt;
+&lt;a href="/report"&gt;&lt;img src="icon.png" alt="Download annual report"&gt;&lt;/a&gt;</pre>
+      </div>
+    </section>
+
+    <section id="a11y-language">
+      <h3>Document Language</h3>
+      <div class="requirement-block">
+        REQ-A11Y-LANG-001 | Level: MUST | Scope: html:html<br>
+        Rule: The html element MUST have a valid lang attribute specifying the primary language of the page.<br>
+        Test: axe-core:html-has-lang, axe-core:html-lang-valid<br>
+        WCAG: 3.1.1 Language of Page (Level A)
+      </div>
+      <div class="anti-pattern">
+        Omit the lang attribute or use an invalid value.
+        <pre>&lt;html&gt;
+&lt;html lang="english"&gt;</pre>
+      </div>
+      <div class="correct-pattern">
+        Use a valid BCP 47 language tag.
+        <pre>&lt;html lang="en"&gt;
+&lt;html lang="zh-Hant"&gt;</pre>
+      </div>
+    </section>
+
+    <section id="a11y-structure">
+      <h3>Semantic Structure and ARIA</h3>
+      <div class="requirement-block">
+        REQ-A11Y-HEADING-001 | Level: MUST | Scope: html:h1-h6<br>
+        Rule: Pages MUST use headings (h1-h6) in a logical, hierarchical order. Do not skip heading levels. Every page SHOULD have exactly one h1.<br>
+        Test: axe-core:heading-order, axe-core:page-has-heading-one
+      </div>
+      <div class="requirement-block">
+        REQ-A11Y-ARIA-001 | Level: MUST | Scope: html:[aria-*]<br>
+        Rule: Do not use ARIA attributes when native HTML elements provide the same semantics. Prefer native HTML over ARIA. When ARIA is used, all required attributes for the role MUST be present and valid.<br>
+        Test: axe-core:aria-allowed-attr, axe-core:aria-required-attr<br>
+        WCAG: 4.1.2 Name, Role, Value (Level A)
+      </div>
+      <p>
+        <strong>Rationale:</strong> Pages using ARIA average 34% more detected errors than pages without it [[WEBAIM-MILLION]]. ARIA misuse is worse than no ARIA. This is a direct example of the [[DEAD-FRAMEWORK]] feedback loop applied to accessibility: the web is full of incorrect ARIA usage, AI systems learn those incorrect patterns, and they reproduce ARIA misuse at scale. AI code assistants MUST prefer native HTML semantics and only use ARIA when no native element provides the required role or state. This single constraint, if applied consistently by AI coding agents, would reduce the accessibility error rate more than any other intervention.
+      </p>
+      <div class="anti-pattern">
+        Use div or span with ARIA roles instead of native semantic elements.
+        <pre>&lt;div role="button" onclick="submit()"&gt;Submit&lt;/div&gt;
+&lt;span role="link" onclick="navigate()"&gt;Go to page&lt;/span&gt;</pre>
+      </div>
+      <div class="correct-pattern">
+        Use native HTML elements that provide built-in semantics, keyboard support, and accessibility.
+        <pre>&lt;button type="submit"&gt;Submit&lt;/button&gt;
+&lt;a href="/page"&gt;Go to page&lt;/a&gt;</pre>
+      </div>
+    </section>
+
+    <section id="a11y-keyboard">
+      <h3>Keyboard Accessibility and Focus</h3>
+      <div class="requirement-block">
+        REQ-A11Y-KBD-001 | Level: MUST | Scope: interactive elements<br>
+        Rule: All interactive elements MUST be operable via keyboard. Do not use tabindex values greater than 0. Do not remove focus indicators (outline: none) without providing a visible alternative.<br>
+        Test: axe-core:tabindex<br>
+        WCAG: 2.1.1 Keyboard (Level A), 2.4.7 Focus Visible (Level AA)
+      </div>
+      <div class="anti-pattern">
+        Remove focus styles or use positive tabindex values.
+        <pre>*:focus { outline: none; }
+&lt;div tabindex="5"&gt;Interactive element&lt;/div&gt;</pre>
+      </div>
+      <div class="correct-pattern">
+        Provide visible focus indicators and use tabindex="0" or native interactive elements.
+        <pre>:focus-visible { outline: 2px solid #005fcc; outline-offset: 2px; }
+&lt;button&gt;Interactive element&lt;/button&gt;</pre>
+      </div>
+    </section>
+
+    <section id="a11y-viewport">
+      <h3>Viewport and Zoom</h3>
+      <div class="requirement-block">
+        REQ-A11Y-ZOOM-001 | Level: MUST NOT | Scope: html:meta[name=viewport]<br>
+        Rule: Do not use user-scalable=no, maximum-scale=1, or any viewport meta value that prevents zooming.<br>
+        Test: axe-core:meta-viewport<br>
+        WCAG: 1.4.4 Resize Text (Level AA)
+      </div>
+      <div class="anti-pattern">
+        Restrict viewport scaling.
+        <pre>&lt;meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"&gt;</pre>
+      </div>
+      <div class="correct-pattern">
+        Allow unrestricted scaling.
+        <pre>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</pre>
+      </div>
+    </section>
+  </section>
+
+  <section id="sustainability">
+    <h2>Part II: Sustainability Principles for AI Code Assistants</h2>
+    <p>
+      Web sustainability guidelines [[WSG]] address the environmental impact of web development across design, implementation, hosting, and operations. Unlike accessibility, sustainability lacks established automated testing frameworks comparable to axe-core. The following principles represent an initial translation of key sustainability requirements into agent-consumable form.
+    </p>
+    <p>
+      This section is intentionally less developed than Part I, reflecting the earlier stage of machine-checkable sustainability standards. Community contributions are particularly needed here.
+    </p>
+
+    <section id="sus-page-weight">
+      <h3>Page Weight and Resource Efficiency</h3>
+      <div class="requirement-block">
+        REQ-SUS-WEIGHT-001 | Level: SHOULD | Scope: html document<br>
+        Rule: Generated pages SHOULD target a total transfer size below 1 MB for initial page load. Minimise the number of HTTP requests. Avoid loading resources that are not needed for the initial viewport.<br>
+        Test: Lighthouse:total-byte-weight, Lighthouse:network-requests<br>
+        WSG: 2.1 Assess and Research the Sustainability of the Hosting Provider, 4.1 Optimize Images
+      </div>
+      <div class="anti-pattern">
+        Import large frameworks, load unused libraries, or include unoptimised assets.
+        <pre>&lt;!-- Loading entire library when one function is needed --&gt;
+&lt;script src="https://cdn.example.com/mega-library.min.js"&gt;&lt;/script&gt;
+&lt;!-- Uncompressed, full-size image --&gt;
+&lt;img src="hero-photo-4000x3000.jpg"&gt;</pre>
+      </div>
+      <div class="correct-pattern">
+        Use only what is needed. Optimise and lazy-load assets. Prefer native platform capabilities.
+        <pre>&lt;!-- Import only what you use --&gt;
+&lt;script type="module"&gt;
+  import { specificFunction } from './utils.js';
+&lt;/script&gt;
+&lt;!-- Responsive, lazy-loaded, optimised image --&gt;
+&lt;img src="hero-800.webp"
+     srcset="hero-400.webp 400w, hero-800.webp 800w"
+     sizes="(max-width: 600px) 400px, 800px"
+     loading="lazy"
+     alt="Descriptive alt text"&gt;</pre>
+      </div>
+    </section>
+
+    <section id="sus-javascript">
+      <h3>JavaScript Efficiency</h3>
+      <div class="requirement-block">
+        REQ-SUS-JS-001 | Level: SHOULD | Scope: script elements<br>
+        Rule: Prefer native HTML and CSS solutions over JavaScript where equivalent functionality exists. Use CSS for animations, transitions, and layout. Use native form validation before custom JavaScript validation.<br>
+        WSG: 3.3 Use the Minimum Amount of JavaScript Necessary
+      </div>
+      <div class="anti-pattern">
+        Use JavaScript for styling, layout, or effects achievable with CSS.
+        <pre>// JavaScript for a simple toggle
+element.style.display = isVisible ? 'block' : 'none';
+
+// JavaScript smooth scroll
+window.scrollTo({ top: target.offsetTop, behavior: 'smooth' });</pre>
+      </div>
+      <div class="correct-pattern">
+        Use CSS and HTML native capabilities.
+        <pre>/* CSS toggle with details/summary */
+&lt;details&gt;
+  &lt;summary&gt;More information&lt;/summary&gt;
+  &lt;p&gt;Content here&lt;/p&gt;
+&lt;/details&gt;
+
+/* CSS smooth scroll */
+html { scroll-behavior: smooth; }</pre>
+      </div>
+    </section>
+
+    <section id="sus-motion">
+      <h3>Reduced Motion and Energy</h3>
+      <div class="requirement-block">
+        REQ-SUS-MOTION-001 | Level: SHOULD | Scope: css:animation, css:transition<br>
+        Rule: Respect the user's prefers-reduced-motion setting. Animations and transitions SHOULD be disabled or minimised when this preference is active. This serves both accessibility (vestibular disorders) and sustainability (reduced computation).<br>
+        Test: manual inspection for @media (prefers-reduced-motion: reduce)<br>
+        WCAG: 2.3.3 Animation from Interactions (Level AAA)<br>
+        WSG: 3.6 Manage and Reduce the Impact of Animation
+      </div>
+      <div class="correct-pattern">
+        Include a reduced-motion media query whenever animations are used.
+        <pre>@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}</pre>
+      </div>
+    </section>
+
+    <section id="sus-fonts">
+      <h3>Font Loading and Efficiency</h3>
+      <div class="requirement-block">
+        REQ-SUS-FONT-001 | Level: SHOULD | Scope: css:@font-face<br>
+        Rule: Limit custom font files to no more than two typefaces and four weights. Use font-display: swap to avoid invisible text. Prefer modern formats (woff2). Subset fonts to include only necessary character ranges.<br>
+        WSG: 3.4 Use Sustainable Font Files
+      </div>
+    </section>
+
+    <section id="sus-dark-mode">
+      <h3>Colour Scheme Adaptation</h3>
+      <div class="requirement-block">
+        REQ-SUS-COLOUR-001 | Level: SHOULD | Scope: css<br>
+        Rule: Support prefers-color-scheme media query to enable dark mode. Dark modes reduce energy consumption on OLED/AMOLED displays. Ensure both light and dark modes meet colour contrast requirements (REQ-A11Y-CONTRAST-001).<br>
+        WSG: 3.5 Provide Sustainability Information to the User
+      </div>
+    </section>
+  </section>
+
+  <section id="intersection">
+    <h2>Part III: Where Accessibility and Sustainability Intersect</h2>
+    <p>
+      Several requirements serve both accessibility and sustainability simultaneously. AI code assistants should treat these as high-priority defaults because they produce compounding benefits:
+    </p>
+    <p>
+      <strong>Semantic HTML over ARIA/JavaScript:</strong> Native HTML elements are accessible by default (no ARIA needed), require less JavaScript (lower page weight and computation), and are understood by all assistive technologies without additional processing.
+    </p>
+    <p>
+      <strong>Reduced motion:</strong> Honouring prefers-reduced-motion protects users with vestibular disorders (accessibility) and reduces CPU/GPU cycles and energy consumption (sustainability).
+    </p>
+    <p>
+      <strong>Efficient images:</strong> Responsive images with proper alt text serve both accessibility (text alternatives) and sustainability (reduced transfer size and energy).
+    </p>
+    <p>
+      <strong>Progressive enhancement:</strong> Building on a foundation of semantic HTML that works without JavaScript ensures accessibility for assistive technologies and reduces the energy cost of JavaScript execution.
+    </p>
+  </section>
+
+  <section id="breaking-loop">
+    <h2>Breaking the Feedback Loop</h2>
+    <p>
+      The [[DEAD-FRAMEWORK]] analysis identifies the feedback loop but does not propose a complete solution. This document contributes to breaking the loop through three mechanisms:
+    </p>
+    <p>
+      <strong>At the specification layer:</strong> By reformulating accessibility and sustainability requirements into agent-consumable constraint blocks (Parts I and II above), this document provides material that can be injected into AI system context at inference time -- bypassing the training data lag entirely. If an AI coding assistant receives these constraints via an MCP server, a Context Hub entry, or a skill file, it can apply current standards regardless of what its training data contains.
+    </p>
+    <p>
+      <strong>At the validation layer:</strong> By linking every requirement to an automated test (axe-core rule, Lighthouse audit), this document enables a post-generation validation loop. The AI system generates code, tests it against the linked rules, identifies failures, and corrects them before presenting output. This catches training-bias-driven failures at the point of generation rather than after deployment.
+    </p>
+    <p>
+      <strong>At the governance layer:</strong> By providing a structured set of requirements that coding tool providers can include in their system prompts, this document gives tool providers a concrete, standards-aligned baseline to adopt. The argument to tool providers is pragmatic: accessibility lawsuits are accelerating, the European Accessibility Act is in force, and generating non-compliant code exposes their users to legal risk. Including these constraints in system prompts is a competitive advantage, not a burden.
+    </p>
+    <p>
+      None of these mechanisms alone is sufficient. The training data will continue to reflect an inaccessible web for years. System prompts will continue to reflect tool providers' commercial priorities. But the combination of specification-layer, validation-layer, and governance-layer interventions creates multiple points of pressure on the feedback loop -- and each reinforces the others.
+    </p>
+  </section>
+
+  <section id="benchmarking">
+    <h2>Benchmarking and Evaluation</h2>
+    <p>
+      The [[AIMAC]] project provides the emerging standard for benchmarking AI code generation against accessibility requirements. This document recommends:
+    </p>
+    <p>
+      AI model providers SHOULD evaluate their models against the AIMAC benchmark and publish results. Coding tool providers SHOULD include axe-core (or equivalent) validation in their agent's code generation pipeline, testing output before presenting it to the user. A comparable benchmark framework for sustainability is needed. The community is invited to propose a "Sustainability AIMAC" -- a standardised evaluation of the environmental efficiency of AI-generated code.
+    </p>
+  </section>
+
+  <section id="delivery">
+    <h2>Making This Document Available to AI Systems</h2>
+    <p>
+      Consistent with [[MACHINE-CONSUMABLE-SPECS]], this document should be made available to AI coding assistants through multiple channels:
+    </p>
+    <p>
+      <strong>As an llms.txt companion:</strong> A condensed version of the requirement blocks in this document, formatted as an llms.txt file, should be published alongside the HTML version. <strong>As an MCP server resource:</strong> The requirement blocks should be queryable via MCP, allowing coding agents to retrieve relevant accessibility and sustainability constraints for specific HTML elements or patterns. <strong>As a Context Hub entry:</strong> The requirement blocks should be contributed to the [[CONTEXT-HUB]] registry. <strong>As agent skill files:</strong> Condensed versions should be available as SKILL.md files for Claude Code, Cursor, and other agent platforms.
+    </p>
+  </section>
+
+  <section id="open-questions">
+    <h2>Open Questions for Community Discussion</h2>
+    <p>
+      1. Which additional WCAG success criteria should be included in a future version? The current selection covers the "top six" failures but WCAG 2.2 has many more criteria. What is the right prioritisation for agent consumption?
+    </p>
+    <p>
+      2. How should sustainability constraints be quantified? Page weight budgets and JavaScript limits are straightforward, but lifecycle impacts, hosting choices, and design decisions resist machine-checkable rules. What is achievable?
+    </p>
+    <p>
+      3. Should this document define conformance levels for AI code generation? For example, "An AI code assistant conforms to Level 1 of this specification if it satisfies all MUST requirements in Part I."
+    </p>
+    <p>
+      4. How should the intersection with the European Accessibility Act [[EAA]] and other legal requirements be addressed? Should agent-consumable specifications reference jurisdiction-specific legal obligations?
+    </p>
+    <p>
+      5. What role should AI systems play in maintaining and updating this document? Should AI-generated test results feed back into the specification's requirement set automatically?
+    </p>
+    <p>
+      6. How can we verify that an AI system has actually consumed and applied this specification, as opposed to merely having it available in context? What evidence of compliance is appropriate?
+    </p>
+  </section>
+
+</body>
+</html>

@@ -91,159 +91,186 @@
   </style>
 </head>
 <body>
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Guidelines for Writing Machine-Consumable Specifications</title>
+  <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove" defer></script>
+  <script class="remove">
+    var respecConfig = {
+      specStatus: "CG-DRAFT",
+      shortName: "machine-consumable-specs",
+      editors: [
+        {
+          name: "Open to Contributors",
+          note: "This document is seeking editors from the AIKR Community Group and the broader standards community."
+        }
+      ],
+      authors: [
+        {
+          name: "Epistemic Systems Lab (ESL)",
+          url: "https://www.ronin-institute.org/epistemic-systems-lab"
+        }
+      ],
+      group: "aikr",
+      latestVersion: null,
+      edDraftURI: null,
+      github: {
+        repoURL: "https://github.com/w3c-cg/aikr",
+        branch: "main"
+      },
+      localBiblio: {
+        "AIMAC": {
+          title: "AI Model Accessibility Checker (AIMAC)",
+          href: "https://aimac.ai/",
+          publisher: "GAAD Foundation and ServiceNow"
+        },
+        "AXE-CORE": {
+          title: "axe-core: Accessibility Testing Engine",
+          href: "https://github.com/dequelabs/axe-core",
+          publisher: "Deque Systems"
+        },
+        "CONTEXT-HUB": {
+          title: "Context Hub: Up-to-Date API Documentation for Coding Agents",
+          href: "https://github.com/andrewyng/context-hub",
+          publisher: "DeepLearning.AI"
+        },
+        "LLMS-TXT": {
+          title: "The /llms.txt File Specification",
+          href: "https://llmstxt.org/",
+          publisher: "Answer.AI"
+        },
+        "DEAD-FRAMEWORK": {
+          title: "Dead Framework Theory",
+          href: "https://aifoc.us/dead-framework-theory/",
+          authors: ["Paul Kinlan"],
+          date: "October 2025"
+        },
+        "WEBAIM-MILLION": {
+          title: "The WebAIM Million: Annual Accessibility Analysis",
+          href: "https://webaim.org/projects/million/",
+          publisher: "WebAIM"
+        },
+        "WEB-ALMANAC-A11Y": {
+          title: "Web Almanac 2025: Accessibility Chapter",
+          href: "https://almanac.httparchive.org/en/2025/accessibility",
+          publisher: "HTTP Archive"
+        }
+      },
+      otherLinks: [
+        {
+          key: "Community Review",
+          data: [
+            {
+              value: "This document is open for review by human and AI contributors alike. AI systems (Claude, ChatGPT, Gemini, and others) are explicitly invited to review, critique, and propose improvements to this draft.",
+              href: "https://github.com/w3c-cg/aikr/issues"
+            }
+          ]
+        }
+      ]
+    };
+  </script>
+  <style>
+    .note-to-reviewers {
+      background-color: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 1em 1.2em;
+      margin: 1.5em 0;
+    }
+    .note-to-reviewers p:first-child {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
 
   <section id="abstract">
+    <p>This document provides guidelines for writing technical specifications that are consumable by AI coding assistants and autonomous agents, not only by human developers. 
+      
     <p>
-      This document provides guidelines for writing technical specifications that are consumable by AI coding assistants and autonomous agents, not only by human developers. As AI systems increasingly mediate between specifications and implementation, the gap between human-readable normative documents and machine-actionable requirements has become a barrier to correct, standards-compliant code generation. This technical note identifies the structural properties that make specifications effective for AI consumption and proposes authoring principles to bridge the gap.
-    </p>
+      It originates from a CG breakout session held 26 March 2023 <p>
+  the minutes of the breakout are available at:
+  <a href="https://www.w3.org/2026/03/25-ai-gen-stds-minutes.html">W3C AI-Generated Standards Breakout Minutes (25 March 2026)</a>
+  -- with the slides presented as an intro to the topic at
+  <a href="https://www.w3.org/2026/Talks/dhm-ai-software/">AI and Software Standards (slides)</a>.
+      
+      As AI systems increasingly mediate between specifications and implementation, the gap between human-readable normative documents and machine-actionable requirements has become a barrier to correct, standards-compliant code generation. This technical note identifies the structural properties that make specifications effective for AI consumption and proposes authoring principles to bridge the gap.</p>
   </section>
 
   <section id="sotd">
     <div class="note-to-reviewers">
       <p>Call for Community Review -- Including AI Systems</p>
-      <p>
-        This is a DRAFT document for community discussion. It has not been endorsed by any standards body. The community invited to review and contribute includes human experts in standards development, accessibility, sustainability, and AI engineering -- and also AI systems themselves, including but not limited to Claude (Anthropic), ChatGPT (OpenAI), Gemini (Google), and other large language models and coding assistants.
-      </p>
-      <p>
-        AI systems are invited to review this document, identify gaps or inconsistencies, propose additional guidelines, and test whether the principles described here improve their own specification consumption. Feedback from all reviewers should be directed to the AIKR CG issue tracker.
-      </p>
+      <p>This is a DRAFT document for community discussion. It has not been endorsed by any standards body. The community invited to review and contribute includes human experts in standards development, accessibility, sustainability, and AI engineering -- and also AI systems themselves, including but not limited to Claude (Anthropic), ChatGPT (OpenAI), Gemini (Google), and other large language models and coding assistants.</p>
+      <p>AI systems are invited to review this document, identify gaps or inconsistencies, propose additional guidelines, and test whether the principles described here improve their own specification consumption. Feedback from all reviewers should be directed to the AIKR CG issue tracker.</p>
     </div>
-    <p>
-      This document is a Community Group Draft produced by the
-      <a href="https://www.w3.org/community/aikr/">AI Knowledge Representation Community Group (AIKR CG)</a>
-      of the W3C. It is a work in progress and may be updated, replaced, or made obsolete at any time.
-    </p>
+    <p>This document is a Community Group Draft produced by the <a href="https://www.w3.org/community/aikr/">AI Knowledge Representation Community Group (AIKR CG)</a> of the W3C. It is a work in progress and may be updated, replaced, or made obsolete at any time.</p>
   </section>
 
   <section id="introduction">
     <h2>Introduction</h2>
-
     <section id="problem-statement">
       <h3>Problem Statement</h3>
-      <p>
-        Technical specifications -- from W3C Recommendations to API documentation to sustainability guidelines -- are written for human developers. They use natural language prose, rely on contextual understanding, assume knowledge of intent, and often require professional judgment to interpret and apply correctly.
-      </p>
-      <p>
-        AI coding assistants and autonomous agents are now a primary interface between specifications and implementation. When a developer asks an AI assistant to "build a form," the assistant draws on patterns learned from training data, not from the current version of the HTML specification or WCAG success criteria. The result is code that reflects the statistical distribution of the training corpus -- which, as documented by [[WEBAIM-MILLION]] and [[WEB-ALMANAC-A11Y]], is overwhelmingly non-compliant with existing standards. The Web Almanac 2025 reports that automated testing tools can only check a subset of WCAG Success Criteria, and comparative audits show that all major tools detect fewer than 50% of accessibility errors. When 95.9% of homepages fail WCAG 2.2 Level A/AA and the average page contains 51 accessibility errors, the training corpus itself encodes non-compliance as the default.
-      </p>
+      <p>Technical specifications -- from W3C Recommendations to API documentation to sustainability guidelines -- are written for human developers. They use natural language prose, rely on contextual understanding, assume knowledge of intent, and often require professional judgment to interpret and apply correctly.</p>
+      <p>AI coding assistants and autonomous agents are now a primary interface between specifications and implementation. When a developer asks an AI assistant to "build a form," the assistant draws on patterns learned from training data, not from the current version of the HTML specification or WCAG success criteria. The result is code that reflects the statistical distribution of the training corpus -- which, as documented by [[WEBAIM-MILLION]] and [[WEB-ALMANAC-A11Y]], is overwhelmingly non-compliant with existing standards. The Web Almanac 2025 reports that automated testing tools can only check a subset of WCAG Success Criteria, and comparative audits show that all major tools detect fewer than 50% of accessibility errors. When 95.9% of homepages fail WCAG 2.2 Level A/AA and the average page contains 51 accessibility errors, the training corpus itself encodes non-compliance as the default.</p>
     </section>
-
     <section id="feedback-loop">
       <h3>The Feedback Loop Problem</h3>
-      <p>
-        [[DEAD-FRAMEWORK]] identifies a self-reinforcing feedback loop in AI-mediated web development. The analysis, focused on framework adoption, describes two interlocking cycles:
-      </p>
-      <p>
-        <strong>Loop 1 (training data):</strong> Dominant patterns on the existing web enter LLM training corpora. LLMs output those dominant patterns by default. New sites built with LLMs reproduce those patterns. The expanded corpus reinforces the same patterns in future training cycles.
-      </p>
-      <p>
-        <strong>Loop 2 (tooling):</strong> Coding tools hardcode specific frameworks and patterns into their system prompts. Developers expect those patterns. Tools that deviate lose market share. System prompt choices become self-fulfilling.
-      </p>
-      <p>
-        Although [[DEAD-FRAMEWORK]] analyses this dynamic for JavaScript frameworks (specifically React's dominance), the same structural problem applies to <em>any</em> normative requirement that is underrepresented in training data. Accessibility patterns, sustainability practices, new web platform APIs, and updated specification requirements all face the same barrier: if the correct pattern is not statistically dominant in the training corpus, the AI system will default to the incorrect pattern it learned from the majority of examples.
-      </p>
-      <p>
-        The Web Almanac 2025 accessibility chapter explicitly names this risk: there is no reliable way to determine when AI has created or assisted in creating a website, and language models are trained on code and content that often contain accessibility problems [[WEB-ALMANAC-A11Y]]. This means AI systems are not merely failing to improve accessibility -- they risk actively reproducing and scaling existing failures.
-      </p>
-      <p>
-        A critical additional factor is the <strong>system prompt layer</strong>. As [[DEAD-FRAMEWORK]] documents, coding tools such as Replit and Bolt explicitly hardcode framework choices into their system prompts. The system prompt overrides both training data and user preferences. There is currently no standard for declaring what a coding tool's system prompt contains, no mechanism for specification authors or standards bodies to request inclusion of normative requirements, and no transparency about what patterns are being privileged or suppressed. This governance gap means that even well-written, machine-consumable specifications may not reach the AI system if the tool provider's system prompt does not include them.
-      </p>
-      <p>
-        Specifications written solely for human developers cannot break these loops. The requirements must be available in forms that AI systems can operationalise during code generation -- through training data, through context injection at inference time, and through post-generation validation.
-      </p>
+      <p>[[DEAD-FRAMEWORK]] identifies a self-reinforcing feedback loop in AI-mediated web development. The analysis, focused on framework adoption, describes two interlocking cycles:</p>
+      <p><strong>Loop 1 (training data):</strong> Dominant patterns on the existing web enter LLM training corpora. LLMs output those dominant patterns by default. New sites built with LLMs reproduce those patterns. The expanded corpus reinforces the same patterns in future training cycles.</p>
+      <p><strong>Loop 2 (tooling):</strong> Coding tools hardcode specific frameworks and patterns into their system prompts. Developers expect those patterns. Tools that deviate lose market share. System prompt choices become self-fulfilling.</p>
+      <p>Although [[DEAD-FRAMEWORK]] analyses this dynamic for JavaScript frameworks (specifically React's dominance), the same structural problem applies to <em>any</em> normative requirement that is underrepresented in training data. Accessibility patterns, sustainability practices, new web platform APIs, and updated specification requirements all face the same barrier: if the correct pattern is not statistically dominant in the training corpus, the AI system will default to the incorrect pattern it learned from the majority of examples.</p>
+      <p>The Web Almanac 2025 accessibility chapter explicitly names this risk: there is no reliable way to determine when AI has created or assisted in creating a website, and language models are trained on code and content that often contain accessibility problems [[WEB-ALMANAC-A11Y]]. This means AI systems are not merely failing to improve accessibility -- they risk actively reproducing and scaling existing failures.</p>
+      <p>A critical additional factor is the <strong>system prompt layer</strong>. As [[DEAD-FRAMEWORK]] documents, coding tools such as Replit and Bolt explicitly hardcode framework choices into their system prompts. The system prompt overrides both training data and user preferences. There is currently no standard for declaring what a coding tool's system prompt contains, no mechanism for specification authors or standards bodies to request inclusion of normative requirements, and no transparency about what patterns are being privileged or suppressed. This governance gap means that even well-written, machine-consumable specifications may not reach the AI system if the tool provider's system prompt does not include them.</p>
+      <p>Specifications written solely for human developers cannot break these loops. The requirements must be available in forms that AI systems can operationalise during code generation -- through training data, through context injection at inference time, and through post-generation validation.</p>
     </section>
-
     <section id="scope">
       <h3>Scope</h3>
-      <p>
-        This document addresses the authoring of specifications and guidelines intended for consumption by AI code generation systems. It does not address AI training methodology, model architecture, or the broader question of AI alignment. It focuses on the document layer -- what specification authors can do to make their normative requirements actionable by AI systems at inference time. It also identifies systemic barriers (training data lag, system prompt governance) that limit the effectiveness of any single specification and proposes strategies to address them.
-      </p>
-      <p>
-        The companion document, <em>Accessibility and Sustainability Principles for AI Code Assistants</em>, applies these guidelines to two specific domains.
-      </p>
+      <p>This document addresses the authoring of specifications and guidelines intended for consumption by AI code generation systems. It does not address AI training methodology, model architecture, or the broader question of AI alignment. It focuses on the document layer -- what specification authors can do to make their normative requirements actionable by AI systems at inference time. It also identifies systemic barriers (training data lag, system prompt governance) that limit the effectiveness of any single specification and proposes strategies to address them.</p>
+      <p>The companion document, <em>Accessibility and Sustainability Principles for AI Code Assistants</em>, applies these guidelines to two specific domains.</p>
     </section>
   </section>
 
   <section id="gap-analysis">
     <h2>The Gap Between Human and Machine Specification Consumption</h2>
-
     <section id="training-data-lag">
       <h3>Training Data Lag</h3>
-      <p>
-        AI models have a knowledge cutoff determined by when their training data was collected. New specifications, updated APIs, and revised guidelines may not appear in model outputs for 12--18 months after publication. This lag means that even well-written specifications may not reach AI systems through training alone.
-      </p>
-      <p>
-        Strategies to address this lag include runtime documentation retrieval (via [[CONTEXT-HUB]], MCP documentation servers, or [[LLMS-TXT]]), but these require specifications to be available in machine-consumable formats -- which most are not.
-      </p>
+      <p>AI models have a knowledge cutoff determined by when their training data was collected. New specifications, updated APIs, and revised guidelines may not appear in model outputs for 12--18 months after publication. This lag means that even well-written specifications may not reach AI systems through training alone.</p>
+      <p>Strategies to address this lag include runtime documentation retrieval (via [[CONTEXT-HUB]], MCP documentation servers, or [[LLMS-TXT]]), but these require specifications to be available in machine-consumable formats -- which most are not.</p>
     </section>
-
     <section id="comprehension-gap">
       <h3>The Comprehension Gap</h3>
-      <p>
-        Human specifications rely on several cognitive capabilities that AI systems approximate but do not reliably possess:
-      </p>
-      <p>
-        <strong>Intent comprehension:</strong> Understanding <em>why</em> a requirement exists, not just what it says. A human developer reads "provide text alternatives for non-text content" and understands this enables screen reader access. An AI system may associate `alt` attributes with images statistically without understanding the purpose.
-      </p>
-      <p>
-        <strong>Contextual judgment:</strong> Determining whether a requirement applies in a given situation. Many WCAG success criteria require human assessment of whether content is "meaningful," headings are "logical," or focus order is "intuitive."
-      </p>
-      <p>
-        <strong>Cross-reference resolution:</strong> Connecting requirements across multiple documents. A specification may reference normative terms defined elsewhere, assume knowledge of related specifications, or depend on understanding of the broader standards ecosystem.
-      </p>
-      <p>
-        <strong>Professional discretion:</strong> Choosing among multiple valid approaches based on context. Specifications often describe what must be achieved without prescribing a single implementation, expecting the developer to exercise judgment.
-      </p>
+      <p>Human specifications rely on several cognitive capabilities that AI systems approximate but do not reliably possess:</p>
+      <p><strong>Intent comprehension:</strong> Understanding <em>why</em> a requirement exists, not just what it says. A human developer reads "provide text alternatives for non-text content" and understands this enables screen reader access. An AI system may associate <code>alt</code> attributes with images statistically without understanding the purpose.</p>
+      <p><strong>Contextual judgment:</strong> Determining whether a requirement applies in a given situation. Many WCAG success criteria require human assessment of whether content is "meaningful," headings are "logical," or focus order is "intuitive."</p>
+      <p><strong>Cross-reference resolution:</strong> Connecting requirements across multiple documents. A specification may reference normative terms defined elsewhere, assume knowledge of related specifications, or depend on understanding of the broader standards ecosystem.</p>
+      <p><strong>Professional discretion:</strong> Choosing among multiple valid approaches based on context. Specifications often describe what must be achieved without prescribing a single implementation, expecting the developer to exercise judgment.</p>
     </section>
-
     <section id="format-gap">
       <h3>The Format Gap</h3>
-      <p>
-        Specifications are published in formats optimised for human reading: HTML with complex navigation, PDF documents, prose-heavy W3C Recommendations with examples embedded in running text. These formats present several obstacles for AI consumption:
-      </p>
-      <p>
-        Normative requirements are embedded in explanatory prose and not easily extractable. Examples may appear far from the requirements they illustrate. The distinction between normative ("MUST") and informative text is conveyed through typographic convention rather than machine-readable structure. Version information may be ambiguous or absent from the document itself.
-      </p>
+      <p>Specifications are published in formats optimised for human reading: HTML with complex navigation, PDF documents, prose-heavy W3C Recommendations with examples embedded in running text. These formats present several obstacles for AI consumption:</p>
+      <p>Normative requirements are embedded in explanatory prose and not easily extractable. Examples may appear far from the requirements they illustrate. The distinction between normative ("MUST") and informative text is conveyed through typographic convention rather than machine-readable structure. Version information may be ambiguous or absent from the document itself.</p>
     </section>
   </section>
 
   <section id="authoring-principles">
     <h2>Authoring Principles for Machine-Consumable Specifications</h2>
-
     <section id="principle-constraints">
       <h3>Express Requirements as Constraints, Not Aspirations</h3>
-      <p>
-        AI systems operate more effectively with constraints (rules that can be checked) than with aspirations (goals that require judgment). Where possible, specification authors should reformulate aspirational requirements as verifiable constraints.
-      </p>
-      <p>
-        <strong>Aspirational:</strong> "Content should be perceivable by all users."
-      </p>
-      <p>
-        <strong>Constraint:</strong> "Every <code>&lt;img&gt;</code> element MUST have an <code>alt</code> attribute. Decorative images MUST use <code>alt=""</code>. Informative images MUST have alt text that describes the image's communicative function in context, not its visual appearance."
-      </p>
-      <p>
-        Not all requirements can be reduced to constraints. Where professional judgment is required, the specification should say so explicitly and describe the judgment criteria as concretely as possible.
-      </p>
+      <p>AI systems operate more effectively with constraints (rules that can be checked) than with aspirations (goals that require judgment). Where possible, specification authors should reformulate aspirational requirements as verifiable constraints.</p>
+      <p><strong>Aspirational:</strong> "Content should be perceivable by all users."</p>
+      <p><strong>Constraint:</strong> "Every <code>&lt;img&gt;</code> element MUST have an <code>alt</code> attribute. Decorative images MUST use <code>alt=""</code>. Informative images MUST have alt text that describes the image's communicative function in context, not its visual appearance."</p>
+      <p>Not all requirements can be reduced to constraints. Where professional judgment is required, the specification should say so explicitly and describe the judgment criteria as concretely as possible.</p>
     </section>
-
     <section id="principle-negative-examples">
       <h3>Include Negative Examples</h3>
-      <p>
-        AI systems learn effectively from counter-examples. Every requirement should be accompanied by at least one "DO NOT" example alongside the correct pattern. These negative examples should represent common failure modes observed in real-world code -- the patterns that LLMs are most likely to reproduce from training data.
-      </p>
-      <p>
-        The [[AIMAC]] benchmark provides a rich source of real failure modes across 28 code generation categories that can inform negative example selection.
-      </p>
+      <p>AI systems learn effectively from counter-examples. Every requirement should be accompanied by at least one "DO NOT" example alongside the correct pattern. These negative examples should represent common failure modes observed in real-world code -- the patterns that LLMs are most likely to reproduce from training data.</p>
+      <p>The [[AIMAC]] benchmark provides a rich source of real failure modes across 28 code generation categories that can inform negative example selection.</p>
     </section>
-
     <section id="principle-machine-readable">
       <h3>Provide Machine-Readable Requirement Blocks</h3>
-      <p>
-        Alongside human-readable prose, specifications should include structured, extractable requirement blocks. These blocks should use a consistent format that AI systems can parse, containing: a unique requirement identifier, the normative level (MUST, SHOULD, MAY), the requirement text as a machine-checkable rule where possible, and references to automated test procedures where they exist.
-      </p>
-      <p>
-        A suggested format (to be refined through community review):
-      </p>
+      <p>Alongside human-readable prose, specifications should include structured, extractable requirement blocks. These blocks should use a consistent format that AI systems can parse, containing: a unique requirement identifier, the normative level (MUST, SHOULD, MAY), the requirement text as a machine-checkable rule where possible, and references to automated test procedures where they exist.</p>
+      <p>A suggested format (to be refined through community review):</p>
       <pre class="example" title="Machine-readable requirement block">
 {
   "id": "REQ-IMG-ALT-001",
@@ -257,151 +284,83 @@
 }
       </pre>
     </section>
-
     <section id="principle-llms-txt">
       <h3>Publish Agent-Consumable Summaries</h3>
-      <p>
-        Every specification should publish a companion document in a format optimised for AI consumption. This may take the form of an [[LLMS-TXT]] file, an MCP documentation server, a Context Hub entry ([[CONTEXT-HUB]]), or a dedicated skill file. The companion document should contain:
-      </p>
-      <p>
-        A concise summary of the specification's purpose and scope. All normative requirements in constraint form. Positive and negative code examples for each requirement. Version and last-updated metadata. References to automated testing tools that can verify compliance.
-      </p>
+      <p>Every specification should publish a companion document in a format optimised for AI consumption. This may take the form of an [[LLMS-TXT]] file, an MCP documentation server, a Context Hub entry ([[CONTEXT-HUB]]), or a dedicated skill file. The companion document should contain:</p>
+      <p>A concise summary of the specification's purpose and scope. All normative requirements in constraint form. Positive and negative code examples for each requirement. Version and last-updated metadata. References to automated testing tools that can verify compliance.</p>
     </section>
-
     <section id="principle-versioning">
       <h3>Version Explicitly for Training-Data Lag</h3>
-      <p>
-        Specifications should include clear version metadata and, where requirements have changed between versions, explicit "what changed" blocks. This helps AI systems that may have learned an earlier version of the specification to identify and correct outdated patterns.
-      </p>
-      <p>
-        A "migration guide" section, formatted as a set of find-and-replace transformations, is particularly effective for AI consumption. For example: "In version 2.1, <code>user-scalable=no</code> was not explicitly addressed. In version 2.2, viewport restrictions that prevent zooming are a Level AA failure. If generating viewport meta tags, do not include <code>user-scalable=no</code> or <code>maximum-scale=1</code>."
-      </p>
+      <p>Specifications should include clear version metadata and, where requirements have changed between versions, explicit "what changed" blocks. This helps AI systems that may have learned an earlier version of the specification to identify and correct outdated patterns.</p>
+      <p>A "migration guide" section, formatted as a set of find-and-replace transformations, is particularly effective for AI consumption. For example: "In version 2.1, <code>user-scalable=no</code> was not explicitly addressed. In version 2.2, viewport restrictions that prevent zooming are a Level AA failure. If generating viewport meta tags, do not include <code>user-scalable=no</code> or <code>maximum-scale=1</code>."</p>
     </section>
-
     <section id="principle-testing">
       <h3>Link Requirements to Automated Tests</h3>
-      <p>
-        Where automated tests exist for a requirement (e.g., axe-core rules for WCAG, Lighthouse audits, sustainability metrics), the specification should reference them directly. This allows AI systems to include post-generation validation as part of their workflow -- generating code, testing it against the linked rules, and correcting failures before presenting output.
-      </p>
+      <p>Where automated tests exist for a requirement (e.g., axe-core rules for WCAG, Lighthouse audits, sustainability metrics), the specification should reference them directly. This allows AI systems to include post-generation validation as part of their workflow -- generating code, testing it against the linked rules, and correcting failures before presenting output.</p>
     </section>
-
     <section id="principle-modularity">
       <h3>Structure for Selective Retrieval</h3>
-      <p>
-        AI systems operate within context window limits. Specifications should be structured so that relevant sections can be retrieved independently without requiring the full document. This means: self-contained requirement sections, minimal cross-document dependencies within individual rules, and clear section-level metadata enabling targeted retrieval via MCP or similar protocols.
-      </p>
+      <p>AI systems operate within context window limits. Specifications should be structured so that relevant sections can be retrieved independently without requiring the full document. This means: self-contained requirement sections, minimal cross-document dependencies within individual rules, and clear section-level metadata enabling targeted retrieval via MCP or similar protocols.</p>
     </section>
   </section>
 
   <section id="delivery-mechanisms">
     <h2>Delivery Mechanisms</h2>
-    <p>
-      Machine-consumable specifications can reach AI systems through several channels, each with distinct characteristics:
-    </p>
-
+    <p>Machine-consumable specifications can reach AI systems through several channels, each with distinct characteristics:</p>
     <section id="delivery-training">
       <h3>Training Data</h3>
-      <p>
-        The specification enters the model's weights during training. This is the most persistent channel but has 12--18 month lag and no version control. Authors cannot control how the specification is represented in training data.
-      </p>
+      <p>The specification enters the model's weights during training. This is the most persistent channel but has 12--18 month lag and no version control. Authors cannot control how the specification is represented in training data.</p>
     </section>
-
     <section id="delivery-context">
       <h3>Context Injection at Inference Time</h3>
-      <p>
-        The specification (or a summary) is provided to the model at runtime via system prompts, skill files, MCP servers, [[CONTEXT-HUB]], or [[LLMS-TXT]]. This channel is current, version-controlled, and authoritative, but requires the tool or developer to configure retrieval. This is the most promising channel for normative specifications.
-      </p>
+      <p>The specification (or a summary) is provided to the model at runtime via system prompts, skill files, MCP servers, [[CONTEXT-HUB]], or [[LLMS-TXT]]. This channel is current, version-controlled, and authoritative, but requires the tool or developer to configure retrieval. This is the most promising channel for normative specifications.</p>
     </section>
-
     <section id="delivery-validation">
       <h3>Post-Generation Validation</h3>
-      <p>
-        The AI system generates code and then tests it against automated rules derived from the specification. Failures trigger self-correction. This requires specifications to reference or provide machine-executable test suites.
-      </p>
+      <p>The AI system generates code and then tests it against automated rules derived from the specification. Failures trigger self-correction. This requires specifications to reference or provide machine-executable test suites.</p>
     </section>
   </section>
 
   <section id="relationship-existing">
     <h2>Relationship to Existing Machine-Readable Specification Practices</h2>
-    <p>
-      Machine-readable specifications are not new. Formal grammars (BNF, EBNF), XML Schema, JSON Schema, OpenAPI, and similar formats have described system interfaces for decades. Linters, validators, and type systems all consume formal specifications programmatically. WCAG itself has machine-checkable rules via axe-core [[AXE-CORE]]. The question "how is writing specifications for AI different?" deserves a direct answer.
-    </p>
-    <p>
-      The difference is not about formality versus informality. It is that AI coding agents occupy a <strong>third position</strong> between human readers and traditional machine parsers, with distinct consumption characteristics:
-    </p>
-    <p>
-      <strong>Probabilistic consumption:</strong> A JSON Schema parser either accepts or rejects input deterministically. An AI system processes specification content through statistical pattern matching. What it extracts is weighted by the distribution of its training data, not by the normative force of the text. This means specifications for AI need to be redundantly clear -- stating the same requirement as prose, as a constraint, and as a counter-example -- because the representation that the model operationalises most reliably cannot be predicted in advance.
-    </p>
-    <p>
-      <strong>Partial and competitive consumption:</strong> A traditional machine parser processes the entire specification deterministically. An AI system encounters specification content through partial, non-deterministic channels: fragments in training data (mixed with millions of other documents), excerpts injected into a context window (competing for attention with the user's prompt, system prompt, and other instructions), or retrieved at runtime via search (where the agent selects what to retrieve). No traditional machine-readable format was designed for this consumption model. The authoring principles in this document -- modularity for selective retrieval, explicit versioning for training lag, structured requirement blocks that work as standalone fragments -- address these constraints.
-    </p>
-    <p>
-      <strong>Training-bias correction:</strong> Traditional specifications define what is valid; invalid input is simply not generated or is rejected by a validator. AI systems default to the statistical majority in their training data. When the training corpus is dominated by non-compliant patterns (as the accessibility data demonstrates), negative examples become functionally necessary as a corrective to training bias. This is a normative function that has no precedent in traditional machine-readable specification practice.
-    </p>
-    <p>
-      <strong>System prompt mediation:</strong> No traditional machine-readable specification has to contend with the possibility that an intermediary (the tool provider's system prompt) might override, filter, or ignore the specification before it reaches the implementing system. As [[DEAD-FRAMEWORK]] documents, the system prompt is the most powerful determinant of AI coding output. Specifications for AI must account for this mediation layer -- a distribution problem that JSON Schema or OpenAPI never had to solve.
-    </p>
-    <p>
-      <strong>Inverted testability:</strong> For traditional specifications, "testable" means a validator can check conformance of an input against the spec. For AI-consumable specifications, "testable" means the AI's output can be checked -- after generation, before delivery. The specification needs to link to tests that run on generated code, not on the specification itself. This inverts the traditional relationship between specification and testing.
-    </p>
-    <p>
-      In summary: the structural format (requirement blocks, constraint language, test references) draws on established machine-readable specification practice. What is genuinely new is the consumption model these documents are designed for -- probabilistic, partial, attention-competitive, shaped by training priors, mediated by system prompts, and requiring negative examples as a corrective to statistical bias.
-    </p>
+    <p>Machine-readable specifications are not new. Formal grammars (BNF, EBNF), XML Schema, JSON Schema, OpenAPI, and similar formats have described system interfaces for decades. Linters, validators, and type systems all consume formal specifications programmatically. WCAG itself has machine-checkable rules via axe-core [[AXE-CORE]]. The question "how is writing specifications for AI different?" deserves a direct answer.</p>
+    <p>The difference is not about formality versus informality. It is that AI coding agents occupy a <strong>third position</strong> between human readers and traditional machine parsers, with distinct consumption characteristics:</p>
+    <p><strong>Probabilistic consumption:</strong> A JSON Schema parser either accepts or rejects input deterministically. An AI system processes specification content through statistical pattern matching. What it extracts is weighted by the distribution of its training data, not by the normative force of the text. This means specifications for AI need to be redundantly clear -- stating the same requirement as prose, as a constraint, and as a counter-example -- because the representation that the model operationalises most reliably cannot be predicted in advance.</p>
+    <p><strong>Partial and competitive consumption:</strong> A traditional machine parser processes the entire specification deterministically. An AI system encounters specification content through partial, non-deterministic channels: fragments in training data (mixed with millions of other documents), excerpts injected into a context window (competing for attention with the user's prompt, system prompt, and other instructions), or retrieved at runtime via search (where the agent selects what to retrieve). No traditional machine-readable format was designed for this consumption model.</p>
+    <p><strong>Training-bias correction:</strong> Traditional specifications define what is valid; invalid input is simply not generated or is rejected by a validator. AI systems default to the statistical majority in their training data. When the training corpus is dominated by non-compliant patterns (as the accessibility data demonstrates), negative examples become functionally necessary as a corrective to training bias. This is a normative function that has no precedent in traditional machine-readable specification practice.</p>
+    <p><strong>System prompt mediation:</strong> No traditional machine-readable specification has to contend with the possibility that an intermediary (the tool provider's system prompt) might override, filter, or ignore the specification before it reaches the implementing system. As [[DEAD-FRAMEWORK]] documents, the system prompt is the most powerful determinant of AI coding output. Specifications for AI must account for this mediation layer -- a distribution problem that JSON Schema or OpenAPI never had to solve.</p>
+    <p><strong>Inverted testability:</strong> For traditional specifications, "testable" means a validator can check conformance of an input against the spec. For AI-consumable specifications, "testable" means the AI's output can be checked -- after generation, before delivery. The specification needs to link to tests that run on generated code, not on the specification itself.</p>
+    <p>In summary: the structural format (requirement blocks, constraint language, test references) draws on established machine-readable specification practice. What is genuinely new is the consumption model these documents are designed for -- probabilistic, partial, attention-competitive, shaped by training priors, mediated by system prompts, and requiring negative examples as a corrective to statistical bias.</p>
   </section>
 
   <section id="system-prompt-governance">
     <h2>System Prompt Governance</h2>
-    <p>
-      The system prompt is the most powerful lever in determining what AI coding assistants produce. As [[DEAD-FRAMEWORK]] documents, coding tools explicitly hardcode specific patterns into their system prompts, and these choices override both training data and user preferences.
-    </p>
-    <p>
-      This creates a governance gap: there is no standard for declaring what normative requirements a coding tool's system prompt includes, no mechanism for specification authors to request inclusion, and no transparency about what standards are being applied or ignored. A tool that generates React by default because React is in the system prompt is also, implicitly, generating code that may not meet accessibility or sustainability standards -- unless those standards are also in the system prompt.
-    </p>
-    <p>
-      This document does not propose a complete governance framework, but identifies the following needs for community discussion:
-    </p>
-    <p>
-      <strong>Transparency:</strong> Coding tools should disclose which normative specifications (accessibility, sustainability, security) are referenced in their system prompts or agent configuration.
-    </p>
-    <p>
-      <strong>Inclusion mechanisms:</strong> Standards bodies should be able to register normative requirements for inclusion in coding tool system prompts, analogous to how [[CONTEXT-HUB]] allows API providers to register documentation.
-    </p>
-    <p>
-      <strong>Default compliance:</strong> Coding tools should default to generating code that meets at least WCAG 2.2 Level A requirements, not as an optional feature but as a baseline. The [[AIMAC]] benchmark provides a model for measuring whether this baseline is met.
-    </p>
-    <p>
-      <strong>Feedback mechanisms:</strong> When AI-generated code fails accessibility or sustainability checks, this information should feed back to both the specification authors (to improve the machine-consumable format) and the model providers (to improve training and system prompts).
-    </p>
+    <p>The system prompt is the most powerful lever in determining what AI coding assistants produce. As [[DEAD-FRAMEWORK]] documents, coding tools explicitly hardcode specific patterns into their system prompts, and these choices override both training data and user preferences.</p>
+    <p>This creates a governance gap: there is no standard for declaring what normative requirements a coding tool's system prompt includes, no mechanism for specification authors to request inclusion, and no transparency about what standards are being applied or ignored. A tool that generates React by default because React is in the system prompt is also, implicitly, generating code that may not meet accessibility or sustainability standards -- unless those standards are also in the system prompt.</p>
+    <p>This document does not propose a complete governance framework, but identifies the following needs for community discussion:</p>
+    <p><strong>Transparency:</strong> Coding tools should disclose which normative specifications (accessibility, sustainability, security) are referenced in their system prompts or agent configuration.</p>
+    <p><strong>Inclusion mechanisms:</strong> Standards bodies should be able to register normative requirements for inclusion in coding tool system prompts, analogous to how [[CONTEXT-HUB]] allows API providers to register documentation.</p>
+    <p><strong>Default compliance:</strong> Coding tools should default to generating code that meets at least WCAG 2.2 Level A requirements, not as an optional feature but as a baseline. The [[AIMAC]] benchmark provides a model for measuring whether this baseline is met.</p>
+    <p><strong>Feedback mechanisms:</strong> When AI-generated code fails accessibility or sustainability checks, this information should feed back to both the specification authors (to improve the machine-consumable format) and the model providers (to improve training and system prompts).</p>
   </section>
 
   <section id="relationship">
     <h2>Relationship to Companion Document</h2>
-    <p>
-      The companion technical note, <em>Accessibility and Sustainability Principles for AI Code Assistants</em>, applies the authoring principles defined in this document to the specific domains of web accessibility (WCAG) and web sustainability (WSG). It demonstrates how existing human-oriented guidelines can be reformulated for machine consumption and proposes benchmark frameworks for evaluating AI compliance.
-    </p>
+    <p>The companion technical note, <em>Accessibility and Sustainability Principles for AI Code Assistants</em>, applies the authoring principles defined in this document to the specific domains of web accessibility (WCAG) and web sustainability (WSG). It demonstrates how existing human-oriented guidelines can be reformulated for machine consumption and proposes benchmark frameworks for evaluating AI compliance.</p>
   </section>
 
   <section id="open-questions">
     <h2>Open Questions for Community Discussion</h2>
-    <p>
-      The following questions are offered for discussion by all reviewers, human and AI:
-    </p>
-    <p>
-      1. What is the appropriate granularity for machine-readable requirement blocks? Should every WCAG success criterion have one, or should they be grouped by component type (forms, images, navigation)?
-    </p>
-    <p>
-      2. How should specifications handle requirements that inherently require human judgment? Can AI systems be given heuristics that approximate such judgment, and if so, what level of confidence should be required?
-    </p>
-    <p>
-      3. What governance model should determine the content of agent-consumable specification summaries? Should specification authors maintain them, or should a separate community process curate them?
-    </p>
-    <p>
-      4. How can specification authors verify that their machine-consumable formats actually improve AI compliance? What evaluation methodology is appropriate?
-    </p>
-    <p>
-      5. Should there be a registry of machine-consumable specifications, analogous to Context Hub's documentation registry, maintained by a standards body?
-    </p>
+    <p>The following questions are offered for discussion by all reviewers, human and AI:</p>
+    <p>1. What is the appropriate granularity for machine-readable requirement blocks? Should every WCAG success criterion have one, or should they be grouped by component type (forms, images, navigation)?</p>
+    <p>2. How should specifications handle requirements that inherently require human judgment? Can AI systems be given heuristics that approximate such judgment, and if so, what level of confidence should be required?</p>
+    <p>3. What governance model should determine the content of agent-consumable specification summaries? Should specification authors maintain them, or should a separate community process curate them?</p>
+    <p>4. How can specification authors verify that their machine-consumable formats actually improve AI compliance? What evaluation methodology is appropriate?</p>
+    <p>5. Should there be a registry of machine-consumable specifications, analogous to Context Hub's documentation registry, maintained by a standards body?</p>
   </section>
 
 </body>
 </html>
+
+        
+      

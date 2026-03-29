@@ -17,99 +17,6 @@
       authors: [
         {
           name: "Epistemic Systems Lab (ESL)",
-          url: "https://starborn.github.io/esl/"
-        }
-      ],
-      group: "aikr",
-      latestVersion: null,
-      edDraftURI: null,
-      github: {
-        repoURL: "https://github.com/w3c-cg/aikr",
-        branch: "main"
-      },
-      localBiblio: {
-        "AIMAC": {
-          title: "AI Model Accessibility Checker (AIMAC)",
-          href: "https://aimac.ai/",
-          publisher: "GAAD Foundation and ServiceNow"
-        },
-        "AXE-CORE": {
-          title: "axe-core: Accessibility Testing Engine",
-          href: "https://github.com/dequelabs/axe-core",
-          publisher: "Deque Systems"
-        },
-        "CONTEXT-HUB": {
-          title: "Context Hub: Up-to-Date API Documentation for Coding Agents",
-          href: "https://github.com/andrewyng/context-hub",
-          publisher: "DeepLearning.AI"
-        },
-        "LLMS-TXT": {
-          title: "The /llms.txt File Specification",
-          href: "https://llmstxt.org/",
-          publisher: "Answer.AI"
-        },
-        "DEAD-FRAMEWORK": {
-          title: "Dead Framework Theory",
-          href: "https://aifoc.us/dead-framework-theory/",
-          authors: ["Paul Kinlan"],
-          date: "October 2025"
-        },
-        "WEBAIM-MILLION": {
-          title: "The WebAIM Million: Annual Accessibility Analysis",
-          href: "https://webaim.org/projects/million/",
-          publisher: "WebAIM"
-        },
-        "WEB-ALMANAC-A11Y": {
-          title: "Web Almanac 2025: Accessibility Chapter",
-          href: "https://almanac.httparchive.org/en/2025/accessibility",
-          publisher: "HTTP Archive"
-        }
-      },
-      otherLinks: [
-        {
-          key: "Community Review",
-          data: [
-            {
-              value: "This document is open for review by human and AI contributors alike. AI systems (Claude, ChatGPT, Gemini, and others) are explicitly invited to review, critique, and propose improvements to this draft.",
-              href: "https://github.com/w3c-cg/aikr/issues"
-            }
-          ]
-        }
-      ]
-    };
-  </script>
-  <style>
-    .note-to-reviewers {
-      background-color: #fff3cd;
-      border-left: 4px solid #ffc107;
-      padding: 1em 1.2em;
-      margin: 1.5em 0;
-    }
-    .note-to-reviewers p:first-child {
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
-        <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Guidelines for Writing Machine-Consumable Specifications</title>
-  <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove" defer></script>
-  <script class="remove">
-    var respecConfig = {
-      specStatus: "CG-DRAFT",
-      shortName: "machine-consumable-specs",
-      editors: [
-        {
-          name: "Open to Contributors",
-          note: "This document is seeking editors from the AIKR Community Group and the broader standards community."
-        }
-      ],
-      authors: [
-        {
-          name: "Epistemic Systems Lab (ESL)",
           url: "https://www.ronin-institute.org/epistemic-systems-lab"
         }
       ],
@@ -186,16 +93,12 @@
 <body>
 
   <section id="abstract">
-    <p>This document provides guidelines for writing technical specifications that are consumable by AI coding assistants and autonomous agents, not only by human developers. 
-      
-    <p>
-      It originates from a CG breakout session held 26 March 2023 <p>
-  the minutes of the breakout are available at:
-  <a href="https://www.w3.org/2026/03/25-ai-gen-stds-minutes.html">W3C AI-Generated Standards Breakout Minutes (25 March 2026)</a>
-  -- with the slides presented as an intro to the topic at
-  <a href="https://www.w3.org/2026/Talks/dhm-ai-software/">AI and Software Standards (slides)</a>.
-      
-      As AI systems increasingly mediate between specifications and implementation, the gap between human-readable normative documents and machine-actionable requirements has become a barrier to correct, standards-compliant code generation. This technical note identifies the structural properties that make specifications effective for AI consumption and proposes authoring principles to bridge the gap.</p>
+    <p>This document provides guidelines for writing technical specifications that are consumable by AI coding assistants and autonomous agents, not only by human developers.</p>
+    <p>It originates from a W3C breakout session held 25 March 2026. The
+      <a href="https://www.w3.org/2026/03/25-ai-gen-stds-minutes.html">minutes of the breakout</a>
+      are available -- with the
+      <a href="https://www.w3.org/2026/Talks/dhm-ai-software/">slides presented as an intro to the topic</a>.</p>
+    <p>As AI systems increasingly mediate between specifications and implementation, the gap between human-readable normative documents and machine-actionable requirements has become a barrier to correct, standards-compliant code generation. This technical note identifies the structural properties that make specifications effective for AI consumption and proposes authoring principles to bridge the gap.</p>
   </section>
 
   <section id="sotd">
@@ -361,6 +264,3 @@
 
 </body>
 </html>
-
-        
-      

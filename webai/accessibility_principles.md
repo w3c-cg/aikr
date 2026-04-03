@@ -2,8 +2,8 @@
 
 ## An Explainer for Developers and Evaluators
 
-Authors: Paola Di Maio (W3C AIKR CG Chair) & Claude (Anthropic)
-Affiliation: Epistemic Systems Lab, Ronin Institute / W3C AI Knowledge Representation CG
+Authors: Paola Di Maio (W3C AIKR CG Chair) 
+ESL Ronin Institute / W3C AI Knowledge Representation CG
 Reference: [w3c/webai#23](https://github.com/w3c/webai/issues/23)
 
 ---

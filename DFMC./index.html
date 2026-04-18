@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Digital Forensics Model Card Specification</title>
+  <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove" defer></script>
+  <script class="remove">
+    var respecConfig = {
+      specStatus: "CG-DRAFT",
+      group: "aikr",
+      shortName: "df-model-card",
+      edDraftURI: "https://w3c-cg.github.io/aikr/df-model-card/",
+      editors: [
+        {
+          name: "Paola Di Maio",
+          url: "https://www.w3.org/community/aikr/",
+          company: "W3C AI Knowledge Representation Community Group",
+          companyURL: "https://www.w3.org/community/aikr/",
+        },
+      ],
+      authors: [
+        {
+          name: "W3C AI KR CG Contributors",
+        },
+      ],
+      publishDate: "2026-04-18",
+      latestVersion: null,
+      github: "https://github.com/w3c-cg/aikr",
+      localBiblio: {
+        "DIMAIO-DFOS": {
+          title: "Towards Open Standards for Systemic Complexity in Digital Forensics",
+          href: "https://doi.org/10.1201/9781003512820-3",
+          authors: ["Paola Di Maio"],
+          publisher: "CRC Press / Taylor & Francis",
+          date: "2024",
+          rawDate: "2024",
+        },
+        "DIMAIO-DFMC": {
+          title: "Digital and Web Forensics Model Cards, V1",
+          href: "https://arxiv.org/abs/2512.17722",
+          authors: ["Paola Di Maio"],
+          publisher: "arXiv",
+          date: "2025-12-19",
+        },
+        "HARGREAVES-ABSTRACT": {
+          title: "An abstract model for digital forensic analysis tools -- A foundation for systematic error mitigation analysis",
+          href: "https://doi.org/10.1016/j.fsidi.2023.301679",
+          authors: ["Christopher Hargreaves", "Alex Nelson", "Eoghan Casey"],
+          publisher: "Forensic Science International: Digital Investigation",
+          date: "2024",
+          rawDate: "2024",
+        },
+        "MITCHELL-MODELCARDS": {
+          title: "Model Cards for Model Reporting",
+          href: "https://doi.org/10.1145/3287560.3287596",
+          authors: ["Margaret Mitchell", "Simone Wu", "Andrew Zaldivar", "Parker Barnes", "Lucy Vasserman", "Ben Hutchinson", "Elena Spitzer", "Inioluwa Deborah Raji", "Timnit Gebru"],
+          publisher: "ACM FAccT",
+          date: "2019",
+        },
+        "HF-MODELCARD": {
+          title: "Hugging Face Model Card Metadata Specification",
+          href: "https://huggingface.co/docs/hub/model-card-metadata",
+          publisher: "Hugging Face",
+          date: "2024",
+        },
+        "CASEY-DFXML": {
+          title: "Digital Forensic XML and CASE/UCO: The Cyber-Investigation Analysis Standard Expression",
+          href: "https://caseontology.org/",
+          authors: ["Eoghan Casey"],
+          publisher: "CASE Community",
+          date: "2023",
+        },
+        "SCANLON-CHATGPT-DF": {
+          title: "ChatGPT for digital forensic investigation: The good, the bad, and the unknown",
+          href: "https://doi.org/10.1016/j.fsidi.2023.301609",
+          authors: ["Mark Scanlon", "Frank Breitinger", "Christopher Hargreaves", "Jan-Niclas Hilgert", "John Sheppard"],
+          publisher: "Forensic Science International: Digital Investigation",
+          date: "2023",
+        },
+      },
+    };
+  </script>
+  <style>
+    table.def {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 1em 0;
+    }
+    table.def th, table.def td {
+      border: 1px solid #ccc;
+      padding: 0.5em 0.75em;
+      text-align: left;
+      vertical-align: top;
+    }
+    table.def th {
+      background: #f0f0f0;
+    }
+    table.def caption {
+      font-weight: bold;
+      margin-bottom: 0.5em;
+      text-align: left;
+    }
+    .cv-list {
+      margin: 0.5em 0;
+    }
+    .cv-list dt {
+      font-weight: bold;
+      margin-top: 0.5em;
+    }
+    .cv-list dd {
+      margin-left: 2em;
+    }
+    pre.json-example {
+      background: #f8f8f8;
+      border: 1px solid #ddd;
+      padding: 1em;
+      overflow-x: auto;
+      font-size: 0.9em;
+    }
+    .note-box {
+      background: #e8f4fd;
+      border-left: 4px solid #2196F3;
+      padding: 0.75em 1em;
+      margin: 1em 0;
+    }
+  </style>
+</head>
+<body>
+
+  <section id="abstract">
+    <p>
+      This specification defines a standardized model card framework for digital and web forensics.
+      Building upon established model card methodologies [[MITCHELL-MODELCARDS]] and
+      recent work on abstract models for digital forensic analysis [[HARGREAVES-ABSTRACT]],
+      the specification presents a structured schema for representing knowledge about AI and
+      machine learning systems used in forensic contexts. The framework includes a formal
+      JSON schema, controlled vocabularies for classification, reasoning types, bias
+      identification, and error categorization, and is accompanied by a reference
+      web-based generator tool.
+    </p>
+    <p>
+      The specification addresses the need for transparency, reproducibility, and
+      accountability in forensic AI systems, where errors in automated analysis can
+      have serious consequences for justice and public safety.
+    </p>
+  </section>
+
+  <section id="sotd">
+    <p>
+      This document is a Community Group Draft Report published by the
+      <a href="https://www.w3.org/community/aikr/">W3C AI Knowledge Representation Community Group</a>.
+      It is based on the research published in [[DIMAIO-DFOS]] and [[DIMAIO-DFMC]], and
+      draws on the abstract forensic tool model proposed in [[HARGREAVES-ABSTRACT]].
+    </p>
+    <p>
+      A reference implementation of the generator tool described in this specification
+      is available at
+      <a href="https://huggingface.co/spaces/STARBORN/forensics_mc_generator">
+        https://huggingface.co/spaces/STARBORN/forensics_mc_generator</a>.
+    </p>
+    <p>
+      Comments and feedback are welcome via the
+      <a href="https://github.com/w3c-cg/aikr/issues">AIKR CG GitHub issue tracker</a>
+      or the group mailing list.
+    </p>
+  </section>
+
+  <!-- ======== INTRODUCTION ======== -->
+  <section id="introduction">
+    <h2>Introduction</h2>
+    <p>
+      The intersection of artificial intelligence and digital forensics is becoming
+      increasingly complex, ubiquitous, and pervasive. AI techniques are now adopted
+      across all types of scientific and technical inquiry, from law enforcement
+      investigations to organizational governance and regulatory compliance. Despite
+      considerable advances, forensic sciences remain vulnerable to errors, and the
+      opacity of AI-based tools compounds the challenge of validating results
+      [[DIMAIO-DFOS]].
+    </p>
+    <p>
+      Model cards, first proposed by Mitchell et al. [[MITCHELL-MODELCARDS]], provide
+      a structured documentation framework for machine learning models. However, the
+      standard model card schema does not address the specific requirements of digital
+      forensics, where the consequences of errors extend to judicial proceedings,
+      wrongful convictions, and failures in evidence integrity.
+    </p>
+    <p>
+      Hargreaves, Nelson, and Casey [[HARGREAVES-ABSTRACT]] introduced an abstract
+      model for digital forensic analysis tools that deconstructs the internal process
+      flow within monolithic forensic tools, identifying where errors can be introduced
+      and how they propagate. Their work provides the analytical foundation for the
+      process-level elements defined in this specification.
+    </p>
+    <p>
+      This specification defines the <dfn>Digital Forensics Model Card</dfn> (DF-MC),
+      a domain-specific extension of the model card concept tailored for AI and ML
+      systems operating in forensic contexts. The DF-MC schema is organized into
+      three sections: top-level descriptive elements, forensic process elements, and
+      free-text narrative fields.
+    </p>
+
+    <section id="design-goals">
+      <h3>Design Goals</h3>
+      <p>The specification is designed with the following goals:</p>
+      <p>
+        <strong>Transparency</strong> -- Forensic AI systems must be documented in
+        a way that allows independent evaluation of their capabilities, limitations,
+        and potential failure modes.
+      </p>
+      <p>
+        <strong>Reproducibility</strong> -- The schema provides sufficient structure
+        to enable independent verification of forensic analysis results.
+      </p>
+      <p>
+        <strong>Interoperability</strong> -- The JSON output format enables
+        integration with existing forensic tool ecosystems, evidence management
+        systems, and standards such as CASE/UCO [[CASEY-DFXML]].
+      </p>
+      <p>
+        <strong>Human readability</strong> -- Both the JSON output and the
+        accompanying Markdown rendering are designed to be comprehensible by
+        forensic practitioners, legal professionals, and judges who may not have
+        ML expertise.
+      </p>
+      <p>
+        <strong>Extensibility</strong> -- The controlled vocabularies and schema
+        structure allow domain-specific extensions without breaking compatibility.
+      </p>
+    </section>
+
+    <section id="scope">
+      <h3>Scope</h3>
+      <p>
+        This specification covers AI and ML systems used in the following forensic domains:
+        computer forensics, network forensics, mobile device forensics, cloud forensics,
+        database forensics, memory forensics, digital image forensics, digital
+        video/audio forensics, IoT forensics, and multi-domain forensic systems.
+        The framework is also applicable to web forensics scenarios including
+        content verification, provenance analysis, and online fraud detection.
+      </p>
+    </section>
+  </section>
+
+  <!-- ======== CONFORMANCE ======== -->
+  <section id="conformance">
+    <p>
+      The key words "MUST", "SHOULD", "MAY", and "OPTIONAL" in this document are
+      to be interpreted as described in [[RFC2119]].
+    </p>
+    <p>
+      A conforming Digital Forensics Model Card MUST include all fields marked as
+      <em>Required</em> in the schema tables below. Fields marked as <em>Optional</em>
+      SHOULD be populated when the information is available. All string values
+      SHOULD use the controlled vocabularies defined in this specification where
+      applicable, and MAY use custom values with the prefix <code>custom:</code>.
+    </p>
+  </section>
+
+  <!-- ======== SCHEMA OVERVIEW ======== -->
+  <section id="schema-overview">
+    <h2>Schema Overview</h2>
+    <p>
+      The DF-MC schema is organized into three principal sections, reflecting the
+      structure proposed in [[DIMAIO-DFOS]] and [[DIMAIO-DFMC]]:
+    </p>
+    <p>
+      <strong>Section 1: Metadata and Top-Level Elements</strong> -- General
+      identification and descriptive information about the forensic AI model,
+      including its classification, intended use, known biases, error types, and
+      reasoning methods. These elements correspond to the schema dimensions
+      presented in Figure 6 of [[DIMAIO-DFOS]].
+    </p>
+    <p>
+      <strong>Section 2: Forensic Process Elements</strong> -- Mapping the model
+      to the abstract forensic tool process model defined by [[HARGREAVES-ABSTRACT]].
+      Each element represents a stage in the forensic analysis pipeline where the
+      AI/ML system may participate. These elements correspond to the process flow
+      presented in Figure 7 of [[DIMAIO-DFOS]].
+    </p>
+    <p>
+      <strong>Section 3: Narrative Description</strong> -- Free-text fields for
+      contextual information that cannot be adequately captured in structured form,
+      including operational notes, limitations, ethical considerations, and
+      deployment context.
+    </p>
+  </section>
+
+  <!-- ======== SECTION 1: METADATA ======== -->
+  <section id="metadata-elements">
+    <h2>Section 1: Metadata and Top-Level Elements</h2>
+
+    <section id="identification">
+      <h3>Model Identification</h3>
+      <table class="def">
+        <caption>Table 1: Identification Fields</caption>
+        <thead>
+          <tr><th>Field</th><th>ID</th><th>Type</th><th>Status</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Model Name</td>
+            <td><code>DF-MC Name</code></td>
+            <td>String</td>
+            <td>Required</td>
+            <td>The official name of the forensic AI/ML model or system.</td>
+          </tr>
+          <tr>
+            <td>Version</td>
+            <td><code>DF-MC V</code></td>
+            <td>String</td>
+            <td>Required</td>
+            <td>Version identifier of the model.</td>
+          </tr>
+          <tr>
+            <td>Developer</td>
+            <td><code>DF-MC Dev</code></td>
+            <td>String</td>
+            <td>Required</td>
+            <td>Organization or individual responsible for the model.</td>
+          </tr>
+          <tr>
+            <td>Date</td>
+            <td><code>DF-MC Date</code></td>
+            <td>Date (ISO 8601)</td>
+            <td>Required</td>
+            <td>Date of model card creation or last update.</td>
+          </tr>
+          <tr>
+            <td>Contact</td>
+            <td><code>DF-MC Contact</code></td>
+            <td>String</td>
+            <td>Optional</td>
+            <td>Contact information for the model maintainer.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="top-level-descriptors">
+      <h3>Top-Level Descriptors</h3>
+      <p>
+        These fields capture the core forensic and analytical properties of the
+        model. Each uses a controlled vocabulary defined in <a href="#controlled-vocabularies"></a>.
+      </p>
+      <table class="def">
+        <caption>Table 2: Top-Level Descriptor Fields</caption>
+        <thead>
+          <tr><th>Field</th><th>ID</th><th>Type</th><th>Status</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Usage Context</td>
+            <td><code>DF-MC Use</code></td>
+            <td>Enum (CV)</td>
+            <td>Required</td>
+            <td>Whether the model operates as a standalone system, is integrated within a larger forensic tool, or operates in a hybrid mode.</td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td><code>DF-MC C</code></td>
+            <td>Enum (CV)</td>
+            <td>Required</td>
+            <td>The forensic domain classification of the model.</td>
+          </tr>
+          <tr>
+            <td>Type of Reasoning</td>
+            <td><code>DF-MC TR</code></td>
+            <td>Enum (CV)</td>
+            <td>Required</td>
+            <td>The primary reasoning approach employed by the model.</td>
+          </tr>
+          <tr>
+            <td>Bias</td>
+            <td><code>DF-MC B</code></td>
+            <td>Enum (CV)</td>
+            <td>Required</td>
+            <td>Identified or potential biases in the model.</td>
+          </tr>
+          <tr>
+            <td>Cause of Bias</td>
+            <td><code>DF-MC CB</code></td>
+            <td>Enum (CV)</td>
+            <td>Required</td>
+            <td>Root cause attribution for identified biases.</td>
+          </tr>
+          <tr>
+            <td>Type of Error</td>
+            <td><code>DF-MC E</code></td>
+            <td>Enum (CV)</td>
+            <td>Required</td>
+            <td>Categories of errors the model is known or expected to produce.</td>
+          </tr>
+          <tr>
+            <td>Cause of Error</td>
+            <td><code>DF-MC CE</code></td>
+            <td>Enum (CV)</td>
+            <td>Required</td>
+            <td>Root cause attribution for identified error types.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </section>
+
+  <!-- ======== SECTION 2: PROCESS ELEMENTS ======== -->
+  <section id="process-elements">
+    <h2>Section 2: Forensic Process Elements</h2>
+    <p>
+      This section maps the model's participation in the stages of the abstract
+      digital forensic tool model defined by [[HARGREAVES-ABSTRACT]]. For each
+      process element, a conforming model card MUST indicate whether the process
+      is applicable (<code>true</code> or <code>false</code>) and, if applicable,
+      SHOULD provide a textual description of how the model participates in that
+      stage.
+    </p>
+    <p>
+      The process elements follow the internal pipeline of a forensic analysis tool,
+      from initial data acquisition through to the presentation of results. This
+      decomposition enables systematic identification of where errors may be
+      introduced and how they may propagate through the analysis chain.
+    </p>
+
+    <table class="def">
+      <caption>Table 3: Forensic Process Elements</caption>
+      <thead>
+        <tr><th>Process</th><th>ID</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Data Source Identification</td>
+          <td><code>DF-MC P1</code></td>
+          <td>The process of identifying relevant data sources for forensic analysis, including storage media, network captures, cloud repositories, and volatile memory.</td>
+        </tr>
+        <tr>
+          <td>Data Acquisition</td>
+          <td><code>DF-MC P2</code></td>
+          <td>Forensically sound acquisition of data, including imaging, logical extraction, and live acquisition methods.</td>
+        </tr>
+        <tr>
+          <td>Data Validation</td>
+          <td><code>DF-MC P3</code></td>
+          <td>Verification of acquired data integrity through hash comparison, chain of custody validation, and completeness checks.</td>
+        </tr>
+        <tr>
+          <td>File System Processing</td>
+          <td><code>DF-MC P4</code></td>
+          <td>Parsing and interpretation of file system structures (NTFS, ext4, APFS, FAT, etc.) to reconstruct file and directory hierarchies.</td>
+        </tr>
+        <tr>
+          <td>Artifact Extraction</td>
+          <td><code>DF-MC P5</code></td>
+          <td>Extraction of forensically relevant artifacts from parsed data, including browser history, registry entries, log files, SQLite databases, and application-specific data stores.</td>
+        </tr>
+        <tr>
+          <td>Data Recovery</td>
+          <td><code>DF-MC P6</code></td>
+          <td>Recovery of deleted, damaged, or obscured data through carving, reconstruction, and other recovery techniques.</td>
+        </tr>
+        <tr>
+          <td>Timestamp Analysis</td>
+          <td><code>DF-MC P7</code></td>
+          <td>Extraction, normalization, and interpretation of temporal metadata from file systems and artifacts.</td>
+        </tr>
+        <tr>
+          <td>Keyword and Pattern Search</td>
+          <td><code>DF-MC P8</code></td>
+          <td>Searching across acquired data for relevant keywords, regular expressions, byte patterns, and semantic queries.</td>
+        </tr>
+        <tr>
+          <td>Data Correlation</td>
+          <td><code>DF-MC P9</code></td>
+          <td>Cross-referencing and linking artifacts from multiple sources to reconstruct events and establish relationships.</td>
+        </tr>
+        <tr>
+          <td>Classification and Categorization</td>
+          <td><code>DF-MC P10</code></td>
+          <td>Automated classification of files, artifacts, or events into predefined categories (e.g., image classification, malware detection, document type identification).</td>
+        </tr>
+        <tr>
+          <td>Event Reconstruction</td>
+          <td><code>DF-MC P11</code></td>
+          <td>Reconstruction of sequences of events from correlated artifacts and timestamps, including timeline generation.</td>
+        </tr>
+        <tr>
+          <td>Reporting and Presentation</td>
+          <td><code>DF-MC P12</code></td>
+          <td>Generation of human-readable reports, visualizations, and summaries suitable for legal and investigative audiences.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ======== SECTION 3: NARRATIVE ======== -->
+  <section id="narrative-fields">
+    <h2>Section 3: Narrative Description</h2>
+    <p>
+      The following free-text fields provide contextual information that complements
+      the structured elements in Sections 1 and 2. A conforming model card SHOULD
+      populate all narrative fields; at minimum, the <code>description</code> and
+      <code>intended_use</code> fields MUST be present.
+    </p>
+
+    <table class="def">
+      <caption>Table 4: Narrative Fields</caption>
+      <thead>
+        <tr><th>Field</th><th>ID</th><th>Status</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Model Description</td>
+          <td><code>DF-MC Desc</code></td>
+          <td>Required</td>
+          <td>A plain-language description of what the model does, its architecture, and its core functionality in the forensic context.</td>
+        </tr>
+        <tr>
+          <td>Intended Use</td>
+          <td><code>DF-MC IU</code></td>
+          <td>Required</td>
+          <td>The forensic scenarios, case types, and operational contexts for which the model is designed and validated.</td>
+        </tr>
+        <tr>
+          <td>Out-of-Scope Uses</td>
+          <td><code>DF-MC OOS</code></td>
+          <td>Optional</td>
+          <td>Scenarios and use cases for which the model is explicitly not designed or validated, and where its results should not be relied upon.</td>
+        </tr>
+        <tr>
+          <td>Limitations</td>
+          <td><code>DF-MC Lim</code></td>
+          <td>Optional</td>
+          <td>Known technical, operational, and contextual limitations of the model.</td>
+        </tr>
+        <tr>
+          <td>Training Data</td>
+          <td><code>DF-MC TD</code></td>
+          <td>Optional</td>
+          <td>Description of training data sources, composition, and any known gaps or biases in the training set.</td>
+        </tr>
+        <tr>
+          <td>Evaluation Data</td>
+          <td><code>DF-MC ED</code></td>
+          <td>Optional</td>
+          <td>Description of data used for model evaluation and validation, including benchmark datasets and test scenarios.</td>
+        </tr>
+        <tr>
+          <td>Performance Metrics</td>
+          <td><code>DF-MC PM</code></td>
+          <td>Optional</td>
+          <td>Quantitative performance measures including accuracy, precision, recall, F1 score, false positive/negative rates, and domain-specific metrics.</td>
+        </tr>
+        <tr>
+          <td>Ethical Considerations</td>
+          <td><code>DF-MC Eth</code></td>
+          <td>Optional</td>
+          <td>Discussion of ethical implications, potential for misuse, privacy considerations, and safeguards.</td>
+        </tr>
+        <tr>
+          <td>Legal Admissibility Notes</td>
+          <td><code>DF-MC Legal</code></td>
+          <td>Optional</td>
+          <td>Notes relevant to the admissibility of the model's output as evidence, including validation status, accreditation, and jurisdictional considerations.</td>
+        </tr>
+        <tr>
+          <td>Operational Notes</td>
+          <td><code>DF-MC Ops</code></td>
+          <td>Optional</td>
+          <td>Practical guidance for deployment, including hardware requirements, dependencies, integration notes, and maintenance procedures.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ======== CONTROLLED VOCABULARIES ======== -->
+  <section id="controlled-vocabularies">
+    <h2>Controlled Vocabularies</h2>
+    <p>
+      The following controlled vocabularies (CVs) define the permitted enumerated
+      values for the top-level descriptor fields specified in <a href="#top-level-descriptors"></a>.
+      Implementations SHOULD use these values. Where domain-specific needs require
+      values not listed here, implementations MAY extend the vocabulary using the
+      prefix <code>custom:</code> followed by a descriptive label (e.g.,
+      <code>custom:quantum-forensics</code>).
+    </p>
+
+    <section id="cv-use">
+      <h3>CV-Use: Usage Context</h3>
+      <p>Field: <code>DF-MC Use</code></p>
+      <table class="def">
+        <thead><tr><th>Value</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td><code>standalone</code></td><td>The model operates independently as a self-contained forensic analysis system.</td></tr>
+          <tr><td><code>integrated</code></td><td>The model is embedded within a larger forensic tool or platform.</td></tr>
+          <tr><td><code>hybrid</code></td><td>The model can operate both independently and as a component within other systems.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="cv-classification">
+      <h3>CV-C: Forensic Domain Classification</h3>
+      <p>Field: <code>DF-MC C</code></p>
+      <table class="def">
+        <thead><tr><th>Value</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td><code>computer-forensics</code></td><td>Analysis of data stored on computer systems, including desktops, laptops, and servers.</td></tr>
+          <tr><td><code>network-forensics</code></td><td>Capture and analysis of network traffic data for investigative purposes.</td></tr>
+          <tr><td><code>mobile-forensics</code></td><td>Extraction and analysis of data from mobile devices, smartphones, and tablets.</td></tr>
+          <tr><td><code>cloud-forensics</code></td><td>Forensic investigation of data stored in or processed by cloud computing environments.</td></tr>
+          <tr><td><code>database-forensics</code></td><td>Analysis of database systems, transaction logs, and structured data stores.</td></tr>
+          <tr><td><code>memory-forensics</code></td><td>Analysis of volatile memory (RAM) contents and running processes.</td></tr>
+          <tr><td><code>image-forensics</code></td><td>Authentication and analysis of digital images, including manipulation detection.</td></tr>
+          <tr><td><code>av-forensics</code></td><td>Analysis of digital audio and video recordings, including deepfake detection.</td></tr>
+          <tr><td><code>iot-forensics</code></td><td>Forensic analysis of Internet of Things devices and their data.</td></tr>
+          <tr><td><code>web-forensics</code></td><td>Investigation of web-based content, provenance, and online activity.</td></tr>
+          <tr><td><code>multi-domain</code></td><td>The model spans multiple forensic domains.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="cv-reasoning">
+      <h3>CV-TR: Type of Reasoning</h3>
+      <p>Field: <code>DF-MC TR</code></p>
+      <table class="def">
+        <thead><tr><th>Value</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td><code>deductive</code></td><td>Reasoning from general rules to specific conclusions; if premises are true, the conclusion must be true.</td></tr>
+          <tr><td><code>inductive</code></td><td>Reasoning from specific observations to broader generalizations; conclusions are probabilistic.</td></tr>
+          <tr><td><code>abductive</code></td><td>Inference to the best explanation; generating hypotheses that account for observed evidence.</td></tr>
+          <tr><td><code>retroductive</code></td><td>Iterative hypothesis refinement through cycles of conjecture and testing against evidence.</td></tr>
+          <tr><td><code>hybrid</code></td><td>The model employs a combination of reasoning approaches.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="cv-bias">
+      <h3>CV-B: Bias Type</h3>
+      <p>Field: <code>DF-MC B</code></p>
+      <table class="def">
+        <thead><tr><th>Value</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td><code>data-bias</code></td><td>Bias arising from the training data, including historical, sampling, or selection biases.</td></tr>
+          <tr><td><code>algorithmic-bias</code></td><td>Bias introduced by the model architecture or optimization objective.</td></tr>
+          <tr><td><code>human-bias</code></td><td>Cognitive biases from human designers, annotators, or operators (e.g., confirmation bias, implicit bias).</td></tr>
+          <tr><td><code>deployment-bias</code></td><td>Bias arising from using the model in contexts that differ from its training or validation environment.</td></tr>
+          <tr><td><code>reporting-bias</code></td><td>Bias due to incomplete or selective documentation of model behavior.</td></tr>
+          <tr><td><code>measurement-bias</code></td><td>Bias arising from the use of proxy variables or imprecise metrics.</td></tr>
+          <tr><td><code>automation-bias</code></td><td>Over-reliance on automated outputs by human operators, bypassing critical evaluation.</td></tr>
+          <tr><td><code>none-identified</code></td><td>No biases have been identified at the time of documentation.</td></tr>
+          <tr><td><code>multiple</code></td><td>Multiple bias types have been identified.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="cv-cause-bias">
+      <h3>CV-CB: Cause of Bias</h3>
+      <p>Field: <code>DF-MC CB</code></p>
+      <table class="def">
+        <thead><tr><th>Value</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td><code>unrepresentative-data</code></td><td>Training data does not adequately represent the target population or use context.</td></tr>
+          <tr><td><code>historical-inequity</code></td><td>Training data reflects historical inequities or discriminatory patterns.</td></tr>
+          <tr><td><code>feature-selection</code></td><td>Choice of input features introduces or amplifies bias.</td></tr>
+          <tr><td><code>labeling-inconsistency</code></td><td>Inconsistent or biased annotation and labeling in training data.</td></tr>
+          <tr><td><code>objective-mismatch</code></td><td>The optimization objective does not align with the forensic task requirements.</td></tr>
+          <tr><td><code>temporal-drift</code></td><td>Training data has become stale or unrepresentative due to changes over time.</td></tr>
+          <tr><td><code>geographic-limitation</code></td><td>Training data is geographically or culturally limited.</td></tr>
+          <tr><td><code>tool-limitation</code></td><td>Limitations of the tools or methods used in data collection or model training.</td></tr>
+          <tr><td><code>multiple-causes</code></td><td>Multiple causes of bias have been identified.</td></tr>
+          <tr><td><code>unknown</code></td><td>The cause of bias is under investigation or not yet determined.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="cv-error">
+      <h3>CV-E: Error Type</h3>
+      <p>Field: <code>DF-MC E</code></p>
+      <table class="def">
+        <thead><tr><th>Value</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td><code>false-positive</code></td><td>The model incorrectly identifies something as present or relevant when it is not.</td></tr>
+          <tr><td><code>false-negative</code></td><td>The model fails to identify something that is present or relevant.</td></tr>
+          <tr><td><code>misclassification</code></td><td>The model assigns an artifact or event to the wrong category.</td></tr>
+          <tr><td><code>data-loss</code></td><td>The model fails to preserve data integrity during processing.</td></tr>
+          <tr><td><code>temporal-error</code></td><td>Errors in timestamp interpretation, normalization, or timezone handling.</td></tr>
+          <tr><td><code>correlation-error</code></td><td>Incorrect linking of artifacts or events across data sources.</td></tr>
+          <tr><td><code>interpretation-error</code></td><td>Incorrect semantic interpretation of data structures or artifacts.</td></tr>
+          <tr><td><code>propagation-error</code></td><td>An error in one processing stage that cascades into subsequent stages.</td></tr>
+          <tr><td><code>hallucination</code></td><td>The model generates plausible but fabricated results not supported by evidence.</td></tr>
+          <tr><td><code>multiple</code></td><td>Multiple error types have been identified.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="cv-cause-error">
+      <h3>CV-CE: Cause of Error</h3>
+      <p>Field: <code>DF-MC CE</code></p>
+      <table class="def">
+        <thead><tr><th>Value</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td><code>insufficient-training</code></td><td>Model has not been trained on sufficient or representative data for the task.</td></tr>
+          <tr><td><code>domain-shift</code></td><td>Deployment data differs significantly from training data distribution.</td></tr>
+          <tr><td><code>encoding-error</code></td><td>Errors in character encoding, data format parsing, or byte-order interpretation.</td></tr>
+          <tr><td><code>version-incompatibility</code></td><td>Data format version mismatches between the model's expectations and actual data.</td></tr>
+          <tr><td><code>adversarial-input</code></td><td>Deliberately crafted inputs designed to cause model failure.</td></tr>
+          <tr><td><code>resource-limitation</code></td><td>Insufficient computational resources (memory, processing time) leading to truncated or degraded analysis.</td></tr>
+          <tr><td><code>ambiguous-evidence</code></td><td>The underlying evidence is genuinely ambiguous, making correct interpretation uncertain.</td></tr>
+          <tr><td><code>operator-error</code></td><td>Incorrect configuration or use of the model by the human operator.</td></tr>
+          <tr><td><code>multiple-causes</code></td><td>Multiple causes of error have been identified.</td></tr>
+          <tr><td><code>unknown</code></td><td>The cause of error is under investigation or not yet determined.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </section>
+
+  <!-- ======== JSON SCHEMA ======== -->
+  <section id="json-schema">
+    <h2>JSON Output Format</h2>
+    <p>
+      A conforming DF-MC generator MUST produce output in the following JSON
+      structure. The schema uses flat key names corresponding to the field IDs
+      defined in Sections 2 through 4. All field values are strings unless otherwise
+      noted. Boolean values are used for the <code>applicable</code> sub-field of
+      process elements.
+    </p>
+
+    <section id="json-structure">
+      <h3>Schema Structure</h3>
+      <pre class="json-example">{
+  "generator_version": "1.0",
+  "generated_date": "2026-04-18T00:00:00Z",
+
+  "metadata": {
+    "model_name": "",
+    "version": "",
+    "developer": "",
+    "date": "",
+    "contact": ""
+  },
+
+  "top_level_elements": {
+    "usage_context": "",
+    "classification": "",
+    "reasoning_type": "",
+    "bias_type": "",
+    "bias_cause": "",
+    "error_type": "",
+    "error_cause": ""
+  },
+
+  "forensic_processes": {
+    "data_source_identification": {
+      "applicable": true,
+      "description": ""
+    },
+    "data_acquisition": {
+      "applicable": false,
+      "description": ""
+    },
+    "data_validation": {
+      "applicable": false,
+      "description": ""
+    },
+    "file_system_processing": {
+      "applicable": false,
+      "description": ""
+    },
+    "artifact_extraction": {
+      "applicable": false,
+      "description": ""
+    },
+    "data_recovery": {
+      "applicable": false,
+      "description": ""
+    },
+    "timestamp_analysis": {
+      "applicable": false,
+      "description": ""
+    },
+    "keyword_pattern_search": {
+      "applicable": false,
+      "description": ""
+    },
+    "data_correlation": {
+      "applicable": false,
+      "description": ""
+    },
+    "classification_categorization": {
+      "applicable": false,
+      "description": ""
+    },
+    "event_reconstruction": {
+      "applicable": false,
+      "description": ""
+    },
+    "reporting_presentation": {
+      "applicable": false,
+      "description": ""
+    }
+  },
+
+  "narrative": {
+    "description": "",
+    "intended_use": "",
+    "out_of_scope_uses": "",
+    "limitations": "",
+    "training_data": "",
+    "evaluation_data": "",
+    "performance_metrics": "",
+    "ethical_considerations": "",
+    "legal_admissibility": "",
+    "operational_notes": ""
+  }
+}</pre>
+    </section>
+
+    <section id="json-validation">
+      <h3>Validation Rules</h3>
+      <p>
+        A conforming JSON output MUST satisfy the following validation rules:
+      </p>
+      <p>
+        The <code>metadata.model_name</code>, <code>metadata.version</code>,
+        <code>metadata.developer</code>, and <code>metadata.date</code> fields
+        MUST be non-empty strings.
+      </p>
+      <p>
+        All <code>top_level_elements</code> values MUST be non-empty strings and
+        SHOULD correspond to values defined in the controlled vocabularies
+        (<a href="#controlled-vocabularies"></a>). Values prefixed with
+        <code>custom:</code> are valid extensions.
+      </p>
+      <p>
+        Each key in <code>forensic_processes</code> MUST contain an object with
+        an <code>applicable</code> boolean field. When <code>applicable</code>
+        is <code>true</code>, the <code>description</code> field SHOULD be a
+        non-empty string.
+      </p>
+      <p>
+        The <code>narrative.description</code> and <code>narrative.intended_use</code>
+        fields MUST be non-empty strings.
+      </p>
+      <p>
+        The <code>generated_date</code> field MUST be a valid ISO 8601 datetime string.
+      </p>
+    </section>
+  </section>
+
+  <!-- ======== MARKDOWN OUTPUT ======== -->
+  <section id="markdown-output">
+    <h2>Markdown Output Format</h2>
+    <p>
+      In addition to the JSON output, a conforming generator SHOULD produce a
+      human-readable Markdown rendering of the model card, suitable for inclusion
+      as a README file in model repositories (e.g., Hugging Face Hub) or as
+      standalone documentation. The Markdown output SHOULD include all populated
+      fields, organized under headings corresponding to the three schema sections.
+    </p>
+    <p>
+      The Markdown output is intended to serve the human readability design goal,
+      providing forensic practitioners, legal professionals, and auditors with an
+      accessible summary of the model's properties and limitations without
+      requiring JSON parsing tools.
+    </p>
+  </section>
+
+  <!-- ======== REFERENCE IMPLEMENTATION ======== -->
+  <section id="reference-implementation">
+    <h2>Reference Implementation</h2>
+    <p>
+      A reference implementation of the DF-MC generator is available as a
+      Gradio-based web application deployed on Hugging Face Spaces at
+      <a href="https://huggingface.co/spaces/STARBORN/forensics_mc_generator">
+        STARBORN/forensics_mc_generator</a>.
+    </p>
+    <p>
+      The reference implementation provides a web-based form interface that
+      collects input for all schema fields, validates entries against the
+      controlled vocabularies, and generates both JSON and Markdown outputs.
+      The source code is available under an open-source license and serves as a
+      normative example of how the schema defined in this specification is
+      implemented.
+    </p>
+  </section>
+
+  <!-- ======== RELATIONSHIP TO OTHER STANDARDS ======== -->
+  <section id="related-standards">
+    <h2>Relationship to Other Standards</h2>
+
+    <section id="rel-model-cards">
+      <h3>Model Cards (Mitchell et al.)</h3>
+      <p>
+        The DF-MC schema extends the general model card framework [[MITCHELL-MODELCARDS]]
+        with forensic-specific fields. The general model card fields (model description,
+        intended use, limitations, performance metrics, ethical considerations) are
+        preserved in the narrative section. The DF-MC adds the forensic domain
+        classification, reasoning type taxonomy, and the process element mapping
+        not present in the original model card proposal.
+      </p>
+    </section>
+
+    <section id="rel-hf">
+      <h3>Hugging Face Model Card Metadata</h3>
+      <p>
+        The JSON output format is designed to be compatible with the Hugging Face
+        model card metadata specification [[HF-MODELCARD]]. The DF-MC JSON can be
+        embedded within a Hugging Face model card YAML frontmatter as a custom
+        section, enabling forensic model cards to be published alongside standard
+        model documentation on the Hub.
+      </p>
+    </section>
+
+    <section id="rel-case">
+      <h3>CASE/UCO</h3>
+      <p>
+        The Cyber-investigation Analysis Standard Expression (CASE) and the
+        Unified Cyber Ontology (UCO) [[CASEY-DFXML]] provide a standardized
+        ontology for representing cyber-investigation information. The DF-MC
+        schema is complementary: CASE/UCO describes the evidence and investigation
+        structure, while the DF-MC describes the properties and limitations of the
+        tools used to process that evidence. Future versions of this specification
+        MAY define formal mappings between DF-MC process elements and CASE/UCO
+        action types.
+      </p>
+    </section>
+
+    <section id="rel-hargreaves">
+      <h3>Abstract Digital Forensic Tool Model</h3>
+      <p>
+        The forensic process elements (Section 2) are derived from the abstract
+        model for digital forensic analysis tools proposed by Hargreaves, Nelson,
+        and Casey [[HARGREAVES-ABSTRACT]]. Their model deconstructs the internal
+        process flow within monolithic forensic tools into discrete stages where
+        errors can be systematically identified and mitigated. The DF-MC process
+        elements operationalize this abstract model as documentation requirements
+        for AI-based forensic tools.
+      </p>
+    </section>
+  </section>
+
+  <!-- ======== SECURITY AND PRIVACY ======== -->
+  <section id="security-privacy">
+    <h2>Security and Privacy Considerations</h2>
+    <p>
+      DF-MC documents may contain information about the capabilities and
+      limitations of forensic tools that could be exploited by adversaries to
+      design anti-forensic strategies. Implementers SHOULD consider restricting
+      access to detailed model cards for tools used in active investigations.
+    </p>
+    <p>
+      The model card itself MUST NOT contain personally identifiable information
+      (PII) from forensic cases, training data samples that include real evidence,
+      or any information that could compromise ongoing investigations.
+    </p>
+    <p>
+      When publishing model cards for tools used in law enforcement contexts,
+      implementers SHOULD consult with legal counsel regarding disclosure
+      obligations and operational security requirements.
+    </p>
+  </section>
+
+  <!-- ======== FUTURE WORK ======== -->
+  <section id="future-work" class="informative">
+    <h2>Future Work</h2>
+    <p>
+      The following areas are identified for future development of this specification:
+    </p>
+    <p>
+      <strong>Formal ontology</strong> -- Development of an OWL/RDF representation of
+      the DF-MC schema to enable semantic interoperability with the W3C AI Agent
+      Interoperability Ontology (AIAO) and other knowledge representation frameworks
+      maintained by the AIKR CG.
+    </p>
+    <p>
+      <strong>CASE/UCO mapping</strong> -- Formal alignment between DF-MC process
+      elements and CASE/UCO action types to enable bidirectional linking between
+      tool documentation and investigation records.
+    </p>
+    <p>
+      <strong>Validation tooling</strong> -- Development of a JSON Schema validator
+      and conformance test suite.
+    </p>
+    <p>
+      <strong>Controlled vocabulary governance</strong> -- Establishing a community
+      process for proposing and ratifying additions to the controlled vocabularies.
+    </p>
+    <p>
+      <strong>Versioning and lifecycle</strong> -- Defining how model cards should be
+      versioned and maintained as forensic tools evolve over time.
+    </p>
+  </section>
+
+  <!-- ======== ACKNOWLEDGEMENTS ======== -->
+  <section id="acknowledgements" class="informative">
+    <h2>Acknowledgements</h2>
+    <p>
+      This specification builds upon foundational work by
+      Margaret Mitchell et al. on model cards for model reporting [[MITCHELL-MODELCARDS]],
+      and by Christopher Hargreaves, Alex Nelson, and Eoghan Casey on abstract
+      models for digital forensic analysis tools [[HARGREAVES-ABSTRACT]].
+    </p>
+    <p>
+      The author gratefully acknowledges the contributions of the W3C AI Knowledge
+      Representation Community Group members to the development and review of
+      this specification.
+    </p>
+  </section>
+
+</body>
+</html>

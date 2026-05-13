@@ -476,4 +476,4 @@ A2WF addresses a specific gap: **machine-readable governance of what autonomous 
 ---
 
 *Document prepared for the A2WF Community Group inaugural meeting, 27 May 2026.*
-*For errors, omissions, or suggested additions: file an issue at https://github.com/Starborn/BIDS or post to public-aikr@w3.org*
+*For errors, omissions, or suggested additions: file an issue in this github repo https://github.com/w3c-cg/aikr/blob/main/A2WF/intersection.md or post to public-aikr@w3.org*

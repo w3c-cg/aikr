@@ -475,5 +475,21 @@ A2WF addresses a specific gap: **machine-readable governance of what autonomous 
 
 ---
 
+## Editor's Note from A2WF v1.1 (added 2026-05-19)
+
+Thanks Paola for this inventory. A short note on what we picked up from it for the A2WF v1.1 Editor's Draft, in case it is useful for the 27 May CG meeting.
+
+Of your five key observations at the end of the document, three are reflected directly in the draft:
+
+- **Governance wrapper, not a new protocol.** A2WF v1.1 is now framed as a site-side declaration that sits above MCP, A2A, NLWeb and similar action protocols, rather than replacing any of them.
+- **ODRL as the policy language.** A2WF v1.1 keeps its own simple JSON for authoring and offers an optional ODRL canonical export, so we build on the W3C Recommendation rather than inventing a new vocabulary.
+- **Early liaison with adjacent IETF work.** Outreach drafts to the AIP and AIVS authors are prepared; A2WF v1.1 references those drafts as opt-in experimental compatibility, version-pinned, rather than as hard dependencies.
+
+One small factual note while we are here: ODRL Information Model 2.2 is a W3C Recommendation from 15 February 2018, in case section 4.5 needs a date.
+
+Wolfgang Wimmer, A2WF v1.1 Editor.
+
+---
+
 *Document prepared for the A2WF Community Group inaugural meeting, 27 May 2026.*
 *For errors, omissions, or suggested additions: file an issue in this github repo https://github.com/w3c-cg/aikr/blob/main/A2WF/intersection.md or post to public-aikr@w3.org*

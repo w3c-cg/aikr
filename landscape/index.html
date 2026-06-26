@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentic AI Standards Landscape — Map (Working Draft)</title>
+<style>
+  :root{ --blue:#005a9c; --line:#c3cedb; }
+  body{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;line-height:1.5;color:#1a1a1a;max-width:74em;margin:0 auto;padding:1.6em 1.2em;background:#fff}
+  a{color:var(--blue);text-decoration:none} a:hover{text-decoration:underline}
+  h1{font-size:1.5em;margin:0 0 .1em}
+  .sub{color:#5a6570;font-size:.92em;margin:0 0 .8em}
+  .wd{display:inline-block;background:#fbe9c8;border:1px solid #e3b873;color:#7a4c00;padding:1px 8px;border-radius:4px;font-size:.78em;font-weight:700}
+  .legend{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;font-size:.8em;color:#5a6570;margin:.6em 0}
+  .legend b{font-weight:600}
+  .sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+  .aikr-band{background:linear-gradient(90deg,#efeefc,#f6f5fe);border:1px solid #cfcbf0;border-left:5px solid #534AB7;border-radius:7px;padding:.55em .9em;margin:.6em 0 .4em;font-size:.9em}
+  .aikr-band b{color:#534AB7}
+  .board{display:grid;grid-template-columns:84px repeat(5,1fr);gap:6px;margin-top:.5em}
+  .hcell{font-size:.74em;font-weight:700;color:var(--blue);text-align:center;padding:4px 2px;text-transform:uppercase;letter-spacing:.02em}
+  .blabel{display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;transform:rotate(180deg);font-size:.74em;font-weight:700;letter-spacing:.04em;border-radius:6px}
+  .blabel.open{background:#e7f6ec;color:#1a7f37}
+  .blabel.gated{background:#fdecea;color:#b3261e}
+  .cell{min-height:90px;border:1px solid var(--line);border-radius:6px;padding:5px;display:flex;flex-wrap:wrap;gap:4px;align-content:flex-start}
+  .cell.open{background:#f4fbf6}
+  .cell.gated{background:#fef6f5}
+  .chip{font-size:.72em;line-height:1.2;padding:3px 6px;border-radius:5px;border:1px solid;cursor:default;background:#fff;display:inline-flex;align-items:center;gap:3px;max-width:100%}
+  .chip:hover{filter:brightness(.96);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+  .w3c{border-color:#1D9E75;color:#0e6b4e} .ietf{border-color:#2D7DD2;color:#1d5a96}
+  .ind{border-color:#D85A30;color:#a8410f} .gov{border-color:#8A8780;color:#5f5d57}
+  .mk{font-size:.85em} .ok{color:#1a7f37} .q{color:#9a6700}
+  #panel{margin-top:.8em;min-height:38px;border:1px solid var(--line);border-radius:6px;background:#f6f9fc;padding:8px 11px;font-size:.84em;color:#5a6570}
+  .note{color:#5a6570;font-size:.8em;margin-top:.8em}
+</style>
+</head>
+<body>
+<h1>Agentic AI Standards Landscape — Map</h1>
+<p class="sub"><span class="wd">WORKING DRAFT</span> &nbsp; Each effort placed by framework layer (←→) and openness (open ▲ / gated ▼). Hover a chip for detail. W3C AI KR Community Group.</p>
+
+<div class="legend">
+  <span><b>Cluster:</b></span>
+  <span><span class="sw" style="background:#1D9E75"></span>W3C</span>
+  <span><span class="sw" style="background:#2D7DD2"></span>IETF</span>
+  <span><span class="sw" style="background:#D85A30"></span>Industry</span>
+  <span><span class="sw" style="background:#8A8780"></span>Governance</span>
+  <span>&nbsp;|&nbsp; <span class="ok">✓</span> verified live · <span class="q">~</span> unconfirmed</span>
+</div>
+
+<div class="aikr-band">
+  <b>AI KR CG</b> — the representational / mapping layer <em>over</em> the whole landscape below: it tracks, aligns and exposes these efforts using ontic maps and the AIAO + interoperability framework. <span class="ok">✓</span>
+</div>
+
+<div class="board" id="board">
+  <div></div>
+  <div class="hcell">Representation</div>
+  <div class="hcell">Alignment</div>
+  <div class="hcell">Interoperability</div>
+  <div class="hcell">Trust</div>
+  <div class="hcell">Governance</div>
+
+  <div class="blabel open">OPEN · web</div>
+  <div class="cell open" id="open-rep"></div>
+  <div class="cell open" id="open-align"></div>
+  <div class="cell open" id="open-interop"></div>
+  <div class="cell open" id="open-trust"></div>
+  <div class="cell open" id="open-gov"></div>
+
+  <div class="blabel gated">GATED</div>
+  <div class="cell gated" id="gated-rep"></div>
+  <div class="cell gated" id="gated-align"></div>
+  <div class="cell gated" id="gated-interop"></div>
+  <div class="cell gated" id="gated-trust"></div>
+  <div class="cell gated" id="gated-gov"></div>
+</div>
+
+<div id="panel">Hover a chip to see what each effort is working on and its access model.</div>
+
+<p class="note">A sketch for the AI KR CG mapping exercise; placements are indicative. Full inventory with sources: <a href="https://w3c-cg.github.io/aikr/sdo-inventory/">SDO inventory (working draft)</a> · repo file map: <a href="https://w3c-cg.github.io/aikr/map/">w3c-cg.github.io/aikr/map/</a>. Community verification welcome.</p>
+
+<script>
+(function(){
+  // [label, cluster, band, layer, verified, focus]
+  var N=[
+    ["Semantic Agent Comm","w3c","open","rep","ok","Ontology-grounded agent messages (s-agent-comm)"],
+    ["Ontology for Agents (oasis)","w3c","open","rep","ok","Agent/service ontology — aligns w/ AIAO & agonalign"],
+    ["Web Content Browser for Agents","w3c","open","rep","ok","Agent-readable representation of web pages"],
+    ["Procedural Memory KR","w3c","open","rep","ok","KR of procedures / skills"],
+    ["Cognitive AI","w3c","open","rep","ok","Cognitive architectures / primitives"],
+    ["Web ML — WebMCP","w3c","open","rep","ok","navigator.modelContext (proposed); tool/context exposure"],
+    ["RDF & SPARQL","w3c","open","rep","q","Graph data model + query (base)"],
+    ["SHACL (Data Shapes)","w3c","open","rep","ok","Shapes, constraints, validation"],
+
+    ["Autonomous Agents on the Web","w3c","open","align","ok","Hypermedia multi-agent systems (HMAS)"],
+
+    ["AI Agent Protocol","w3c","open","interop","ok","Protocol(s) for agent interaction"],
+    ["A2WF","w3c","open","interop","ok","Agent-to-Web framework"],
+    ["Agentic Arbitration","w3c","open","interop","ok","Dispute / arbitration between agents"],
+    ["AI Agent Memory Interop","w3c","open","interop","ok","Portable agent memory / state"],
+    ["Voice Interaction","w3c","open","interop","ok","Voice UI controls, dialogue — voiceAI"],
+    ["Web of Things","w3c","open","interop","ok","Thing Description: properties/actions/events"],
+
+    ["AIVS","w3c","open","trust","ok","Agentic integrity verification (cf. Sanctuary)"],
+    ["Agent Declaration & Assurance","w3c","open","trust","ok","Capability / assurance manifests"],
+    ["Agent Identity Registry","w3c","open","trust","ok","Agent identity registration/resolution"],
+    ["Agent Trust Protocol","w3c","open","trust","ok","Trust signals / handshake"],
+    ["Verifiable Credentials","w3c","open","trust","ok","Issuer · holder · verifier; proofs"],
+    ["DID","w3c","open","trust","ok","Decentralized identifiers"],
+    ["Solid","w3c","open","trust","ok","Pods; data sovereignty"],
+    ["IETF draft-stone-vcap/atep/aivs","ietf","open","trust","ok","Escrow, reputation, proof — cite AI KR CG TN"],
+
+    ["AI Content Disclosure","w3c","open","gov","ok","Provenance / disclosure of AI content"],
+    ["IETF AIPREF","ietf","open","gov","ok","AI content-usage preferences"],
+    ["NIST AI RMF","gov","open","gov","q","Govern · Map · Measure · Manage (open gov pub)"],
+
+    ["MCP","ind","gated","rep","ok","Tools/resources/prompts — Anthropic→LF (AAIF)"],
+    ["Microsoft NLWeb","ind","gated","rep","q","Natural-language endpoints over sites"],
+
+    ["A2A","ind","gated","interop","q","Agent Cards; task lifecycle — Google→LF (AAIF)"],
+    ["AGNTCY","ind","gated","interop","q","Agent directory · identity · observability (LF)"],
+
+    ["Google AP2","ind","gated","trust","ok","Agent payments: mandates, settlement — conduit"],
+
+    ["ISO/IEC SC 42","gov","gated","gov","q","AI vocabulary, risk, management systems"],
+    ["IEEE 7003 / P7000","gov","gated","gov","q","Algorithmic bias & ethics (membership)"]
+  ];
+  var panel=document.getElementById('panel');
+  N.forEach(function(n){
+    var cell=document.getElementById(n[2]+"-"+n[3]); if(!cell) return;
+    var c=document.createElement('span');
+    c.className="chip "+({w3c:'w3c',ietf:'ietf',ind:'ind',gov:'gov'}[n[1]]);
+    c.innerHTML='<span class="mk '+n[4]+'">'+(n[4]==='ok'?'✓':'~')+'</span>'+n[0];
+    c.addEventListener('mouseenter',function(){
+      panel.innerHTML='<b style="color:#1a1a1a">'+n[0]+'</b> &nbsp;'+n[5]+
+        ' &nbsp;<span style="color:'+(n[2]==='open'?'#1a7f37':'#b3261e')+'">['+(n[2]==='open'?'open · web':'gated')+']</span>';
+    });
+    cell.appendChild(c);
+  });
+})();
+</script>
+</body>
+</html>

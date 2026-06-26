@@ -2,99 +2,139 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Inventory of Agentic-AI Standards Activity — Working Draft</title>
-<script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove" defer></script>
-<script class="remove">
-var respecConfig = {
-  specStatus: "CG-DRAFT",
-  shortName: "aikr-summary",
-  editors: [{ name: "Paola Di Maio", company: "W3C AI KR Community Group (Chair)" }],
-  github: "w3c-cg/aikr",
-  group: "cg/aikr",
-  noRecTrack: true,
-  lint: false,
-};
-</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentic AI Standards Landscape — Inventory (Working Draft)</title>
 <style>
-  :root { --w3c-blue:#005a9c; --w3c-line:#c3cedb; --w3c-head:#eaf1f8; --w3c-alt:#f6f9fc; }
-  table.inv { border-collapse: collapse; width: 100%; font-size: 0.86em; }
-  table.inv th, table.inv td { border: 1px solid var(--w3c-line); padding: 6px 9px; vertical-align: top; text-align: left; }
-  table.inv th { background: var(--w3c-head); color: var(--w3c-blue); }
-  table.inv tr:nth-child(even) td { background: var(--w3c-alt); }
-  table.inv td.body { font-weight: 600; white-space: nowrap; }
-  .wd { background:#fff6d9; border:1px solid #e6d28a; padding:2px 8px; border-radius:4px; font-size:0.85em; }
-  h2, h3 { color: var(--w3c-blue); }
+  :root{ --blue:#005a9c; --line:#c3cedb; --head:#eaf1f8; --alt:#f6f9fc; }
+  body{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;line-height:1.55;color:#1a1a1a;max-width:70em;margin:0 auto;padding:2em 1.4em;background:#fff}
+  a{color:var(--blue);text-decoration:none} a:hover{text-decoration:underline}
+  h1{font-size:1.65em;line-height:1.2;margin:0 0 .1em;color:#111}
+  .subtitle{color:#5a6570;margin:0 0 1.2em}
+  h2{color:var(--blue);font-weight:600;margin:1.9em 0 .3em;padding-bottom:.22em;border-bottom:2px solid var(--blue)}
+  .verify{background:#eef6fc;border:1px solid #9cc3e4;border-left:5px solid var(--blue);border-radius:6px;padding:.9em 1.1em;margin:1em 0 1.2em}
+  .verify strong{color:var(--blue)}
+  .legend{font-size:.82em;color:#5a6570;margin:.2em 0 1.4em}
+  .wd{display:inline-block;background:#fbe9c8;border:1px solid #e3b873;color:#7a4c00;padding:1px 8px;border-radius:4px;font-size:.8em;font-weight:700}
+  .scroll{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;font-size:.82em;margin:.5em 0 1.1em;min-width:48em}
+  th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+  th{background:var(--head);color:var(--blue);font-weight:600}
+  tr:nth-child(even) td{background:var(--alt)}
+  td.g{font-weight:600;white-space:nowrap}
+  .ok{color:#1a7f37;font-weight:700}
+  .q{color:#9a6700;font-weight:700}
+  .open{color:#1a7f37;font-weight:700;white-space:nowrap}
+  .gated{color:#b3261e;font-weight:700;white-space:nowrap}
+  .note{color:#5a6570;font-size:.84em}
+  code{background:#eef1f4;padding:.03em .3em;border-radius:3px;font-size:.92em}
 </style>
 </head>
 <body>
 
-<section id="abstract">
-  <p>
-    <span class="wd">WORKING DRAFT — sketch</span> &nbsp; This note is a first, deliberately
-    wide inventory of standardisation activity touching agentic AI on the Web, across W3C,
-    the IETF, ISO/IEC and industry / Linux Foundation efforts. For each effort it records the
-    standard being worked on, its core elements, and a <em>sketch</em> of how it aligns to the
-    AI KR CG's AIAO vocabulary and knowledge-representation layers. It is a scaffold for a
-    fuller, verified map to be developed and published separately.
-  </p>
-</section>
+<h1>Agentic AI Standards Landscape — Inventory</h1>
+<p class="subtitle"><span class="wd">WORKING DRAFT / SKETCH</span> &nbsp; A mapping of W3C and related standards efforts working on agentic AI, with KR / AIAO alignment and an openness read. W3C AI KR Community Group.</p>
 
-<section id="sotd" class="introductory">
-  <p>
-    This is a <strong>working draft</strong> and a non-normative sketch. Entries reflect the
-    landscape as understood in early 2026 and require verification; several efforts are
-    actively converging or being re-homed between bodies. The alignment column is indicative,
-    not settled.
-  </p>
-</section>
+<nav style="font-size:.85em;color:#5a6570;background:#f0f4fa;border:1px solid #cdd9ea;border-radius:6px;padding:.6em .9em;margin:.4em 0 1.2em">
+  <strong style="color:#005a9c">AI KR CG &mdash; read together:</strong>
+  <a href="https://w3c-cg.github.io/aikr/">Index</a> &middot;
+  <a href="https://w3c-cg.github.io/aikr/summary/">Summary &amp; Repository Map</a> &middot;
+  <a href="https://w3c-cg.github.io/aikr/map/">File Map</a> &middot;
+  <a href="https://w3c-cg.github.io/aikr/sdo-inventory/">Standards Inventory</a> &middot;
+  <a href="https://w3c-cg.github.io/aikr/landscape/">Landscape Map</a>
+</nav>
 
-<section id="inventory">
-  <h2>Inventory (sketch)</h2>
-  <table class="inv">
-    <thead>
-      <tr>
-        <th>Body / Group</th>
-        <th>Standard / effort</th>
-        <th>Core elements &amp; properties</th>
-        <th>Alignment to AIAO / KR (sketch)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- W3C -->
-      <tr><td class="body">W3C — AI KR CG</td><td>AI Knowledge Representation; ontic maps</td><td>KR techniques (logic, ontologies, controlled NL); AIAO classification; ontic categories</td><td>Hub — supplies the representation layer; AIAO and ontic categories live here</td></tr>
-      <tr><td class="body">W3C — Autonomous Agents on the Web CG</td><td>HMAS / hypermedia multi-agent systems</td><td>Hypermedia agents, affordances, WoT-aligned agent models</td><td>AIAO: Embodiment, Interaction Style · Layer: Alignment</td></tr>
-      <tr><td class="body">W3C — Agent Protocol CG</td><td>Agent interaction protocols</td><td>Agent messaging, task / dialogue protocols</td><td>AIAO: Interaction Style · Layer: Interoperability</td></tr>
-      <tr><td class="body">W3C — AIVS CG (Sanctuary)</td><td>Agentic Integrity Verification Specification</td><td>.aivs / .shm audit archives; integrity / proof-of-execution</td><td>New ontic category: Verification / Trust Layer · Layer: Trust</td></tr>
-      <tr><td class="body">W3C — A2WF CG</td><td>Agent-to-Web Framework</td><td>Agent access to web resources and actions</td><td>Layer: Interoperability</td></tr>
-      <tr><td class="body">W3C — Web Machine Learning WG</td><td>WebMCP (navigator.modelContext); WebNN</td><td>In-browser tool / context exposure; JS API</td><td>AIAO: Functional Role / Cognitive (tool use) · Layer: Representation · bridges MCP</td></tr>
-      <tr><td class="body">W3C — Smart Voice Agents WS / Voice CG</td><td>Voice agent standards</td><td>Web Speech API extensions; turn / dialogue control</td><td>AIAO: Interface Modality (Voice)</td></tr>
-      <tr><td class="body">W3C — Solid CG</td><td>Decentralised data (Pods)</td><td>Pods, WebID, access control, RDF data</td><td>New ontic: data sovereignty · Layer: Trust (data)</td></tr>
-      <tr><td class="body">W3C — Verifiable Credentials WG</td><td>VC Data Model</td><td>Credentials; issuer / holder / verifier; proofs</td><td>Verification / Trust Layer · Layer: Trust</td></tr>
-      <tr><td class="body">W3C — DID WG</td><td>Decentralized Identifiers</td><td>DID methods, DID documents, resolution</td><td>Verification / Trust Layer · identity</td></tr>
-      <tr><td class="body">W3C — Web of Things WG</td><td>Thing Description</td><td>TD, affordances, protocol bindings</td><td>AIAO: Embodiment · Layer: Representation</td></tr>
-      <tr><td class="body">W3C — Provenance (PROV)</td><td>PROV-O</td><td>Entity / activity / agent provenance</td><td>Verification / Trust · provenance</td></tr>
-      <tr><td class="body">W3C — Semantic Web</td><td>RDF, OWL, SHACL, JSON-LD</td><td>Triples; ontologies; shapes / constraints; linked data</td><td>KR Language / Formalism + Constraint categories · representation substrate</td></tr>
-      <!-- IETF -->
-      <tr><td class="body">IETF — draft-stone-vcap</td><td>Verifiable capability / escrow settlement</td><td>Capability declarations; escrow; Ed25519 signatures</td><td>AIAO: capability · Layer: Interoperability + Trust · cites AI KR CG TN</td></tr>
-      <tr><td class="body">IETF — draft-stone-aivs</td><td>Agentic Integrity Verification Standard</td><td>Cryptographic proof of execution</td><td>Verification / Trust Layer · (acronym collides with W3C AIVS CG)</td></tr>
-      <tr><td class="body">IETF — draft-stone-atep</td><td>Portable agent reputation / attestation</td><td>Portable reputation; attestation tokens</td><td>Verification / Trust · cites AI KR CG TN</td></tr>
-      <tr><td class="body">IETF — OAuth 2.x / GNAP</td><td>Delegated authorization</td><td>Tokens, grants, agent / delegated auth</td><td>Verification / Trust · auth substrate</td></tr>
-      <!-- ISO -->
-      <tr><td class="body">ISO/IEC JTC 1 / SC 42</td><td>AI management, risk, terminology</td><td>22989 (concepts); 23894 (risk mgmt); 42001 (AI mgmt system)</td><td>Governance / risk facet — addresses systemic risk &amp; deviation; cross-cuts AIAO</td></tr>
-      <!-- Industry / LF -->
-      <tr><td class="body">Linux Foundation (orig. Google) — A2A</td><td>Agent2Agent interoperability protocol</td><td>Agent Cards; tasks; messages; artifacts; capabilities; JSON-RPC / HTTP</td><td>AIAO: Interaction Style (MultiAgent), Interaction Paradigm · Layer: Interoperability</td></tr>
-      <tr><td class="body">Anthropic — MCP</td><td>Model Context Protocol</td><td>Tools; resources; prompts; sampling; JSON-RPC; client / server</td><td>AIAO: tool / context invocation · Representation → Interoperability · WebMCP is its browser sibling</td></tr>
-      <tr><td class="body">Cisco / LF — AGNTCY (Internet of Agents)</td><td>OASF; Agent Directory; identity; observability</td><td>Open Agentic Schema Framework; agent identity / discovery; observability</td><td>Representation + Verification / Trust · identity &amp; discovery</td></tr>
-      <tr><td class="body">Google — AP2</td><td>Agent Payments Protocol</td><td>Mandates (Intent / Cart); payment authorization; works with A2A &amp; MCP</td><td>AIAO: Interaction Paradigm (Transactional) · Layer: Trust / commerce</td></tr>
-      <tr><td class="body">IBM / LF — ACP (BeeAI)</td><td>Agent Communication Protocol</td><td>REST-based agent messaging (converging with A2A)</td><td>AIAO: Interaction Style · Layer: Interoperability</td></tr>
-      <tr><td class="body">Microsoft — NLWeb</td><td>Natural-language web for agents</td><td>NL endpoints for websites; MCP-compatible</td><td>AIAO: Interface Modality (Text) · web-agent access</td></tr>
-    </tbody>
-  </table>
-  <p style="font-size:0.85em;color:#555">
-    Sketch only. To be verified and expanded for the published map; activity / status, chairs
-    and cross-membership, and precise normative scope are not yet captured.
-  </p>
-</section>
+<div class="verify">
+  <strong>Help us verify this. </strong>
+  This landscape changes faster than any single editor can track — and that volatility is
+  precisely the problem the AI KR CG exists to expose. Entries marked <span class="ok">✓</span>
+  were verified live during compilation; entries marked <span class="q">~</span> are
+  existence-verified but their <em>current version, status or governance is unconfirmed</em>
+  and may already be out of date or contain errors. <strong>We invite the community to verify,
+  correct and extend these rows</strong> — open an issue or pull request on the
+  <a href="https://github.com/w3c-cg/aikr">AI KR CG repository</a>, or join the discussion on
+  <a href="https://lists.w3.org/Archives/Public/public-aikr/">public-aikr</a>. Spotting and
+  fixing drift in this table is itself a contribution to the group's mission.
+</div>
+
+<p class="legend">
+  <strong>Access</strong> — <span class="open">Open · web</span>: open, royalty-free, anyone may
+  participate (W3C Community/Working Groups, IETF). <span class="gated">Gated</span>:
+  participation or specification controlled by a foundation, single vendor, or paid membership.
+  Columns: Group · Focus · Core elements · <strong>Access</strong> · Latest/verified · KR&nbsp;/&nbsp;AIAO.
+</p>
+
+<h2>1 · W3C — agentic-AI Community Groups</h2>
+<p class="note">This cluster alone shows the fragmentation: many overlapping groups, little cross-coherence — registry-confirmed live, all open web-process.</p>
+<div class="scroll"><table>
+<thead><tr><th>Group</th><th>Focus</th><th>Core elements</th><th>Access</th><th>Latest</th><th>KR / AIAO</th></tr></thead>
+<tbody>
+<tr><td class="g"><a href="https://www.w3.org/groups/cg/aikr/">AI KR</a> <em>(this group)</em></td><td>System-level KR for the agentic web</td><td>Ontic maps; logic + controlled NL</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>The mapping layer — supplies AIAO</td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/cg/webagents/">Autonomous Agents on the Web</a></td><td>Hypermedia multi-agent systems (HMAS)</td><td>Agents acting on web resources; affordances</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Alignment · Embodiment</td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/cg/agentprotocol/">AI Agent Protocol</a></td><td>Protocol(s) for agent interaction</td><td>Messaging / invocation</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Interoperability · Interaction Style</td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/cg/a2wf/">Agent-to-Web Framework (A2WF)</a></td><td>Agents interfacing with web apps</td><td>Framework binding agents to web surfaces</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Interoperability</td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/cg/aivs/">Agentic Integrity Verification (AIVS)</a></td><td>Integrity / attestation of execution</td><td>Audit archives; proof of execution</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Trust — collides w/ IETF <code>draft-stone-aivs</code></td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/cg/adacg/">Agent Declaration &amp; Assurance</a></td><td>Declaring capability + assurance</td><td>Capability / assurance manifests</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Representation + Trust</td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/cg/agent-identity/">Agent Identity Registry Protocol</a></td><td>Agent identity registration</td><td>Registry, resolution, identifiers</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Trust / Identity — DID + VC</td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/cg/atp/">Agent Trust Protocol (ATP)</a></td><td>Trust establishment between agents</td><td>Trust signals / handshake</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Trust</td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/cg/agentic-arbitration/">Agentic Arbitration Protocol</a></td><td>Dispute / arbitration between agents</td><td>Arbitration procedure, outcomes</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Interoperability / governance</td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/cg/ai-agent-memory-interop/">AI Agent Memory Interoperability</a></td><td>Portable agent memory / state</td><td>Memory, state, provenance carriage</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Interoperability · Cognitive: Memory</td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/cg/s-agent-comm/">Semantic Agent Communication</a></td><td>Semantics for agent messages</td><td>Ontology-grounded content (<code>s-agent-comm</code>)</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Representation / Alignment — AgentIDL</td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/cg/oasis/">Ontology for Agents, Systems &amp; Integration of Services</a></td><td>Agent / service ontology</td><td>Classes for agents, services, integration</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Representation — AIAO &amp; <code>agonalign</code> <span class="note">(NB: "oasis" ≠ OASIS SDO)</span></td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/cg/web-content-browser-ai/">Web Content Browser for AI Agents</a></td><td>Serving web content to agents</td><td>Agent-readable page representation</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Representation · Interface — WebMCP</td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/cg/pm-kr/">Procedural Memory KR</a></td><td>KR of procedural memory</td><td>Representations of procedures / skills</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Representation · Cognitive: Memory</td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/cg/cogai/">Cognitive AI</a></td><td>Cognitive architectures</td><td>Cognitive primitives / architecture</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Cognitive Capability</td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/cg/ai-content-disclosure/">AI Content Disclosure</a></td><td>Disclosure of AI-generated content</td><td>Provenance / disclosure signals</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Trust / governance</td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/cg/voiceinteraction/">Voice Interaction</a></td><td>Voice interaction standards</td><td>Voice UI controls, dialogue</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Interface Modality: Voice — <code>voiceAI</code></td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/cg/webmachinelearning/">Web Machine Learning</a> (CG + <a href="https://www.w3.org/groups/wg/webmachinelearning/">WG</a>)</td><td>WebNN; WebMCP (proposed; <code>navigator.modelContext</code>)</td><td>In-browser ML; tool/context exposure</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Representation / tool invocation — <code>webMCP</code></td></tr>
+</tbody>
+</table></div>
+
+<h2>2 · W3C — KR &amp; trust substrate</h2>
+<div class="scroll"><table>
+<thead><tr><th>Group</th><th>Focus</th><th>Core elements</th><th>Access</th><th>Latest</th><th>KR / AIAO</th></tr></thead>
+<tbody>
+<tr><td class="g">RDF &amp; SPARQL WG</td><td>Graph data model + query</td><td>Triples, graphs, query</td><td><span class="open">Open · web</span></td><td><span class="q">~</span></td><td>Representation (base)</td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/wg/data-shapes/">Data Shapes WG (SHACL)</a></td><td>Constraints / validation</td><td>Shapes, constraints, validation</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Representation / validation</td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/wg/vc/">Verifiable Credentials WG</a></td><td>VC data model</td><td>Issuer · holder · verifier; proofs</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Trust</td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/wg/did/">Decentralized Identifier WG</a></td><td>DIDs</td><td>Self-sovereign identifiers, resolution</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Trust / Identity</td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/wg/wot/">Web of Things WG</a></td><td>Thing Description</td><td>Affordances: properties, actions, events</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Representation / Interoperability</td></tr>
+<tr><td class="g"><a href="https://www.w3.org/groups/cg/solid/">Solid CG</a></td><td>Decentralised personal data (Pods)</td><td>Pods, access control, data sovereignty</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Trust (data) — <code>Solid</code></td></tr>
+</tbody>
+</table></div>
+
+<h2>3 · IETF</h2>
+<div class="scroll"><table>
+<thead><tr><th>Effort</th><th>Focus</th><th>Core elements</th><th>Access</th><th>Latest</th><th>KR / AIAO</th></tr></thead>
+<tbody>
+<tr><td class="g"><a href="https://datatracker.ietf.org/doc/draft-stone-vcap/">draft-stone-vcap / atep / aivs</a></td><td>Agent-commerce trust primitives (SwarmSync)</td><td>Escrow (VCAP); reputation (ATEP); proof of execution (AIVS)</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span> Active, Mar 2026</td><td>Trust — cite AI&nbsp;KR&nbsp;CG TR-2026-001; <code>conduit</code></td></tr>
+<tr><td class="g"><a href="https://datatracker.ietf.org/wg/aipref/about/">AIPREF WG</a></td><td>AI content-usage preferences</td><td>Machine-readable usage signals</td><td><span class="open">Open · web</span></td><td><span class="ok">✓</span></td><td>Governance / provenance</td></tr>
+</tbody>
+</table></div>
+
+<h2>4 · Industry &amp; foundation protocols</h2>
+<p class="note">Several moved into the Linux Foundation — under the <a href="https://agenticaifoundation.org"><strong>Agentic AI Foundation (AAIF)</strong></a> — but are governed by <strong>maintainer-gated</strong> bodies, not open multi-stakeholder process. This openness gap is precisely what the Access column is meant to surface.</p>
+<div class="scroll"><table>
+<thead><tr><th>Effort</th><th>Origin → home</th><th>Core elements</th><th>Access</th><th>Latest</th><th>KR / AIAO</th></tr></thead>
+<tbody>
+<tr><td class="g"><a href="https://modelcontextprotocol.io/specification/latest">MCP</a></td><td>Anthropic → Linux Foundation <span class="note">(LF · AAIF)</span></td><td>Tools · resources · prompts; client/server</td><td><span class="gated">Gated · LF</span></td><td><span class="ok">✓</span> 2025-11-25</td><td>Representation / tool invocation — <code>webMCP</code></td></tr>
+<tr><td class="g"><a href="https://a2a-protocol.org">A2A</a> (<a href="https://github.com/a2aproject/A2A">repo</a>)</td><td>Google → Linux Foundation <span class="note">(a2aproject; AAIF)</span></td><td>Agent Cards; task lifecycle; messaging</td><td><span class="gated">Gated · LF</span></td><td><span class="q">~</span> version unconfirmed</td><td>Interoperability · Interaction Paradigm</td></tr>
+<tr><td class="g"><a href="https://agntcy.org">AGNTCY</a></td><td>Cisco-led → Linux Foundation</td><td>Agent directory · identity · observability</td><td><span class="gated">Gated · LF</span></td><td><span class="q">~</span></td><td>Interoperability / Trust</td></tr>
+<tr><td class="g"><a href="https://agentpayments.dev">Google AP2</a> (<a href="https://github.com/google-agentic-commerce/AP2">repo</a>)</td><td>Google</td><td>Mandates · payment methods · settlement</td><td><span class="gated">Gated · vendor</span></td><td><span class="ok">✓</span> ~2026-04</td><td>Trust / commerce — <code>conduit</code></td></tr>
+<tr><td class="g"><a href="https://github.com/nlweb-ai/NLWeb">Microsoft NLWeb</a></td><td>Microsoft</td><td>Natural-language endpoints over site content</td><td><span class="gated">Gated · vendor</span></td><td><span class="q">~</span></td><td>Interface / Representation</td></tr>
+</tbody>
+</table></div>
+
+<h2>5 · Cross-cutting governance</h2>
+<div class="scroll"><table>
+<thead><tr><th>Body</th><th>Focus</th><th>Core elements</th><th>Access</th><th>Latest</th><th>KR / AIAO</th></tr></thead>
+<tbody>
+<tr><td class="g"><a href="https://www.iso.org/committee/6794475.html">ISO/IEC JTC 1 SC 42</a></td><td>AI terminology, risk, governance</td><td>Vocabulary · risk mgmt · management systems</td><td><span class="gated">Gated · membership</span></td><td><span class="q">~</span></td><td>Governance — vocabulary alignment</td></tr>
+<tr><td class="g"><a href="https://standards.ieee.org/ieee/7003/">IEEE 7003 / P7000</a></td><td>Algorithmic bias &amp; ethics</td><td>Bias · transparency · value-based design</td><td><span class="gated">Gated · membership</span></td><td><span class="q">~</span> 7003-2024 (verify)</td><td>Governance — AI KR CG contributes (7003)</td></tr>
+<tr><td class="g"><a href="https://www.nist.gov/itl/ai-risk-management-framework">NIST AI RMF</a></td><td>AI risk management framework</td><td>Govern · Map · Measure · Manage</td><td><span class="open">Open · gov</span></td><td><span class="q">~</span> 1.0 (2023) + GenAI (2024)</td><td>Governance — risk framing</td></tr>
+</tbody>
+</table></div>
+
+<p class="note">Sources: W3C groups registry (api.w3.org); IETF datatracker; project sites and repositories as linked. The KR / AIAO and Access columns are the AI KR CG mapping lens — indicative, not claims by the listed groups. The Agentic AI Foundation (AAIF, agenticaifoundation.org) is recorded as the Linux Foundation home for MCP and A2A. Compiled by the AI KR CG; community verification welcome.</p>
 
 </body>
 </html>

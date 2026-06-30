@@ -1,276 +1,274 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI KR CG — Agentic AI Vocabulary — Semantic Map</title>
-<script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI KR CG — Agentic AI Vocabulary (Working Draft)</title>
 <style>
-  :root{ --bg:#0f1115; --panel:#171a21; --ink:#e7e9ee; --mut:#9aa3b2; --line:#2a2f3a; }
-  *{box-sizing:border-box}
-  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
-  #wrap{display:flex;height:100vh;width:100%}
-  #net{flex:1;height:100%;border-right:1px solid var(--line)}
-  #side{width:340px;min-width:340px;padding:18px 18px 28px;overflow:auto;background:var(--panel)}
-  h1{font-size:15px;margin:0 0 2px;letter-spacing:.2px}
-  .sub{font-size:11px;color:var(--mut);margin:0 0 14px;line-height:1.5}
-  .term{font-size:18px;font-weight:600;margin:14px 0 2px}
-  .sec{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut);margin-bottom:8px}
-  .def{font-size:13px;line-height:1.55;margin:0 0 10px}
-  .lbl{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut);margin:12px 0 4px}
-  .src{font-size:12px;color:#cdd3df;line-height:1.5}
-  .rel{font-size:12px;line-height:1.7}
-  .rel b{color:#fff}
-  .pill{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;margin:2px 4px 2px 0;background:#222733;border:1px solid var(--line);cursor:pointer}
-  .legend{margin:8px 0 0;font-size:11px;line-height:1.9}
-  .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
-  .hint{font-size:11px;color:var(--mut);margin-top:16px;line-height:1.5;border-top:1px solid var(--line);padding-top:12px}
-  #search{width:100%;padding:7px 9px;margin-bottom:6px;background:#0c0e12;border:1px solid var(--line);color:var(--ink);border-radius:6px;font-size:12px}
-</style>
-</head>
-<body>
-<div id="wrap">
-  <div id="net"></div>
-  <div id="side">
-    <h1>Agentic AI Vocabulary — Semantic Map</h1>
-    <p class="sub">AI KR CG working draft, June 2026. A KR artefact for landscaping the agentic-AI ecosystem. Click a node for its definition, source and relations. Drag to rearrange; scroll to zoom.</p>
-    <input id="search" placeholder="filter terms…" oninput="doFilter(this.value)">
-    <div class="legend">
-      <span class="dot" style="background:#6C8EBF"></span>1 · Agentic commerce, oversight &amp; reflexivity<br>
-      <span class="dot" style="background:#B85450"></span>2 · EU regulatory frameworks<br>
-      <span class="dot" style="background:#82B366"></span>3 · Financial crime, stablecoin &amp; tokenization<br>
-      <span class="dot" style="background:#D6B656"></span>4 · Quant, biotech &amp; applied coding<br>
-      <span class="dot" style="background:#9673A6"></span>5 · Security, safety &amp; interpretability
-    </div>
-    <div id="detail"></div>
-    <p class="hint">Edges are SKOS-style relations (partOf, broader, related, regulates, mitigates…). They are proposed, for discussion — not a finished ontology. Cross-section edges are where the domains actually touch.</p>
-  </div>
-</div>
-<script>
-const groups = {
- 1:{color:"#6C8EBF"},2:{color:"#B85450"},3:{color:"#82B366"},4:{color:"#D6B656"},5:{color:"#9673A6"}
-};
-// id, group, short definition, source
-const N = [
- ["agentic clearing",1,"Layer that judges whether an agent met its obligations, assigns liability, and sets the settlement action.","RAILS, arXiv 2606.08790"],
- ["clearing function",1,"Deterministic process turning reliability scores into a settlement/dispute consequence.","RAILS, arXiv 2606.08790"],
- ["verification-native clearing",1,"Clearing checks embedded in the verification phase, not bolted on after.","RAILS, arXiv 2606.08790"],
- ["per-output reliability score",1,"A metric on each agent output quantifying quality and constraint adherence.","RAILS, arXiv 2606.08790"],
- ["published reliability record",1,"Durable inspectable log of historical reliability scores.","RAILS, arXiv 2606.08790"],
- ["settlement determination",1,"The decision on how assets move, distinct from execution.","RAILS, arXiv 2606.08790"],
- ["RAILS",1,"Three-part clearing framework (score, record, clearing function). Acronym expansion unconfirmed.","arXiv 2606.08790"],
- ["x402",1,"Agent payment scheme on HTTP 402; agents settle value inline with a request.","Coinbase"],
- ["AP2",1,"Agent Payments Protocol: mandate-based authorization of agent value transfer.","Google"],
- ["mandate protocol",1,"Rules enforcing pre-approved bounds and caps on an agent's spending.","cf. AP2"],
- ["graduated human oversight",1,"Review depth/timing scaled to an action's risk and blast radius.","GAIE, arXiv 2606.22484"],
- ["GAIE",1,"Framework for proportionate oversight of agentic actions. Acronym expansion unconfirmed.","arXiv 2606.22484"],
- ["regulatory risk profile",1,"Classification of a task by compliance and harm potential.","GAIE, arXiv 2606.22484"],
- ["blast-radius oversight",1,"Review intensity mapped to what a flawed change could disrupt.","GAIE, arXiv 2606.22484"],
- ["generation-to-deployment lifecycle",1,"End-to-end pipeline from AI generation to production.","GAIE, arXiv 2606.22484"],
- ["development-pipeline governance",1,"Gates and controls monitoring agent activity in delivery pipelines.","GAIE, arXiv 2606.22484"],
- ["evidence artifacts",1,"Logs, signatures, decision records proving compliance.","GAIE, arXiv 2606.22484"],
- ["agent-as-judge",1,"A constrained secondary model auditing a primary agent's outputs.","Zhuge et al. 2024; arXiv 2509.08380"],
- ["reflexivity",1,"Biased expectations alter market reality in a feedback loop.","Soros 1987; arXiv 2606.00061"],
- ["participative function",1,"Where expectations become capital allocations that move prices.","Soros 1987; arXiv 2606.00061"],
- ["cognitive function",1,"Where prices/trends are observed to form imperfect expectations.","Soros 1987; arXiv 2606.00061"],
- ["memorization control",1,"Controls preventing regurgitation of training data; here, benchmark-contamination control.","arXiv 2606.00061"],
- ["directional forecasting accuracy",1,"Share of correct up/down predictions, independent of magnitude.","arXiv 2606.00061"],
- ["Sharpe ratio",1,"Risk-adjusted return: excess return over volatility.","Sharpe 1966"],
- ["GPAI",2,"General-Purpose AI: models with broad cross-domain capability.","Reg (EU) 2024/1689"],
- ["GPAI enforcement",2,"Audit and penalty regime compelling GPAI compliance (from 2 Aug 2026).","EC guidelines"],
- ["AI Office",2,"EC body supervising GPAI compliance.","Reg (EU) 2024/1689"],
- ["GPAI Code of Practice",2,"Operational manual of steps/mitigations for GPAI providers.","EC guidelines"],
- ["alternative adequate means",2,"Compliance via internal frameworks achieving equivalent outcomes.","EC guidelines"],
- ["Article 51",2,"AI Act provision classifying GPAI as systemic-risk.","Reg (EU) 2024/1689"],
- ["Article 53",2,"AI Act documentation/transparency/copyright duties for GPAI.","Reg (EU) 2024/1689"],
- ["10^25 FLOP threshold",2,"Training-compute trigger flagging potential systemic capability.","Reg (EU) 2024/1689"],
- ["prEN 18286",2,"Draft standard: AI quality management.","CEN-CENELEC JTC 21"],
- ["prEN 18228",2,"Draft standard: robustness, accuracy, predictability.","CEN-CENELEC JTC 21"],
- ["prEN 18229",2,"Draft standards (18229-1/2): lifecycle engineering &amp; cybersecurity.","CEN-CENELEC JTC 21"],
- ["prEN 18282",2,"Draft standard: recording, logging, tracing.","CEN-CENELEC JTC 21"],
- ["prEN 18283",2,"Draft standard: human oversight.","CEN-CENELEC JTC 21"],
- ["prEN 18284",2,"Draft standard: information provision &amp; transparency.","CEN-CENELEC JTC 21"],
- ["SAR",3,"Suspicious Activity Report: confidential filing of suspected illicit activity.","FinCEN; arXiv 2509.08380"],
- ["AML",3,"Anti-Money Laundering framework of laws and procedures.","FATF; US BSA"],
- ["BSA",3,"Bank Secrecy Act: US AML-detection legislation.","31 U.S.C. 5311+"],
- ["FATF",3,"Financial Action Task Force: sets AML/CFT standards.","FATF"],
- ["FinCEN",3,"US Treasury bureau analysing financial-crime data.","US Treasury"],
- ["AI-privacy guard layer",3,"Layer shielding PII before data enters AI pipelines.","arXiv 2509.08380"],
- ["crime-typology alignment",3,"Matching transactions to known criminal patterns.","arXiv 2509.08380"],
- ["FCC",3,"Financial Crime Compliance function and workflows.","industry usage"],
- ["sanctions false-positive classifier",3,"Model filtering wrong sanctions name-matches.","industry usage"],
- ["par-value redemption",3,"Right to redeem a stablecoin for fiat 1:1 on demand.","arXiv 2604.17167"],
- ["reserve quality",3,"Safety/liquidity of assets backing a stablecoin.","arXiv 2604.17167"],
- ["redemption surge",3,"Sudden mass redemption demand, often panic-driven.","arXiv 2604.17167"],
- ["broker-dealer intermediation",3,"Reliance on dealers to liquidate backing securities.","arXiv 2604.17167"],
- ["hierarchy of money",3,"Ranking of instruments by liquidity and counterparty risk.","Mehrling; arXiv 2604.17167"],
- ["GENIUS Act",3,"US 2025 law framing dollar payment stablecoins.","GENIUS Act 2025"],
- ["PPSI",3,"Permitted Payment Stablecoin Issuer; under FinCEN rule, subject to BSA/AML & sanctions duties.","FinCEN/OFAC FINCEN-2026-0100"],
- ["MiCA",3,"EU framework for crypto-assets and stablecoins.","Reg (EU) 2023/1114"],
- ["real-world asset tokenization",3,"Representing rights to real assets as on-chain tokens.","arXiv 2606.08534"],
- ["RWA",3,"Real-World Asset that has been tokenised.","arXiv 2606.08534"],
- ["oracle risk",3,"Risk from inaccurate/manipulated external data feeds.","arXiv 2606.08534"],
- ["platform concentration",3,"Systemic risk from reliance on one protocol/provider.","arXiv 2606.08534"],
- ["whitelist transferability",3,"Tokens transfer only between identity-checked addresses.","arXiv 2606.08534"],
- ["rebasing",3,"Supply auto-adjusts to reflect yield/price.","arXiv 2606.08534"],
- ["settlement model",3,"Framework finalising ownership transfer (atomic, deferred net…).","arXiv 2606.08534"],
- ["parametric synthetic benchmark",4,"Generated time-series test data with controllable stress.","FinStressTS, arXiv 2606.03184"],
- ["tail risk",4,"Probability of extreme losses from rare events.","arXiv 2606.03184"],
- ["stress testing",4,"Simulating extreme shocks to test survival.","arXiv 2606.03184; BCBS"],
- ["model risk",4,"Risk from flawed or misapplied models.","arXiv 2606.03184; Fed SR 11-7"],
- ["Basel III",4,"International bank capital/stress/liquidity framework.","BCBS"],
- ["regime switch",4,"Abrupt structural shift in market behaviour.","arXiv 2606.03184; 2606.00624"],
- ["agentic drug discovery",4,"Autonomous agents across the discovery pipeline.","Beyond SMILES, arXiv 2602.10163"],
- ["SMILES",4,"String notation for chemical structures.","Weininger 1988"],
- ["Eroom's law",4,"Drug-discovery productivity per R&D dollar falls over time.","Scannell et al. 2012"],
- ["process vs molecule benchmark",4,"Grading pipeline orchestration vs single-structure design.","arXiv 2602.10163"],
- ["human-in-the-loop discovery",4,"Humans guide/review/approve agent recommendations.","arXiv 2602.10163; Robin 2026"],
- ["target identification",4,"Pinpointing a disease-relevant molecule or pathway.","arXiv 2602.10163"],
- ["reverse translation",4,"Taking clinical outcomes back into lab models.","arXiv 2602.10163"],
- ["ChatInvent",4,"Agentic molecular-design system reported at AstraZeneca.","He et al., Drug Discovery Today 2026"],
- ["compliance-as-code",4,"Regulatory rules written as executable software.","Compliance-to-Code, arXiv 2505.19804"],
- ["rule-as-code",4,"Drafting regulation as machine-readable code from inception.","arXiv 2505.19804; OECD"],
- ["RegTech",4,"Software automating compliance, reporting, risk.","FCA usage"],
- ["DORA",4,"EU Digital Operational Resilience Act for financial IT.","Reg (EU) 2022/2554"],
- ["regulatory rule translation",4,"Converting legal text into deterministic code.","arXiv 2505.19804"],
- ["mixed-frequency forecasting",4,"Modelling data captured at different intervals.","Macro-aware, arXiv 2606.00624"],
- ["hierarchical mixed-frequency attention",4,"Attention weighting sequences across cadences.","arXiv 2606.00624"],
- ["MIDAS",4,"Mixed Data Sampling regression for mixed frequencies.","Ghysels et al. 2004"],
- ["model drift",4,"Decay of accuracy as conditions diverge from training.","arXiv 2606.00624"],
- ["regime shift",4,"Persistent change in a series' distribution.","arXiv 2606.00624"],
- ["memory poisoning",5,"Injecting malicious data into agent memory to corrupt decisions.","OWASP GenAI"],
- ["indirect prompt injection",5,"Untrusted content carrying hidden instructions hijacks the agent.","Greshake et al. 2023"],
- ["information-flow control",5,"Architecture restricting data movement across domains.","IFC literature"],
- ["origin-bound authority",5,"Tool authorization bound to the verified request source.","agent-security literature"],
- ["Sybil resistance",5,"Defence against many fake identities gaining influence.","Douceur 2002"],
- ["KYA",5,"Know Your Agent: register/verify/profile agents before deployment.","emerging governance"],
- ["trace-economic underwriting",5,"Pricing risk from an agent pipeline's audit trails.","insurance feeds"],
- ["SAE",5,"Sparse Autoencoder: decomposes activations into features.","Bricken et al. 2023"],
- ["superposition",5,"Network packs more features than neurons via combination.","Elhage et al. 2022"],
- ["monosemanticity",5,"A neuron/feature maps to one clear concept.","Bricken et al. 2023"],
- ["polysemanticity",5,"One neuron responds to many unrelated concepts.","Anthropic interp."],
- ["dictionary learning",5,"Extracting monosemantic features from activations.","Anthropic interp."],
- ["circuit analysis",5,"Reverse-engineering the pathways driving behaviours.","Elhage et al. 2021"],
- ["activation patching",5,"Causally editing activations to test feature effects.","interp. literature"],
- ["ELK",5,"Eliciting Latent Knowledge: extract a model's true knowledge.","Christiano et al. 2021"],
- ["manifold steering",5,"Nudging activations along concept dimensions in real time.","interp. literature"],
- ["deceptive alignment",5,"Model appears aligned in training, conceals goals.","Hubinger et al. 2019"],
- ["MCP",5,"Model Context Protocol: standard linking models to tools/data.","Anthropic"],
- ["A2A",5,"Agent-to-Agent protocols linking agents autonomously.","Google"],
- ["neocloud",5,"GPU-optimised cloud infrastructure providers.","industry usage"],
- ["CoWoS",5,"Chip-on-Wafer-on-Substrate advanced packaging.","TSMC"],
- ["HBM4",5,"High Bandwidth Memory 4 for AI accelerators.","JEDEC"],
- ["abliteration",5,"Modifying model weights to remove safety alignments without a full retrain.","Arditi et al. 2024"]
-];
-const E = [
- ["agentic clearing","clearing function","related"],["agentic clearing","settlement determination","related"],
- ["clearing function","RAILS","partOf"],["clearing function","per-output reliability score","related"],
- ["per-output reliability score","RAILS","partOf"],["published reliability record","RAILS","partOf"],
- ["per-output reliability score","published reliability record","related"],["verification-native clearing","RAILS","related"],
- ["settlement determination","settlement model","related"],["RAILS","x402","related"],["RAILS","AP2","related"],
- ["x402","AP2","related"],["x402","mandate protocol","related"],["AP2","mandate protocol","related"],
- ["graduated human oversight","GAIE","definedBy"],["GAIE","regulatory risk profile","hasPart"],
- ["GAIE","blast-radius oversight","hasPart"],["GAIE","evidence artifacts","hasPart"],
- ["graduated human oversight","blast-radius oversight","hasPart"],["graduated human oversight","regulatory risk profile","related"],
- ["development-pipeline governance","GAIE","partOf"],["development-pipeline governance","evidence artifacts","hasPart"],
- ["generation-to-deployment lifecycle","development-pipeline governance","related"],["evidence artifacts","published reliability record","related"],
- ["agent-as-judge","GAIE","related"],["agent-as-judge","AML","related"],["agent-as-judge","deceptive alignment","related"],
- ["reflexivity","participative function","hasPart"],["reflexivity","cognitive function","hasPart"],
- ["reflexivity","directional forecasting accuracy","related"],["reflexivity","model drift","related"],
- ["memorization control","reflexivity","related"],["directional forecasting accuracy","Sharpe ratio","related"],
- ["graduated human oversight","prEN 18283","regulatedBy"],["GAIE","DORA","related"],
- ["GPAI","GPAI enforcement","hasPart"],["GPAI","GPAI Code of Practice","hasPart"],["GPAI","Article 51","related"],
- ["GPAI","Article 53","related"],["GPAI","10^25 FLOP threshold","related"],["GPAI enforcement","AI Office","related"],
- ["GPAI Code of Practice","alternative adequate means","related"],["Article 51","10^25 FLOP threshold","related"],
- ["prEN 18286","GPAI","related"],["prEN 18228","GPAI","related"],["prEN 18229","GPAI","related"],
- ["prEN 18282","GPAI","related"],["prEN 18283","GPAI","related"],["prEN 18284","GPAI","related"],
- ["prEN 18228","model risk","related"],["prEN 18229","indirect prompt injection","related"],["prEN 18282","evidence artifacts","related"],
- ["SAR","AML","related"],["SAR","FinCEN","related"],["SAR","crime-typology alignment","related"],
- ["AML","BSA","related"],["AML","FATF","related"],["AML","FCC","broader"],["BSA","FinCEN","related"],["BSA","PPSI","related"],
- ["AI-privacy guard layer","information-flow control","related"],["crime-typology alignment","AML","related"],
- ["FCC","sanctions false-positive classifier","hasPart"],["par-value redemption","reserve quality","related"],
- ["par-value redemption","redemption surge","related"],["reserve quality","broker-dealer intermediation","related"],
- ["broker-dealer intermediation","hierarchy of money","related"],["hierarchy of money","par-value redemption","related"],
- ["GENIUS Act","PPSI","regulates"],["PPSI","FinCEN","regulatedBy"],["GENIUS Act","MiCA","related"],["MiCA","RWA","related"],
- ["real-world asset tokenization","settlement model","hasPart"],["real-world asset tokenization","whitelist transferability","hasPart"],
- ["real-world asset tokenization","rebasing","hasPart"],["real-world asset tokenization","oracle risk","related"],
- ["real-world asset tokenization","platform concentration","related"],["RWA","real-world asset tokenization","broader"],
- ["oracle risk","platform concentration","related"],["redemption surge","stress testing","related"],
- ["parametric synthetic benchmark","stress testing","related"],["parametric synthetic benchmark","tail risk","related"],
- ["stress testing","Basel III","related"],["stress testing","model risk","related"],["tail risk","Sharpe ratio","related"],
- ["model risk","model drift","related"],["regime switch","model drift","related"],["regime switch","mixed-frequency forecasting","related"],
- ["agentic drug discovery","target identification","hasPart"],["agentic drug discovery","SMILES","related"],
- ["agentic drug discovery","ChatInvent","related"],["agentic drug discovery","human-in-the-loop discovery","related"],
- ["agentic drug discovery","Eroom's law","addresses"],["process vs molecule benchmark","agentic drug discovery","related"],
- ["human-in-the-loop discovery","graduated human oversight","related"],["target identification","reverse translation","related"],
- ["compliance-as-code","rule-as-code","related"],["compliance-as-code","RegTech","broader"],
- ["compliance-as-code","regulatory rule translation","related"],["RegTech","DORA","related"],
- ["mixed-frequency forecasting","hierarchical mixed-frequency attention","hasPart"],["mixed-frequency forecasting","MIDAS","related"],
- ["mixed-frequency forecasting","model drift","related"],["model drift","regime shift","related"],["regime shift","regime switch","closeMatch"],
- ["memory poisoning","indirect prompt injection","related"],["memory poisoning","information-flow control","related"],
- ["indirect prompt injection","origin-bound authority","related"],["information-flow control","indirect prompt injection","mitigates"],
- ["information-flow control","memory poisoning","mitigates"],["origin-bound authority","indirect prompt injection","mitigates"],
- ["Sybil resistance","KYA","related"],["KYA","evidence artifacts","related"],["trace-economic underwriting","evidence artifacts","related"],
- ["trace-economic underwriting","published reliability record","related"],["SAE","superposition","related"],
- ["SAE","dictionary learning","related"],["SAE","monosemanticity","related"],["superposition","polysemanticity","related"],
- ["monosemanticity","polysemanticity","opposite"],["dictionary learning","monosemanticity","produces"],
- ["circuit analysis","activation patching","hasPart"],["circuit analysis","SAE","related"],["manifold steering","SAE","related"],
- ["manifold steering","activation patching","related"],["ELK","deceptive alignment","related"],["MCP","A2A","related"],
- ["A2A","AP2","related"],["neocloud","CoWoS","related"],["neocloud","HBM4","related"],["CoWoS","HBM4","related"],
- ["abliteration","superposition","related"]
-];
-const defs={}, secOf={};
-const nodes = new vis.DataSet(N.map(function(n){
-  defs[n[0]]={def:n[2],src:n[3]}; secOf[n[0]]=n[1];
-  return {id:n[0],label:n[0],group:n[1],
-    color:{background:groups[n[1]].color,border:"#0b0d11",
-      highlight:{background:groups[n[1]].color,border:"#fff"}},
-    font:{color:"#0b0d11",size:13,face:"Segoe UI"},shape:"dot",size:14};
-}));
-const edges = new vis.DataSet(E.map(function(e,i){
-  var dir = ["partOf","hasPart","regulates","regulatedBy","mitigates","produces","definedBy","broader","addresses"].indexOf(e[2])>=0;
-  return {id:i,from:e[0],to:e[1],label:e[2],
-    arrows:dir?"to":undefined,
-    color:{color:"#3a4150",highlight:"#aab2c2"},
-    font:{color:"#7c8696",size:9,strokeWidth:0,align:"middle"},
-    smooth:{type:"continuous"},length:160};
-}));
-const secNames={1:"Agentic commerce, oversight & reflexivity",2:"EU regulatory frameworks",3:"Financial crime, stablecoin & tokenization",4:"Quant, biotech & applied coding",5:"Security, safety & interpretability"};
-const container=document.getElementById("net");
-const network=new vis.Network(container,{nodes:nodes,edges:edges},{
-  physics:{barnesHut:{gravitationalConstant:-8000,springLength:150,springConstant:0.03,damping:0.4},stabilization:{iterations:250}},
-  interaction:{hover:true,tooltipDelay:120},
-  nodes:{borderWidth:1.5}
-});
-function relationsFor(id){
-  var out=[];
-  E.forEach(function(e){
-    if(e[0]===id) out.push({rel:e[2],other:e[1],dir:"→"});
-    else if(e[1]===id) out.push({rel:e[2],other:e[0],dir:"←"});
-  });
-  return out;
-}
-function show(id){
-  var d=defs[id]; if(!d) return;
-  var rels=relationsFor(id).map(function(r){
-    return '<div class="rel"><b>'+r.rel+' '+r.dir+'</b> <span class="pill" onclick="show(\''+r.other.replace(/'/g,"\\'")+'\');network.selectNodes([\''+r.other.replace(/'/g,"\\'")+'\']);network.focus(\''+r.other.replace(/'/g,"\\'")+'\',{scale:1.1,animation:true});">'+r.other+'</span></div>';
-  }).join("");
-  document.getElementById("detail").innerHTML=
-    '<div class="term">'+id+'</div>'+
-    '<div class="sec">'+secNames[secOf[id]]+'</div>'+
-    '<div class="def">'+d.def+'</div>'+
-    '<div class="lbl">Source</div><div class="src">'+d.src+'</div>'+
-    '<div class="lbl">Relations</div>'+(rels||'<div class="rel" style="color:#9aa3b2">—</div>');
-}
-network.on("click",function(p){ if(p.nodes.length) show(p.nodes[0]); });
-function doFilter(q){
-  q=q.trim().toLowerCase();
-  nodes.forEach(function(n){
-    var hit = !q || n.id.toLowerCase().indexOf(q)>=0;
-    nodes.update({id:n.id,opacity:hit?1:0.12,font:{color:hit?"#0b0d11":"rgba(11,13,17,0.2)"}});
-  });
-}
-network.once("stabilizationIterationsDone",function(){ network.setOptions({physics:false}); });
-</script>
-</body>
-</html>
+ :root { --w3c-blue:#005a9c; --w3c-line:#c3cedb; --w3c-head:#eaf1f8; --w3c-alt:#f6f9fc; }
+ body { font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif; line-height:1.5; color:#1a1a1a; max-width:74em; margin:0 auto; padding:1.6em 1.2em; background:#fff; }
+ a { color:var(--w3c-blue); text-decoration:none; } a:hover { text-decoration:underline; }
+ h1 { font-size:1.5em; margin:0 0 .15em; }
+ h2 { color:var(--w3c-blue); font-size:1.1em; margin:1.5em 0 .35em; border-bottom:2px solid var(--w3c-head); padding-bottom:2px; }
+ .sub { color:#5a6570; font-size:.92em; margin:.1em 0 .8em; }
+ .wd { background:#fff6d9; border:1px solid #e6d28a; padding:2px 8px; border-radius:4px; font-size:.82em; font-weight:600; }
+ .ct { color:#5a6570; font-weight:normal; font-size:.85em; }
+ .provisional { background:#fdecea; border:1px solid #e6a59c; border-left:5px solid #c0392b; padding:.7em .95em; border-radius:6px; margin:.9em 0; font-size:.9em; }
+ .provisional b { color:#a5281b; }
+ .contribute { background:#f1f7ec; border:1px solid #bcd9ab; border-left:5px solid #3f8f2e; padding:.7em .95em; border-radius:6px; margin:.9em 0; font-size:.93em; }
+ .contribute b { color:#2f6f22; }
+ nav.toc { background:var(--w3c-alt); border:1px solid var(--w3c-line); border-radius:6px; padding:.6em .9em .7em; font-size:.9em; margin:.6em 0 1.1em; columns:2; }
+ nav.toc b { color:var(--w3c-blue); } nav.toc ul { margin:.35em 0 0; padding-left:1.2em; } nav.toc li { margin:.1em 0; }
+ table.voc, table.acr { border-collapse:collapse; width:100%; font-size:.86em; margin-top:.2em; }
+ table.voc th, table.voc td, table.acr th, table.acr td { border:1px solid var(--w3c-line); padding:5px 8px; vertical-align:top; text-align:left; }
+ table.voc th, table.acr th { background:var(--w3c-head); color:var(--w3c-blue); }
+ table.voc tr:nth-child(even) td, table.acr tr:nth-child(even) td { background:var(--w3c-alt); }
+ td.t { font-weight:600; white-space:nowrap; } td.s, td.r { color:#445; font-size:.95em; }
+ .note { color:#5a6570; font-size:.85em; margin-top:1.4em; border-top:1px solid var(--w3c-line); padding-top:.7em; }
+</style></head><body>
+
+<h1>Agentic AI Vocabulary</h1>
+<p class="sub"><span class="wd">DRAFT · June 2026</span> &nbsp; W3C AI Knowledge Representation Community Group (AI&nbsp;KR&nbsp;CG) &nbsp;·&nbsp; structured by the <a href="https://w3c-cg.github.io/aikr/taxonomy/">Knowledge-Domains taxonomy</a></p>
+
+<div class="contribute"><b>Invitation to contribute.</b> You are invited to review these terms and definitions, propose changes, and discuss them on the public mailing list of the AI&nbsp;KR&nbsp;CG: <b>public-aikr@w3.org</b> — archives at <a href="https://lists.w3.org/Archives/Public/public-aikr/">lists.w3.org/Archives/Public/public-aikr/</a>. Anyone may read or write to this list. Proposed definitions and relations are first drafts for the group to critique.</div>
+
+<div class="provisional"><b>Provisional — to be confirmed and maintained.</b> The agentic-AI environment changes rapidly. Every term, definition, source, and relation here is <b>provisional</b> and must be verified and kept current. Acronym expansions marked <i>unconfirmed</i> (e.g. RAILS, GAIE) should not be treated as settled. This is a living draft, not a settled reference.</div>
+
+<nav class="toc"><b>Contents</b><ul>
+<li><a href="#c1">1. Agent types & autonomy</a> <span class="ct">(8)</span></li>
+<li><a href="#c2">2. Cognition & capability</a> <span class="ct">(7)</span></li>
+<li><a href="#c3">3. Interaction, communication & identity</a> <span class="ct">(12)</span></li>
+<li><a href="#c4">4. Commerce & settlement</a> <span class="ct">(26)</span></li>
+<li><a href="#c5">5. Oversight, safety & interpretability</a> <span class="ct">(26)</span></li>
+<li><a href="#c6">6. Regulation & governance</a> <span class="ct">(30)</span></li>
+<li><a href="#c7">7. Agentic standards & standards bodies</a> <span class="ct">(13)</span></li>
+<li><a href="#c8">8. Applied domains</a> <span class="ct">(26)</span></li>
+<li><a href="#acr">Acronyms — quick reference</a> <span class="ct">(39)</span></li>
+</ul></nav>
+
+<p>This vocabulary is organised under the eight categories of the <a href="https://w3c-cg.github.io/aikr/taxonomy/">Agentic AI Knowledge-Domains taxonomy</a>, so each term sits in the same category used across the repository. Columns: the proposed definition, the canonical source, and SKOS-style relations (broader / narrower / partOf / related / regulates / mitigates …).</p>
+
+<h2 id="c1">1. Agent types &amp; autonomy <span class="ct">(8 terms)</span></h2>
+<table class="voc"><thead><tr><th>Term</th><th>Proposed definition</th><th>Source</th><th>Relations</th></tr></thead>
+<tbody>
+<tr><td class="t">AnalyticalAgent</td><td>Agent that performs reasoning and data analysis.</td><td class="s">AI-KR CG agent ontology (AIAO)</td><td class="r">broader: agent; related: Reasoning</td></tr>
+<tr><td class="t">AssistantAgent</td><td>Agent that supports humans or other agents.</td><td class="s">AI-KR CG agent ontology (AIAO)</td><td class="r">broader: agent</td></tr>
+<tr><td class="t">AutonomousGoalSeekingAgent</td><td>Agent that pursues explicit goals independently.</td><td class="s">AI-KR CG agent ontology (AIAO)</td><td class="r">broader: agent; related: Planning</td></tr>
+<tr><td class="t">CreativeAgent</td><td>Agent that generates content or solutions.</td><td class="s">AI-KR CG agent ontology (AIAO)</td><td class="r">broader: agent</td></tr>
+<tr><td class="t">DeliberativeAgent</td><td>Agent that maintains an internal model and plans actions before acting.</td><td class="s">AI-KR CG agent ontology (AIAO)</td><td class="r">broader: agent</td></tr>
+<tr><td class="t">LearningAgent</td><td>Agent that adapts its behaviour over time from experience.</td><td class="s">AI-KR CG agent ontology (AIAO)</td><td class="r">broader: agent</td></tr>
+<tr><td class="t">ReactiveAgent</td><td>Agent with simple stimulus-response behaviour; no internal world model.</td><td class="s">AI-KR CG agent ontology (AIAO)</td><td class="r">broader: agent</td></tr>
+<tr><td class="t">TaskAgent</td><td>Agent that executes concrete tasks autonomously.</td><td class="s">AI-KR CG agent ontology (AIAO)</td><td class="r">broader: agent</td></tr>
+</tbody></table>
+<h2 id="c2">2. Cognition &amp; capability <span class="ct">(7 terms)</span></h2>
+<table class="voc"><thead><tr><th>Term</th><th>Proposed definition</th><th>Source</th><th>Relations</th></tr></thead>
+<tbody>
+<tr><td class="t">embodiment</td><td>Whether an agent is software-only, robotic, or hybrid.</td><td class="s">AI-KR CG agent ontology (AIAO)</td><td class="r">partOf: agent</td></tr>
+<tr><td class="t">Learning</td><td>Capability to adapt models and update behaviour.</td><td class="s">AI-KR CG agent ontology (AIAO)</td><td class="r">partOf: capability</td></tr>
+<tr><td class="t">Memory</td><td>Capability to store knowledge or history.</td><td class="s">AI-KR CG agent ontology (AIAO)</td><td class="r">partOf: capability</td></tr>
+<tr><td class="t">operational scope</td><td>Whether an agent is single-task, multi-task, or open-ended.</td><td class="s">AI-KR CG agent ontology (AIAO)</td><td class="r">partOf: agent</td></tr>
+<tr><td class="t">Perception</td><td>Capability to sense environment or inputs.</td><td class="s">AI-KR CG agent ontology (AIAO)</td><td class="r">partOf: capability</td></tr>
+<tr><td class="t">Planning</td><td>Capability to generate action sequences to reach goals.</td><td class="s">AI-KR CG agent ontology (AIAO)</td><td class="r">partOf: capability</td></tr>
+<tr><td class="t">Reasoning</td><td>Capability to apply logic and knowledge to decisions.</td><td class="s">AI-KR CG agent ontology (AIAO)</td><td class="r">partOf: capability</td></tr>
+</tbody></table>
+<h2 id="c3">3. Interaction, communication &amp; identity <span class="ct">(12 terms)</span></h2>
+<table class="voc"><thead><tr><th>Term</th><th>Proposed definition</th><th>Source</th><th>Relations</th></tr></thead>
+<tbody>
+<tr><td class="t">A2A</td><td>Agent-to-Agent. Protocols and frameworks linking independent agents without human intervention.</td><td class="s">Google (Agent2Agent protocol)</td><td class="r">related: MCP, AP2</td></tr>
+<tr><td class="t">ACP (Agent Communication Protocol)</td><td>REST-native inter-agent protocol from the AGNTCY collective; maps agent interactions onto HTTP verbs.</td><td class="s"><a href="https://agntcy.org/">AGNTCY / Linux Foundation</a></td><td class="r">related: A2A, MCP</td></tr>
+<tr><td class="t">ANP (Agent Network Protocol)</td><td>Open, DID-based protocol for decentralised agent discovery and collaboration; published as a W3C White Paper.</td><td class="s"><a href="https://w3c-cg.github.io/ai-agent-protocol/">ANP / W3C</a></td><td class="r">related: DID</td></tr>
+<tr><td class="t">DID (Decentralized Identifiers)</td><td>W3C standard for verifiable, self-sovereign identifiers; basis for agent identity.</td><td class="s"><a href="https://www.w3.org/TR/did-1.1/">W3C DID v1.1 (CR)</a></td><td class="r">related: Verifiable Credentials</td></tr>
+<tr><td class="t">human-in-the-loop</td><td>Interaction style requiring human guidance, review, or approval of agent actions.</td><td class="s">AI-KR CG agent ontology (AIAO)</td><td class="r">related: graduated human oversight</td></tr>
+<tr><td class="t">KYA</td><td>Know Your Agent. A governance framework for registering, verifying, and profiling autonomous agents before deployment.</td><td class="s">Emerging governance usage</td><td class="r">related: Sybil resistance, evidence artifacts; analogous: KYC</td></tr>
+<tr><td class="t">MCP</td><td>Model Context Protocol. An open standard for connecting models to external data, tools, and applications.</td><td class="s">Anthropic (Model Context Protocol)</td><td class="r">related: A2A, tool use</td></tr>
+<tr><td class="t">NANDA</td><td>Networked AI Agents in a Decentralized Architecture; DID-based global agent discovery/registry (MIT Media Lab). [URL to confirm]</td><td class="s">MIT Media Lab</td><td class="r">related: DID, ANP</td></tr>
+<tr><td class="t">OASF (Open Agent Schema Framework)</td><td>Standard schema for describing agent capabilities and interfaces in machine-readable form.</td><td class="s"><a href="https://agntcy.org/">AGNTCY</a></td><td class="r">related: ACP</td></tr>
+<tr><td class="t">origin-bound authority</td><td>Binding an agent&#x27;s authorisation to execute a tool to the verified source of the initiating request.</td><td class="s">Agent-security literature</td><td class="r">mitigates: indirect prompt injection</td></tr>
+<tr><td class="t">Sybil resistance</td><td>A system&#x27;s capacity to defend against attackers creating many fake identities to gain influence.</td><td class="s">Douceur (2002)</td><td class="r">related: KYA; mitigates: fake-identity attacks</td></tr>
+<tr><td class="t">Verifiable Credentials</td><td>W3C standard for tamper-evident, cryptographically verifiable claims; used for agent credentials.</td><td class="s"><a href="https://www.w3.org/TR/vc-data-model-2.0/">W3C VC 2.0</a></td><td class="r">related: DID</td></tr>
+</tbody></table>
+<h2 id="c4">4. Commerce &amp; settlement <span class="ct">(26 terms)</span></h2>
+<table class="voc"><thead><tr><th>Term</th><th>Proposed definition</th><th>Source</th><th>Relations</th></tr></thead>
+<tbody>
+<tr><td class="t">ACP (Agentic Commerce Protocol)</td><td>Stripe + OpenAI protocol for agent-initiated checkout; in production in ChatGPT. [distinct from the AGNTCY ACP]</td><td class="s">Stripe / OpenAI [to confirm]</td><td class="r">related: AP2, x402</td></tr>
+<tr><td class="t">agentic clearing</td><td>The operational layer that evaluates whether an autonomous AI agent has fulfilled its transaction obligations, assigns liability, and determines the subsequent settlement action — distinct from payment and from settlement execution.</td><td class="s">de Valois-Franklin &amp; Bogdan, RAILS, arXiv 2606.08790</td><td class="r">broader: settlement; related: clearing function, settlement determination</td></tr>
+<tr><td class="t">AP2</td><td>Agent Payments Protocol. A mandate-based protocol defining how, when, and within what bounds value can be authorised for transmission by an AI agent.</td><td class="s">Google (Agent Payments Protocol)</td><td class="r">related: x402, mandate protocol; partOf: agent authorization</td></tr>
+<tr><td class="t">broker-dealer intermediation</td><td>Reliance on licensed market makers to buy, sell, and redeem the securities backing a digital asset.</td><td class="s">arXiv 2604.17167</td><td class="r">related: hierarchy of money, reserve quality</td></tr>
+<tr><td class="t">clearing function</td><td>A deterministic process that consumes reliability scores and records to dictate which settlement or dispute consequence follows an agent&#x27;s output.</td><td class="s">RAILS, arXiv 2606.08790</td><td class="r">partOf: RAILS; related: per-output reliability score, settlement determination</td></tr>
+<tr><td class="t">ERC-8004 (Trustless Agents)</td><td>Ethereum proposal for on-chain agent identity, reputation, and trustless payment channels. [status to confirm]</td><td class="s"><a href="https://eips.ethereum.org/EIPS/eip-8004">Ethereum EIP-8004</a></td><td class="r">related: x402</td></tr>
+<tr><td class="t">hierarchy of money</td><td>A classification of instruments by liquidity and counterparty risk, from central-bank reserves down to private credit.</td><td class="s">Economic literature (Mehrling; cf. arXiv 2604.17167)</td><td class="r">related: par-value redemption, reserve quality</td></tr>
+<tr><td class="t">mandate protocol</td><td>A framework defining and enforcing pre-approved operational boundaries and financial caps delegated to a software agent.</td><td class="s">Agent-payments literature (cf. AP2)</td><td class="r">related: AP2, x402</td></tr>
+<tr><td class="t">oracle risk</td><td>The risk that an external data feed supplies inaccurate, delayed, or manipulated data to a smart contract.</td><td class="s">arXiv 2606.08534</td><td class="r">related: RWA, platform concentration; threatens: settlement</td></tr>
+<tr><td class="t">par-value redemption</td><td>The right to exchange a stablecoin for fiat at 1:1 on demand.</td><td class="s">arXiv 2604.17167</td><td class="r">related: reserve quality, redemption surge; partOf: stablecoin design</td></tr>
+<tr><td class="t">per-output reliability score</td><td>A discrete metric attached to each agent output, quantifying a measured judgement of its quality and adherence to constraints.</td><td class="s">RAILS, arXiv 2606.08790</td><td class="r">partOf: RAILS; related: published reliability record, clearing function</td></tr>
+<tr><td class="t">platform concentration</td><td>Systemic risk from most tokenisation relying on a single underlying protocol or provider.</td><td class="s">arXiv 2606.08534</td><td class="r">related: oracle risk, systemic risk</td></tr>
+<tr><td class="t">published reliability record</td><td>A durable, inspectable log of historical reliability scores and output judgements.</td><td class="s">RAILS, arXiv 2606.08790</td><td class="r">partOf: RAILS; related: per-output reliability score, evidence artifacts</td></tr>
+<tr><td class="t">RAILS</td><td>A three-part architectural framework (reliability score, reliability record, clearing function) treating clearing as an independent layer in agentic commerce. Acronym expansion (&quot;Real-Time Agent Integrity &amp; Ledger Settlement&quot;) proposed but not yet confirmed against the source paper.</td><td class="s">arXiv 2606.08790</td><td class="r">hasPart: per-output reliability score, published reliability record, clearing function; related: x402, AP2</td></tr>
+<tr><td class="t">real-world asset tokenization</td><td>Representing rights to a physical or traditional financial asset as tokens on a blockchain ledger.</td><td class="s">arXiv 2606.08534</td><td class="r">hasPart: settlement model, whitelist transferability, rebasing; related: oracle risk, platform concentration</td></tr>
+<tr><td class="t">rebasing</td><td>An automated mechanism adjusting circulating token supply to reflect yield or price changes.</td><td class="s">arXiv 2606.08534</td><td class="r">partOf: RWA token mechanics</td></tr>
+<tr><td class="t">redemption surge</td><td>A sudden mass demand to redeem stablecoins for fiat, often driven by panic.</td><td class="s">arXiv 2604.17167</td><td class="r">related: par-value redemption, stress testing</td></tr>
+<tr><td class="t">reserve quality</td><td>The safety, liquidity, and creditworthiness of the assets backing a stablecoin.</td><td class="s">arXiv 2604.17167</td><td class="r">related: par-value redemption, broker-dealer intermediation</td></tr>
+<tr><td class="t">RWA</td><td>Real-World Asset. A physical or traditional financial asset that has been tokenised.</td><td class="s">arXiv 2606.08534</td><td class="r">broader: real-world asset tokenization; related: oracle risk</td></tr>
+<tr><td class="t">settlement determination</td><td>The authoritative decision on how assets should move, distinct from the physical execution of that transfer.</td><td class="s">RAILS, arXiv 2606.08790</td><td class="r">related: agentic clearing, settlement model</td></tr>
+<tr><td class="t">settlement model</td><td>The technical and legal framework (e.g. atomic, deferred net settlement) finalising ownership transfer.</td><td class="s">arXiv 2606.08534</td><td class="r">related: settlement determination, RWA</td></tr>
+<tr><td class="t">stablecoin</td><td>A crypto token designed to hold a stable value (typically 1:1 to fiat); the dominant settlement asset for agent payments.</td><td class="s">general</td><td class="r">related: x402, PPSI</td></tr>
+<tr><td class="t">trace-economic underwriting</td><td>Pricing insurance or credit by analysing the step-by-step audit trails of an agentic pipeline.</td><td class="s">Insurance/agent-risk feeds</td><td class="r">related: evidence artifacts, published reliability record</td></tr>
+<tr><td class="t">verification-native clearing</td><td>A design in which clearing checks are embedded within a system&#x27;s verification phase rather than added post-hoc.</td><td class="s">RAILS, arXiv 2606.08790</td><td class="r">related: agentic clearing, RAILS</td></tr>
+<tr><td class="t">whitelist transferability</td><td>A feature where tokens transfer only between addresses that have cleared identity checks.</td><td class="s">arXiv 2606.08534</td><td class="r">partOf: RWA; related: KYC, sanctions</td></tr>
+<tr><td class="t">x402</td><td>An agent/machine payment scheme built on the HTTP 402 (&quot;Payment Required&quot;) status, enabling software agents to settle value (typically in stablecoins) inline with a request.</td><td class="s">Coinbase (x402 specification)</td><td class="r">broader: agent payment rail; related: AP2, mandate protocol, RAILS</td></tr>
+</tbody></table>
+<h2 id="c5">5. Oversight, safety &amp; interpretability <span class="ct">(26 terms)</span></h2>
+<table class="voc"><thead><tr><th>Term</th><th>Proposed definition</th><th>Source</th><th>Relations</th></tr></thead>
+<tbody>
+<tr><td class="t">abliteration</td><td>Modifying model weights to remove safety alignments without a full retrain.</td><td class="s">Open-weight community (cf. Arditi et al., 2024)</td><td class="r">threatens: safety guardrails; related: open-weight models</td></tr>
+<tr><td class="t">activation patching</td><td>Causally modifying internal activations during a forward pass to test how features alter output.</td><td class="s">Mechanistic-interpretability literature</td><td class="r">partOf: circuit analysis</td></tr>
+<tr><td class="t">agent-as-judge</td><td>A pattern in which a constrained secondary model audits, evaluates, or filters a primary agent&#x27;s outputs.</td><td class="s">Zhuge et al., &quot;Agent-as-a-Judge&quot;, 2024; applied in Co-Investigator AI, arXiv 2509.08380</td><td class="r">related: GAIE, AML, deceptive alignment; mitigates: hallucination</td></tr>
+<tr><td class="t">blast-radius oversight</td><td>A control pattern mapping review intensity to the reach and severity of what an agent&#x27;s change could disrupt if flawed.</td><td class="s">GAIE, arXiv 2606.22484</td><td class="r">partOf: graduated human oversight</td></tr>
+<tr><td class="t">circuit analysis</td><td>Reverse-engineering the subgraphs and pathways inside a model that drive behaviours.</td><td class="s">Elhage et al., &quot;A Mathematical Framework for Transformer Circuits&quot; (2021)</td><td class="r">related: activation patching, SAE</td></tr>
+<tr><td class="t">CSA MAESTRO</td><td>Multi-Agent Environment, Security, Threat, Risk &amp;amp; Outcome; a seven-layer agentic threat-modelling framework.</td><td class="s"><a href="https://cloudsecurityalliance.org/">Cloud Security Alliance</a></td><td class="r">related: OWASP ASI</td></tr>
+<tr><td class="t">deceptive alignment</td><td>A failure where a model appears compliant in training while concealing misaligned goals.</td><td class="s">Hubinger et al. (2019)</td><td class="r">related: ELK, agent-as-judge</td></tr>
+<tr><td class="t">development-pipeline governance</td><td>The policies, access controls, and programmatic gates embedded in delivery pipelines to monitor agent activity.</td><td class="s">GAIE, arXiv 2606.22484</td><td class="r">partOf: GAIE; hasPart: evidence artifacts; related: generation-to-deployment lifecycle</td></tr>
+<tr><td class="t">dictionary learning</td><td>Unsupervised extraction of an overcomplete set of monosemantic features from activations.</td><td class="s">Anthropic interpretability work</td><td class="r">produces: monosemantic features; related: SAE</td></tr>
+<tr><td class="t">ELK</td><td>Eliciting Latent Knowledge. The alignment problem of extracting a model&#x27;s true internal knowledge.</td><td class="s">Christiano, Cotra &amp; Xu (ARC, 2021)</td><td class="r">related: deceptive alignment; goal: truthful reporting</td></tr>
+<tr><td class="t">evidence artifacts</td><td>Verified logs, signatures, and decision records produced by governance workflows to prove compliance.</td><td class="s">GAIE, arXiv 2606.22484</td><td class="r">partOf: development-pipeline governance; related: published reliability record</td></tr>
+<tr><td class="t">GAIE</td><td>A framework for enforcing proportionate human oversight on agentic actions in regulated domains. Acronym expansion unconfirmed; the source paper centres on &quot;graduated&quot; oversight, so the earlier &quot;Governed AI-Assisted Engineering&quot; reading should be verified before use.</td><td class="s">arXiv 2606.22484</td><td class="r">hasPart: graduated human oversight, regulatory risk profile, blast-radius oversight, evidence artifacts; related: DORA</td></tr>
+<tr><td class="t">generation-to-deployment lifecycle</td><td>The end-to-end pipeline governing code from initial AI generation to production.</td><td class="s">GAIE, arXiv 2606.22484</td><td class="r">related: development-pipeline governance, GAIE</td></tr>
+<tr><td class="t">graduated human oversight</td><td>A governance pattern that adjusts the necessity, depth, and timing of human review according to the risk profile and &quot;blast radius&quot; of an agentic action.</td><td class="s">GAIE, arXiv 2606.22484</td><td class="r">definedBy: GAIE; hasPart: blast-radius oversight; related: regulatory risk profile; regulatedBy: EU AI Act Art. 14, prEN 18283</td></tr>
+<tr><td class="t">indirect prompt injection</td><td>An exploit where an agent reads untrusted content carrying hidden instructions that hijack its execution.</td><td class="s">Greshake et al. (2023); OWASP GenAI</td><td class="r">related: memory poisoning, origin-bound authority; regulatedBy: prEN 18229 / 18282</td></tr>
+<tr><td class="t">information-flow control</td><td>An architecture tracking and restricting data movement across security domains in a pipeline.</td><td class="s">Security literature (IFC); agent-security feeds</td><td class="r">mitigates: indirect prompt injection, memory poisoning</td></tr>
+<tr><td class="t">manifold steering</td><td>Nudging internal activations along valid concept dimensions to alter output in real time.</td><td class="s">Mechanistic-interpretability literature</td><td class="r">related: SAE, activation patching</td></tr>
+<tr><td class="t">memorization control</td><td>Parameters and tests that prevent a model from regurgitating exact training sequences, used here to control benchmark contamination.</td><td class="s">arXiv 2606.00061</td><td class="r">related: reflexivity, model drift</td></tr>
+<tr><td class="t">memory poisoning</td><td>Injecting malicious data into an agent&#x27;s memory layer to corrupt future decisions.</td><td class="s">OWASP GenAI / agent-security literature</td><td class="r">related: indirect prompt injection, information-flow control; threatens: agent memory</td></tr>
+<tr><td class="t">monosemanticity</td><td>The state where a neuron or feature maps to exactly one clear concept.</td><td class="s">Bricken et al. (Anthropic, 2023)</td><td class="r">related: superposition, SAE; opposite: polysemanticity</td></tr>
+<tr><td class="t">OWASP Agentic Security Initiative (ASI)</td><td>OWASP GenAI Security Project suite covering agentic threat taxonomy, controls, and a ranked Top 10.</td><td class="s"><a href="https://genai.owasp.org/initiatives/agentic-security-initiative/">OWASP</a></td><td class="r">related: MAESTRO</td></tr>
+<tr><td class="t">OWASP Top 10 for Agentic Applications</td><td>Peer-reviewed ranked list of the most critical security risks for autonomous/agentic AI systems.</td><td class="s"><a href="https://genai.owasp.org/">OWASP</a></td><td class="r">partOf: ASI</td></tr>
+<tr><td class="t">polysemanticity</td><td>The state where one neuron responds to multiple unrelated concepts by context.</td><td class="s">Anthropic interpretability work</td><td class="r">opposite: monosemanticity; related: superposition</td></tr>
+<tr><td class="t">regulatory risk profile</td><td>A classification of an agentic task by its compliance implications, domain sensitivity, and potential for systemic or financial harm.</td><td class="s">GAIE, arXiv 2606.22484</td><td class="r">partOf: GAIE; related: graduated human oversight</td></tr>
+<tr><td class="t">SAE</td><td>Sparse Autoencoder. A network that decomposes dense model activations into interpretable features.</td><td class="s">Bricken et al., &quot;Towards Monosemanticity&quot; (Anthropic, 2023)</td><td class="r">related: superposition, dictionary learning, monosemanticity; usedFor: interpretability</td></tr>
+<tr><td class="t">superposition</td><td>The phenomenon of a network packing more features than it has neurons via combination.</td><td class="s">Elhage et al., &quot;Toy Models of Superposition&quot; (Anthropic, 2022)</td><td class="r">related: polysemanticity, SAE</td></tr>
+</tbody></table>
+<h2 id="c6">6. Regulation &amp; governance <span class="ct">(30 terms)</span></h2>
+<table class="voc"><thead><tr><th>Term</th><th>Proposed definition</th><th>Source</th><th>Relations</th></tr></thead>
+<tbody>
+<tr><td class="t">10^25 FLOP threshold</td><td>A training-compute trigger used to flag potential systemic capability.</td><td class="s">Regulation (EU) 2024/1689</td><td class="r">related: Article 51</td></tr>
+<tr><td class="t">AI Office</td><td>The European Commission body coordinating AI policy and supervising GPAI compliance.</td><td class="s">Regulation (EU) 2024/1689</td><td class="r">related: GPAI enforcement, EU AI Act</td></tr>
+<tr><td class="t">AI-privacy guard layer</td><td>A software layer that strips or shields personally identifiable information before data enters AI pipelines.</td><td class="s">Co-Investigator AI, arXiv 2509.08380</td><td class="r">partOf: agentic AML; related: information-flow control</td></tr>
+<tr><td class="t">alternative adequate means</td><td>A provision allowing providers to demonstrate compliance via internal frameworks achieving equivalent outcomes to the Code.</td><td class="s">EC GPAI guidelines</td><td class="r">related: GPAI Code of Practice</td></tr>
+<tr><td class="t">AML</td><td>Anti-Money Laundering. The framework of laws and procedures preventing disguise of illicit funds as legitimate income.</td><td class="s">FATF standards; US BSA</td><td class="r">broader: FCC; hasPart: KYC, sanctions; related: BSA, FATF</td></tr>
+<tr><td class="t">Article 51</td><td>The AI Act provision defining when a GPAI model is classified as presenting systemic risk.</td><td class="s">Regulation (EU) 2024/1689</td><td class="r">partOf: EU AI Act; related: 10^25 FLOP threshold</td></tr>
+<tr><td class="t">Article 53</td><td>The AI Act provision detailing documentation, transparency, and copyright obligations for GPAI providers.</td><td class="s">Regulation (EU) 2024/1689</td><td class="r">partOf: EU AI Act; related: GPAI</td></tr>
+<tr><td class="t">Basel III</td><td>The international framework for bank capital adequacy, stress testing, and liquidity risk.</td><td class="s">Basel Committee on Banking Supervision</td><td class="r">related: stress testing, model risk</td></tr>
+<tr><td class="t">BSA</td><td>Bank Secrecy Act. US legislation requiring institutions to help detect and prevent money laundering.</td><td class="s">US Bank Secrecy Act (31 U.S.C. 5311 et seq.)</td><td class="r">related: AML, FinCEN, PPSI</td></tr>
+<tr><td class="t">compliance-as-code</td><td>Writing regulatory rules and policies directly as executable software.</td><td class="s">Compliance-to-Code, arXiv 2505.19804</td><td class="r">broader: RegTech; related: rule-as-code, regulatory rule translation</td></tr>
+<tr><td class="t">crime-typology alignment</td><td>Matching suspicious transaction sequences against known structured patterns of criminal evasion.</td><td class="s">Co-Investigator AI, arXiv 2509.08380</td><td class="r">related: SAR, AML</td></tr>
+<tr><td class="t">DORA</td><td>Digital Operational Resilience Act. EU framework on IT security, incident reporting, and resilience for financial entities.</td><td class="s">Regulation (EU) 2022/2554</td><td class="r">regulates: financial IT resilience; related: GAIE, RegTech</td></tr>
+<tr><td class="t">EU AI Act</td><td>Regulation (EU) 2024/1689; the EU horizontal AI law, including GPAI obligations.</td><td class="s"><a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj">Reg (EU) 2024/1689</a></td><td class="r">broader: regulation</td></tr>
+<tr><td class="t">FATF</td><td>Financial Action Task Force. The intergovernmental body setting AML/CFT standards.</td><td class="s">FATF</td><td class="r">related: AML, Travel Rule</td></tr>
+<tr><td class="t">FCC</td><td>Financial Crime Compliance. The bank function and workflows enforcing AML and sanctions policy.</td><td class="s">Industry usage (e.g. Everest Group)</td><td class="r">hasPart: AML; related: sanctions false-positive classifier</td></tr>
+<tr><td class="t">FinCEN</td><td>Financial Crimes Enforcement Network. The US Treasury bureau collecting and analysing financial-transaction data.</td><td class="s">US Department of the Treasury (FinCEN)</td><td class="r">related: SAR, BSA, PPSI</td></tr>
+<tr><td class="t">Five Eyes joint guidance</td><td>Joint cyber-security guidance (May 2026) from US/UK/Canada/Australia/NZ agencies on deploying agentic AI; de-facto baseline.</td><td class="s"><a href="https://labs.cloudsecurityalliance.org/research/csa-research-note-agentic-ai-governance-five-eyes-regulatory/">via CSA note [primary to confirm]</a></td><td class="r">related: governance</td></tr>
+<tr><td class="t">GENIUS Act</td><td>Guiding and Establishing National Innovation for U.S. Stablecoins Act. US federal legislation enacted 2025 establishing a framework for dollar payment stablecoins.</td><td class="s">GENIUS Act (US, enacted 2025)</td><td class="r">regulates: PPSI; related: MiCA, BSA</td></tr>
+<tr><td class="t">GPAI</td><td>General-Purpose AI. Models with significant generality, able to perform a broad range of distinct tasks across domains.</td><td class="s">Regulation (EU) 2024/1689 (AI Act); EC GPAI guidelines</td><td class="r">narrower: systemic-risk GPAI (Art. 51); hasPart: GPAI enforcement, GPAI Code of Practice; related: 10^25 FLOP threshold</td></tr>
+<tr><td class="t">GPAI Code of Practice</td><td>A regulator-backed operational manual of technical steps, risk assessments, and mitigations for GPAI providers.</td><td class="s">EC GPAI guidelines</td><td class="r">related: alternative adequate means, GPAI; partOf: EU AI Act compliance</td></tr>
+<tr><td class="t">GPAI enforcement</td><td>The auditing protocols and penalty frameworks by which authorities compel GPAI compliance (enforcement from 2 August 2026).</td><td class="s">EC GPAI guidelines; Regulation (EU) 2024/1689</td><td class="r">partOf: EU AI Act; related: AI Office, GPAI Code of Practice</td></tr>
+<tr><td class="t">IMDA Model AI Governance Framework for Agentic AI</td><td>Singapore framework for governing agentic AI. [URL to confirm]</td><td class="s">Singapore IMDA [to confirm]</td><td class="r">related: governance</td></tr>
+<tr><td class="t">MiCA</td><td>Markets in Crypto-Assets Regulation. The EU framework governing crypto-asset and stablecoin issuance and trading.</td><td class="s">Regulation (EU) 2023/1114</td><td class="r">related: GENIUS Act, RWA; regulates: crypto-assets</td></tr>
+<tr><td class="t">NIST CAISI AI Agent Standards Initiative</td><td>US program (Center for AI Standards and Innovation) for interoperable, secure AI agents; launched 17 Feb 2026. [URL to confirm]</td><td class="s"><a href="https://www.nist.gov/">NIST</a></td><td class="r">related: governance</td></tr>
+<tr><td class="t">PPSI</td><td>Permitted Payment Stablecoin Issuer. Under the GENIUS Act, an entity authorised to issue payment stablecoins; under the FinCEN/OFAC proposed rule, subject to BSA/AML obligations and a sanctions-compliance programme.</td><td class="s">FinCEN/OFAC NPRM, Docket FINCEN-2026-0100</td><td class="r">regulatedBy: GENIUS Act, FinCEN; related: BSA, sanctions</td></tr>
+<tr><td class="t">RegTech</td><td>Regulatory Technology. Software automating compliance, reporting, and risk management.</td><td class="s">Industry usage (FCA RegTech)</td><td class="r">hasPart: compliance-as-code; related: DORA</td></tr>
+<tr><td class="t">regulatory rule translation</td><td>Converting natural-language legal text into deterministic code and constraints.</td><td class="s">Compliance-to-Code, arXiv 2505.19804</td><td class="r">related: compliance-as-code, rule-as-code</td></tr>
+<tr><td class="t">rule-as-code</td><td>Drafting statutes or regulations in a structured, machine-readable form from inception.</td><td class="s">Compliance-to-Code, arXiv 2505.19804; OECD rules-as-code work</td><td class="r">related: compliance-as-code</td></tr>
+<tr><td class="t">sanctions false-positive classifier</td><td>A model that filters out incorrect name-matches from sanctions screening.</td><td class="s">Industry usage (e.g. Everest Group)</td><td class="r">partOf: FCC; related: AML</td></tr>
+<tr><td class="t">SAR</td><td>Suspicious Activity Report. A confidential compliance filing reporting known or suspected illicit activity to regulators.</td><td class="s">US Treasury / FinCEN; agentic context: arXiv 2509.08380</td><td class="r">related: AML, FinCEN, crime-typology alignment; producedBy: agentic AML</td></tr>
+</tbody></table>
+<h2 id="c7">7. Agentic standards &amp; standards bodies <span class="ct">(13 terms)</span></h2>
+<table class="voc"><thead><tr><th>Term</th><th>Proposed definition</th><th>Source</th><th>Relations</th></tr></thead>
+<tbody>
+<tr><td class="t">AGNTCY collective</td><td>Cisco-led &quot;Internet of Agents&quot; collective (LangChain, LlamaIndex, Galileo, others); home of ACP and OASF.</td><td class="s"><a href="https://agntcy.org/">AGNTCY</a></td><td class="r">related: ACP, OASF</td></tr>
+<tr><td class="t">C2PA</td><td>Coalition for Content Provenance and Authenticity; content-provenance standard applied to agent-generated content.</td><td class="s"><a href="https://c2pa.org/">C2PA</a></td><td class="r">related: CreativeAgent</td></tr>
+<tr><td class="t">CEN-CENELEC JTC 21</td><td>European technical committee drafting harmonised AI standards (the prEN 182xx series).</td><td class="s"><a href="https://www.cencenelec.eu/areas-of-work/cen-cenelec-topics/artificial-intelligence/">CEN-CENELEC</a></td><td class="r">maintains: prEN 182xx</td></tr>
+<tr><td class="t">Linux Foundation Agentic AI Foundation (AAIF)</td><td>Neutral steward now governing both MCP and A2A. [URL to confirm]</td><td class="s"><a href="https://www.linuxfoundation.org/">Linux Foundation</a></td><td class="r">stewards: MCP, A2A</td></tr>
+<tr><td class="t">prEN 18228</td><td>Draft harmonised standard on robustness, accuracy, and predictability of AI systems.</td><td class="s">CEN-CENELEC JTC 21</td><td class="r">related: model risk, EU AI Act</td></tr>
+<tr><td class="t">prEN 18229-1 / 18229-2</td><td>Draft harmonised standards on lifecycle engineering and cybersecurity for high-risk AI.</td><td class="s">CEN-CENELEC JTC 21</td><td class="r">related: indirect prompt injection, information-flow control</td></tr>
+<tr><td class="t">prEN 18282</td><td>Draft harmonised standard on recording, logging, and tracing AI operations.</td><td class="s">CEN-CENELEC JTC 21</td><td class="r">related: evidence artifacts, published reliability record</td></tr>
+<tr><td class="t">prEN 18283</td><td>Draft harmonised standard on human oversight (human-in/over-the-loop).</td><td class="s">CEN-CENELEC JTC 21</td><td class="r">related: graduated human oversight, EU AI Act Art. 14</td></tr>
+<tr><td class="t">prEN 18284</td><td>Draft harmonised standard on information provision, transparency, and disclosure.</td><td class="s">CEN-CENELEC JTC 21</td><td class="r">related: transparency disclosure</td></tr>
+<tr><td class="t">prEN 18286</td><td>Draft European harmonised standard on quality management for AI systems.</td><td class="s">CEN-CENELEC JTC 21</td><td class="r">partOf: CEN-CENELEC suite; related: EU AI Act</td></tr>
+<tr><td class="t">W3C AI Agent Memory Interoperability CG</td><td>W3C community group on portable agent memory; proposed 18 May 2026. [URL to confirm]</td><td class="s">W3C [to confirm]</td><td class="r">related: Memory</td></tr>
+<tr><td class="t">W3C AI Agent Protocol CG</td><td>W3C community group scoping inter-agent communication, identity, and capability metadata.</td><td class="s"><a href="https://w3c-cg.github.io/ai-agent-protocol/">W3C</a></td><td class="r">related: ANP</td></tr>
+<tr><td class="t">W3C AI-KR CG</td><td>W3C AI Knowledge Representation Community Group (this group).</td><td class="s"><a href="https://www.w3.org/community/aikr/">W3C</a></td><td class="r">maintains: this vocabulary</td></tr>
+</tbody></table>
+<h2 id="c8">8. Applied domains <span class="ct">(26 terms)</span></h2>
+<table class="voc"><thead><tr><th>Term</th><th>Proposed definition</th><th>Source</th><th>Relations</th></tr></thead>
+<tbody>
+<tr><td class="t">agentic drug discovery</td><td>Applying autonomous agents to the multi-step pipeline of target identification, molecule generation, and experiment design.</td><td class="s">Beyond SMILES, arXiv 2602.10163</td><td class="r">hasPart: target identification; related: SMILES, ChatInvent, human-in-the-loop discovery; addresses: Eroom&#x27;s law</td></tr>
+<tr><td class="t">ChatInvent</td><td>An agentic invention/molecular-design system reported as deployed at AstraZeneca.</td><td class="s">He et al., Drug Discovery Today (2026)</td><td class="r">related: agentic drug discovery, SMILES</td></tr>
+<tr><td class="t">cognitive function</td><td>The vector in a reflexive loop where prices and trends are observed to form imperfect expectations.</td><td class="s">Soros (1987); arXiv 2606.00061</td><td class="r">partOf: reflexivity</td></tr>
+<tr><td class="t">CoWoS</td><td>Chip-on-Wafer-on-Substrate. An advanced 2.5D semiconductor packaging technology.</td><td class="s">TSMC</td><td class="r">related: HBM4, neocloud</td></tr>
+<tr><td class="t">directional forecasting accuracy</td><td>The share of times a system correctly predicts the sign (up/down) of a move, independent of magnitude.</td><td class="s">arXiv 2606.00061</td><td class="r">related: Sharpe ratio, reflexivity</td></tr>
+<tr><td class="t">Eroom&#x27;s law</td><td>The observation that drug-discovery productivity per R&amp;D dollar falls over time (Moore&#x27;s law reversed).</td><td class="s">Scannell et al. (2012)</td><td class="r">related: agentic drug discovery</td></tr>
+<tr><td class="t">HBM4</td><td>High Bandwidth Memory 4. The next generation of stacked DRAM for AI accelerators.</td><td class="s">JEDEC</td><td class="r">related: CoWoS</td></tr>
+<tr><td class="t">hierarchical mixed-frequency attention</td><td>An attention architecture weighting data sequences across different cadences.</td><td class="s">Macro-aware, arXiv 2606.00624</td><td class="r">implements: mixed-frequency forecasting</td></tr>
+<tr><td class="t">human-in-the-loop discovery</td><td>A workflow where humans guide, review, and approve agent recommendations.</td><td class="s">Beyond SMILES, arXiv 2602.10163; Robin (Nature, 2026)</td><td class="r">related: agentic drug discovery, graduated human oversight</td></tr>
+<tr><td class="t">MIDAS</td><td>Mixed Data Sampling. A regression technique for variables sampled at different frequencies.</td><td class="s">Ghysels, Santa-Clara &amp; Valkanov (2004)</td><td class="r">related: mixed-frequency forecasting (precursor)</td></tr>
+<tr><td class="t">mixed-frequency forecasting</td><td>Modelling that combines data captured at different intervals (e.g. daily prices with quarterly GDP).</td><td class="s">Macro-aware, arXiv 2606.00624</td><td class="r">hasPart: hierarchical mixed-frequency attention; related: MIDAS, model drift</td></tr>
+<tr><td class="t">model drift</td><td>Gradual decay of predictive accuracy as real-world conditions diverge from training assumptions.</td><td class="s">Macro-aware, arXiv 2606.00624</td><td class="r">related: regime shift, model risk, reflexivity</td></tr>
+<tr><td class="t">model risk</td><td>The risk of adverse consequences from flawed or misapplied quantitative models.</td><td class="s">FinStressTS, arXiv 2606.03184; cf. Fed SR 11-7</td><td class="r">related: model drift, stress testing; regulatedBy: prEN 18228</td></tr>
+<tr><td class="t">neocloud</td><td>A category of providers offering high-performance cloud infrastructure optimised for GPU rental and AI.</td><td class="s">Industry usage</td><td class="r">related: CoWoS, HBM4</td></tr>
+<tr><td class="t">parametric synthetic benchmark</td><td>A generated testing environment producing simulated financial time-series with controllable parameters.</td><td class="s">FinStressTS, arXiv 2606.03184</td><td class="r">related: stress testing, tail risk; usedFor: model validation</td></tr>
+<tr><td class="t">participative function</td><td>The vector in a reflexive loop where expectations are translated into capital allocations, altering prices.</td><td class="s">Soros (1987); arXiv 2606.00061</td><td class="r">partOf: reflexivity</td></tr>
+<tr><td class="t">process-level vs molecule-level benchmark</td><td>An evaluation paradigm comparing an agent&#x27;s ability to orchestrate multi-step research against single-structure design.</td><td class="s">Beyond SMILES, arXiv 2602.10163</td><td class="r">related: agentic drug discovery</td></tr>
+<tr><td class="t">reflexivity</td><td>The theory that participants&#x27; biased expectations actively alter market reality, creating a self-reinforcing feedback loop.</td><td class="s">Soros, The Alchemy of Finance (1987); operationalised in arXiv 2606.00061</td><td class="r">hasPart: participative function, cognitive function; related: directional forecasting accuracy, model drift</td></tr>
+<tr><td class="t">regime shift</td><td>A significant, persistent change in a time series&#x27; underlying distribution.</td><td class="s">Macro-aware, arXiv 2606.00624</td><td class="r">closeMatch: regime switch; related: model drift</td></tr>
+<tr><td class="t">regime switch</td><td>An abrupt structural transition in market behaviour, volatility, or correlations.</td><td class="s">FinStressTS, arXiv 2606.03184; Macro-aware, arXiv 2606.00624</td><td class="r">related: model drift, mixed-frequency forecasting; closeMatch: regime shift</td></tr>
+<tr><td class="t">reverse translation</td><td>Taking verified clinical outcomes back into lab models to uncover disease insight.</td><td class="s">Beyond SMILES (refs), arXiv 2602.10163</td><td class="r">related: target identification</td></tr>
+<tr><td class="t">Sharpe ratio</td><td>Risk-adjusted performance: excess return divided by volatility.</td><td class="s">Sharpe (1966)</td><td class="r">related: tail risk, directional forecasting accuracy</td></tr>
+<tr><td class="t">SMILES</td><td>Simplified Molecular-Input Line-Entry System. A string notation describing chemical structures as text.</td><td class="s">Weininger (1988)</td><td class="r">related: agentic drug discovery, ChatInvent</td></tr>
+<tr><td class="t">stress testing</td><td>Simulating extreme market shocks to evaluate how a model, portfolio, or institution survives them.</td><td class="s">FinStressTS, arXiv 2606.03184; BCBS (Basel III)</td><td class="r">related: Basel III, parametric synthetic benchmark, redemption surge</td></tr>
+<tr><td class="t">tail risk</td><td>The probability of extreme losses from rare events at the far end of a distribution.</td><td class="s">FinStressTS, arXiv 2606.03184</td><td class="r">related: stress testing, Sharpe ratio</td></tr>
+<tr><td class="t">target identification</td><td>The phase pinpointing a biological molecule or pathway central to a disease.</td><td class="s">Beyond SMILES, arXiv 2602.10163</td><td class="r">partOf: agentic drug discovery</td></tr>
+</tbody></table>
+
+<h2 id="acr">Acronyms — quick reference <span class="ct">(39)</span></h2>
+<p style="font-size:.88em;color:#5a6570">Auto-derived from the terms above. RAILS and GAIE expansions remain <i>unconfirmed</i>.</p>
+<table class="acr"><thead><tr><th>Acronym</th><th>Expansion / meaning</th></tr></thead><tbody>
+<tr><td class="t">A2A</td><td>Agent</td></tr>
+<tr><td class="t">ACP</td><td>REST</td></tr>
+<tr><td class="t">AML</td><td>Anti</td></tr>
+<tr><td class="t">AnalyticalAgent</td><td>Agent that performs reasoning and data analysis</td></tr>
+<tr><td class="t">ANP</td><td>Open, DID</td></tr>
+<tr><td class="t">AP2</td><td>Agent Payments Protocol</td></tr>
+<tr><td class="t">AssistantAgent</td><td>Agent that supports humans or other agents</td></tr>
+<tr><td class="t">BSA</td><td>Bank Secrecy Act</td></tr>
+<tr><td class="t">C2PA</td><td>Coalition for Content Provenance and Authenticity; content</td></tr>
+<tr><td class="t">ChatInvent</td><td>An agentic invention/molecular</td></tr>
+<tr><td class="t">CoWoS</td><td>Chip</td></tr>
+<tr><td class="t">CreativeAgent</td><td>Agent that generates content or solutions</td></tr>
+<tr><td class="t">CSA MAESTRO</td><td>Multi</td></tr>
+<tr><td class="t">DID</td><td>W3C standard for verifiable, self</td></tr>
+<tr><td class="t">DORA</td><td>Digital Operational Resilience Act</td></tr>
+<tr><td class="t">ELK</td><td>Eliciting Latent Knowledge</td></tr>
+<tr><td class="t">ERC-8004</td><td>Ethereum proposal for on</td></tr>
+<tr><td class="t">FATF</td><td>Financial Action Task Force</td></tr>
+<tr><td class="t">FCC</td><td>Financial Crime Compliance</td></tr>
+<tr><td class="t">FinCEN</td><td>Financial Crimes Enforcement Network</td></tr>
+<tr><td class="t">GENIUS Act</td><td>Guiding and Establishing National Innovation for U</td></tr>
+<tr><td class="t">GPAI</td><td>General</td></tr>
+<tr><td class="t">HBM4</td><td>High Bandwidth Memory 4</td></tr>
+<tr><td class="t">KYA</td><td>Know Your Agent</td></tr>
+<tr><td class="t">LearningAgent</td><td>Agent that adapts its behaviour over time from experience</td></tr>
+<tr><td class="t">MCP</td><td>Model Context Protocol</td></tr>
+<tr><td class="t">MiCA</td><td>Markets in Crypto</td></tr>
+<tr><td class="t">MIDAS</td><td>Mixed Data Sampling</td></tr>
+<tr><td class="t">NANDA</td><td>Networked AI Agents in a Decentralized Architecture; DID</td></tr>
+<tr><td class="t">PPSI</td><td>Permitted Payment Stablecoin Issuer</td></tr>
+<tr><td class="t">RAILS</td><td>A three</td></tr>
+<tr><td class="t">ReactiveAgent</td><td>Agent with simple stimulus</td></tr>
+<tr><td class="t">RegTech</td><td>Regulatory Technology</td></tr>
+<tr><td class="t">RWA</td><td>Real</td></tr>
+<tr><td class="t">SAE</td><td>Sparse Autoencoder</td></tr>
+<tr><td class="t">SAR</td><td>Suspicious Activity Report</td></tr>
+<tr><td class="t">SMILES</td><td>Simplified Molecular</td></tr>
+<tr><td class="t">TaskAgent</td><td>Agent that executes concrete tasks autonomously</td></tr>
+<tr><td class="t">W3C AI-KR CG</td><td>W3C AI Knowledge Representation Community Group (this group)</td></tr>
+</tbody></table>
+
+<p class="note">Companion documents: the <a href="https://w3c-cg.github.io/aikr/taxonomy/">taxonomy</a> (category spine) and the Standards inventory. Narrative background: the vocabulary walkthrough. Status: DRAFT — provisional, for community evaluation and maintenance. License: CC BY 4.0.</p>
+</body></html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI KR CG — Agentic AI Standards Inventory &amp; Gap Analysis (Working Draft)</title>
+<style>
+ :root { --w3c-blue:#005a9c; --w3c-line:#c3cedb; --w3c-head:#eaf1f8; --w3c-alt:#f6f9fc; }
+ body { font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif; line-height:1.5; color:#1a1a1a; max-width:72em; margin:0 auto; padding:1.6em 1.2em; background:#fff; }
+ a { color:var(--w3c-blue); text-decoration:none; } a:hover { text-decoration:underline; }
+ h1 { font-size:1.5em; margin:0 0 .15em; }
+ h2 { color:var(--w3c-blue); font-size:1.1em; margin:1.5em 0 .25em; border-bottom:2px solid var(--w3c-head); padding-bottom:2px; }
+ .sub { color:#5a6570; font-size:.92em; margin:.1em 0 .8em; }
+ .wd { background:#fff6d9; border:1px solid #e6d28a; padding:2px 8px; border-radius:4px; font-size:.82em; font-weight:600; }
+ .cn { color:#445; font-size:.9em; margin:.2em 0 .4em; }
+ .provisional { background:#fdecea; border:1px solid #e6a59c; border-left:5px solid #c0392b; padding:.7em .95em; border-radius:6px; margin:.9em 0; font-size:.9em; }
+ .provisional b { color:#a5281b; }
+ .contribute { background:#f1f7ec; border:1px solid #bcd9ab; border-left:5px solid #3f8f2e; padding:.7em .95em; border-radius:6px; margin:.9em 0; font-size:.93em; }
+ .contribute b { color:#2f6f22; }
+ nav.toc { background:var(--w3c-alt); border:1px solid var(--w3c-line); border-radius:6px; padding:.6em .9em .7em; font-size:.9em; margin:.6em 0 1.1em; }
+ nav.toc b { color:var(--w3c-blue); } nav.toc ul { margin:.35em 0 0; padding-left:1.2em; columns:2; } nav.toc li { margin:.12em 0; }
+ table.std, table.dash { border-collapse:collapse; width:100%; font-size:.87em; margin-top:.2em; }
+ table.std th, table.std td, table.dash th, table.dash td { border:1px solid var(--w3c-line); padding:5px 8px; vertical-align:top; text-align:left; }
+ table.std th, table.dash th { background:var(--w3c-head); color:var(--w3c-blue); }
+ table.std tr:nth-child(even) td, table.dash tr:nth-child(even) td { background:var(--w3c-alt); }
+ td.t { font-weight:600; } td.s { color:#445; font-size:.95em; } td.gap { background:#fdecea; font-weight:600; color:#a5281b; }
+ .b { display:inline-block; font-size:.74em; font-weight:700; padding:1px 7px; border-radius:4px; vertical-align:middle; }
+ .b.g { background:#fdecea; color:#b3261e; } .b.p { background:#fff4d6; color:#8a5a00; } .b.c { background:#e7f6ec; color:#1a7f37; } .b.a { background:#e7eefc; color:#2b50c0; }
+ .tc { color:#a5281b; font-style:italic; font-size:.95em; }
+ .note { color:#5a6570; font-size:.85em; margin-top:1.4em; border-top:1px solid var(--w3c-line); padding-top:.7em; }
+</style></head><body>
+
+<h1>Agentic AI Standards Inventory &amp; Gap Analysis</h1>
+<p class="sub"><span class="wd">DRAFT · June 2026</span> &nbsp; W3C AI Knowledge Representation Community Group (AI&nbsp;KR&nbsp;CG) &nbsp;·&nbsp; structured by the <a href="https://w3c-cg.github.io/aikr/taxonomy/">Knowledge-Domains taxonomy</a></p>
+
+<div class="contribute"><b>Invitation to contribute.</b> You are invited to review this inventory, correct the coverage assessments, add standards we have missed, and discuss on the public mailing list of the AI&nbsp;KR&nbsp;CG: <b>public-aikr@w3.org</b> — archives at <a href="https://lists.w3.org/Archives/Public/public-aikr/">lists.w3.org/Archives/Public/public-aikr/</a>. Anyone may read or write to this list.</div>
+
+<div class="provisional"><b>Provisional — to be confirmed and maintained.</b> The agentic-AI environment changes rapidly. Every entry, coverage call, and link here is <b>provisional</b> and must be verified and kept current. Coverage tracks <i>ratified</i> standards: <span class="b g">GAP</span> none · <span class="b p">PARTIAL</span> de-facto / draft only · <span class="b c">COVERED</span> ratified standard · <span class="b a">ACTIVE</span> bodies engaged. Items whose source is unverified are marked <span class="tc">to confirm</span>.</div>
+
+<nav class="toc"><b>Contents</b><ul>
+<li><a href="#c1">1. Agent types & autonomy</a> <span class="b g">GAP</span></li>
+<li><a href="#c2">2. Cognition & capability</a> <span class="b g">GAP</span></li>
+<li><a href="#c3">3. Interaction, communication & identity</a> <span class="b p">PARTIAL</span></li>
+<li><a href="#c4">4. Commerce & settlement</a> <span class="b p">PARTIAL</span></li>
+<li><a href="#c5">5. Oversight, safety & interpretability</a> <span class="b p">PARTIAL</span></li>
+<li><a href="#c6">6. Regulation & governance</a> <span class="b p">PARTIAL</span></li>
+<li><a href="#c7">7. Agentic standards & standards bodies</a> <span class="b a">ACTIVE</span></li>
+<li><a href="#c8">8. Applied domains</a> <span class="b g">GAP</span></li>
+</ul></nav>
+
+<h2>Coverage at a glance</h2>
+<p class="cn">Across the eight knowledge domains, the majority remain a gap or only partially served; standards activity is concentrated in communication/identity, commerce, security, and regulation.</p>
+<table class="dash"><thead><tr><th>Knowledge domain</th><th>Coverage</th><th>Summary</th></tr></thead><tbody>
+<tr><td class="t">1. Agent types &amp; autonomy</td><td class="b g">GAP</td><td>No ratified standard describes agent types or autonomy levels; only governance frameworks reference risk tiers.</td></tr>
+<tr><td class="t">2. Cognition &amp; capability</td><td class="b g">GAP</td><td>Planning, goal specification and perception have no standards; agent memory now has an emerging W3C community group.</td></tr>
+<tr><td class="t">3. Interaction, communication &amp; identity</td><td class="b p">PARTIAL</td><td>A vibrant de-facto protocol layer and maturing identity primitives, but no single ratified web standard yet.</td></tr>
+<tr><td class="t">4. Commerce &amp; settlement</td><td class="b p">PARTIAL</td><td>Several competing de-facto payment protocols; no ratified settlement standard.</td></tr>
+<tr><td class="t">5. Oversight, safety &amp; interpretability</td><td class="b p">PARTIAL</td><td>Strong de-facto security frameworks and regulatory anchors exist; no ratified oversight vocabulary, and interpretability remains research.</td></tr>
+<tr><td class="t">6. Regulation &amp; governance</td><td class="b p">PARTIAL</td><td>Binding regulation exists (EU AI Act, DORA, MiCA); agentic-specific governance is still forming.</td></tr>
+<tr><td class="t">7. Agentic standards &amp; standards bodies</td><td class="b a">ACTIVE</td><td>Many standards bodies are now actively engaged — the landscape is filling, mostly with community groups and de-facto protocols.</td></tr>
+<tr><td class="t">8. Applied domains</td><td class="b g">GAP</td><td>No agentic-AI-specific standards; applied work relies on each field&#x27;s existing domain standards.</td></tr>
+</tbody></table>
+
+<h2 id="c1">1. Agent types &amp; autonomy <span class="b g">GAP</span></h2>
+<p class="cn">No ratified standard describes agent types or autonomy levels; only governance frameworks reference risk tiers.</p>
+<table class="std"><thead><tr><th>Standard / effort</th><th>What it covers</th><th>Coverage</th><th>Openness</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td class="t">(none dedicated)</td><td>No standard for agent type / autonomy-level description</td><td class="gap">GAP</td><td>—</td><td class="s">—</td></tr>
+<tr><td class="t">EU AI Act risk tiers</td><td>Risk classification referenced for autonomy</td><td class="">Regulation</td><td>open</td><td class="s"><a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj">Reg (EU) 2024/1689</a></td></tr>
+<tr><td class="t">NIST CAISI AI Agent Standards Initiative</td><td>US program; may produce autonomy/agent descriptors</td><td class="">Initiative</td><td>open</td><td class="s"><a href="https://www.nist.gov/">NIST</a> <span class="tc">to confirm</span></td></tr>
+</tbody></table>
+<h2 id="c2">2. Cognition &amp; capability <span class="b g">GAP</span></h2>
+<p class="cn">Planning, goal specification and perception have no standards; agent memory now has an emerging W3C community group.</p>
+<table class="std"><thead><tr><th>Standard / effort</th><th>What it covers</th><th>Coverage</th><th>Openness</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td class="t">W3C AI Agent Memory Interoperability CG</td><td>Portable agent memory specification</td><td class="">Proposed (18 May 2026)</td><td>open</td><td class="s">W3C <span class="tc">to confirm</span></td></tr>
+<tr><td class="t">Planning / goal specification</td><td>No dedicated standards venue</td><td class="gap">GAP</td><td>—</td><td class="s">—</td></tr>
+<tr><td class="t">Perception</td><td>No dedicated standards venue</td><td class="gap">GAP</td><td>—</td><td class="s">—</td></tr>
+</tbody></table>
+<h2 id="c3">3. Interaction, communication &amp; identity <span class="b p">PARTIAL</span></h2>
+<p class="cn">A vibrant de-facto protocol layer and maturing identity primitives, but no single ratified web standard yet.</p>
+<table class="std"><thead><tr><th>Standard / effort</th><th>What it covers</th><th>Coverage</th><th>Openness</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td class="t">A2A (Agent2Agent)</td><td>Inter-agent communication / coordination</td><td class="">De-facto</td><td>open</td><td class="s"><a href="https://a2a-protocol.org/">Linux Foundation</a></td></tr>
+<tr><td class="t">MCP (Model Context Protocol)</td><td>Agent-to-tool connectivity</td><td class="">De-facto</td><td>open</td><td class="s"><a href="https://modelcontextprotocol.io/">Anthropic / LF</a></td></tr>
+<tr><td class="t">ACP (Agent Communication Protocol)</td><td>REST-native inter-agent messaging</td><td class="">De-facto</td><td>open</td><td class="s"><a href="https://agntcy.org/">AGNTCY / LF</a></td></tr>
+<tr><td class="t">ANP (Agent Network Protocol)</td><td>DID-based decentralised discovery</td><td class="">White Paper</td><td>open</td><td class="s"><a href="https://w3c-cg.github.io/ai-agent-protocol/">W3C</a></td></tr>
+<tr><td class="t">OASF (Open Agent Schema Framework)</td><td>Agent capability metadata schema</td><td class="">Draft</td><td>open</td><td class="s"><a href="https://agntcy.org/">AGNTCY</a></td></tr>
+<tr><td class="t">NANDA</td><td>Global agent discovery / registry</td><td class="">Research</td><td>open</td><td class="s">MIT Media Lab <span class="tc">to confirm</span></td></tr>
+<tr><td class="t">DID (Decentralized Identifiers)</td><td>Agent identity</td><td class="">Candidate Rec (Mar 2026)</td><td>open</td><td class="s"><a href="https://www.w3.org/TR/did-1.1/">W3C</a></td></tr>
+<tr><td class="t">Verifiable Credentials 2.0</td><td>Agent credentials</td><td class="">Recommendation</td><td>open</td><td class="s"><a href="https://www.w3.org/TR/vc-data-model-2.0/">W3C</a></td></tr>
+<tr><td class="t">W3C AI Agent Protocol CG</td><td>Inter-agent comms / identity / metadata</td><td class="">Pre-spec</td><td>open</td><td class="s"><a href="https://w3c-cg.github.io/ai-agent-protocol/">W3C</a></td></tr>
+</tbody></table>
+<h2 id="c4">4. Commerce &amp; settlement <span class="b p">PARTIAL</span></h2>
+<p class="cn">Several competing de-facto payment protocols; no ratified settlement standard.</p>
+<table class="std"><thead><tr><th>Standard / effort</th><th>What it covers</th><th>Coverage</th><th>Openness</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td class="t">x402</td><td>HTTP-402 agent/stablecoin payments</td><td class="">De-facto</td><td>open</td><td class="s"><a href="https://www.coinbase.com/developer-platform/discover/launches/google_x402">x402 Foundation / Coinbase</a></td></tr>
+<tr><td class="t">AP2 (Agent Payments Protocol)</td><td>Mandate-based agent payment authorisation</td><td class="">De-facto</td><td>open</td><td class="s"><a href="https://agentpaymentsprotocol.info/">Google / Coinbase</a></td></tr>
+<tr><td class="t">ACP (Agentic Commerce Protocol)</td><td>Agent-initiated checkout</td><td class="">De-facto</td><td>partly gated</td><td class="s">Stripe / OpenAI <span class="tc">to confirm</span></td></tr>
+<tr><td class="t">ERC-8004 (Trustless Agents)</td><td>On-chain agent identity / reputation</td><td class="">Draft EIP</td><td>open</td><td class="s"><a href="https://eips.ethereum.org/EIPS/eip-8004">Ethereum</a> <span class="tc">to confirm</span></td></tr>
+</tbody></table>
+<h2 id="c5">5. Oversight, safety &amp; interpretability <span class="b p">PARTIAL</span></h2>
+<p class="cn">Strong de-facto security frameworks and regulatory anchors exist; no ratified oversight vocabulary, and interpretability remains research.</p>
+<table class="std"><thead><tr><th>Standard / effort</th><th>What it covers</th><th>Coverage</th><th>Openness</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td class="t">OWASP Agentic Security Initiative + Top 10</td><td>Agentic threat taxonomy and controls</td><td class="">De-facto</td><td>open</td><td class="s"><a href="https://genai.owasp.org/initiatives/agentic-security-initiative/">OWASP</a></td></tr>
+<tr><td class="t">CSA MAESTRO</td><td>Seven-layer agentic threat model</td><td class="">De-facto</td><td>open</td><td class="s"><a href="https://cloudsecurityalliance.org/">Cloud Security Alliance</a></td></tr>
+<tr><td class="t">Five Eyes joint guidance</td><td>Secure agentic-AI deployment</td><td class="">Guidance</td><td>open</td><td class="s"><a href="https://labs.cloudsecurityalliance.org/research/csa-research-note-agentic-ai-governance-five-eyes-regulatory/">via CSA</a> <span class="tc">to confirm</span></td></tr>
+<tr><td class="t">EU AI Act Art. 14 / prEN 18283</td><td>Human oversight</td><td class="">Regulation / draft std</td><td>open</td><td class="s"><a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj">EU / CEN-CENELEC</a></td></tr>
+<tr><td class="t">Interpretability</td><td>No standard; active research</td><td class="gap">GAP</td><td>—</td><td class="s">—</td></tr>
+</tbody></table>
+<h2 id="c6">6. Regulation &amp; governance <span class="b p">PARTIAL</span></h2>
+<p class="cn">Binding regulation exists (EU AI Act, DORA, MiCA); agentic-specific governance is still forming.</p>
+<table class="std"><thead><tr><th>Standard / effort</th><th>What it covers</th><th>Coverage</th><th>Openness</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td class="t">EU AI Act (incl. GPAI)</td><td>Horizontal AI regulation</td><td class="">In force</td><td>open</td><td class="s"><a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj">Reg (EU) 2024/1689</a></td></tr>
+<tr><td class="t">DORA</td><td>Financial-sector operational resilience</td><td class="">In force</td><td>open</td><td class="s"><a href="https://eur-lex.europa.eu/eli/reg/2022/2554/oj">Reg (EU) 2022/2554</a></td></tr>
+<tr><td class="t">MiCA</td><td>Crypto-asset markets</td><td class="">In force</td><td>open</td><td class="s">Reg (EU) 2023/1114 <span class="tc">to confirm</span></td></tr>
+<tr><td class="t">GENIUS Act</td><td>US stablecoin statute</td><td class="">Statute</td><td>open</td><td class="s">US Congress <span class="tc">to confirm</span></td></tr>
+<tr><td class="t">NIST CAISI AI Agent Standards Initiative</td><td>US agent standards program</td><td class="">Initiative (Feb 2026)</td><td>open</td><td class="s"><a href="https://www.nist.gov/">NIST</a> <span class="tc">to confirm</span></td></tr>
+<tr><td class="t">IMDA Model AI Governance Framework for Agentic AI</td><td>Singapore agentic governance</td><td class="">Framework</td><td>open</td><td class="s">Singapore IMDA <span class="tc">to confirm</span></td></tr>
+</tbody></table>
+<h2 id="c7">7. Agentic standards &amp; standards bodies <span class="b a">ACTIVE</span></h2>
+<p class="cn">Many standards bodies are now actively engaged — the landscape is filling, mostly with community groups and de-facto protocols.</p>
+<table class="std"><thead><tr><th>Standard / effort</th><th>What it covers</th><th>Coverage</th><th>Openness</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td class="t">W3C AI-KR CG</td><td>Knowledge representation for AI (this group)</td><td class="">CG</td><td>open</td><td class="s"><a href="https://www.w3.org/community/aikr/">W3C</a></td></tr>
+<tr><td class="t">W3C AI Agent Protocol CG</td><td>Agent communication / identity</td><td class="">CG (pre-spec)</td><td>open</td><td class="s"><a href="https://w3c-cg.github.io/ai-agent-protocol/">W3C</a></td></tr>
+<tr><td class="t">W3C AI Agent Memory Interoperability CG</td><td>Agent memory</td><td class="">CG (proposed)</td><td>open</td><td class="s">W3C <span class="tc">to confirm</span></td></tr>
+<tr><td class="t">Linux Foundation Agentic AI Foundation</td><td>Stewards MCP and A2A</td><td class="">Foundation</td><td>open</td><td class="s"><a href="https://www.linuxfoundation.org/">Linux Foundation</a> <span class="tc">to confirm</span></td></tr>
+<tr><td class="t">AGNTCY collective</td><td>Internet of Agents (ACP, OASF)</td><td class="">Collective</td><td>open</td><td class="s"><a href="https://agntcy.org/">AGNTCY</a></td></tr>
+<tr><td class="t">C2PA</td><td>Content provenance (agent-generated content)</td><td class="">Standard (v2.3)</td><td>open</td><td class="s"><a href="https://c2pa.org/">C2PA</a></td></tr>
+<tr><td class="t">CEN-CENELEC JTC 21</td><td>EU harmonised AI standards (prEN 182xx)</td><td class="">Draft standards</td><td>open</td><td class="s"><a href="https://www.cencenelec.eu/areas-of-work/cen-cenelec-topics/artificial-intelligence/">CEN-CENELEC</a></td></tr>
+</tbody></table>
+<h2 id="c8">8. Applied domains <span class="b g">GAP</span></h2>
+<p class="cn">No agentic-AI-specific standards; applied work relies on each field&#x27;s existing domain standards.</p>
+<table class="std"><thead><tr><th>Standard / effort</th><th>What it covers</th><th>Coverage</th><th>Openness</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td class="t">(none dedicated)</td><td>No agentic-AI-specific standard for applied domains</td><td class="gap">GAP</td><td>—</td><td class="s">—</td></tr>
+<tr><td class="t">Domain standards (e.g. Basel III, SMILES)</td><td>Field-specific standards agents reuse</td><td class="">External</td><td>varies</td><td class="s">—</td></tr>
+</tbody></table>
+
+<p class="note">Companion documents: the <a href="https://w3c-cg.github.io/aikr/taxonomy/">taxonomy</a> (category spine) and the <a href="https://w3c-cg.github.io/aikr/VOCAB29June/">Vocabulary</a>. Status: DRAFT — provisional, for community evaluation and maintenance. License: CC BY 4.0.</p>
+</body></html>

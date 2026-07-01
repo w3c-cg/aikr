@@ -28,9 +28,11 @@
 </style></head><body>
 
 <h1>Agentic AI Standards Inventory &amp; Gap Analysis</h1>
-<p class="sub"><span class="wd">DRAFT · June 2026</span> &nbsp; W3C AI Knowledge Representation Community Group (AI&nbsp;KR&nbsp;CG) &nbsp;·&nbsp; structured by the <a href="https://w3c-cg.github.io/aikr/taxonomy/">Knowledge-Domains taxonomy</a></p>
+<p class="sub"><span class="wd">WORKING DRAFT · June 2026</span> &nbsp; W3C AI Knowledge Representation Community Group (AI&nbsp;KR&nbsp;CG) &nbsp;·&nbsp; structured by the <a href="https://w3c-cg.github.io/aikr/taxonomy/">Knowledge-Domains taxonomy</a></p>
 
-<div class="contribute"><b>Invitation to contribute.</b> You are invited to review this inventory, correct the coverage assessments, add standards we have missed, and discuss on the public mailing list of the AI&nbsp;KR&nbsp;CG: <b>public-aikr@w3.org</b> — archives at <a href="https://lists.w3.org/Archives/Public/public-aikr/">lists.w3.org/Archives/Public/public-aikr/</a>. Anyone may read or write to this list.</div>
+<div style="background:#eef3f8;border:1px solid #b9cbe0;border-left:5px solid #005a9c;padding:.7em .95em;border-radius:6px;margin:.9em 0;font-size:.93em"><b style="color:#005a9c">WORKING DRAFT — this document is not a finished reference but a working memo containing infoormation that needs to be <b>trimmed, evaluated, refined, and maintained</b>: it tracks a dynamic, emergent space and will go stale unless kept current. Treat every entry as a starting point for discussion, contribute via the public mailing list.</div>
+
+<div class="contribute"><b>Invitation to contribute.</b> You are invited to review this inventory, correct the coverage assessments, add standards missed, and discuss on the public mailing list of the AI&nbsp;KR&nbsp;CG: <b>public-aikr@w3.org</b> — archives at <a href="https://lists.w3.org/Archives/Public/public-aikr/">lists.w3.org/Archives/Public/public-aikr/</a>. Anyone may read or write to this list.</div>
 
 <div class="provisional"><b>Provisional — to be confirmed and maintained.</b> The agentic-AI environment changes rapidly. Every entry, coverage call, and link here is <b>provisional</b> and must be verified and kept current. Coverage tracks <i>ratified</i> standards: <span class="b g">GAP</span> none · <span class="b p">PARTIAL</span> de-facto / draft only · <span class="b c">COVERED</span> ratified standard · <span class="b a">ACTIVE</span> bodies engaged. Items whose source is unverified are marked <span class="tc">to confirm</span>.</div>
 
@@ -43,6 +45,7 @@
 <li><a href="#c6">6. Regulation & governance</a> <span class="b p">PARTIAL</span></li>
 <li><a href="#c7">7. Agentic standards & standards bodies</a> <span class="b a">ACTIVE</span></li>
 <li><a href="#c8">8. Applied domains</a> <span class="b g">GAP</span></li>
+<li><a href="#rec">Recommended work items (priority gaps)</a></li>
 </ul></nav>
 
 <h2>Coverage at a glance</h2>
@@ -83,7 +86,7 @@
 <tr><td class="t">ACP (Agent Communication Protocol)</td><td>REST-native inter-agent messaging</td><td class="">De-facto</td><td>open</td><td class="s"><a href="https://agntcy.org/">AGNTCY / LF</a></td></tr>
 <tr><td class="t">ANP (Agent Network Protocol)</td><td>DID-based decentralised discovery</td><td class="">White Paper</td><td>open</td><td class="s"><a href="https://w3c-cg.github.io/ai-agent-protocol/">W3C</a></td></tr>
 <tr><td class="t">OASF (Open Agent Schema Framework)</td><td>Agent capability metadata schema</td><td class="">Draft</td><td>open</td><td class="s"><a href="https://agntcy.org/">AGNTCY</a></td></tr>
-<tr><td class="t">NANDA</td><td>Global agent discovery / registry</td><td class="">Research</td><td>open</td><td class="s">MIT Media Lab <span class="tc">to confirm</span></td></tr>
+<tr><td class="t">NANDA</td><td>Global agent discovery / registry</td><td class="">Research</td><td>open</td><td class="s"><a href="https://nanda.media.mit.edu/">MIT Media Lab (Project NANDA)</a></td></tr>
 <tr><td class="t">DID (Decentralized Identifiers)</td><td>Agent identity</td><td class="">Candidate Rec (Mar 2026)</td><td>open</td><td class="s"><a href="https://www.w3.org/TR/did-1.1/">W3C</a></td></tr>
 <tr><td class="t">Verifiable Credentials 2.0</td><td>Agent credentials</td><td class="">Recommendation</td><td>open</td><td class="s"><a href="https://www.w3.org/TR/vc-data-model-2.0/">W3C</a></td></tr>
 <tr><td class="t">W3C AI Agent Protocol CG</td><td>Inter-agent comms / identity / metadata</td><td class="">Pre-spec</td><td>open</td><td class="s"><a href="https://w3c-cg.github.io/ai-agent-protocol/">W3C</a></td></tr>
@@ -131,11 +134,23 @@
 <tr><td class="t">CEN-CENELEC JTC 21</td><td>EU harmonised AI standards (prEN 182xx)</td><td class="">Draft standards</td><td>open</td><td class="s"><a href="https://www.cencenelec.eu/areas-of-work/cen-cenelec-topics/artificial-intelligence/">CEN-CENELEC</a></td></tr>
 </tbody></table>
 <h2 id="c8">8. Applied domains <span class="b g">GAP</span></h2>
-<p class="cn">No agentic-AI-specific standards; applied work relies on each field&#x27;s existing domain standards.</p>
-<table class="std"><thead><tr><th>Standard / effort</th><th>What it covers</th><th>Coverage</th><th>Openness</th><th>Source</th></tr></thead>
+<p class="cn">No agentic-AI-specific standards exist for this domain; agents operating in a given field reuse that field's own domain standards. There is nothing agent-specific to inventory here — this category is retained only so the eight-domain spine stays complete.</p>
+
+<h2 id="rec">Recommended work items — priority gaps</h2>
+<p class="cn">Where the inventory shows a gap, these are the standards worth developing — carried over from the June 2026 gap analysis and tagged by knowledge domain. The status column notes the state of any effort as of June 2026.</p>
+<table class="std"><thead><tr><th>Work item</th><th>Domain</th><th>Addresses</th><th>Status of effort (Jun 2026)</th></tr></thead>
 <tbody>
-<tr><td class="t">(none dedicated)</td><td>No agentic-AI-specific standard for applied domains</td><td class="gap">GAP</td><td>—</td><td class="s">—</td></tr>
-<tr><td class="t">Domain standards (e.g. Basel III, SMILES)</td><td>Field-specific standards agents reuse</td><td class="">External</td><td>varies</td><td class="s">—</td></tr>
+<tr><td class="t">Agent Autonomy Level Vocabulary</td><td>1 · Agent types</td><td>Reactive / deliberative / learning / goal-seeking agents</td><td>Open; governance anchors only (EU AI Act, NIST CAISI)</td></tr>
+<tr><td class="t">Goal Specification Schema</td><td>2 · Cognition</td><td>Machine-readable goals &amp; constraints</td><td class="gap">Open; no venue</td></tr>
+<tr><td class="t">Planning Semantics Vocabulary</td><td>2 · Cognition</td><td>Plans, strategies, constraints</td><td class="gap">Open; no venue</td></tr>
+<tr><td class="t">Agent Memory Model</td><td>2 · Cognition</td><td>Portable short / long-term / episodic memory</td><td>Active: W3C Agent Memory Interop CG</td></tr>
+<tr><td class="t">Agent Communication Protocol</td><td>3 · Interaction</td><td>Web-native agent-to-agent messaging</td><td>Active (de-facto): A2A, MCP, ACP; W3C Agent Protocol CG</td></tr>
+<tr><td class="t">Agent Identity Specification</td><td>3 · Interaction</td><td>Identity / credentials for non-human actors</td><td>Maturing: DID v1.1 CR, VC 2.0 Recs</td></tr>
+<tr><td class="t">Delegation &amp; Authority Model</td><td>3 · Interaction</td><td>Scoped, authorised delegation</td><td>Research: authenticated delegation</td></tr>
+<tr><td class="t">Human Oversight Vocabulary</td><td>5 · Oversight</td><td>Human-in-the-loop requirements</td><td>Open; EU AI Act Art. 14 anchor</td></tr>
+<tr><td class="t">Creative-Agent Provenance</td><td>5 · Oversight</td><td>Attribution of agent-generated content</td><td>Largely met: C2PA</td></tr>
+<tr><td class="t">Policy &amp; Governance Annotations</td><td>6 · Regulation</td><td>Operational / legal constraints on agents</td><td>Frameworks proliferating; ODRL alignment</td></tr>
+<tr><td class="t">Perception Interface Descriptors</td><td>2 · Cognition</td><td>Sensor / input-modality description</td><td class="gap">Open; no venue</td></tr>
 </tbody></table>
 
 <p class="note">Companion documents: the <a href="https://w3c-cg.github.io/aikr/taxonomy/">taxonomy</a> (category spine) and the <a href="https://w3c-cg.github.io/aikr/VOCAB29June/">Vocabulary</a>. Status: DRAFT — provisional, for community evaluation and maintenance. License: CC BY 4.0.</p>

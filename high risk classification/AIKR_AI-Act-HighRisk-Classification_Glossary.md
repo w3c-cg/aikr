@@ -120,6 +120,18 @@ Definitions below are original paraphrases for glossary use, not verbatim extrac
 
 **Annual monitoring instrument** — The Article 112(1) AI Act mechanism requiring yearly evaluation and review of the Annex III high-risk use-case list to keep it responsive to emerging risks and market developments. (Resource A) — *related:* delegated act, AI Board.
 
+### 3.4 Agentic representation & verification (AIKR CG extensions)
+
+*These terms extend the legal vocabulary above toward agent interoperability. They are CG synthesis grounded in the group's in-flight work and cited literature, not extracts from the guidelines; per §4, each carries `status: draft / CG-extension`.*
+
+**Derived classification** — A risk class that is not an intrinsic, first-order property of an AI system but is *derived* from external law, context, and intended purpose (cf. §2). For agentic systems it must therefore be represented as a resolvable, signed attribute that travels with the agent, rather than a static label asserted in prose. (AIKR CG synthesis, extending §2) — *broader:* high-risk AI system; *related:* intended purpose, sectoral risk inheritance principle, classification persistence.
+
+**Evidentiary record** — A content-addressed, independently-verifiable record of an agent's action — *commitment* (authority relied on), *decision* (authority, context, and evidence evaluated), *receipt* (outcome) — that makes Article 12 (record-keeping) and Article 14 (human oversight) obligations checkable by any party without trusting the operator's logs. Carries a belief-state reference (`belief_state_ref`) binding *what was thought* at the moment of action, on the principle of **admissibility, not truth**. (W3C AI Agent Protocol CG: issues #34/#36, PRs #40/#41) — *broader:* record-keeping obligation; *related:* third-party conformity assessment, classification persistence.
+
+**Classification persistence** — Whether, and how, a derived classification and the obligations it triggers survive the lifecycle events agentic systems routinely undergo — copying, fine-tuning, forking, checkpoint-restore — and which resulting instance carries them. The guidelines treat classification as a one-time determination; agentic deployment makes persistence across these events an open question. (AIKR CG synthesis; cf. Parfitian fission) — *related:* substantial modification, provider-obligation transfer trigger, speaks-for authority.
+
+**Speaks-for authority** — The delegation relation (after Abadi–Lampson, 1993) deciding which instance may act *as* a classified system after a fork or restore — distinct from, and not reducible to, the metaphysical question of which instance *is* the original (an empty question for copyable agents). It separates "who is accountable / holds the credential" from "which is the real one." (AIKR CG synthesis; Abadi, Burrows, Lampson, Plotkin, *A Calculus for Access Control in Distributed Systems*, ACM TOPLAS 1993) — *related:* classification persistence, provider, deployer.
+
 ---
 
 ## 4\. Suggested SKOS integration notes for AIKR CG

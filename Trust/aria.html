@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>ARIA Terminology Disambiguation: WAI-ARIA vs. Agent-ARIA</title>
+<link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2021/W3C-CG-DRAFT.css" />
+<style>
+  body { max-width: 55em; margin: 0 auto; padding: 0 1.5em 4em; }
+  .head { border-bottom: 1px solid #005a9c; padding-bottom: 1em; margin-bottom: 2em; }
+  .head img { float: left; margin-right: 1.5em; }
+  .head h1 { font-size: 1.8em; color: #005a9c; clear: none; }
+  .head h2 { font-size: 1.1em; font-weight: normal; color: #555; margin-top: 0; clear: none; }
+  .head dl { font-size: 0.9em; clear: both; padding-top: 1em; }
+  .head dt { font-weight: bold; float: left; width: 9em; clear: left; }
+  .head dd { margin: 0 0 0.3em 9em; }
+  .head p.copyright { font-size: 0.8em; color: #555; margin-top: 1em; }
+  h2 { color: #005a9c; border-bottom: 1px solid #ddd; padding-bottom: 0.2em; }
+  .abstract, #sotd { background: #f2f8fc; border-left: 4px solid #005a9c; padding: 0.8em 1.2em; margin: 1.5em 0; }
+  .abstract h2, #sotd h2 { border: none; margin-top: 0; font-size: 1em; text-transform: uppercase; letter-spacing: 0.05em; color: #005a9c; }
+  aside.note { background: #e8f2fa; border-left: 4px solid #52a6db; padding: 0.8em 1.2em; margin: 1em 0; }
+  aside.note .note-title, aside.note strong.title { display: block; font-weight: bold; color: #005a9c; margin-bottom: 0.3em; }
+  table.simple { border-collapse: collapse; width: 100%; margin: 1em 0; font-size: 0.95em; }
+  table.simple th { background: #005a9c; color: #fff; text-align: left; padding: 0.5em 0.7em; }
+  table.simple td { border: 1px solid #ccc; padding: 0.5em 0.7em; vertical-align: top; }
+  table.simple tr:nth-child(even) td { background: #f7fafd; }
+  a { color: #005a9c; }
+  code { background: #f2f2f2; padding: 0.1em 0.3em; border-radius: 2px; }
+  dfn { font-style: normal; font-weight: bold; color: #005a9c; }
+</style>
+</head>
+<body>
+
+<div class="head">
+  <h1>ARIA Terminology Disambiguation: WAI-ARIA vs. Agent-ARIA</h1>
+  <h2>Technical Note</h2>
+  <dl>
+    <dt>This version:</dt><dd>15 July 2026</dd>
+    <dt>Status:</dt><dd> Interim Technical Note (not on the W3C Standards Track)</dd>
+    <dt>Editor:</dt><dd> AI KR CG </dd>
+    <dt>Group:</dt><dd><a href="https://github.com/w3c-cg/aikr">w3c-cg/aikr</a></dd>
+    <dt>License:</dt><dd>CC BY 4.0</dd>
+  </dl>
+  <p class="copyright">This document is a Technical Note. It has no official standing within
+  W3C and is not endorsed by W3C or its Members. Technical Notes are not subject to the W3C
+  Patent Policy in the same way as Working Group Reports; see the CG's IPR policy for participation terms.</p>
+</div>
+
+<section class="abstract">
+  <h2>Abstract</h2>
+  <p>This note records a terminology collision between two unrelated W3C-adjacent artefacts that share the acronym
+  <dfn>ARIA</dfn>: the long-established <a href="https://www.w3.org/TR/wai-aria-1.3/">Accessible Rich Internet
+  Applications</a> vocabulary maintained by the Web Accessibility Initiative, and the newly proposed
+  <em>Agent Registry for Identity and Authorization</em> protocol stewarded by TrustLayer Foundation A.C. and
+  under discussion in the W3C <code>public-agent-identity</code> Community Group. The two share no technical,
+  organisational, or historical relationship. This note exists solely to prevent conflation in indexing,
+  keyword matrices, and cross-repository search.</p>
+</section>
+
+<section id="sotd">
+  <h2>Status of this document</h2>
+  <p>This is a short disambiguation note, as a reference by anyone indexing, citing,
+  or searching on the term "ARIA" across W3C and W3C-adjacent work.</p>
+  <aside class="note">
+    <strong class="title">Editor's Note</strong>
+    <p>Both parties independently use the acronym ARIA for unrelated reasons: WAI-ARIA predates the agent-identity
+    work by roughly two decades. TrustLayer Foundation's use of ARIA (Agent Registry for Identity and Authorization)
+    appears to be an independent coinage, first announced to <code>public-agent-identity</code> on 14 July 2026.
+    No conflict of interest, shared authorship, or coordinated naming is implied or known to exist. This note
+    takes no position on naming conventions going forward; it only records the collision as observed.</p>
+  </aside>
+</section>
+
+<section id="background">
+  <h2>1. Background</h2>
+  <p>Two distinct efforts currently use the bare acronym <strong>ARIA</strong> within, or adjacent to, W3C
+  Community Group activity:</p>
+  <ol>
+    <li><strong>WAI-ARIA</strong> — <em>Accessible Rich Internet Applications</em>, a vocabulary of roles,
+    states, and properties maintained by the Accessibility Guidelines Working Group under the Web Accessibility
+    Initiative. It defines how dynamic web content and custom UI widgets expose semantics to assistive
+    technologies. Current version: WAI-ARIA 1.3, Working Draft.</li>
+    <li><strong>Agent-ARIA</strong> — <em>Agent Registry for Identity and Authorization</em>, a protocol
+    stewarded by TrustLayer Foundation A.C. (a Mexican nonprofit constituted March 2026) that issues
+    cryptographically signed, DID-anchored identity credentials to AI agents crossing organisational
+    boundaries. It underlies the newly formed <code>public-agent-identity</code> W3C Community Group and is
+    published under CC-BY-4.0, with a live registry at <a href="https://registry.aria.bar">registry.aria.bar</a>.</li>
+  </ol>
+</section>
+
+<section id="comparison">
+  <h2>2. Comparison</h2>
+  <table class="simple">
+    <thead>
+      <tr><th></th><th>WAI-ARIA</th><th>Agent-ARIA</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Full expansion</td><td>Accessible Rich Internet Applications</td><td>Agent Registry for Identity and Authorization</td></tr>
+      <tr><td>Domain</td><td>Web content accessibility</td><td>AI agent identity &amp; authorization</td></tr>
+      <tr><td>Steward</td><td>W3C Web Accessibility Initiative (AG WG)</td><td>TrustLayer Foundation A.C.</td></tr>
+      <tr><td>W3C status</td><td>Recommendation-track (Working Draft, v1.3)</td><td>Informing a new W3C Community Group; not on the standards track</td></tr>
+      <tr><td>Core artefact</td><td>Roles/states/properties vocabulary</td><td>DID-anchored credential registry &amp; trust ledger</td></tr>
+      <tr><td>Built on</td><td>HTML accessibility API mappings</td><td>W3C DID Core, W3C Verifiable Credentials, NIST SP 800-63-4</td></tr>
+      <tr><td>First published</td><td>W3C Recommendation lineage since early 2000s</td><td>2026</td></tr>
+      <tr><td>Reference</td><td><a href="https://www.w3.org/TR/wai-aria-1.3/">w3.org/TR/wai-aria-1.3</a></td><td><a href="https://aria.bar/spec">aria.bar/spec</a></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="landscape">
+  <h2>3. Relation to other agent trust/interoperability Community Groups</h2>
+  <p>Agent-ARIA does not sit in isolation. It is one of several concurrent, partly-overlapping efforts within the
+  W3C Community Group ecosystem addressing AI agent identity, trust, and interoperability, formed in rapid
+  succession through 2026:</p>
+  <ul>
+    <li>The <strong>Agent Identity Registry Protocol Community Group</strong> (proposed 22 April 2026, mailing
+    list <code>public-agent-identity</code>) is Agent-ARIA's direct home: the group explicitly takes inspiration
+    from TrustLayer Foundation's work without being constrained by it, and anticipates coordination with the
+    W3C Credentials Community Group (CCG), the Decentralized Identity Foundation (DIF), the OpenID Foundation
+    AIIM Community Group, and the IETF WIMSE Working Group.</li>
+    <li>The <strong>AI Agent Protocol Community Group</strong> (proposed May 2025) is the broader umbrella under
+    which agent identity models, security/privacy mechanisms, and protocol interoperability are scoped as
+    named work items — several still pending community contribution.</li>
+    <li>The <strong>Agent Trust Protocol (ATP) Community Group</strong> was formed at the direct invitation of
+    the AI Agent Protocol CG chairs specifically to fill that CG's Security and Privacy modules, using
+    pairwise DIDs, selective disclosure, and zero-knowledge proofs — a scope that substantially overlaps
+    Agent-ARIA's trust-level and credential model and is a likely near-term convergence or duplication point.</li>
+    <li>The <strong>Agent Declaration and Assurance Community Group (ADACG)</strong> addresses a related but
+    distinct problem: cryptographic, verifiable declaration of an agent's identity, operational boundaries,
+    and accountable party, rather than registry-based credential issuance.</li>
+    <li>The <strong>AI Agent Memory Interoperability Community Group</strong> (proposed May 2026) is adjacent
+    rather than overlapping — it reuses the same identity-binding primitives (post-quantum signatures,
+    ML-DSA-65/FIPS-204) but applies them to portable agent memory rather than agent identity/authorization.</li>
+  </ul>
+  <p>The practical implication for CGs is that at least three groups (Agent Identity Registry Protocol,
+  ATP, and ADACG) are independently producing identity/trust specifications with visible scope overlap. This
+  is a live standardisation-fragmentation risk worth tracking in the AIKR SDO inventory and landscape board</p>
+</section>
+
+<section id="vocabulary">
+  <h2>4. Vocabulary: </h2>
+  <p>Agent-ARIA is not introducing a novel term vocabulary from first principles. It is built directly on two
+  existing W3C Recommendation-track vocabularies that already supply the core primitives it needs:</p>
+  <ul>
+    <li><strong>W3C DID Core</strong> — supplies <code>DID</code>, <code>DID Document</code>,
+    <code>verificationMethod</code>, and <code>service</code> as the identity-anchoring layer.</li>
+    <li><strong>W3C Verifiable Credentials Data Model v2.0</strong> — supplies
+    <code>issuer</code>, <code>holder</code>, <code>verifier</code>, <code>credentialSubject</code>, and
+    <code>proof</code> as the credential-exchange layer.</li>
+  </ul>
+  <p>Agent-ARIA's own contribution sits on top of these as a thin, domain-specific extension: trust-level
+  tiers (L0–L3, mapped to NIST SP 800-63-4 Identity Assurance Levels), the Agent Trust Policy format for
+  declaring and evaluating intended actions, and the trust-ledger/revocation model. These are the terms
+  that are genuinely new and not yet covered by DID Core or the VC Data Model.</p>
+  <p><strong>Recommendation:</strong> Map/ align
+with is a short
+  crosswalk note mapping Agent-ARIA's L0–L3 trust levels, Agent Trust Policy fields, and ledger/
+  revocation terms onto the existing DID Core and VC Data Model vocabulary, plus AIAO's ontic categories
+  where agent accountability and delegation constructs apply. See
+  <a href="./agent-aria-vocabulary-crosswalk.html">Vocabulary Crosswalk: Agent-ARIA to DID Core, Verifiable
+  Credentials, and AIAO</a> for the term-by-term mapping. This positions AIKR as an interoperability
+  bridge across the Agent Identity Registry Protocol, ATP, and ADACG groups rather than a fourth competing
+  vocabulary source.</p>
+</section>
+
+<section id="recommendation">
+  <h2>5. Recommendation for disambiguated usage</h2>
+  <p>CG materials, indexes, and keyword matrices, this note recommends:</p>
+  <ul>
+    <li>Use <strong>WAI-ARIA</strong> (never a bare "ARIA") when referring to the accessibility vocabulary.</li>
+    <li>Use <strong>Agent-ARIA</strong> or the full protocol name when referring to TrustLayer Foundation's
+    agent identity/authorization work, to avoid collision with WAI-ARIA in search and citation.</li>
+    <li>Where a bare "ARIA" appears in third-party source material, resolve it against context before indexing
+    rather than assuming either sense by default.</li>
+  </ul>
+</section>
+
+</body>
+</html>

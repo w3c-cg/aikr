@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>W3C AI / Agentic-AI Vocabulary Crosswalk — AIKR CG</title>
+<style>
+  :root {
+    --accent: #1F4E5F;
+    --accent-light: #F2F6F7;
+    --border: #d8dee1;
+    --text: #1c2b30;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--text);
+    line-height: 1.55;
+    background: #fff;
+  }
+  header.page-head {
+    background: var(--accent);
+    color: #fff;
+    padding: 2.2rem 1.5rem 1.6rem;
+  }
+  header.page-head .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  header.page-head h1 {
+    margin: 0 0 .4rem;
+    font-size: 1.7rem;
+    font-weight: 600;
+  }
+  header.page-head p {
+    margin: 0;
+    color: #dce9ec;
+    font-size: .95rem;
+  }
+  nav.toc {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    font-size: .9rem;
+  }
+  nav.toc a {
+    margin-right: 1.2rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  nav.toc a:hover { text-decoration: underline; }
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem;
+  }
+  section {
+    margin-bottom: 2.6rem;
+  }
+  h2 {
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent-light);
+    padding-bottom: .35rem;
+    font-size: 1.3rem;
+  }
+  h3 {
+    color: var(--accent);
+    font-size: 1.02rem;
+    margin: 1.1rem 0 .3rem;
+  }
+  p { margin: .3rem 0 .8rem; font-size: .95rem; }
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: .82rem;
+    min-width: 1400px;
+  }
+  thead th {
+    background: var(--accent);
+    color: #fff;
+    text-align: left;
+    padding: .6rem .55rem;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    vertical-align: top;
+  }
+  tbody td {
+    padding: .55rem .55rem;
+    border-top: 1px solid var(--border);
+    vertical-align: top;
+    max-width: 320px;
+  }
+  tbody tr:nth-child(even) { background: var(--accent-light); }
+  tbody tr:hover { background: #eaf2f4; }
+  footer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    color: #667;
+    font-size: .82rem;
+    border-top: 1px solid var(--border);
+  }
+  a { color: var(--accent); }
+  code { background: var(--accent-light); padding: .1rem .3rem; border-radius: 3px; }
+</style>
+</head>
+<body>
+<header class="page-head">
+  <div class="wrap">
+    <h1>W3C AI / Agentic-AI Vocabulary Crosswalk</h1>
+    <p>Compiled for the W3C AI Knowledge Representation Community Group (AIKR CG) — cross-group alignment reference, current Working Groups, Community Groups, and the Web &amp; AI Interest Group whose scope touches AI or agentic AI.</p>
+  </div>
+</header>
+<nav class="toc">
+  <a href="#crosswalk">1. Main Crosswalk</a>
+  <a href="#foundational">2. Foundational Vocabulary Groups</a>
+  <a href="#external">3. External Standards &amp; Liaisons</a>
+  <a href="#notes">4. Notes &amp; Methodology</a>
+</nav>
+<main>
+
+    <section id="crosswalk">
+      <h2>1. Main Crosswalk — W3C AI / Agentic-AI Working Groups &amp; Community Groups</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Group Name (canonical)</th><th>Group Type</th><th>Maturity Stage</th><th>Participants (orgs) — as of source date</th><th>Home Page URL</th><th>GitHub Repo URL</th><th>Published Spec(s) / Report(s)</th><th>Draft / Editor&#x27;s Draft</th><th>Planned / Charter-Scope Only (not yet published)</th><th>Description (Mission &amp; Scope)</th><th>Main Terms / Vocabulary Focus</th><th>Cross-Links &amp; Coordination Notes</th></tr></thead>
+          <tbody><tr><td>AI Knowledge Representation Community Group (AIKR CG)</td><td>Community Group</td><td>Incubation (active)</td><td>115 (as of group page, mid-2026)</td><td>https://www.w3.org/community/aikr/</td><td>https://github.com/w3c-cg/aikr</td><td>Standards inventory and landscape board (repo); prior taxonomy/vocabulary notes</td><td>DF-MC spec (https://w3c-cg.github.io/aikr/DFMC/); e-commerce open-vocabularies &amp; agentic-interoperability-gap TN; Voice Agents Vocabulary TN; Financial Fraud Vocabulary TN</td><td>Formal transition to a chartered Working Group has been discussed at TPAC 2025 as a future direction; not yet minuted as a decision or filed as a charter.</td><td>Builds shared, explicit representations — categories, taxonomies, vocabularies, a standards inventory, and gap analysis — to reduce semantic fragmentation across the agentic-AI landscape and give stakeholders common terms of reference.</td><td>Knowledge-representation primitives, agent capability descriptors, DF-MC model-card fields, voice-agent vocabulary terms, financial-fraud vocabulary terms, e-commerce agentic-interoperability terms.</td><td>Home group for this crosswalk. Named explicitly in WebAgents CG&#x27;s charter as one of the groups &#x27;better suited&#x27; to AI-specific vocabulary work — a citable basis for proposing a formal cross-group exercise. Related: Cognitive AI CG (chunk/rule vocabulary), Context Graphs CG (contextual-alignment vocabulary), Web &amp; AI IG (coordination venue).</td></tr><tr><td>AI Agent Protocol Community Group</td><td>Community Group</td><td>Incubation (active)</td><td>171 (54 orgs, per participants page)</td><td>https://www.w3.org/community/agentprotocol/</td><td>https://github.com/w3c-cg/ai-agent-protocol</td><td>—</td><td>Draft Community White Paper (https://w3c-cg.github.io/ai-agent-protocol/); AI Agent Protocol Specification editor&#x27;s draft (https://w3c-cg.github.io/ai-agent-protocol/protocol.html)</td><td>Standardized security/privacy mechanisms are marked in-charter as &#x27;pending community contribution&#x27; and are being addressed by the separately formed Agent Trust Protocol CG.</td><td>Develops open, interoperable protocols for AI agents to discover, identify, and collaborate across the Web — inter-agent communication, identity models, standardized capability metadata, and security/privacy mechanisms.</td><td>Agent discovery, capability/intent negotiation, agent identity framework, standardized agent metadata (capabilities, interfaces, goals, states), protocol interoperability layer.</td><td>One of the larger and more active AI-agent CGs by participant count (171 participants / 54 orgs, vs. e.g. 10–31 for the newer identity/trust spin-offs). Its security/identity scope was delegated to Agent Trust Protocol CG and overlaps with Agent Identity Registry Protocol CG — three groups converging on related terms independently; see notes on those rows.</td></tr><tr><td>Agent Trust Protocol Community Group (ATP)</td><td>Community Group</td><td>Incubation (early)</td><td>10 (per group page, June 2026)</td><td>https://www.w3.org/community/atp/</td><td>Not yet confirmed — check w3c-cg org listing once repo is created</td><td>—</td><td>—</td><td>did:atp DID method spec; agent trust scoring model; privacy-mechanism spec; conformance test suite — all charter-scope items, none published yet</td><td>Formed at the invitation of the AI Agent Protocol CG chairs specifically to fill that group&#x27;s Security and Privacy modules, marked &#x27;pending community contribution&#x27; in its charter.</td><td>did:atp (planned hybrid Ed25519 + ML-DSA-65 post-quantum DID method), agent trust scoring model (planned, backed by W3C Verifiable Credentials), pairwise DIDs, selective disclosure, zero-knowledge proofs — all planned, not yet specified in a published document.</td><td>Direct dependency of AI Agent Protocol CG (see above) — treat as an extension of that vocabulary rather than an independent ontology. Significant scope overlap with Agent Identity Registry Protocol CG (below): both are defining DID-based agent identity/trust mechanisms independently as of mid-2026 — worth flagging to both sets of chairs before terms diverge, and worth cross-referencing against the established W3C Credentials CG / DID Core vocabulary (see rows below) rather than re-deriving DID terminology from scratch.</td></tr><tr><td>Agent Identity Registry Protocol Community Group</td><td>Community Group</td><td>Incubation (early)</td><td>31 (per group page, April 2026)</td><td>https://www.w3.org/community/agent-identity/</td><td>https://github.com/w3c-cg/agent-identity</td><td>—</td><td>—</td><td>DID method spec for agent identity resolution; agent credential format (W3C VC-based); trust-negotiation protocol; revocation/lifecycle management — all charter-scope, none published yet</td><td>Verifiable AI-agent identity infrastructure — agents present cryptographically verifiable credentials binding them to controlling organizations, enabling cross-organizational trust negotiation without pre-existing bilateral agreements.</td><td>Agent identity, DID method, verifiable credentials, trust-level definitions, cross-org trust negotiation, credential revocation, post-quantum cryptographic requirements — planned, not yet specified.</td><td>Explicitly anticipates coordination with the W3C Credentials Community Group (CCG), DIF, OpenID Foundation AIIM, and IETF WIMSE per its own charter — good bridge point for AIKR&#x27;s identity vocabulary. See overlap note on Agent Trust Protocol CG above; the two groups should be reconciled rather than treated as independent vocabularies.</td></tr><tr><td>AI Agent Memory Interoperability Community Group</td><td>Community Group</td><td>Incubation (early)</td><td>8 (per group page, June 2026)</td><td>https://www.w3.org/community/ai-agent-memory-interop/</td><td>Not published — no public GitHub repository found as of this review; group has not yet chosen a chair</td><td>—</td><td>—</td><td>Full protocol-level memory specification — memory cell shape, identity binding, encryption envelope, audit anchor, sharing contracts, cryptographic erasure, regulatory crosswalks — all charter-scope only</td><td>Open protocol-level specification for AI agent memory portable across vendors, models, agent frameworks, and tool ecosystems. Explicitly out of scope: agent runtime semantics (deferred to frameworks like the AAIF goose project) and tool-routing semantics (deferred to MCP).</td><td>Memory cell, identity binding (ML-DSA-65/NIST FIPS-204), encryption envelope (DEK/KEK), audit anchor, sharing contract, cryptographic erasure, regulatory crosswalks to NIST AI RMF / ISO 42001 / ISO 27001 / EU AI Act — all planned.</td><td>No public repository confirmed yet — verify before citing any of this group&#x27;s terms as settled. Conceptual overlap worth tracking against Cognitive AI CG (memory/chunk representation), Context Graphs CG (contextual state representation), and AIKR CG&#x27;s own KR primitives — three different groups are independently defining &#x27;what a unit of agent memory/context is.&#x27;</td></tr><tr><td>Agentic Integrity Verification Specification Community Group (AIVS)</td><td>Community Group</td><td>Incubation (early)</td><td>12 (per group page, April 2026)</td><td>https://www.w3.org/community/aivs/</td><td>Not yet moved into a w3c-cg repo</td><td>—</td><td>AIVS v1.0 — external starting-point document, not yet adopted as a CG deliverable: https://github.com/swarmsync-ai/aivs-spec</td><td>Formal W3C CG deliverable status — the starting-point spec is external (SwarmSync AI) and has not yet been formally adopted by the group as its own draft.</td><td>Cryptographic proof of AI agent sessions — portable, self-verifiable audit records addressing regulatory audit-trail requirements (EU AI Act Art. 19, ISO/IEC 42001, NIST AI RMF).</td><td>Agent session record, cryptographic proof of completeness/authenticity, tamper-evident log, audit-trail conformance vocabulary — from the external starting-point document.</td><td>Regulatory-crosswalk vocabulary overlaps with AI Agent Memory Interoperability CG&#x27;s &#x27;audit anchor&#x27; concept — worth reconciling terms early. Also relevant to Content Wire&#x27;s own EU AI Act / audit-trail coverage.</td></tr><tr><td>Agent-to-Web Framework Community Group (A2WF)</td><td>Community Group</td><td>Incubation (early)</td><td>20 (per group page, March 2026)</td><td>https://www.w3.org/community/a2wf/</td><td>Not yet confirmed under w3c-cg org (starting-point framework hosted externally)</td><td>—</td><td>A2WF starting-point framework (external, not yet a CG deliverable): https://a2wf.org</td><td>Formal specification is charter-scope only at this stage</td><td>Machine-readable governance policies letting website operators declare what actions AI agents may take on their site (form-filling, bookings, purchases) — extending robots.txt/AIPREF, which cover crawling/content use but not agent actions.</td><td>Agent-action governance policy, authentication-requirement declaration, human-in-the-loop verification flag, machine-readable permission scope — from the external starting-point framework.</td><td>Complementary to AI Agent Protocol CG (agent-to-agent) — A2WF addresses agent-to-site governance. Distinct vocabulary from NLWeb CG&#x27;s semantic-query layer (below); worth keeping the two clearly separated in any gap analysis.</td></tr><tr><td>Autonomous Agents on the Web Community Group (WebAgents)</td><td>Community Group</td><td>Incubation (active)</td><td>120 (42 orgs, per participants page)</td><td>https://www.w3.org/community/webagents/</td><td>https://github.com/w3c-cg/webagents</td><td>Report on Interoperability for Agents on the Web: https://w3c-cg.github.io/webagents/TaskForces/Interoperability/Reports/report-interoperability.html</td><td>—</td><td>Charter explicitly excludes producing specifications; software/test suites also out of scope under the current charter.</td><td>Investigates Web-based Multi-Agent Systems (Hypermedia MAS) aligned with Web architecture (Linked Data, Semantic Web, Web of Things) — comparative analysis of agent protocols/frameworks and standardization gaps. Its charter explicitly defers most AI-specific topics to Cognitive AI CG, AI KR CG, and Human Centric AI CG.</td><td>Hypermedia MAS, Web-based multi-agent system, agent discoverability via Web architecture, hypermedia-driven agent interaction, standardization-gap taxonomy (its interoperability report includes a first-draft comparison table of existing agent protocols).</td><td>Its own charter names AI KR CG as a better-suited home for AI-specific vocabulary — the clearest citable mandate in this table for AIKR to convene a formal crosswalk. Its interoperability report&#x27;s protocol-comparison table is a strong existing input worth importing directly.</td></tr><tr><td>Cognitive AI Community Group</td><td>Community Group</td><td>Incubation (active)</td><td>65 (per group page)</td><td>https://www.w3.org/community/cogai/</td><td>https://github.com/w3c/cogai</td><td>Chunks and Rules Specification: https://w3c.github.io/cogai/</td><td>—</td><td>—</td><td>Neurosymbolic cognitive agents combining RDF/property graphs with statistical and rule-based reasoning, building on cognitive-science research (chunking theory) toward agents that learn, reason, and explain decisions transparently.</td><td>Chunk, rule, cognitive database, graph-based reasoning, symbolic+statistical hybrid architecture, sentient-web concepts.</td><td>Directly relevant to AIKR&#x27;s neurosymbolic-AI interest — &#x27;chunk&#x27; and &#x27;rule&#x27; should be cross-checked against AIKR&#x27;s own KR primitives, and against the memory-vocabulary work in AI Agent Memory Interoperability CG and Context Graphs CG, to avoid three groups independently coining terms for similar ideas.</td></tr><tr><td>Context Graphs Community Group</td><td>Community Group</td><td>Incubation (active)</td><td>100 (per group page, growing quickly since Feb 2026 launch)</td><td>https://www.w3.org/community/context-graph/</td><td>Not yet confirmed — check group&#x27;s home page for a repo link once published</td><td>—</td><td>—</td><td>Core data model, vocabularies, and protocol guidance for contextual misalignment — all charter-scope only as of this review.</td><td>Vocabularies and a data model for representing and resolving contextual misalignment between global knowledge representations (ontologies, policies, shared data models) and local interpretation context in human–AI and multi-agent decision workflows.</td><td>Context graph, contextual prerequisite, resolution status, global–local mismatch category, safe-stopping condition, structured clarification protocol.</td><td>Closest philosophical peer to AIKR&#x27;s own mission of any group in this table (shared semantics across disparate knowledge models) — recommend early direct outreach. Its data model should be checked against RDF, SKOS, and JSON-LD conventions (see Foundational Vocabulary rows below) rather than defining a parallel graph vocabulary from scratch.</td></tr><tr><td>Web Machine Learning Community Group (WebML CG)</td><td>Community Group</td><td>Incubation (active)</td><td>279 (per group page)</td><td>https://www.w3.org/community/webmachinelearning/</td><td>https://github.com/webmachinelearning (org; primary repo webmachinelearning/webnn)</td><td>—</td><td>Web Neural Network API (WebNN), incubated here before Working Group adoption: https://github.com/webmachinelearning/webnn ; charter: https://webmachinelearning.github.io/charter/</td><td>A growing set of LLM-based browser API proposals are under community discussion per the WG&#x27;s 2024 charter, but not yet formal CG deliverables.</td><td>Incubates a low-level Web API for machine-learning inference in the browser, and — per its Working Group&#x27;s most recent charter — signals future interest in LLM-based browser APIs pending further incubation here.</td><td>Neural-network inference graph, tensor/operand, hardware-accelerated execution context, browser-native ML operator set.</td><td>Feeds directly into the Web Machine Learning Working Group below — treat this CG as the vocabulary incubator and the WG as the normative source once a term stabilizes.</td></tr><tr><td>Web Machine Learning Working Group (WebML WG)</td><td>Working Group</td><td>Recommendation-track (Candidate Recommendation)</td><td>Not separately published; overlaps with CG membership</td><td>https://www.w3.org/groups/wg/webmachinelearning/</td><td>https://github.com/webmachinelearning/webnn</td><td>Web Neural Network API (WebNN), Candidate Recommendation: https://www.w3.org/TR/webnn/</td><td>Charter: https://w3c.github.io/machine-learning-charter/charter.html</td><td>Possible future Model Loader API, contingent on CG incubation progress</td><td>Standards-track Working Group developing the Web Neural Network API (adopted from the sister CG) to enable hardware-accelerated ML inference directly in the browser.</td><td>MLContext, MLGraphBuilder, MLOperand, hardware device selection (CPU/GPU/NPU) vocabulary, normative WebNN operator names.</td><td>The only group in this table on the formal Recommendation track — its normative terminology is the most authoritative reference point for any AIKR vocabulary touching browser-side ML execution.</td></tr><tr><td>NLWeb Community Group</td><td>Community Group</td><td>Incubation (early)</td><td>15 (per group page)</td><td>https://www.w3.org/community/nlweb/</td><td>https://github.com/nlweb-ai/NLWeb</td><td>—</td><td>Reference implementation and protocol docs in the NLWeb repo (originated from a Microsoft Build 2025 announcement, now hosted as a W3C CG deliverable)</td><td>—</td><td>Open protocols and reference implementations establishing a semantic layer for the &#x27;Agentic Web&#x27; — natural-language interfaces letting agents query and interact with Schema.org-structured websites semantically rather than through page scraping.</td><td>Semantic layer, natural-language site-query interface (ask method), agentic-web discovery endpoint.</td><td>Builds directly on Schema.org markup (see External Vocabulary Dependencies sheet) — distinguish clearly from A2WF&#x27;s agent-to-site governance vocabulary above; the two address different problems (semantic querying vs. permissioning) but are sometimes conflated.</td></tr><tr><td>Advancing Democracy with Ontologies, Reasoning, and AI Community Group (ADORAI)</td><td>Community Group</td><td>Incubation (early)</td><td>13 (per group page, May 2026)</td><td>https://www.w3.org/community/adorai/</td><td>Not yet published — very new group</td><td>—</td><td>—</td><td>Open-source reference models and core ontologies for democratic institutions — all charter-scope only</td><td>Federates knowledge-representation, semantic-reasoning, and agentic-AI expertise to build open-source reference models and ontologies for democratic institutions, using &#x27;debate graphs&#x27; to represent contested vs. settled facts.</td><td>Debate graph, fuzzy knowledge graph, federated learning + rules reasoning, disambiguation of &#x27;debated facts&#x27;, democracy-stack ontology (extends Akoma Ntoso).</td><td>Narrow application domain (civic/democratic institutions) but shares AIKR&#x27;s core KR-for-agentic-AI methodology — a possible ontology-alignment case study rather than a core vocabulary source; too early for firm term alignment.</td></tr><tr><td>AI Content Disclosure Community Group</td><td>Community Group</td><td>Incubation (early)</td><td>28 (per group page, February 2026)</td><td>https://www.w3.org/community/ai-content-disclosure/</td><td>Not yet published — early-stage group</td><td>—</td><td>—</td><td>Structured disclosure syntax for AI-authorship degree — all charter-scope only</td><td>Discusses structured syntax for expressing the degree to which content — especially text — was authored by generative AI, from fully human-authored to AI-assisted to fully automated with no human oversight, aimed at EU AI Act Article 50 compliance.</td><td>AI-authored, AI-assisted, human-reviewed, disclosure-syntax labeling vocabulary, provenance-of-authorship markup.</td><td>Directly relevant to Content Wire editorial practice and to any AIKR vocabulary on AI-generated content provenance; small, focused group worth monitoring for a compact, reusable disclosure taxonomy once one is published.</td></tr><tr><td>Human Centric AI Community Group</td><td>Community Group</td><td>Incubation (early — largely definitional/pre-formal)</td><td>Not published on group page as a current count</td><td>https://www.w3.org/community/humancentricai/</td><td>No official W3C GitHub repository confirmed</td><td>—</td><td>—</td><td>Defining what qualifies as a &#x27;Human Centric AI&#x27; system, plus eventual safety-protocol and interoperability recommendations — all charter-scope; formal specification work not yet underway</td><td>Investigates safety and human-rights implications of AI-connected online systems. Most of the group&#x27;s public documentation to date lives on an external site (docs.humancentricai.org) rather than in a W3C-hosted repo.</td><td>Human-centric AI system (proposed definitional category), safety protocol, human-rights compliance framework — conceptual/definitional at this stage, not yet a stable term set.</td><td>Named alongside AIKR and Cognitive AI in WebAgents CG&#x27;s charter as a plausible home for AI-ethics topics — worth a light-touch watch, but its own deliverables are not yet mature enough for firm vocabulary alignment.</td></tr><tr><td>Web &amp; AI Interest Group</td><td>Interest Group</td><td>Coordination forum (does not produce Recommendation-track specs)</td><td>44 (25 orgs, per participants page)</td><td>https://www.w3.org/groups/ig/webai/</td><td>https://github.com/w3c/webai</td><td>—</td><td>Charter: https://www.w3.org/2025/10/webai-ig-charter.html ; &#x27;AI and the Web Impact&#x27; report; joint deliverables in progress (e.g., Threat Model for Agentic AI Web Browsers, with the Threat Modeling CG)</td><td>—</td><td>Cross-W3C coordination forum that maintains a landscape overview of AI-related methods, protocols, and formats affecting the Web platform, and serves as the focal point receiving updates from AI-relevant Community Groups, including AI Agent Protocol CG and WebML WG by name in its charter.</td><td>No original vocabulary of its own; produces landscape and gap-analysis reports and coordinates terminology awareness across other groups.</td><td>The most structurally appropriate venue to formally propose or socialize an AIKR-led vocabulary crosswalk across all groups in this table — its charter explicitly tasks it with tracking AI-relevant CGs.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+    
+
+    <section id="foundational">
+      <h2>2. Foundational Vocabulary Groups</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Group Name (canonical)</th><th>Group Type</th><th>Maturity Stage</th><th>Participants (orgs) — as of source date</th><th>Home Page URL</th><th>GitHub Repo URL</th><th>Published Spec(s) / Report(s)</th><th>Draft / Editor&#x27;s Draft</th><th>Planned / Charter-Scope Only (not yet published)</th><th>Description (Mission &amp; Scope)</th><th>Main Terms / Vocabulary Focus</th><th>Cross-Links &amp; Coordination Notes</th></tr></thead>
+          <tbody><tr><td>W3C Credentials Community Group (CCG)</td><td>Community Group</td><td>Incubation (active) — long-running, multiple work items now standardized elsewhere</td><td>603 (per group page)</td><td>https://www.w3.org/community/credentials/</td><td>https://github.com/w3c-ccg (org; core repo w3c-ccg/community)</td><td>Multiple incubated specs now standardized elsewhere: Verifiable Claims Data Model 1.0, DID Use Cases, DID Explainer — see w3c-ccg.github.io/community/work_items.html</td><td>Numerous active work items across w3c-ccg org repos (DID methods, VC barcodes, VC API test suites, key-recovery specs, etc.)</td><td>—</td><td>Explores the creation, storage, presentation, verification, and user control of credentials — a verifiable credential being a set of claims by an issuer about a subject. Incubates specs later formalized by the Verifiable Credentials WG and the (now-closed) Decentralized Identifier WG.</td><td>Verifiable credential, issuer/holder/verifier roles, decentralized identifier (DID), presentation, selective disclosure, credential lifecycle.</td><td>Foundational vocabulary source for every identity/trust-related agent group above (Agent Trust Protocol CG, Agent Identity Registry Protocol CG). All three agent-identity CGs should be building on CCG/VC WG terms rather than re-deriving DID and credential vocabulary independently — the single clearest consolidation opportunity in this table.</td></tr><tr><td>Verifiable Credentials Working Group</td><td>Working Group</td><td>Maintenance (Recommendation, maintained)</td><td>Not separately published</td><td>https://www.w3.org/groups/wg/vc/</td><td>https://github.com/w3c/vc-data-model (successor of CCG-incubated work)</td><td>Verifiable Credentials Data Model, W3C Recommendation</td><td>Related Working Group Notes (see group home page)</td><td>—</td><td>Maintains the Verifiable Credentials Data Model specification and related Working Group Notes — the standards-track home for credential vocabulary incubated in the CCG.</td><td>Verifiable credential, credential subject, proof, issuer, VC data model properties.</td><td>Normative source of truth for &#x27;verifiable credential&#x27; terminology cited across the agent-identity CGs above; cite this WG&#x27;s vocabulary directly rather than the incubating CG where a term has been formalized.</td></tr><tr><td>JSON-LD Community Group</td><td>Community Group</td><td>Incubation (foundational, long-running)</td><td>133 (per group page)</td><td>https://www.w3.org/community/json-ld/</td><td>Primary spec now WG-maintained; see github.com/w3c/json-ld-syntax</td><td>JSON-LD 1.1 (W3C Recommendation, produced by the successor JSON-LD Working Group)</td><td>—</td><td>—</td><td>Lightweight Linked Data format giving JSON data context, enabling JSON to interoperate at Web scale — the format underlying most Linked-Data-based agent metadata proposals.</td><td>@context, @type, @id, term expansion/compaction, framing.</td><td>Directly relevant to any AIKR vocabulary expressed as machine-readable metadata (e.g., agent capability descriptors, DF-MC fields) — JSON-LD is the most likely serialization format for cross-group vocabulary alignment, so its conventions should constrain how AIKR structures its own terms.</td></tr><tr><td>Web of Things Working Group</td><td>Working Group</td><td>Maintenance / active (Recommendation track, rechartered)</td><td>Not separately published</td><td>https://www.w3.org/groups/wg/wot/</td><td>https://github.com/w3c/wot (org; multiple repos per deliverable)</td><td>WoT Thing Description, WoT Architecture (W3C Recommendations)</td><td>Ongoing rechartered work (chartered until April 2026 per group page; verify current charter status before citing as active)</td><td>—</td><td>Standardizes how connected devices (&#x27;Things&#x27;) describe their capabilities and interfaces on the Web — increasingly referenced by agent-interaction proposals where agents need to discover and act on physical or virtual device capabilities.</td><td>Thing Description, affordance, property/action/event, interaction model.</td><td>Relevant where agentic-AI vocabulary overlaps with device/service discovery (e.g., AI Agent Protocol CG&#x27;s &#x27;standardized metadata formats&#x27; echoes WoT&#x27;s Thing Description model) — worth a terminology cross-check rather than independent coinage.</td></tr><tr><td>Schema.org (external vocabulary dependency, not a W3C group)</td><td>External dependency</td><td>Mature, widely deployed</td><td>N/A — governed by an independent multi-stakeholder steering group, hosted alongside a W3C Community Group forum</td><td>https://schema.org</td><td>https://github.com/schemaorg/schemaorg</td><td>Schema.org core vocabulary and extensions (continuously published)</td><td>—</td><td>—</td><td>The dominant real-world structured-data vocabulary; NLWeb CG explicitly builds its semantic layer on Schema.org markup, and it underlies a large share of existing agent/AI discovery proposals outside formal W3C process.</td><td>Thing, Action, structured-data types and properties broadly reused across the agentic-web ecosystem.</td><td>Not a W3C Working or Community Group — included here as an external dependency because so many AI/agent proposals (NLWeb CG especially) assume it as a foundation layer. The W3C Schema.org Community Group (https://www.w3.org/community/schemaorg/) is the W3C-hosted discussion forum for it.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+    
+<section id="external"><h2>3. External Standards &amp; Liaisons</h2>
+<h3>External Standards Bodies &amp; Liaisons — Not W3C Groups</h3>
+<p>Several rows in the main crosswalk reference terminology or protocols that are governed outside W3C. These are not part of the W3C group landscape but come up repeatedly enough in the AI-agent CGs&#x27; charters and coordination notes to warrant a standing reference list.</p>
+<h3>IETF WIMSE (Workload Identity in Multi System Environments)</h3>
+<p>Referenced by: Agent Identity Registry Protocol CG (anticipated coordination). Governs workload/service identity patterns relevant to agent-to-agent authentication. https://datatracker.ietf.org/wg/wimse/about/</p>
+<h3>Model Context Protocol (MCP)</h3>
+<p>Referenced by: AI Agent Memory Interoperability CG (explicitly out-of-scope, deferred to MCP for tool-routing semantics). Not an IETF or W3C standard — governed by Anthropic and an open contributor community. https://modelcontextprotocol.io</p>
+<h3>OpenID Foundation AIIM (AI Identity Management) Working Group</h3>
+<p>Referenced by: Agent Identity Registry Protocol CG (anticipated coordination), alongside NIST&#x27;s AI Agent Identity initiative. Governs OIDC-based identity patterns for AI agents. https://openid.net/wg/aiim/</p>
+<h3>Decentralized Identity Foundation (DIF)</h3>
+<p>Referenced by: Agent Identity Registry Protocol CG (anticipated coordination). Maintains DID method registries and interoperability profiles complementary to W3C DID/VC work. https://identity.foundation</p>
+<h3>NIST AI Risk Management Framework (AI RMF 1.0) / NIST AI Agent Identity initiative</h3>
+<p>Referenced by: AI Agent Memory Interoperability CG and AIVS CG (regulatory crosswalks); Agent Identity Registry Protocol CG (identity initiative). https://www.nist.gov/itl/ai-risk-management-framework</p>
+<h3>ISO/IEC 42001:2023 (AI management systems) and ISO/IEC 27001:2022 (information security)</h3>
+<p>Referenced by: AI Agent Memory Interoperability CG, AIVS CG — both cite these as regulatory/compliance crosswalk targets for audit-trail and lifecycle vocabulary.</p>
+<h3>EU AI Act (Regulation 2024/1689)</h3>
+<p>Referenced by: AI Content Disclosure CG (Article 50, content-disclosure obligations); AI Agent Memory Interoperability CG and AIVS CG (Article 19, audit-trail obligations).</p>
+</section>
+<section id="notes"><h2>4. Notes &amp; Methodology</h2>
+<h3>W3C AI / Agentic-AI Vocabulary Crosswalk — Notes &amp; Methodology (v2)</h3>
+<h3>Purpose</h3>
+<p>Compiled to support AIKR CG alignment work across current W3C Working Groups, Community Groups, and the one relevant Interest Group whose scope touches AI or agentic AI, ahead of formal cross-group vocabulary reconciliation.</p>
+<h3>What changed in this revision</h3>
+<p>Following an internal review, this version: (1) separates maturity stage from raw participant counts into their own columns; (2) splits spec links into Published / Draft / Planned so shipped work is never conflated with charter aspirations; (3) standardizes group-type and maturity-stage vocabulary across all rows; (4) tones down evaluative language (&#x27;largest&#x27;, &#x27;natural convener&#x27;) into sourced, qualified statements; (5) adds a Foundational Vocabulary Groups sheet (Credentials CG, Verifiable Credentials WG, JSON-LD CG, Web of Things WG, Schema.org) that most agent-identity and agent-metadata proposals implicitly depend on; (6) adds an External Standards &amp; Liaisons sheet for IETF/OpenID/DIF/NIST/ISO/EU AI Act references that recur across group charters but sit outside W3C process; (7) expands cross-link notes to explicitly name overlapping groups in both directions.</p>
+<h3>Maturity-stage vocabulary used throughout</h3>
+<p>Proposed | Incubation (early) — chartered within roughly the last year, few or no published deliverables | Incubation (active) — established, ongoing deliverable production | Recommendation-track (WG) — chartered Working Group short of full Recommendation | Recommendation / Maintenance — shipped W3C standard | Coordination forum (IG) — Interest Group, does not produce Recommendation-track specs | External dependency — governed outside W3C entirely.</p>
+<h3>Scope &amp; method</h3>
+<p>Groups were identified by cross-referencing the W3C current-groups directory (w3.org/community/groups/, w3.org/groups/wg/, w3.org/groups/ig/) against AI/agent-related keywords, then verified individually via each group&#x27;s home page, charter, and (where available) GitHub repository, as of 16 July 2026. Participant/organization counts are sourced from each group&#x27;s own participants page and are timestamped to that page&#x27;s last update, not to this document&#x27;s compilation date — they will drift.</p>
+<h3>Outstanding verification items (unresolved as of this revision)</h3>
+<p>Confirm whether Agent Trust Protocol CG, AI Agent Memory Interoperability CG, ADORAI, Context Graphs CG, and AI Content Disclosure CG have published GitHub repositories since this review (several are marked &#x27;not yet confirmed&#x27;).</p>
+<p>Confirm whether the AIKR CG-to-Working-Group transition discussed at TPAC 2025 has since been formally proposed or chartered.</p>
+<p>Confirm current chair/participant status for Human Centric AI CG, whose public activity is largely off-W3C.</p>
+<p>Re-verify Web of Things WG&#x27;s charter end date (listed as 2 April 2026 on its group page at time of research) before citing it as an ongoing active group.</p>
+<h3>Suggested next steps for AIKR</h3>
+<p>1. Convene the three converging identity/trust efforts — AI Agent Protocol CG, Agent Trust Protocol CG, and Agent Identity Registry Protocol CG — around the existing W3C Credentials CG / Verifiable Credentials WG vocabulary, rather than letting each independently define DID and credential terms.</p>
+<p>2. Open direct contact with Context Graphs CG — the closest philosophical overlap with AIKR&#x27;s own mission (semantic alignment across knowledge models) of any group surveyed.</p>
+<p>3. Use WebAgents CG&#x27;s own charter language (naming AIKR as an appropriate home for AI-specific vocabulary) as the citable mandate when proposing a formal crosswalk exercise.</p>
+<p>4. Propose the crosswalk as a joint deliverable through the Web &amp; AI Interest Group, which already carries a cross-group landscape-tracking mandate in its charter.</p>
+<p>5. Anchor any new AIKR vocabulary in JSON-LD serialization conventions and, where applicable, Schema.org types, rather than defining a parallel metadata format.</p>
+</section>
+</main>
+<footer>
+  Compiled 16 July 2026 by the AIKR CG. Source data verified against each group's W3C home page, charter, and GitHub repository as of that date — see §4 for outstanding verification items and freshness caveats. Not a W3C Recommendation; informational reference only.
+</footer>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Agent Trust &amp; Identity: Vocabulary Crosswalk Across W3C Community Groups</title>
+<link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2021/W3C-CG-DRAFT.css" />
+<style>
+  body { max-width: 60em; margin: 0 auto; padding: 0 1.5em 4em; }
+  .head { border-bottom: 1px solid #005a9c; padding-bottom: 1em; margin-bottom: 2em; }
+  .head h1 { font-size: 1.7em; color: #005a9c; clear: none; }
+  .head h2 { font-size: 1.05em; font-weight: normal; color: #555; margin-top: 0; clear: none; }
+  .head dl { font-size: 0.9em; clear: both; padding-top: 1em; }
+  .head dt { font-weight: bold; float: left; width: 9em; clear: left; }
+  .head dd { margin: 0 0 0.3em 9em; }
+  .head p.copyright { font-size: 0.8em; color: #555; margin-top: 1em; }
+  h2 { color: #005a9c; border-bottom: 1px solid #ddd; padding-bottom: 0.2em; }
+  .abstract, #sotd { background: #f2f8fc; border-left: 4px solid #005a9c; padding: 0.8em 1.2em; margin: 1.5em 0; }
+  .abstract h2, #sotd h2 { border: none; margin-top: 0; font-size: 1em; text-transform: uppercase; letter-spacing: 0.05em; color: #005a9c; }
+  aside.note { background: #e8f2fa; border-left: 4px solid #52a6db; padding: 0.8em 1.2em; margin: 1em 0; }
+  aside.note .title { display: block; font-weight: bold; color: #005a9c; margin-bottom: 0.3em; }
+  table.simple { border-collapse: collapse; width: 100%; margin: 1em 0; font-size: 0.88em; }
+  table.simple th { background: #005a9c; color: #fff; text-align: left; padding: 0.5em 0.6em; }
+  table.simple td { border: 1px solid #ccc; padding: 0.5em 0.6em; vertical-align: top; }
+  table.simple tr:nth-child(even) td { background: #f7fafd; }
+  a { color: #005a9c; }
+  code { background: #f2f2f2; padding: 0.1em 0.3em; border-radius: 2px; }
+  .gap { color: #b3261e; font-weight: bold; }
+  .overlap { color: #a15c00; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class="head">
+  <h1>Agent Trust &amp; Identity: Vocabulary Crosswalk Across W3C Community Groups</h1>
+  <dl>
+    <dt>This version:</dt><dd>15 July 2026</dd>
+    <dt>Status:</dt><dd>Technical Note  DRAFT (not on the W3C Standards Track)</dd>
+    <dt>Editor:</dt><dd>AI KR CG</dd>
+    <dt>Group:</dt><dd><a href="https://github.com/w3c-cg/aikr">w3c-cg/aikr</a></dd>
+    <dt>License:</dt><dd>CC BY 4.0</dd>
+  </dl>
+  <p class="copyright">This document is a Community Group Draft Report. It has no official standing within
+  W3C and is not endorsed by W3C or its Members.</p>
+</div>
+
+<section class="abstract">
+  <h2>Abstract</h2>
+  <p>Several W3C Community Groups formed through 2025–2026 independently address AI agent identity, trust,
+  and interoperability, each producing its own terminology. This note is an annotated crosswalk of the
+  vocabulary each group uses, the underlying standards each reuses, and where their scopes visibly overlap
+  or leave gaps. It supersedes the earlier draft of this note, which incorrectly framed the comparison as
+  a mapping onto AIKR's own AIAO classification scheme; AIKR does not currently maintain a vocabulary
+  covering this space, and the note below compares the external efforts on their own terms.</p>
+</section>
+
+<section id="sotd">
+  <h2>Status of this document</h2>
+  <p>This is a non-normative landscape/crosswalk note draft maintained by AIKR CG's. It
+  records terminology as published in each group's charter, repository README, or mailing-list announcements
+  as of July 2026 — several of these groups are newly formed and their vocabularies are not yet stable.</p>
+  <aside class="note">
+    <span class="title">Editor's Note</span>
+    <p>Coverage here is necessarily uneven: some groups (Agent Identity Registry Protocol CG) have a published
+    spec and live registry to draw on; others (ATP, ADACG) are represented only by charter-stage material.
+    Entries marked "unconfirmed" should be verified against the group's own repository before being cited
+    elsewhere.</p>
+    <span class="title">How to contribute</span>
+    <p> Verify, comment, correct or approve. Share with other CGs, discuss and post to AI KR CG mailing list with input.
+    Entries marked "unconfirmed" should be verified against the group's own repository before being cited
+    elsewhere.</p>
+  </aside>
+  
+  
+</section>
+
+<section id="crosswalk">
+  <h2>1. Vocabulary crosswalk</h2>
+  <table class="simple">
+    <thead>
+      <tr>
+        <th>Community Group / Effort</th>
+        <th>Steward</th>
+        <th>Distinctive vocabulary</th>
+        <th>Underlying standards reused</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Agent Identity Registry Protocol CG</strong><br>(<code>public-agent-identity</code>)</td>
+        <td>Proposed by TrustLayer Foundation A.C. (Agent-ARIA spec)</td>
+        <td>DID method, agent credential format, trust negotiation protocol, trust levels (L0–L3), credential lifecycle / revocation, post-quantum cryptography</td>
+        <td>W3C DID Core, W3C Verifiable Credentials Data Model; integration profiles for MCP / A2A / OAuth / OIDC / SPIFFE</td>
+        <td>Only group in this set with a live registry (registry.aria.bar) and published spec (aria.bar/spec) as of July 2026.</td>
+      </tr>
+      <tr>
+        <td><strong>AI Agent Protocol CG</strong></td>
+        <td>W3C CG, broad umbrella (proposed May 2025)</td>
+        <td>Agentic Web, inter-agent communication protocols, agent identity models, capability metadata, protocol interoperability, orchestration</td>
+        <td>Verifiable-credential-based trust (unspecified VC profile)</td>
+        <td>Parent/umbrella scope; identity and security/privacy work items were <span class="gap">explicitly left open</span> for other groups to fill — see ATP below.</td>
+      </tr>
+      <tr>
+        <td><strong>Agent Trust Protocol (ATP) CG</strong></td>
+        <td>Formed at invitation of AI Agent Protocol CG chairs</td>
+        <td>Security/privacy modules: pairwise DIDs, selective disclosure, zero-knowledge proofs</td>
+        <td>W3C DID Core (pairwise DIDs), ZKP schemes (unconfirmed which)</td>
+        <td class="overlap">Direct scope overlap with Agent Identity Registry Protocol CG's trust-level/credential model — both define trust negotiation over DID-anchored identity; no observed coordination between the two as of July 2026.</td>
+      </tr>
+      <tr>
+        <td><strong>Agent Declaration and Assurance CG (ADACG)</strong></td>
+        <td>W3C CG</td>
+        <td>Agent Declaration, Agent Assurance, Open KYA (Know Your Agent) Manifest, Graduated Conformance Profiles (Core/Deploy/Transact), runtime integrity bindings</td>
+        <td>Trusted Execution Environments (TEEs), DID</td>
+        <td>Declares identity/boundaries/accountable-party rather than issuing registry-based credentials — a <em>different mechanism</em> for a similar goal to Agent-ARIA; conformance-profile framing (Core/Deploy/Transact) has <span class="gap">no equivalent</span> in Agent-ARIA or ATP.</td>
+      </tr>
+      <tr>
+        <td><strong>Semantic Agent Communication CG</strong></td>
+        <td>W3C CG</td>
+        <td>Identity binding, capability disclosure, semantic intent modeling, delegation chains, verifiable execution accountability, agent-native interaction models</td>
+        <td>RDF / Linked Data, DID, Verifiable Credentials</td>
+        <td class="overlap">"Delegation chains" here overlaps conceptually with Agent-ARIA's Agent Trust Policy and with ADACG's assurance model; framed semantically (RDF-native) rather than protocol-native, which is itself a gap between the semantic-web and credential-registry camps.</td>
+      </tr>
+      <tr>
+        <td><strong>AI Agent Memory Interoperability CG</strong></td>
+        <td>W3C CG (proposed May 2026)</td>
+        <td>Portable agent memory, identity-bound memory records</td>
+        <td>Post-quantum signatures (ML-DSA-65 / FIPS 204) — same primitive family Agent-ARIA uses</td>
+        <td>Adjacent, not overlapping: reuses Agent-ARIA-adjacent cryptographic primitives for a different object (memory, not identity/authorization).</td>
+      </tr>
+      <tr>
+        <td><strong>WebAgents CG</strong></td>
+        <td>W3C CG</td>
+        <td>Hypermedia Multi-Agent Systems (hMAS), Web-based MAS, manageable affordances</td>
+        <td>Linked Data, Semantic Web</td>
+        <td><span class="gap">No identity or trust vocabulary at all</span> in published interoperability report — a structural gap if hMAS agents are expected to interoperate with any of the identity-bearing agents above.</td>
+      </tr>
+      <tr>
+        <td><strong>UHDS CG</strong> <em>(health data, adjacent domain)</em></td>
+        <td>W3C CG</td>
+        <td>Modular health data schemas, patient consent/control</td>
+        <td>Verifiable Credentials, Zero-Knowledge Proofs, Privacy-Enhancing Technologies, federated learning</td>
+        <td>Not agent-identity-specific, but its ZKP + VC combination is closer to ATP's stated direction than anything ATP itself has published — a candidate reference point.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="gaps">
+  <h2>2. Observed overlaps and gaps</h2>
+  <ul>
+    <li><span class="overlap">Overlap:</span> Agent Identity Registry Protocol CG and ATP CG both define DID-anchored trust negotiation with no visible coordination between them — the clearest duplication risk in this set.</li>
+    <li><span class="overlap">Overlap:</span> "Delegation chains" (Semantic Agent Communication CG), the Agent Trust Policy (Agent-ARIA), and Graduated Conformance Profiles (ADACG) all attempt to answer the same question — what is this agent authorized to do, and on whose behalf — via three incompatible mechanisms (RDF delegation graph, signed policy document, conformance-tier declaration).</li>
+    <li><span class="gap">Gap:</span> No group in this set has published a vocabulary for revocation semantics beyond Agent-ARIA's own trust ledger; ADACG's runtime integrity bindings are the closest adjacent concept but are not framed as revocation.</li>
+    <li><span class="gap">Gap:</span> WebAgents CG's hMAS work has no identity/trust vocabulary at all, despite being a plausible interoperability partner for any of the identity-bearing frameworks above.</li>
+    <li><span class="gap">Gap:</span> None of these groups has yet published a stable term for cross-registry agent identity resolution — i.e., how a verifier reconciles an Agent-ARIA credential against an ADACG KYA Manifest for the same underlying agent.</li>
+  </ul>
+</section>
+
+</body>
+</html>

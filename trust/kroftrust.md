@@ -1,4 +1,10 @@
 # The Knowledge Representation of the Trust Layer Through the Lens of Digital Identity Chains
+DRAFT TECHNICAL NOTE
+
+OPEN CONSULTATION STARTS 2 AUGUST 26
+
+CONSULTATION TO CLOSE:  TBA
+FEEDBACK BY OPENING AN ISSUE HERE AND PINGING THE AI KR CG Mailing list 
 
 *W3C AI Knowledge Representation Community Group*
 

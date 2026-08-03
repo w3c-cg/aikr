@@ -13,9 +13,9 @@ FEEDBACK BY OPENING AN ISSUE HERE AND PINGING THE AI KR CG Mailing list
 
 ## Executive Summary
 
-Several community and work groups chartered work on agent identity, agent trust establishment, and runtime verification of agent claims. Their scopes overlap. Their vocabularies converge. Their published founding texts diverge on one engineering property that determines whether any of the proposals will hold under production load, and none of them names it.
+The Trust Layer rests on explicit representation at a critical junction where it intersects with DID and the blockchain.
 
-That property is **resolution dependency**: where an agent's identity document is fetched from at the moment a counterparty needs to verify a claim.
+Several community and work groups chartered work on agent identity, agent trust establishment, and runtime verification of agent claims. Their scopes overlap. Their vocabularies converge, and published founding texts diverge on one engineering property that determines whether any of the proposals will hold under production load, and none of them names it: resolution dependency: where an agent's identity document is fetched from at the moment a counterparty needs to verify a claim.
 
 Three arrangements are in play across the current proposals — resolution from a distributed ledger, resolution from a domain the operator controls, and resolution from a registry a third party maintains. Each carries a different answer to who can make an agent disappear, a different latency profile at the ninety-ninth percentile, and a different failure mode under network partition or governance dispute. Charter text as published does not distinguish among them.
 

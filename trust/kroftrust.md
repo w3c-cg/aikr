@@ -14,7 +14,9 @@ Three arrangements are in play across the current proposals — resolution from 
 
 Distributed ledger technology sits in three distinct positions across this landscape. One proposal places public-chain receipts directly in scope as audit anchors. Another borrows ledger vocabulary for an append-only record model and disclaims blockchain and consensus mechanisms explicitly. A third carries no chain reference in its own text while the deployment that inspired it runs on an L2 network. A reader confined to charter documents would conclude that ledger infrastructure plays a marginal role in agent identity. Deployment evidence says otherwise.
 
-The knowledge-representation problem is this: these charters are formal representations of systems that do not yet exist, and the representation omits the variable that governs the represented system's behaviour. What gets modelled is the trust relationship. What gets left unmodelled is the substrate the relationship depends on to hold at runtime. Ontologies built on the first without the second will crosswalk cleanly and interoperate poorly.
+The knowledge-representation problem is: these charters are formal representations of systems that do not yet exist, and the representation omits the variable that governs the represented system's behaviour. What gets modelled is the trust relationship. What gets left unmodelled is the substrate the relationship depends on to hold at runtime. Ontologies built on the first without the second will crosswalk cleanly and interoperate poorly.
+
+
 -----
 <a id="part-i-technical-note"></a>
 
@@ -110,4 +112,3 @@ Responses will be collated and circulated back to all groups on the list. Replie
 | 15 | Are We There Yet? A Study of Decentralized Identity Applications | Empirical survey of decentralized identity deployments and the interoperability shortfall between DID method implementations. | https://arxiv.org/pdf/2503.15964 |
 | 16 | AESP: A Human-Sovereign Economic Protocol for AI Agents with Privacy-Preserving Settlement | Useful chiefly for its bibliography, which maps the autonomous-economic-agent literature back to 2020. | https://arxiv.org/pdf/2603.00318 |
 
-p=sta&ep=AE&an=CWRE000020260802em8200001&fid=301096886&cat=a&aid=9ZZZ038900&ns=65&fn=content-wire&ft=g&vl=ev&jid=FSP3da1fd7d-306a-4863-95a7-45c1a3a55e3a) |

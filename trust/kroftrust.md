@@ -1,9 +1,9 @@
 # The Knowledge Representation of the Trust Layer Through the Lens of Digital Identity Chains
 TECHNICAL NOTE DRAFT
 
-*W3C AI Knowledge Representation Community Group*
-
 STATUS:  SEEKING FEEDBACK *Open Consultation 2 Aug 2026  *date of close TBA
+
+*W3C AI Knowledge Representation Community Group*
 
 ---
 

@@ -17,13 +17,16 @@ The Trust Layer rests on explicit representation at a critical junction where it
 
 Several community and work groups chartered work on agent identity, agent trust establishment, and runtime verification of agent claims. Their scopes overlap. Their vocabularies converge, and published founding texts diverge on one engineering property that determines whether any of the proposals will hold under production load, and none of them names it: resolution dependency: where an agent's identity document is fetched from at the moment a counterparty needs to verify a claim.
 
+# The Knowledge Representation of the Trust Layer Through the Lens of Digital Identity Chains
+
+
 Three arrangements are in play across the current proposals — resolution from a distributed ledger, resolution from a domain the operator controls, and resolution from a registry a third party maintains. Each carries a different answer to who can make an agent disappear, a different latency profile at the ninety-ninth percentile, and a different failure mode under network partition or governance dispute. Charter text as published does not distinguish among them.
 
 Distributed ledger technology sits in three distinct positions across this landscape. One proposal places public-chain receipts directly in scope as audit anchors. Another borrows ledger vocabulary for an append-only record model and disclaims blockchain and consensus mechanisms explicitly. A third carries no chain reference in its own text at all. Separately, an unaffiliated Zurich operator runs a live W3C VC + DID agent trust layer anchored on an Ethereum layer-two network. A reader confined to charter documents would conclude that ledger infrastructure plays a marginal role in agent identity. Deployment evidence says otherwise.
 
 The concern is not confined to one consortium. Work on agent identity and agent trust is under way at the IETF, the FIDO Alliance, the OpenID Foundation, the Decentralized Identity Foundation, the Linux Foundation, the Ethereum improvement process, NIST, and several security consortia, and the same variable goes unstated across most of them. Part II surveys that landscape. One effort, Ethereum's ERC-8004, answers the question explicitly and answers it as a hybrid, which establishes that the disclosure asked for here is achievable and already shipped.
 
-The knowledge-representation problem is: these charters are formal representations of systems that are still evolving, and the representation omits the variable that governs the represented system's behaviour. What gets modelled is the trust relationship. What gets left unmodelled is the substrate the relationship depends on to hold at runtime. Ontologies built on the first without the second may crosswalk cleanly and interoperate poorly.
+The knowledge-representation problem is: these charters are formal representations of systems that are still evolving, and the representation omits the variable that governs the represented system's behaviour. What gets modelled is the trust relationship. What gets left unmodelled is the substrate the relationship depends on to hold at runtime. Ontologies built on the first without the second will crosswalk cleanly and interoperate poorly.
 
 ---
 
@@ -144,7 +147,7 @@ NIST's Center for AI Standards and Innovation announced its AI Agent Standards I
 
 Singapore's Infocomm Media Development Authority published its Model AI Governance Framework for Agentic AI in January 2026, requiring each agent to carry a verifiable digital identity together with an audit trail recording which agent acted under whose authorisation.
 
-Regulation (EU) 2024/1689 applies Article 14 on human oversight and Article 15 on accuracy, robustness and cybersecurity to autonomous agents in high-risk domains.
+Regulation (EU) 2024/1689 applies Article 14 on human oversight and Article 15 on accuracy, robustness and cybersecurity to autonomous agents in high-risk domains. Following adoption of the Digital Omnibus on AI — endorsed by Parliament on 16 June 2026 and approved by the Council on 29 June 2026 — those Chapter III obligations now apply from 2 December 2027 for standalone Annex III systems and from 2 August 2028 for AI embedded in Annex I regulated products. Article 50 transparency duties were carved out of the deferral and apply from 2 August 2026, with the machine-readable marking requirement under Article 50(2) binding legacy systems from 2 December 2026. The deferral moves European high-risk enforcement behind the Singapore framework and the NIST initiative rather than ahead of them, and it brings the Verifiable Credentials deliverable schedule, which runs to April 2028, into rough alignment with the obligations it would support.
 
 ISO/IEC JTC 1 appears in the NIST pillars as a target venue rather than an active one, which means part of this work is a standards-diplomacy contest as well as a technical one.
 

@@ -1,4 +1,5 @@
 # The Knowledge Representation of the Trust Layer Through the Lens of Digital Identity Chains
+TECHNICAL NOTE DRAFT
 
 *W3C AI Knowledge Representation Community Group*
 

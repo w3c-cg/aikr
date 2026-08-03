@@ -2,6 +2,8 @@
 
 *W3C AI Knowledge Representation Community Group*
 
+STATUS:  SEEKING FEEDBACK *Open Consultation 2 Aug 2026  *date of close TBA
+
 ---
 
 ## Executive Summary

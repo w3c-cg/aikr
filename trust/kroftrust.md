@@ -17,9 +17,6 @@ The Trust Layer rests on explicit representation at a critical junction where it
 
 Several community and work groups chartered work on agent identity, agent trust establishment, and runtime verification of agent claims. Their scopes overlap. Their vocabularies converge, and published founding texts diverge on one engineering property that determines whether any of the proposals will hold under production load, and none of them names it: resolution dependency: where an agent's identity document is fetched from at the moment a counterparty needs to verify a claim.
 
-# The Knowledge Representation of the Trust Layer Through the Lens of Digital Identity Chains
-
-
 Three arrangements are in play across the current proposals — resolution from a distributed ledger, resolution from a domain the operator controls, and resolution from a registry a third party maintains. Each carries a different answer to who can make an agent disappear, a different latency profile at the ninety-ninth percentile, and a different failure mode under network partition or governance dispute. Charter text as published does not distinguish among them.
 
 Distributed ledger technology sits in three distinct positions across this landscape. One proposal places public-chain receipts directly in scope as audit anchors. Another borrows ledger vocabulary for an append-only record model and disclaims blockchain and consensus mechanisms explicitly. A third carries no chain reference in its own text at all. Separately, an unaffiliated Zurich operator runs a live W3C VC + DID agent trust layer anchored on an Ethereum layer-two network. A reader confined to charter documents would conclude that ledger infrastructure plays a marginal role in agent identity. Deployment evidence says otherwise.

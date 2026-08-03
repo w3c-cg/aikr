@@ -23,7 +23,7 @@ Distributed ledger technology sits in three distinct positions across this lands
 
 The concern is not confined to one consortium. Work on agent identity and agent trust is under way at the IETF, the FIDO Alliance, the OpenID Foundation, the Decentralized Identity Foundation, the Linux Foundation, the Ethereum improvement process, NIST, and several security consortia, and the same variable goes unstated across most of them. Part II surveys that landscape. One effort, Ethereum's ERC-8004, answers the question explicitly and answers it as a hybrid, which establishes that the disclosure asked for here is achievable and already shipped.
 
-The knowledge-representation problem is: these charters are formal representations of systems that are still evolving, and the representation omits the variable that governs the represented system's behaviour. What gets modelled is the trust relationship. What gets left unmodelled is the substrate the relationship depends on to hold at runtime. Ontologies built on the first without the second will crosswalk cleanly and interoperate poorly.
+The knowledge-representation problem is: these charters are formal representations of systems that are still evolving, and the representation omits the variable that governs the represented system's behaviour. What gets modelled is the trust relationship. What gets left unmodelled is the substrate the relationship depends on to hold at runtime. Ontologies built on the first without the second may crosswalk cleanly and interoperate poorly.
 
 ---
 

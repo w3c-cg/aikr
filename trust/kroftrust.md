@@ -6,7 +6,7 @@
 
 ## Executive Summary
 
-A cluster of W3C community groups has recently chartered work on agent identity, agent trust establishment, and runtime verification of agent claims. Their scopes overlap heavily. Their vocabularies converge. Their published founding texts diverge on one engineering property that determines whether any of the proposals will hold under production load, and none of them names it.
+Several community and work groups chartered work on agent identity, agent trust establishment, and runtime verification of agent claims. Their scopes overlap. Their vocabularies converge. Their published founding texts diverge on one engineering property that determines whether any of the proposals will hold under production load, and none of them names it.
 
 That property is **resolution dependency**: where an agent's identity document is fetched from at the moment a counterparty needs to verify a claim.
 
@@ -14,7 +14,7 @@ Three arrangements are in play across the current proposals — resolution from 
 
 Distributed ledger technology sits in three distinct positions across this landscape. One proposal places public-chain receipts directly in scope as audit anchors. Another borrows ledger vocabulary for an append-only record model and disclaims blockchain and consensus mechanisms explicitly. A third carries no chain reference in its own text while the deployment that inspired it runs on an L2 network. A reader confined to charter documents would conclude that ledger infrastructure plays a marginal role in agent identity. Deployment evidence says otherwise.
 
-The knowledge-representation problem is: these charters are formal representations of systems that do not yet exist, and the representation omits the variable that governs the represented system's behaviour. What gets modelled is the trust relationship. What gets left unmodelled is the substrate the relationship depends on to hold at runtime. Ontologies built on the first without the second will crosswalk cleanly and interoperate poorly.
+The knowledge-representation problem is: these charters are formal representations of systems that are still evolving, and the representation omits the variable that governs the represented system's behaviour. What gets modelled is the trust relationship. What gets left unmodelled is the substrate the relationship depends on to hold at runtime. Ontologies built on the first without the second will crosswalk cleanly and interoperate poorly.
 
 
 -----

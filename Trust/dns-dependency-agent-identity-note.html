@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What the agentic web actually rests on — a technical note on DNS anchoring and the ARIA public surface</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#12233F;
+    --navy-deep:#0C1729;
+    --gold:#D9A227;
+    --gold-pale:#EFCF7E;
+    --stone:#EAE6DE;
+    --stone-card:#F4F1EA;
+    --ink:#1B1A16;
+    --ink-soft:#5C564B;
+    --rule:#CFC8BA;
+    --flag:#8C2F1E;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--stone);
+    color:var(--ink);
+    font-family:"Newsreader",Georgia,serif;
+    font-size:19px;
+    line-height:1.62;
+    font-weight:400;
+  }
+
+  /* ---------- Banner ---------- */
+  .banner{
+    position:relative;
+    background:var(--navy);
+    color:var(--gold-pale);
+    overflow:hidden;
+    border-bottom:5px solid var(--gold);
+  }
+  .banner svg.motif{
+    position:absolute;
+    top:50%;
+    right:-90px;
+    transform:translateY(-50%);
+    width:420px;
+    height:420px;
+    opacity:.5;
+    pointer-events:none;
+  }
+  .banner-inner{
+    position:relative;
+    max-width:1000px;
+    margin:0 auto;
+    padding:52px 40px 44px;
+  }
+  .imprint{
+    font-family:"Archivo",system-ui,sans-serif;
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:.14em;
+    color:var(--gold);
+    margin:0 0 22px;
+  }
+  .banner h1{
+    font-family:"Newsreader",Georgia,serif;
+    font-weight:500;
+    font-size:clamp(28px,4.4vw,45px);
+    line-height:1.14;
+    letter-spacing:-.012em;
+    margin:0;
+    max-width:19ch;
+    color:#F6EEDC;
+  }
+  .banner .standfirst{
+    font-family:"Archivo",system-ui,sans-serif;
+    font-size:16px;
+    font-weight:400;
+    line-height:1.5;
+    color:#B9C4D6;
+    margin:20px 0 0;
+    max-width:56ch;
+  }
+
+  /* ---------- Docket ---------- */
+  .docket{
+    background:var(--navy-deep);
+    color:#9FB0C7;
+    font-family:"Archivo",system-ui,sans-serif;
+    font-size:13.5px;
+  }
+  .docket-inner{
+    max-width:1000px;
+    margin:0 auto;
+    padding:16px 40px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+    gap:10px 34px;
+  }
+  .docket b{
+    display:block;
+    color:var(--gold);
+    font-weight:600;
+    font-size:11.5px;
+    letter-spacing:.1em;
+    margin-bottom:2px;
+  }
+
+  /* ---------- Page ---------- */
+  main{
+    max-width:1000px;
+    margin:0 auto;
+    padding:54px 40px 90px;
+  }
+  .col{max-width:70ch;}
+
+  h2{
+    font-family:"Archivo",system-ui,sans-serif;
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:.02em;
+    color:var(--navy);
+    margin:52px 0 4px;
+    padding-bottom:9px;
+    border-bottom:2px solid var(--gold);
+    max-width:70ch;
+  }
+  h2 .num{
+    color:var(--gold);
+    font-variant-numeric:tabular-nums;
+    margin-right:12px;
+  }
+  h3{
+    font-family:"Archivo",system-ui,sans-serif;
+    font-size:16.5px;
+    font-weight:600;
+    color:var(--ink);
+    margin:34px 0 6px;
+    line-height:1.35;
+  }
+  h3 .fnum{
+    color:var(--flag);
+    font-weight:700;
+    margin-right:9px;
+  }
+  p{margin:14px 0;}
+  a{color:var(--navy);text-decoration-color:var(--gold);text-underline-offset:2px;}
+  a:hover{color:var(--flag);}
+  strong{font-weight:600;}
+
+  .lede{
+    font-size:22px;
+    line-height:1.55;
+    color:var(--ink);
+    border-left:3px solid var(--gold);
+    padding-left:22px;
+    margin:0 0 34px;
+    max-width:62ch;
+  }
+
+  ul,ol{max-width:70ch;padding-left:22px;}
+  li{margin:9px 0;}
+
+  code, pre{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  code{
+    font-size:.82em;
+    background:#DFD9CD;
+    padding:1px 5px;
+    border-radius:2px;
+    word-break:break-all;
+  }
+  pre{
+    background:var(--navy-deep);
+    color:#D7E0EC;
+    font-size:13px;
+    line-height:1.6;
+    padding:18px 20px;
+    overflow-x:auto;
+    max-width:70ch;
+    border-left:3px solid var(--gold);
+    margin:16px 0;
+  }
+  pre .k{color:var(--gold-pale);}
+  pre .f{color:#E39C8C;}
+  pre .t{color:#9ED3A8;}
+
+  .evidence{
+    background:var(--stone-card);
+    border:1px solid var(--rule);
+    border-top:3px solid var(--navy);
+    padding:20px 24px;
+    margin:20px 0;
+    max-width:70ch;
+  }
+  .evidence p:first-child{margin-top:0;}
+  .evidence p:last-child{margin-bottom:0;}
+  .evidence .cap{
+    font-family:"Archivo",system-ui,sans-serif;
+    font-size:11.5px;
+    font-weight:600;
+    letter-spacing:.1em;
+    color:var(--ink-soft);
+    margin-bottom:10px;
+  }
+
+  table{
+    border-collapse:collapse;
+    width:100%;
+    max-width:70ch;
+    margin:22px 0;
+    font-family:"Archivo",system-ui,sans-serif;
+    font-size:14.5px;
+  }
+  th,td{
+    text-align:left;
+    padding:11px 14px 11px 0;
+    border-bottom:1px solid var(--rule);
+    vertical-align:top;
+  }
+  thead th{
+    border-bottom:2px solid var(--navy);
+    font-weight:700;
+    font-size:12px;
+    letter-spacing:.08em;
+    color:var(--navy);
+  }
+  td.dep{white-space:nowrap;font-weight:600;}
+  .d-full{color:var(--flag);}
+  .d-part{color:#8A6A12;}
+  .d-none{color:var(--ink-soft);}
+
+  ol.asks{counter-reset:ask;list-style:none;padding-left:0;}
+  ol.asks li{
+    counter-increment:ask;
+    position:relative;
+    padding-left:46px;
+    margin:20px 0;
+  }
+  ol.asks li::before{
+    content:"Q" counter(ask);
+    position:absolute;
+    left:0;
+    top:2px;
+    font-family:"Archivo",system-ui,sans-serif;
+    font-size:13px;
+    font-weight:700;
+    color:#fff;
+    background:var(--navy);
+    padding:3px 7px;
+  }
+
+  ol.sources{
+    counter-reset:src;
+    list-style:none;
+    padding-left:0;
+    font-family:"Archivo",system-ui,sans-serif;
+    font-size:14px;
+    line-height:1.55;
+    max-width:76ch;
+  }
+  ol.sources li{
+    counter-increment:src;
+    position:relative;
+    padding-left:38px;
+    margin:14px 0;
+  }
+  ol.sources li::before{
+    content:"[" counter(src) "]";
+    position:absolute;
+    left:0;
+    color:var(--gold);
+    font-weight:700;
+    font-variant-numeric:tabular-nums;
+  }
+  ol.sources a{word-break:break-word;}
+  .src-note{color:var(--ink-soft);}
+
+  sup.ref{
+    font-family:"Archivo",system-ui,sans-serif;
+    font-size:11px;
+    font-weight:600;
+    color:var(--flag);
+    padding-left:1px;
+  }
+
+  footer{
+    border-top:1px solid var(--rule);
+    max-width:1000px;
+    margin:0 auto;
+    padding:26px 40px 60px;
+    font-family:"Archivo",system-ui,sans-serif;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+
+  @media (max-width:760px){
+    body{font-size:18px;}
+    .banner-inner{padding:38px 22px 34px;}
+    .docket-inner{padding:14px 22px;}
+    main{padding:36px 22px 60px;}
+    footer{padding:22px 22px 44px;}
+    .banner svg.motif{right:-160px;opacity:.3;}
+    .lede{font-size:20px;padding-left:16px;}
+  }
+  @media print{
+    body{background:#fff;}
+    .banner{border-bottom-width:3px;}
+    pre{background:#f2f2f2;color:#111;}
+    a{color:#000;}
+  }
+</style>
+</head>
+<body>
+
+<header class="banner">
+  <svg class="motif" viewBox="0 0 400 400" aria-hidden="true">
+    <g fill="none" stroke="#D9A227" stroke-width="1.1">
+      <circle cx="200" cy="200" r="42"/>
+      <circle cx="200" cy="200" r="78"/>
+      <circle cx="200" cy="200" r="114"/>
+      <circle cx="200" cy="200" r="150"/>
+      <circle cx="200" cy="200" r="186"/>
+    </g>
+    <g fill="#D9A227">
+      <circle cx="200" cy="200" r="5"/>
+      <circle cx="278" cy="200" r="3.4"/>
+      <circle cx="122" cy="200" r="3.4"/>
+      <circle cx="200" cy="86" r="3.4"/>
+      <circle cx="200" cy="314" r="3.4"/>
+    </g>
+  </svg>
+  <div class="banner-inner">
+    <p class="imprint">Epistemic Systems Lab · Technical Note</p>
+    <h1>What the agentic web actually rests on</h1>
+    <p class="standfirst">DNS anchoring as claim and as deployed fact, with findings from the ARIA public verification surface. Prepared for the TrustLayer Foundation A.C.</p>
+  </div>
+</header>
+
+<div class="docket">
+  <div class="docket-inner">
+    <div><b>AUTHOR</b>Paola Di Maio, ESL Labs</div>
+    <div><b>ADDRESSED TO</b>TrustLayer Foundation A.C.</div>
+    <div><b>QUERY DATE</b>8–9 September 2026</div>
+    <div><b>STATUS</b>Open for correction</div>
+  </div>
+</div>
+
+<main>
+<div class="col">
+
+<p class="lede">Every open agent identity scheme now under development binds an agent to a domain name. Almost none of them verify control of that name through authenticated DNS. The distance between those two statements is the finding of this note.</p>
+
+<p>This note has two parts. The first records what the ARIA public API and website return when queried, including several defects the Foundation will want to fix before they are found by someone less friendly. The second sets those observations against the wider set of DNS-anchored agent identity proposals, where the same gap appears in almost identical form. The intent is corrective rather than adversarial, and the Foundation is invited to reply with anything I have misread.</p>
+
+<h2><span class="num">1</span>Method</h2>
+
+<p>All queries were made against public, unauthenticated endpoints documented on the ARIA developer page, using plain HTTP requests from a single host. No credentials were used, no write endpoint was called, no rate limits were tested, and no attempt was made to enumerate accounts or guess identifiers beyond the two demonstration values published by the site itself. Request identifiers are reproduced below so the Foundation can locate the corresponding server logs.</p>
+
+<h2><span class="num">2</span>Findings on the ARIA public surface</h2>
+
+<h3><span class="fnum">F1</span>The sample DID printed on the homepage does not resolve</h3>
+
+<p>The homepage proof section invites a reader to run a verification command against <code>did:aria:aria.bar:agent-alpha</code>.<sup class="ref">[1]</sup> That identifier verifies as invalid on every check, and resolving it returns a not-found error.</p>
+
+<div class="evidence">
+  <p class="cap">RESPONSE</p>
+<pre><span class="k">GET</span> /v1/verify/did:aria:aria.bar:agent-alpha
+{ "did": "did:aria:aria.bar:agent-alpha",
+  "valid": <span class="f">false</span>,
+  "checks": { "signatureValid": <span class="f">false</span>, "pqSignatureValid": <span class="f">false</span>,
+              "classicalSignatureValid": <span class="f">false</span>, "statusActive": <span class="f">false</span>,
+              "notExpired": <span class="f">false</span>, "issuerTrusted": <span class="f">false</span>,
+              "dnssecVerified": <span class="f">false</span> } }
+
+<span class="k">GET</span> /v1/aids/did:aria:aria.bar:agent-alpha
+{ "error": { "code": <span class="f">"AID_NOT_FOUND"</span> } }</pre>
+</div>
+
+<p>A first-time evaluator following the homepage will conclude the protocol is broken. The cost of correcting this is a single string.</p>
+
+<h3><span class="fnum">F2</span>The only enumeration endpoint in the API returns a server error</h3>
+
+<p>Of the endpoints listed at the API root, seven are keyed to a specific identifier the caller must already possess. One, <code>/v1/scopes</code>, is documented as listing all registered capability scopes.<sup class="ref">[2]</sup> It returned HTTP 500 on three consecutive attempts.</p>
+
+<div class="evidence">
+  <p class="cap">RESPONSE · THREE ATTEMPTS</p>
+<pre><span class="k">GET</span> /v1/scopes  →  <span class="f">500</span>  INTERNAL_ERROR
+  requestId 6ce07787-4b31-4745-908b-c5a911ddbf8a
+  requestId 6d0e4a07-4031-490c-875f-3edb81f0223f
+  requestId 3f9ae3db-239d-40b7-828a-17f03444ff91</pre>
+</div>
+
+<p>Scope vocabulary is the part of ARIA an implementer needs before writing any policy, and it is the part a standards reviewer needs before assessing whether the vocabulary is coherent. Its absence blocks both.</p>
+
+<h3><span class="fnum">F3</span>The public verifier's demonstration identifiers are unusable as printed</h3>
+
+<p>The verify page offers two try-me links, rendered in the page text as <code>did:aria:...ordering-agent</code> and <code>did:aria:...compromised-billing-bot</code>. The elision is literal, and the served HTML contains the same truncated strings. A reader who copies what is on screen cannot verify anything. The complete values appear only inside the compiled JavaScript bundle:</p>
+
+<div class="evidence">
+  <p class="cap">RECOVERED FROM CLIENT BUNDLE</p>
+<pre>did:aria:aria.bar:u-cmDoHhM3:ordering-agent            <span class="t">→ valid</span>
+did:aria:aria.bar:u-cmDoHhM3:compromised-billing-bot   <span class="f">→ statusActive false</span></pre>
+</div>
+
+<p>Both verify as expected once obtained. The revoked bot is the better demonstration of the two, since its ML-DSA-65 and Ed25519 signatures both pass while the credential fails on status alone, which is exactly the property that separates revocation from cryptographic validity. Printing both DIDs in full, and adding a copy control, would let a reader reach that conclusion without opening developer tools.</p>
+
+<h3><span class="fnum">F4</span>Both demonstration agents belong to one self-declared account held by a Foundation officer</h3>
+
+<p>The two demonstration credentials share the account segment <code>u-cmDoHhM3</code> and return a principal of Ivan Moreno, jurisdiction MX, verification status self-declared. A person of that name is listed on the Consejo Directivo as Vocal.<sup class="ref">[3]</sup> Nothing improper follows from this, and at L0 a self-declared principal is the specified behaviour. The governance appearance is the issue: the only agents a visitor can inspect belong to a board member's own free-tier account, and the site offers no signal that this is a test fixture rather than a representative registration. A neutral fixture principal, or a line stating that these are Foundation-operated test credentials, resolves it.</p>
+
+<h3><span class="fnum">F5</span>The status endpoint answers identically for identifiers that do not exist</h3>
+
+<p>Requests to <code>/v1/status/{did}</code> return the same BitstringStatusList credential for every input tried, including well-formed identifiers with no registered AID and a deliberately invalid one, each with HTTP 200. Returning a shared list is correct under the status list model, so this is a documentation question rather than a defect. A caller who treats a 200 from this endpoint as evidence that an agent exists will be wrong, and nothing in the developer page warns against that reading. The list carried a <code>validFrom</code> at the protocol launch date, which the Foundation may want to confirm reflects the current issuance rather than a stale artefact.</p>
+
+<h3><span class="fnum">F6</span>No deployed ARIA credential is DNS-anchored, while DNS anchoring is the headline claim</h3>
+
+<p>The homepage presents DNS anchoring as one of four foundations and invokes four decades of global trust infrastructure. The trust level table then marks L0 as the only live tier, with L1, L2 and L3 all listed as coming soon, and states plainly that DNS anchoring begins at L1.<sup class="ref">[1]</sup> Every verification response observed carried <code>dnssecVerified: false</code>. The specification and the marketing are internally consistent when read closely and misleading when read at the speed a procurement officer reads. The recommendation is a dated deployment status line on the homepage stating which tiers are issuing today.</p>
+
+<h2><span class="num">3</span>The same gap across the wider field</h2>
+
+<p>ARIA is not unusual here, which is the reason the observation is worth the Foundation's attention rather than merely its embarrassment. The pattern repeats across every open agent identity effort now in draft.</p>
+
+<p>A2A servers publish an agent card at a well-known URI on their domain following RFC 8615, retrieved by an ordinary HTTP GET.<sup class="ref">[4]</sup> Web Bot Auth defines a <code>Signature-Agent</code> header for in-band key discovery and a key directory served from a well-known URI, with the signature itself built on RFC 9421.<sup class="ref">[5]</sup> Google signs a subset of its agent traffic, authenticated as a hostname, with verifiers fetching the key set from that host's well-known directory.<sup class="ref">[6]</sup> In each case DNS resolves a name and TLS authenticates the endpoint, so the security property comes from the WebPKI and from certificate authority domain validation rather than from DNS itself. DNS remains load-bearing, one step removed, through the validation path.</p>
+
+<p>Efforts that place agent data into DNS records proper are younger than their announcements suggest. GoDaddy co-authors the ANS draft for identity and naming on DNS and PKI; Infoblox advances DNS-AID for discovery; the two plus Nemethi's AID are converging on a shared profile under the <code>_ag</code> label using SVCB records.<sup class="ref">[7][8]</sup> The Cloud Security Alliance's analysis of ANS is more restrained than the launch messaging, reporting that the DNS record encoding, the DNSSEC deployment profile, and the DID and LEI grammars are absent from the primary sources and should be read as roadmap, with the project pre-1.0 and its reference implementation using mock cryptography.<sup class="ref">[9]</sup></p>
+
+<p>Whether any of this constitutes anchoring depends on DNSSEC, and the measurements are not encouraging. Validation reached roughly a third of users and secure delegation roughly seven per cent last year, after two decades of availability.<sup class="ref">[10]</sup> An unsigned TXT or SVCB record is an assertion by whoever controls the resolution path at the moment of the query, which is a weaker claim than the one these architectures are written as though they had.</p>
+
+<table>
+  <thead>
+    <tr><th>Mechanism</th><th>Depends on DNS for</th><th>Strength</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Endpoint reachability, all schemes</td><td>Name resolution</td><td class="dep d-full">Total</td></tr>
+    <tr><td>A2A agent card, well-known URI</td><td>Domain identity via WebPKI</td><td class="dep d-part">Indirect</td></tr>
+    <tr><td>Web Bot Auth key directory</td><td>Domain identity via WebPKI</td><td class="dep d-part">Indirect</td></tr>
+    <tr><td>ARIA L0, as deployed</td><td>Nothing</td><td class="dep d-none">None</td></tr>
+    <tr><td>ARIA L1–L3, as specified</td><td>DNS TXT record</td><td class="dep d-part">Not yet issuing</td></tr>
+    <tr><td>ANS / DNS-AID, as drafted</td><td>DNS records, DNSSEC profile pending</td><td class="dep d-part">Pre-1.0</td></tr>
+    <tr><td>Enterprise agent identity, Entra / AgentCore / IAM</td><td>Nothing</td><td class="dep d-none">None</td></tr>
+  </tbody>
+</table>
+
+<p>Most agents now running in production sit outside every scheme in that table. A Cloud Security Alliance survey commissioned by Token Security found that 82% of organisations had discovered agents in their own infrastructure that nobody knew about, and 65% had experienced an agent-related incident in the preceding year.<sup class="ref">[11]</sup> Unregistered agents are invisible to a registry-based trust model by construction, so adoption metrics for ARIA, ANS or any successor should be read against that denominator rather than against each other.</p>
+
+<h2><span class="num">4</span>The governance consequence</h2>
+
+<p>Binding agent identity to domain control transfers adjudication power to registrars, registries and certificate authorities. A domain suspension, a dispute resolution ruling, a lapsed renewal or a compromised registrar account then revokes an entire agent fleet's identity as a side effect, through a process with no relationship to the agent's own conduct. The named backers of the leading DNS-anchored proposal are DNS incumbents, a roster the CSA analysis flags as analytically relevant.<sup class="ref">[9]</sup> ARIA's own separation of the Foundation from a commercial operator with registrar heritage places it in the same position, and its anti-capture clause is the right instrument if it addresses this specific transfer.</p>
+
+<p>None of the drafts I have read specify what happens to an agent credential when the underlying domain changes hands. A buyer of an expired domain inherits the ability to publish anchoring records for every agent previously identified under it. This deserves a paragraph in the ARIA specification whether or not the other efforts write one.</p>
+
+<h2><span class="num">5</span>Questions for the Foundation</h2>
+
+<ol class="asks">
+  <li>Will the Foundation publish registration counts by trust level, or state that it will not? Either answer is defensible; the current silence reads as concealment of a small number, which may be unfair to you.</li>
+  <li>What is the expected issuance date for L1, and will the DNSSEC posture be a requirement or an observation recorded in <code>dnssecVerified</code>?</li>
+  <li>When a domain anchoring an L1 or higher credential expires or transfers, what happens to credentials issued under it, and who is obliged to act?</li>
+  <li>Is <code>/v1/scopes</code> expected to be public and enumerable, and can the scope vocabulary be published as a static document independent of API availability?</li>
+  <li>Does the Foundation intend to align with the <code>_ag</code> SVCB profile emerging from the ANS, DNS-AID and AID drafts, or to maintain a separate record convention?</li>
+  <li>Would the Foundation welcome a review of the specification against the W3C AI Knowledge Representation Community Group's work on agent interoperability, conducted in the open?</li>
+</ol>
+
+<h2><span class="num">6</span>Sources</h2>
+
+<ol class="sources">
+  <li>ARIA Protocol homepage and trust level table. <a href="https://www.aria.bar/">https://www.aria.bar/</a> <span class="src-note">Retrieved 9 September 2026.</span></li>
+  <li>ARIA developer documentation, REST API endpoint list. <a href="https://www.aria.bar/developers">https://www.aria.bar/developers</a> <span class="src-note">Retrieved 9 September 2026.</span></li>
+  <li>ARIA governance section, Consejo Directivo membership. <a href="https://www.aria.bar/governance">https://www.aria.bar/governance</a></li>
+  <li>A2A Protocol, agent discovery documentation. <a href="https://a2a-protocol.org/latest/topics/agent-discovery/">https://a2a-protocol.org/latest/topics/agent-discovery/</a></li>
+  <li>Meunier T. and Major S., <cite>HTTP Message Signatures for automated traffic</cite>, draft-meunier-webbotauth-httpsig-protocol-01, IETF. <a href="https://datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01">datatracker.ietf.org/doc/html/draft-meunier-webbotauth-httpsig-protocol-01</a></li>
+  <li>Google, <cite>Authenticating requests with Web Bot Auth (experimental)</cite>, Google Crawling Infrastructure documentation. <a href="https://developers.google.com/crawling/docs/crawlers-fetchers/web-bot-auth">developers.google.com/crawling/docs/crawlers-fetchers/web-bot-auth</a></li>
+  <li>Infoblox and GoDaddy, joint statement on DNS-based standards for agent discovery, identity and verification. <a href="https://www.infoblox.com/news/news-events/press-releases/infoblox-and-godaddy-support-open-standards-for-ai-agent-discovery-identity-and-verification/">infoblox.com press release</a></li>
+  <li>Agent Name Service information site, on the shared <code>_ag</code> SVCB profile. <a href="https://ansinfo.ai/">https://ansinfo.ai/</a></li>
+  <li>Cloud Security Alliance Lab Space, <cite>Anchoring Agent Identity in DNS: A Security Analysis of the Agent Name Service (ANS)</cite>. <a href="https://labs.cloudsecurityalliance.org/research/agentic-identity-ans-security-analysis-v1-0/">labs.cloudsecurityalliance.org</a></li>
+  <li>Jantzen B., <cite>Towards an industry best practice for DNSSEC automation</cite>, APNIC Blog. <a href="https://blog.apnic.net/2026/02/25/towards-an-industry-best-practice-for-dnssec-automation/">blog.apnic.net</a></li>
+  <li>Cloud Security Alliance survey of 418 IT and security professionals, commissioned by Token Security, as reported in diginomica. <a href="https://diginomica.com/agent-identity-gets-dns-anchor-how-godaddy-built-agent-name-service-then-gave-it-linux-foundation">diginomica.com</a></li>
+  <li>Linux Foundation, announcement of intent to launch the Agent Name Service. <a href="https://www.linuxfoundation.org/press/linux-foundation-announces-intent-to-launch-agent-name-service-to-establish-trusted-identity-infrastructure-for-ai-agents">linuxfoundation.org</a></li>
+</ol>
+
+<p style="margin-top:34px;font-size:16px;color:var(--ink-soft);">Observations F1 to F6 were made against public endpoints on 8 and 9 September 2026 and may be corrected by deployment changes since. The Foundation is welcome to reproduce, dispute or annotate this note, and any correction received will be reflected in a revised version.</p>
+
+</div>
+</main>
+
+<footer>
+  © Copyright Paola Di Maio, ESL Labs · Epistemic Systems Lab, Ronin Institute for Independent Scholarship
+</footer>
+
+</body>
+</html>

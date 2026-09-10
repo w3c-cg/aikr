@@ -65,7 +65,7 @@ Per-session authentication absorbs that inheritance without difficulty. Human lo
 
 Single-network anchoring compounds the exposure. A deployment paper from outside this cluster concedes the point without hedging: binding a judgement to one ledger inherits that ledger's mortality and politics, since any chain can halt, censor, reorganise or fork. Availability failure and governance capture arrive through the same door.
 
-**Anchoring and resolution are separate dependencies.** A system may resolve identity documents by one path while anchoring proof records, revocations or specification artifacts by another, and the two carry different timescales and different failure modes. Annex A sets out a live case where the anchoring layer finalises on a multi-day challenge window while verification requires an answer in single-digit milliseconds. A representation that collapses the two into a single notion of substrate will misdescribe both.
+**Anchoring and resolution are separate dependencies.** A system may resolve identity documents by one path while anchoring proof records, revocations or specification artifacts by another, and the two carry different timescales and different failure modes. **This distinction is the governing design variable: charters that conflate the two produce implementations whose operational properties are unspecified until the substrate is pinned.** Annex A sets out a live case where the anchoring layer finalises on a multi-day challenge window while verification requires an answer in single-digit milliseconds. A representation that collapses the two into a single notion of substrate will misdescribe both.
 
 ### 4. The knowledge-representation dimension
 
@@ -76,6 +76,8 @@ Two consequences follow for anyone building crosswalks across these groups. Firs
 A knowledge representation adequate to this layer therefore needs resolution dependency and anchoring dependency as distinct modelled properties, each carrying its own availability, latency and governance attributes, rather than a single undifferentiated notion of where trust data lives.
 
 An ontology of the agentic trust layer that omits resolution dependency describes a trust relationship without describing the conditions under which the relationship holds.
+
+A practical vehicle for this disclosure already exists. The Decentralized Identity Foundation's machine-readable DID method traits specification (Identifiers and Discovery WG) defines a trait vocabulary for DID methods. Extending it to cover resolution latency, withdrawal authority and anchoring substrate would reach every method in the ecosystem rather than one group's vocabulary. Resolution-path and withdrawal-authority are the two trait attributes most urgently needed.
 
 ### 5. The ask
 
@@ -89,6 +91,8 @@ Each group is invited to state, briefly and publicly:
 6. **Coordination.** Which other groups in the distribution list above have you coordinated with, and on what deliverable?
 
 Responses will be collated and circulated back to all groups on the list. Replies to the AIKR CG list, or to your own list with a cross-post.
+
+> **Note on format.** The six-question checklist above is designed to be answered line by line. Groups that respond in the same order enable direct cross-comparison. This format is encouraged.
 
 ---
 

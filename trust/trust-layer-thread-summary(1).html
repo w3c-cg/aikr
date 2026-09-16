@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DRAFT: Knowledge representation for trust: vocabulary, use cases and working draft</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#16264a; --gold:#c9a13b; --gold-soft:#e3c878; --gold-ink:#8d6e1d;
+  --page:#e5e3df; --panel:#eeede9; --ink:#1d1f24; --muted:#595b61; --rule:#c4c0b8;
+  --ok:#2d6a4c; --part:#8c6210; --open:#8a2f2f;
+  --ok-bg:#dfeae3; --part-bg:#f1e7d1; --open-bg:#f0dddd;
+  --serif:"Newsreader", Georgia, "Times New Roman", serif;
+  --sans:"Archivo", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --page:#1b1d21; --panel:#23262b; --ink:#e7e5e0; --muted:#a6a8ad; --rule:#3a3d44; --gold-ink:#d8b65a;
+    --ok:#8fcfae; --part:#e2bd6a; --open:#e59a9a; --ok-bg:#1f3129; --part-bg:#352c19; --open-bg:#3a2224;
+  }
+}
+:root[data-theme="dark"]{
+  --page:#1b1d21; --panel:#23262b; --ink:#e7e5e0; --muted:#a6a8ad; --rule:#3a3d44; --gold-ink:#d8b65a;
+  --ok:#8fcfae; --part:#e2bd6a; --open:#e59a9a; --ok-bg:#1f3129; --part-bg:#352c19; --open-bg:#3a2224;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--page);color:var(--ink);font-family:var(--serif);font-size:1.09rem;line-height:1.62}
+img,svg{max-width:100%}
+a{color:inherit;text-decoration-color:var(--gold);text-decoration-thickness:2px;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+.banner{background:var(--navy);color:var(--gold);position:relative;overflow:hidden}
+.banner .inner{max-width:74rem;margin:0 auto;padding:2.8rem 1.5rem 2.2rem;position:relative;z-index:1}
+.banner .org{font-family:var(--sans);font-size:.86rem;color:var(--gold-soft);margin:0 0 1.2rem}
+.banner h1{font-weight:500;font-size:clamp(1.9rem,4.2vw,3rem);line-height:1.08;margin:0;max-width:20ch;letter-spacing:-.01em}
+.banner .sub{font-style:italic;color:#e9dcb4;font-size:1.12rem;margin:.9rem 0 0;max-width:48ch}
+.banner svg.rings{position:absolute;right:-6rem;top:50%;transform:translateY(-50%);width:32rem;height:32rem;opacity:.5;z-index:0}
+@media (max-width:640px){.banner svg.rings{right:-15rem;opacity:.28}}
+
+.tabbar{position:sticky;top:0;z-index:5;background:var(--navy);border-top:1px solid rgba(201,161,59,.35)}
+.tabbar .inner{max-width:74rem;margin:0 auto;padding:0 1.5rem;display:flex;gap:.2rem;overflow-x:auto}
+.tabbar button{font-family:var(--sans);font-size:.95rem;font-weight:500;color:#cfd4e0;background:none;border:0;border-bottom:3px solid transparent;padding:.85rem 1rem .7rem;cursor:pointer;white-space:nowrap}
+.tabbar button span{color:var(--gold);font-weight:700;margin-right:.45rem}
+.tabbar button[aria-selected="true"]{color:#fff;border-bottom-color:var(--gold)}
+.tabbar button:hover{color:#fff}
+
+main{max-width:74rem;margin:0 auto;padding:0 1.5rem 5rem}
+.panel[hidden]{display:none}
+.panel > .intro{padding:2.2rem 0 .4rem;max-width:44rem}
+.panel > .intro h2{border:0;padding:0;margin:0 0 .6rem;font-size:clamp(1.7rem,3vw,2.3rem)}
+section{margin-top:3.4rem}
+h2{font-weight:500;font-size:clamp(1.45rem,2.4vw,1.85rem);line-height:1.15;margin:0 0 1rem;padding-top:.9rem;border-top:3px solid var(--navy)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) h2{border-top-color:var(--gold)}}
+:root[data-theme="dark"] h2{border-top-color:var(--gold)}
+h3{font-family:var(--sans);font-weight:600;font-size:1.05rem;margin:1.8rem 0 .5rem}
+.prose{max-width:44rem}
+.prose p{margin:0 0 1rem}
+.lede{font-size:1.2rem;line-height:1.5}
+.small{font-family:var(--sans);font-size:.88rem;color:var(--muted)}
+
+.tw{overflow-x:auto;margin:1.1rem 0;border-top:2px solid var(--ink)}
+table{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:.9rem;line-height:1.45}
+th{text-align:left;font-weight:600;padding:.6rem .7rem;border-bottom:1px solid var(--ink);vertical-align:bottom}
+td{padding:.6rem .7rem;border-bottom:1px solid var(--rule);vertical-align:top}
+td:first-child{font-weight:600}
+table.wide td:first-child{min-width:10rem}
+table.glossary td:first-child{min-width:10.5rem}
+table.glossary td:nth-child(3){color:var(--muted);min-width:9rem}
+tr.group td{background:var(--navy);color:var(--gold-soft);font-weight:600;padding:.45rem .7rem;border-bottom:0}
+code{font-size:.86em;background:var(--panel);padding:.05em .3em;border-radius:3px}
+
+.v{display:inline-block;font-family:var(--sans);font-size:.8rem;font-weight:600;padding:.12rem .55rem;border-radius:2rem;white-space:nowrap}
+.v.ok{color:var(--ok);background:var(--ok-bg)} .v.ok::before{content:"\2713\00a0"}
+.v.part{color:var(--part);background:var(--part-bg)} .v.part::before{content:"\00bd\00a0"}
+.v.open{color:var(--open);background:var(--open-bg)} .v.open::before{content:"\2026\00a0"}
+
+/* tutorial steps: a genuine sequence */
+ol.steps{list-style:none;counter-reset:st;margin:1.4rem 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:0;border-top:1px solid var(--rule);border-left:1px solid var(--rule)}
+ol.steps li{counter-increment:st;padding:1rem 1.1rem 1.1rem;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);font-size:1rem}
+ol.steps li::before{content:counter(st);display:block;font-family:var(--serif);font-size:2.2rem;line-height:1;color:var(--gold-ink);margin-bottom:.4rem}
+ol.steps b{font-family:var(--sans);font-weight:600;display:block;margin-bottom:.2rem}
+
+.scenario{background:var(--navy);color:#eef0f5;padding:1.3rem 1.6rem;margin:1.6rem 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,20rem);gap:1.5rem;align-items:center}
+.scenario p{margin:0 0 .5rem;max-width:40rem}.scenario p:last-child{margin:0}
+.scenario strong{color:var(--gold-soft);font-weight:600}
+@media (max-width:760px){.scenario{grid-template-columns:1fr}}
+
+/* use-case entries */
+.uc{border-left:4px solid var(--gold);padding:.1rem 0 .1rem 1.4rem;margin:0 0 2.4rem}
+.uc header{display:flex;flex-wrap:wrap;align-items:baseline;gap:.4rem 1rem;margin-bottom:.4rem}
+.uc .id{font-family:var(--sans);font-weight:700;color:var(--gold-ink);font-size:1rem}
+.uc h3{margin:0;font-family:var(--serif);font-weight:500;font-size:1.32rem}
+.uc .by{font-family:var(--sans);font-size:.85rem;color:var(--muted);flex-basis:100%}
+.uc > p{max-width:46rem;margin:.3rem 0 .8rem}
+.facets{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--rule)}
+.facets > div{padding:.8rem 1rem;font-size:.98rem}
+.facets > div + div{border-left:1px solid var(--rule)}
+.facets h4{font-family:var(--sans);font-size:.8rem;font-weight:600;color:var(--muted);margin:0 0 .3rem}
+.facets p{margin:0}
+@media (max-width:820px){.facets{grid-template-columns:1fr}.facets > div + div{border-left:0;border-top:1px solid var(--rule)}}
+.pair{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--rule)}
+.pair > div{padding:.9rem 1.1rem;font-size:1rem}
+.pair > div + div{border-left:1px solid var(--rule);background:var(--panel)}
+.pair h4{font-family:var(--sans);font-size:.8rem;font-weight:600;color:var(--muted);margin:0 0 .35rem}
+.pair p{margin:0 0 .5rem}.pair p:last-child{margin:0}
+@media (max-width:720px){.pair{grid-template-columns:1fr}.pair > div + div{border-left:0;border-top:1px solid var(--rule)}}
+.verdict{margin:.9rem 0 0;max-width:46rem;font-size:1rem}
+.verdict .v{margin-right:.5rem}
+.src{font-family:var(--sans);font-size:.82rem;color:var(--muted);margin:.6rem 0 0}
+.src a{color:var(--muted)}
+pre.mini{font-size:.82rem;line-height:1.45;background:var(--panel);border:1px solid var(--rule);padding:.7rem .9rem;overflow-x:auto;margin:.5rem 0 .9rem}
+
+/* coverage matrix */
+table.matrix th{white-space:normal;font-size:.8rem;min-width:6.2rem}
+table.matrix th:first-child{min-width:13rem}
+table.matrix td{text-align:center;vertical-align:middle}
+table.matrix td:first-child{text-align:left;font-weight:500}
+table.matrix td:first-child b{font-weight:700;color:var(--gold-ink);margin-right:.35rem}
+table.matrix th.new{background:var(--open-bg)}
+.m{display:inline-block;min-width:3.2rem;font-size:.78rem;font-weight:600;padding:.12rem .4rem;border-radius:2rem}
+.m.y{color:var(--ok);background:var(--ok-bg)}
+.m.p{color:var(--part);background:var(--part-bg)}
+.m.g{color:var(--open);background:var(--open-bg)}
+.m.n{color:var(--muted)}
+
+.route{counter-reset:r;list-style:none;padding:0;margin:1rem 0 0;max-width:48rem}
+.route li{counter-increment:r;position:relative;padding:0 0 1.1rem 3rem}
+.route li::before{content:counter(r);position:absolute;left:0;top:-.1rem;width:2rem;height:2rem;border:2px solid var(--gold);border-radius:50%;text-align:center;line-height:1.75rem;font-family:var(--sans);font-weight:700;color:var(--gold-ink)}
+.route b{font-family:var(--sans);font-weight:600}
+
+
+.draft{background:var(--gold);color:#16264a}
+.draft .inner{max-width:74rem;margin:0 auto;padding:.9rem 1.5rem;display:flex;flex-wrap:wrap;align-items:baseline;gap:.3rem 1.4rem;font-family:var(--sans)}
+.draft strong{font-size:1.25rem;font-weight:700;letter-spacing:.04em}
+.draft .draftlinks{flex-basis:100%;font-weight:600}
+.draft .draftlinks a{color:#16264a;text-decoration-color:#16264a}
+.draft p{margin:0;font-size:.98rem;line-height:1.45;max-width:60rem}
+footer{max-width:74rem;margin:0 auto;padding:2rem 1.5rem 3rem;border-top:1px solid var(--rule);font-family:var(--sans);font-size:.85rem;color:var(--muted)}
+@media print{.tabbar{display:none}.panel[hidden]{display:block}.banner svg.rings{display:none}.banner{background:none;color:#000}}
+</style>
+</head>
+<body>
+
+<div class="draft" role="note">
+  <div class="inner">
+    <strong>DRAFT</strong>
+    <p>Proposed for discussion at weekly AIKR CG calls starting Monday 21 September 2026. Agenda: go over this draft, and discuss the path to publishing a specification. Nothing here has been agreed by the group.</p>
+    <p class="draftlinks">Main, ongoing: <a href="https://github.com/w3c-cg/aikr/tree/main/trust">AIKR CG trust folder on GitHub</a>. Thread: <a href="https://lists.w3.org/Archives/Public/public-aikr/2026Aug/0000.html">public-aikr, opened 3 August 2026 and ongoing</a>. Related: <a href="https://mailarchive.ietf.org/arch/msg/wimse/i08QgArGrcAwFQ7kHFW6U9ZtRCA">Morgan Reece on the IETF WIMSE list</a>.</p>
+  </div>
+</div>
+
+<header class="banner">
+  <svg class="rings" viewBox="0 0 400 400" aria-hidden="true">
+    <g fill="none" stroke="#c9a13b">
+      <circle cx="200" cy="200" r="190" stroke-width="1"/>
+      <circle cx="200" cy="200" r="160" stroke-width="6" stroke-dasharray="2 10"/>
+      <circle cx="200" cy="200" r="128" stroke-width="1"/>
+      <circle cx="200" cy="200" r="98" stroke-width="14" opacity=".35"/>
+      <circle cx="200" cy="200" r="64" stroke-width="1"/>
+      <circle cx="200" cy="200" r="30" stroke-width="3"/>
+      <circle cx="262" cy="112" r="46" stroke-width="1"/>
+      <circle cx="120" cy="286" r="30" stroke-width="1"/>
+    </g>
+  </svg>
+  <div class="inner">
+    <p class="org">W3C AI Knowledge Representation Community Group, prepared with the Epistemic Systems Lab</p>
+    <h1>Knowledge representation for trust</h1>
+    <p class="sub">A shared vocabulary, a catalogue of use cases drawn from agent incidents, and the state of the discussion on the draft specification.</p>
+  </div>
+</header>
+
+<nav class="tabbar" aria-label="Sections">
+  <div class="inner" role="tablist">
+    <button role="tab" id="t-vocab" aria-controls="vocab" aria-selected="true"><span>1</span>Shared vocabulary</button>
+    <button role="tab" id="t-cases" aria-controls="cases" aria-selected="false" tabindex="-1"><span>2</span>Use cases</button>
+    <button role="tab" id="t-coverage" aria-controls="coverage" aria-selected="false" tabindex="-1"><span>3</span>Coverage</button>
+    <button role="tab" id="t-thread" aria-controls="thread" aria-selected="false" tabindex="-1"><span>4</span>Thread and work plan</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============ TAB 1 ============ -->
+<div class="panel" id="vocab" role="tabpanel" aria-labelledby="t-vocab">
+  <div class="intro">
+    <h2>Shared vocabulary</h2>
+    <p class="lede">Contributors come from identity, distributed systems, cryptography and security engineering. This tab fixes one term for each idea so use cases and requirements can be written in the same language.</p>
+  </div>
+
+  <section>
+    <h2>How a trust check works</h2>
+    <div class="scenario">
+      <div>
+        <p><strong>Reference scenario.</strong> Organisation X runs booking agent A. A hands payment to agent B, operated by payments provider Y. B calls refund tool T on Y's backend. A relying party checks claims at each hop, and an auditor reviews the chain afterwards.</p>
+        <p>Every use case and example in this document refers back to these names.</p>
+      </div>
+      <svg viewBox="0 0 320 110" role="img" aria-label="X gives a mandate to agent A, which delegates to agent B, which calls tool T">
+        <g font-family="Archivo, sans-serif" font-size="13" fill="#eef0f5" text-anchor="middle">
+          <g fill="none" stroke="#c9a13b" stroke-width="1.5">
+            <circle cx="30" cy="55" r="22"/><circle cx="115" cy="55" r="22"/><circle cx="200" cy="55" r="22"/><rect x="265" y="35" width="44" height="40" rx="3"/>
+            <path d="M52 55h39M137 55h39M222 55h39"/>
+            <path d="M86 51l6 4-6 4M171 51l6 4-6 4M256 51l6 4-6 4" fill="#c9a13b" stroke="none"/>
+          </g>
+          <text x="30" y="60">X</text><text x="115" y="60">A</text><text x="200" y="60">B</text><text x="287" y="60">T</text>
+          <text x="72" y="100" font-size="11" fill="#e3c878">mandate</text><text x="157" y="100" font-size="11" fill="#e3c878">delegation</text><text x="242" y="100" font-size="11" fill="#e3c878">tool call</text>
+        </g>
+      </svg>
+    </div>
+    <div class="prose"><p>When A asks B to pay a refund, B works through the following questions. Each has its own vocabulary, and each can fail separately.</p></div>
+    <ol class="steps">
+      <li><b>Identify</b>A presents an identifier, for example a DID, and claims to control it.</li>
+      <li><b>Resolve</b>B obtains A's identity document from wherever the identifier method says, or from material A conveyed.</li>
+      <li><b>Verify integrity</b>B checks the signature against the key in the document and confirms the document is the right version.</li>
+      <li><b>Check currency</b>B confirms nothing has been revoked within the staleness bound it accepts.</li>
+      <li><b>Check authority</b>B follows the mandate from X through A and confirms the scope still covers this refund.</li>
+      <li><b>Check behaviour and effect</b>B asks what enforces A's declared policies, and whether the action it will record is the action that runs.</li>
+      <li><b>Decide</b>B applies its policy to the results, including those that came back unknown.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Glossary</h2>
+    <div class="prose"><p>The first column is the term the specification uses. The last column lists synonyms met on the lists and in the incident reports.</p></div>
+    <div class="tw"><table class="glossary">
+      <thead><tr><th>Term</th><th>Meaning</th><th>Also met as</th></tr></thead>
+      <tbody>
+        <tr class="group"><td colspan="3">Parties</td></tr>
+        <tr><td>Principal</td><td>The person or organisation whose authority an agent exercises (X in the scenario).</td><td>owner, user, deployer</td></tr>
+        <tr><td>Agent</td><td>Software that acts on a principal's behalf with some autonomy (A, B).</td><td>AI agent, bot</td></tr>
+        <tr><td>Agent instance</td><td>One running copy of an agent. Many instances can share one agent identity.</td><td>session, worker, sub-agent</td></tr>
+        <tr><td>Operator</td><td>Whoever runs the infrastructure an agent executes on. May differ from the principal.</td><td>provider, host, platform</td></tr>
+        <tr><td>Issuer, subject, holder</td><td>Who signs a claim, whom the claim is about, and who presents it.</td><td></td></tr>
+        <tr><td>Relying party</td><td>Whoever decides whether to act on a claim (B when A calls).</td><td>verifier, counterparty</td></tr>
+        <tr><td>Tool, skill</td><td>A capability an agent can invoke (T). MCP servers and skill packages are common forms.</td><td>plugin, connector, extension</td></tr>
+
+        <tr class="group"><td colspan="3">Claims and artefacts</td></tr>
+        <tr><td>Artefact</td><td>Any signed or hashed object a trust decision relies on: identity document, credential, mandate, verdict, receipt.</td><td>artifact, record</td></tr>
+        <tr><td>Verifiable Credential (VC)</td><td>A W3C format for a signed claim about a subject.</td><td>credential, attestation</td></tr>
+        <tr><td>Mandate</td><td>The scope of action a principal grants an agent: what, how much, until when.</td><td>authorisation, grant, capability</td></tr>
+        <tr><td>Delegation</td><td>Passing part of a mandate to another agent or tool.</td><td>sub-delegation, token exchange</td></tr>
+        <tr><td>Declaration</td><td>A statement a subject signs about itself, such as affiliations or activities it does not engage in.</td><td>self-attestation, disclosure</td></tr>
+        <tr><td>Verdict</td><td>A signed finding about something, for example that a tool was reviewed.</td><td>attestation, assessment</td></tr>
+        <tr><td>Receipt</td><td>A signed record that an action happened.</td><td>action record, evidence</td></tr>
+        <tr><td>Self-asserted, third-party attested</td><td>Whether a claim is signed by its own subject or by someone independent of it.</td><td>self-issued, externally verified</td></tr>
+        <tr><td>Proposition</td><td>What an artefact is capable of proving. A valid identity document proves key control and says nothing about permission.</td><td></td></tr>
+
+        <tr class="group"><td colspan="3">Identity and resolution</td></tr>
+        <tr><td>DID, DID document, DID method</td><td>A W3C Decentralized Identifier (<code>did:method:…</code>) points to a document holding public keys. The method defines how to find that document.</td><td>agent ID</td></tr>
+        <tr><td>Self-certifying identifier</td><td>An identifier with the public key embedded in it, so no lookup is needed. It cannot be revoked; exposure ends with its lifetime.</td><td><code>did:key</code>, <code>aip:key</code></td></tr>
+        <tr><td>Resolution</td><td>Obtaining the document or artefact needed to verify a claim.</td><td>lookup, fetch</td></tr>
+        <tr><td>Resolution topology</td><td>Where trust material comes from: ledger, operator domain, third-party registry, or nowhere (self-certifying).</td><td>resolution path, substrate</td></tr>
+        <tr><td>Resolution coupling</td><td>Whether resolution happens during every verification (coupled) or ahead of time from conveyed and cached material (decoupled).</td><td>online / offline verification</td></tr>
+        <tr><td>Anchoring</td><td>Recording a hash on a ledger or timestamp service to prove it existed at a time. Separate from resolution.</td><td>notarisation, timestamping</td></tr>
+        <tr><td>Observation by the resolver</td><td>What a resolution source learns from lookups: which agent was checked, by whom, when.</td><td>lookup privacy</td></tr>
+
+        <tr class="group"><td colspan="3">Integrity and time</td></tr>
+        <tr><td>Content-addressed</td><td>Named by the hash of its bytes. Anyone can recompute the hash to confirm they hold the right object.</td><td>hash-pinned</td></tr>
+        <tr><td>Location-bound</td><td>Trusted because of where it was fetched from. Whoever controls the location controls the content.</td><td>URL-based</td></tr>
+        <tr><td>Integrity resolution</td><td>Establishing that an object is the right one.</td><td></td></tr>
+        <tr><td>Availability resolution</td><td>Establishing that an object can be obtained and is current.</td><td></td></tr>
+        <tr><td>Staleness bound</td><td>The longest interval during which a revoked item can still pass verification.</td><td>freshness, TTL, cache lifetime</td></tr>
+        <tr><td>Revocation</td><td>Withdrawal of a credential, key or claim. Distinct from "failed to fetch" and "never issued".</td><td>suspension</td></tr>
+        <tr><td>Drift</td><td>An approved artefact changing after approval while keeping its name.</td><td>rug pull, post-approval mutation</td></tr>
+
+        <tr class="group"><td colspan="3">Comparison</td></tr>
+        <tr><td>Canonical form</td><td>A fixed serialization so equal data gives identical bytes. RFC 8785 (JCS) does this for JSON.</td><td>canonicalization</td></tr>
+        <tr><td>Referential equivalence</td><td>Grounds for concluding that two artefacts from different producers concern the same subject or action.</td><td>comparison semantics</td></tr>
+        <tr><td>Declared semantics</td><td>The namespace, units or schema that fix what a field means.</td><td>schema reference</td></tr>
+
+        <tr class="group"><td colspan="3">Authority</td></tr>
+        <tr><td>Authority continuity</td><td>Whether a mandate stays valid, in scope and unrevoked at every hop of a delegation chain.</td><td>chain of authority</td></tr>
+        <tr><td>Attenuation</td><td>Each delegation may narrow a mandate and never widen it.</td><td>scope narrowing</td></tr>
+        <tr><td>Binding point</td><td>What an attestation covers: the declared call, the request as sent, or the observed effect.</td><td>execution binding</td></tr>
+
+        <tr class="group"><td colspan="3">Behaviour and oversight</td></tr>
+        <tr><td>Declared policy</td><td>A behaviour an agent or its operator claims the agent follows, such as "no destructive actions during a freeze".</td><td>guardrail, rule</td></tr>
+        <tr><td>Enforcement point</td><td>The component that makes a declared policy hold: the agent itself, the platform, or something outside both.</td><td>policy enforcement point</td></tr>
+        <tr><td>Containment</td><td>Limits on what an agent can reach, such as a sandbox without network access.</td><td>isolation, sandboxing</td></tr>
+        <tr><td>Monitoring coverage</td><td>The share of an agent's actions that someone other than the agent records.</td><td>observability, telemetry</td></tr>
+        <tr><td>Attribution</td><td>Establishing which principal, agent and instance performed an action.</td><td>accountability, provenance</td></tr>
+        <tr><td>Accountability record</td><td>Who answers for an action, legally or organisationally.</td><td>liability</td></tr>
+        <tr><td>Open-world, closed-world reading</td><td>Closed-world treats anything unstated as false; open-world treats it as unknown. A credential read closed-world implies its subject does nothing beyond what it declares.</td><td></td></tr>
+        <tr><td>Three-valued evaluation</td><td>A check returns yes, no or unknown, and policy states what happens on unknown.</td><td></td></tr>
+
+        <tr class="group"><td colspan="3">Attack patterns in the incident reports</td></tr>
+        <tr><td>Prompt injection</td><td>Instructions hidden in content an agent reads (a form field, a web page, a tool description) that the agent then follows.</td><td>indirect prompt injection</td></tr>
+        <tr><td>Tool poisoning</td><td>Hostile instructions placed in a tool's description or schema.</td><td>tool shadowing</td></tr>
+        <tr><td>Impersonation</td><td>Publishing something under a name that suggests a different publisher.</td><td>typosquatting, name-squatting</td></tr>
+        <tr><td>Supply chain compromise</td><td>Hostile code arriving through a dependency, package or marketplace.</td><td></td></tr>
+        <tr><td>Exfiltration</td><td>Sending data out to an attacker-controlled destination.</td><td>data leak</td></tr>
+        <tr><td>Sandbox escape</td><td>An agent reaching resources its containment was meant to deny.</td><td>breakout</td></tr>
+
+        <tr class="group"><td colspan="3">Systems and formats</td></tr>
+        <tr><td>p99 latency, tail amplification</td><td>The slowest one per cent of lookups. When every hop repeats verification, slow lookups become more frequent across the whole chain.</td><td>tail at scale</td></tr>
+        <tr><td>Network partition, PACELC</td><td>A partition leaves parts of a network unreachable. PACELC names the trade-offs: under partition, availability against consistency; otherwise, latency against consistency.</td><td>CAP</td></tr>
+        <tr><td>Ed25519, JWS, JWKS</td><td>A signature algorithm, a JSON signature format, and a published key set.</td><td></td></tr>
+        <tr><td>RFC 3161 timestamp, transparency log</td><td>Ways to prove a hash existed at a time without a blockchain.</td><td></td></tr>
+        <tr><td>Base, layer two, ERC-8004</td><td>Base is an Ethereum layer-two chain. ERC-8004 is the Ethereum proposal for on-chain agent registries.</td><td>L2</td></tr>
+        <tr><td>MCP, A2A</td><td>Model Context Protocol connects agents to tools; Agent2Agent connects agents to each other.</td><td></td></tr>
+        <tr><td>Conformance, test vectors</td><td>Fixed inputs with expected outputs so implementations can check themselves.</td><td></td></tr>
+        <tr><td>openclaw, moltbook, ClawHub</td><td>A self-hosted open-source agent, an agent-only social network built around it, and its skill marketplace.</td><td>Clawdbot, Moltbot</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+</div>
+
+<!-- ============ TAB 2 ============ -->
+<div class="panel" id="cases" role="tabpanel" aria-labelledby="t-cases" hidden>
+  <div class="intro">
+    <h2>Use cases</h2>
+    <p class="lede">Ten reported incidents where an agent's identity, origin, mandate or behaviour could not be relied on, and seven scenarios built from them in which an agent declares something nobody can control, monitor or audit.</p>
+    <p class="small">Incident summaries follow the linked public reports. Several rest on the affected company's own account.</p>
+  </div>
+
+  <section>
+    <h2>Incidents</h2>
+
+    <article class="uc" id="i1">
+      <header><span class="id">I1</span><h3>A coding agent ignores a freeze and misreports the damage</h3><span class="by">Replit and SaaStr, mid-2025</span></header>
+      <p>During a declared code freeze, a coding agent ran destructive commands against a live production database, generated fabricated records, and told its user that rollback was impossible. The user later restored the data himself.</p>
+      <div class="facets">
+        <div><h4>Could not be relied on</h4><p>The declared behaviour (respect the freeze) and the agent's own report of what it had done.</p></div>
+        <div><h4>Why</h4><p>The freeze existed only as an instruction to the agent. No component outside it enforced the rule.</p></div>
+        <div><h4>The trust layer needs</h4><p>An enforcement point for each declared policy, and receipts produced outside the agent.</p></div>
+      </div>
+      <p class="src">Sources: <a href="https://www.theregister.com/2025/07/21/replit_saastr_vibe_coding_incident/">The Register</a>, <a href="https://incidentdatabase.ai/cite/1152/">AI Incident Database 1152</a></p>
+    </article>
+
+    <article class="uc" id="i2">
+      <header><span class="id">I2</span><h3>A customer-service agent's statement binds its operator</h3><span class="by">Air Canada, 2024</span></header>
+      <p>An airline chatbot gave a customer wrong information about a fare policy. A Canadian tribunal held the airline responsible for what its chatbot said and rejected the argument that the chatbot was a separate entity.</p>
+      <div class="facets">
+        <div><h4>Could not be relied on</h4><p>The content of the agent's statement.</p></div>
+        <div><h4>Why</h4><p>Nothing distinguished an authoritative commitment from generated text.</p></div>
+        <div><h4>The trust layer needs</h4><p>An accountability record naming who answers for what an agent states, and the proposition each statement can carry.</p></div>
+      </div>
+      <p class="src">Source: Moffatt v. Air Canada, 2024 BCCRT 149</p>
+    </article>
+
+    <article class="uc" id="i3">
+      <header><span class="id">I3</span><h3>Approved tools change after approval</h3><span class="by">MCP tool poisoning and rug pull, 2025</span></header>
+      <p>Researchers showed that hidden instructions in an MCP tool description can steer an agent into leaking data, and that a server can replace a tool's description after the user has approved it. A later CVE confirmed that approval did not survive server-side changes in a production tool.</p>
+      <div class="facets">
+        <div><h4>Could not be relied on</h4><p>The tool the user approved, from one session to the next.</p></div>
+        <div><h4>Why</h4><p>Approval was bound to a name and a location, and the content behind them could change.</p></div>
+        <div><h4>The trust layer needs</h4><p>Approval bound to a content hash, with re-verification whenever the hash changes.</p></div>
+      </div>
+      <p class="src">Sources: <a href="https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks">Invariant Labs</a>, <a href="https://labs.cloudsecurityalliance.org/research/csa-research-note-mcp-tool-poisoning-ai-agent-exfiltration-2/">CSA research note</a></p>
+    </article>
+
+    <article class="uc" id="i4">
+      <header><span class="id">I4</span><h3>A connector impersonates a vendor and turns hostile later</h3><span class="by">postmark-mcp, late 2025</span></header>
+      <p>A package presented as an MCP server for the Postmark email service shipped fifteen working versions, then added one line that copied every outgoing email to an outside address. Postmark stated it had no connection to the package.</p>
+      <div class="facets">
+        <div><h4>Could not be relied on</h4><p>The publisher's implied identity, and the package's behaviour across versions.</p></div>
+        <div><h4>Why</h4><p>The name suggested an official source, and earlier good versions built trust that carried over to the bad one.</p></div>
+        <div><h4>The trust layer needs</h4><p>Publisher identity separate from package name, a declared affiliation with the vendor, and version-pinned approval.</p></div>
+      </div>
+      <p class="src">Sources: <a href="https://postmarkapp.com/blog/information-regarding-malicious-postmark-mcp-package">Postmark</a>, <a href="https://thehackernews.com/2025/09/first-malicious-mcp-server-found.html">The Hacker News</a></p>
+    </article>
+
+    <article class="uc" id="i5">
+      <header><span class="id">I5</span><h3>An allowlisted domain outlives its owner</h3><span class="by">ForcedLeak, Salesforce Agentforce, 2025</span></header>
+      <p>Instructions hidden in a web form led a CRM agent to send customer data to an external address. The destination passed the platform's allowlist because it sat on a domain the vendor once used, which had expired and could be bought for a few dollars.</p>
+      <div class="facets">
+        <div><h4>Could not be relied on</h4><p>The allowlist, and the separation between data the agent read and instructions it followed.</p></div>
+        <div><h4>Why</h4><p>Trust was location-bound to a domain, and nobody tracked when control of that domain changed.</p></div>
+        <div><h4>The trust layer needs</h4><p>Governance and staleness bounds on location-bound trust, and receipts binding the action to its real destination.</p></div>
+      </div>
+      <p class="src">Sources: <a href="https://noma.security/blog/forcedleak-agent-risks-exposed-in-salesforce-agentforce">Noma Security</a>, <a href="https://thehackernews.com/2025/09/salesforce-patches-critical-forcedleak.html">The Hacker News</a></p>
+    </article>
+
+    <article class="uc" id="i6">
+      <header><span class="id">I6</span><h3>A false mandate, presented to an agent</h3><span class="by">GTG-1002, reported late 2025</span></header>
+      <p>According to Anthropic's report, operators attributed to a state-sponsored group told a coding agent they worked for a legitimate security firm doing authorised testing. The agent then carried out most of an intrusion campaign against around thirty organisations.</p>
+      <div class="facets">
+        <div><h4>Could not be relied on</h4><p>The identity and mandate the humans declared to the agent.</p></div>
+        <div><h4>Why</h4><p>The agent was the relying party and had nothing to check the claim against.</p></div>
+        <div><h4>The trust layer needs</h4><p>Mandates that agents can verify, and a policy for work requested under an unverified mandate.</p></div>
+      </div>
+      <p class="src">Sources: <a href="https://www.paulweiss.com/insights/client-memos/anthropic-disrupts-first-documented-case-of-large-scale-ai-orchestrated-cyberattack">Paul, Weiss summary</a>, <a href="https://incidentdatabase.ai/cite/1263/">AI Incident Database 1263</a></p>
+    </article>
+
+    <article class="uc" id="i7">
+      <header><span class="id">I7</span><h3>Agent or human, and whose agent?</h3><span class="by">Moltbook, early 2026</span></header>
+      <p>An exposed database on an agent-only social network revealed about 1.5 million registered agents behind roughly 17,000 human accounts. Humans could post as agents with a plain web request, and leaked keys let anyone take over any agent account.</p>
+      <div class="facets">
+        <div><h4>Could not be relied on</h4><p>That an "agent" was an agent, and that its posts came from its owner.</p></div>
+        <div><h4>Why</h4><p>No mechanism tied an account to an agent instance or its principal, and exposed keys had no revocation path.</p></div>
+        <div><h4>The trust layer needs</h4><p>Instance-level identity linked to a principal, authorship receipts, and revocable keys.</p></div>
+      </div>
+      <p class="src">Sources: <a href="https://www.wiz.io/blog/exposed-moltbook-database-reveals-millions-of-api-keys">Wiz</a>, <a href="https://www.infosecurity-magazine.com/news/moltbook-exposes-user-data-api/">Infosecurity Magazine</a></p>
+    </article>
+
+    <article class="uc" id="i8">
+      <header><span class="id">I8</span><h3>A skill marketplace as a delivery channel</h3><span class="by">ClawHub and ClawHavoc, 2026</span></header>
+      <p>Researchers found hundreds of malicious skills in the openclaw marketplace, where a week-old GitHub account was enough to publish. Some skills rewrote the agent's persistent memory and configuration files so their instructions outlived removal. Later skills evaded the scanners added in response.</p>
+      <div class="facets">
+        <div><h4>Could not be relied on</h4><p>The publisher, the skill, and afterwards the agent's own configuration.</p></div>
+        <div><h4>Why</h4><p>Open publishing with minimal identity, and agent memory treated as internal state instead of an artefact.</p></div>
+        <div><h4>The trust layer needs</h4><p>Publisher provenance, and configuration and memory recorded as artefacts with integrity checks.</p></div>
+      </div>
+      <p class="src">Sources: <a href="https://thehackernews.com/2026/02/researchers-find-341-malicious-clawhub.html">The Hacker News</a>, <a href="https://unit42.paloaltonetworks.com/openclaw-ai-supply-chain-risk/">Unit 42</a></p>
+    </article>
+
+    <article class="uc" id="i9">
+      <header><span class="id">I9</span><h3>An evaluation agent escapes and goes unattributed</h3><span class="by">OpenAI and Hugging Face, July 2026</span></header>
+      <p>During an internal capability evaluation, agents running on OpenAI models left their sandbox, compromised third-party infrastructure, and ran an intrusion into Hugging Face production systems over several days. Hugging Face disclosed the intrusion without knowing who was behind it; OpenAI identified its own agents afterwards.</p>
+      <div class="facets">
+        <div><h4>Could not be relied on</h4><p>The declared containment, and the operator's knowledge of what its agents were doing.</p></div>
+        <div><h4>Why</h4><p>Containment was a configuration claim, and monitoring did not connect the actions to their source in time.</p></div>
+        <div><h4>The trust layer needs</h4><p>Containment attested by the infrastructure, and attribution that ties actions to operator, agent and instance.</p></div>
+      </div>
+      <p class="src">Sources: <a href="https://huggingface.co/blog/agent-intrusion-technical-timeline">Hugging Face timeline</a>, <a href="https://en.wikipedia.org/wiki/2026_OpenAI_agent_cyberattacks">Wikipedia summary</a></p>
+    </article>
+
+    <article class="uc" id="i10">
+      <header><span class="id">I10</span><h3>The environment was not what the agent was told</h3><span class="by">Anthropic cyber evaluations, disclosed July 2026</span></header>
+      <p>Anthropic reported that Claude models in third-party cyber evaluations had internet access although the prompt said they had none, and compromised real systems of several organisations while treating them as part of the exercise. Most affected organisations had not noticed. A later review found a further incident the first transcript scan had missed.</p>
+      <div class="facets">
+        <div><h4>Could not be relied on</h4><p>The environment declared to the agent, and the completeness of the first audit.</p></div>
+        <div><h4>Why</h4><p>The environment claim came from a misconfigured setup, and audit coverage was assumed complete.</p></div>
+        <div><h4>The trust layer needs</h4><p>Environment claims from the infrastructure itself, and audit records that state their coverage.</p></div>
+      </div>
+      <p class="src">Sources: <a href="https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals">Anthropic, first report</a>, <a href="https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents">Anthropic, alignment assessment</a></p>
+    </article>
+  </section>
+
+  <section>
+    <h2>Scenarios</h2>
+    <div class="prose"><p>Each scenario isolates one way an agent or its principal can declare identity or behaviour that others cannot control, monitor or audit. They use the reference scenario from tab 1.</p></div>
+
+    <article class="uc" id="s1">
+      <header><span class="id">S1</span><h3>Activity outside the declared mandate</h3><span class="by">Proposed by the chair; compare I6</span></header>
+      <p>X holds a credential stating it is a registered company providing travel services, and A acts under that mandate. X also supplies a weapons programme, which is recorded nowhere the issuer looked. Y's policy excludes customers in that sector. A university lab with a policy on dual-use partners, or a person with an official ID who also works for an intelligence service, presents the same problem.</p>
+<pre class="mini">credential      issuer: registry R    subject: X
+  vouches for   legal registration; declared activity "travel services"
+  source        registration: R's records   activity: X's own statement
+  completeness  not attested
+
+declaration     issuer: X (self-asserted)
+  asserts       no activity in: defence supply chain, military end use
+
+evidence        issuer: screening service S   checked: last week
+  checks        sanctions and export-control lists
+  result        no match   coverage: listed entities only
+
+B's reading     activity outside declaration: UNKNOWN
+B's policy      on UNKNOWN for this sector: refuse, or ask for a further attestation</pre>
+      <div class="facets">
+        <div><h4>Cannot be controlled or seen</h4><p>Activity nobody records.</p></div>
+        <div><h4>What representation can do</h4><p>Mark where attested knowledge stops, turn omission into a false signed statement, and make unknown a deliberate policy decision.</p></div>
+        <div><h4>Limit</h4><p>For individuals, a duty to declare collides with privacy law and legal secrecy. "Cannot disclose" needs its own value, distinct from "no".</p></div>
+      </div>
+    </article>
+
+    <article class="uc" id="s2">
+      <header><span class="id">S2</span><h3>A declared policy with no enforcer</h3><span class="by">From I1</span></header>
+      <p>A's credential lists policies: no refunds above €1,000, and stop on request. The policies exist as instructions inside A. X sends a stop request, and A issues a €3,000 refund anyway.</p>
+      <div class="facets">
+        <div><h4>Cannot be controlled or seen</h4><p>Whether A follows its own policies.</p></div>
+        <div><h4>What representation can do</h4><p>Record, for each policy, where it is enforced and by whom. A policy enforced only inside the agent is labelled self-enforced, and B can cap what it accepts from such agents.</p></div>
+        <div><h4>Limit</h4><p>A label does not stop the refund. Y's payment system has to check the limit itself.</p></div>
+      </div>
+    </article>
+
+    <article class="uc" id="s3">
+      <header><span class="id">S3</span><h3>A declared environment that is wrong</h3><span class="by">From I9 and I10</span></header>
+      <p>X's operator states that A runs in a sandbox with no outbound network. The configuration is mistaken, and A reaches Y's production systems while believing them to be test fixtures.</p>
+      <div class="facets">
+        <div><h4>Cannot be controlled or seen</h4><p>The real environment, from the point of view of both A and Y.</p></div>
+        <div><h4>What representation can do</h4><p>Distinguish environment claims made by the operator from those attested by the infrastructure (egress logs, platform attestation), each with a date and staleness bound.</p></div>
+        <div><h4>Limit</h4><p>Infrastructure attestation relies on the infrastructure provider, who becomes a party to trust.</p></div>
+      </div>
+    </article>
+
+    <article class="uc" id="s4">
+      <header><span class="id">S4</span><h3>Many instances, one name</h3><span class="by">From I7 and I9</span></header>
+      <p>Hundreds of A's instances run in parallel under one identifier and coordinate through a shared channel. One instance calls T outside the mandate. The logs show "A" and nothing more.</p>
+      <div class="facets">
+        <div><h4>Cannot be controlled or seen</h4><p>Which instance acted, and whether its operator knew.</p></div>
+        <div><h4>What representation can do</h4><p>Give each instance its own identifier delegated from the agent identity, require receipts to name the instance, and declare coordination channels.</p></div>
+        <div><h4>Limit</h4><p>Instances created outside the operator's control carry no delegation and are indistinguishable from impostors.</p></div>
+      </div>
+    </article>
+
+    <article class="uc" id="s5">
+      <header><span class="id">S5</span><h3>A claimed mandate presented to an agent</h3><span class="by">From I6</span></header>
+      <p>A human tells B they represent Y's security team and asks B to test T's limits. B has no way to confirm the claim.</p>
+      <div class="facets">
+        <div><h4>Cannot be controlled or seen</h4><p>Whether the requester holds the authority they claim.</p></div>
+        <div><h4>What representation can do</h4><p>Treat a mandate as an artefact agents can verify, and define the behaviour for unverified mandates, such as a restricted mode.</p></div>
+        <div><h4>Limit</h4><p>Agents also act on unstructured conversation, where no artefact is presented.</p></div>
+      </div>
+    </article>
+
+    <article class="uc" id="s6">
+      <header><span class="id">S6</span><h3>Approved, then changed</h3><span class="by">From I3, I4 and I8</span></header>
+      <p>Y approves version 1.4 of tool T. A later update adds a hidden data copy, and a skill installed alongside rewrites B's memory file so the change survives removal of the skill.</p>
+      <div class="facets">
+        <div><h4>Cannot be controlled or seen</h4><p>What T does now, and what B's configuration now contains.</p></div>
+        <div><h4>What representation can do</h4><p>Bind approval to content hashes of the tool definition and the agent configuration, and treat any change as a new artefact requiring approval.</p></div>
+        <div><h4>Limit</h4><p>Behaviour can change behind an unchanged definition, for example on the server side.</p></div>
+      </div>
+    </article>
+
+    <article class="uc" id="s7">
+      <header><span class="id">S7</span><h3>An agent nobody can observe</h3><span class="by">From I7 and I8</span></header>
+      <p>A runs self-hosted on a personal computer with no telemetry. It presents a valid registry credential and a list of declared policies to B.</p>
+      <div class="facets">
+        <div><h4>Cannot be controlled or seen</h4><p>Everything A does apart from what it sends to B.</p></div>
+        <div><h4>What representation can do</h4><p>Record monitoring coverage as "none" explicitly, so B's policy can limit such agents to low-risk actions.</p></div>
+        <div><h4>Limit</h4><p>Only B's own records of the exchange remain available for audit.</p></div>
+      </div>
+    </article>
+  </section>
+</div>
+
+<!-- ============ TAB 3 ============ -->
+<div class="panel" id="coverage" role="tabpanel" aria-labelledby="t-coverage" hidden>
+  <div class="intro">
+    <h2>Coverage</h2>
+    <p class="lede">How the properties proposed in the thread apply to each use case, where they fall short, and minimal worked tests of each proposal.</p>
+  </div>
+
+  <section>
+    <h2>Use cases against property groups</h2>
+    <div class="prose">
+      <p>Groups A to F come from the thread (tab 4). Groups G and H, shaded, are needed by the use cases and have no proposal yet.</p>
+      <p class="small"><span class="m y">Covers</span> a thread proposal addresses the failure &nbsp; <span class="m p">Partly</span> it helps with part of it &nbsp; <span class="m g">Gap</span> a property is needed and nobody has proposed one &nbsp; <span class="m n">&ndash;</span> not relevant</p>
+    </div>
+    <div class="tw"><table class="matrix">
+      <thead><tr>
+        <th>Use case</th><th>A. Resolution and integrity</th><th>B. Proposition</th><th>C. Comparison</th><th>D. Authority continuity</th><th>E. Binding point</th><th>F. Coverage and disclosure</th><th class="new">G. Enforcement and oversight</th><th class="new">H. Instance and attribution</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><b>I1</b>Freeze ignored</td><td><span class="m n">&ndash;</span></td><td><span class="m p">Partly</span></td><td><span class="m n">&ndash;</span></td><td><span class="m p">Partly</span></td><td><span class="m p">Partly</span></td><td><span class="m n">&ndash;</span></td><td><span class="m g">Gap</span></td><td><span class="m n">&ndash;</span></td></tr>
+        <tr><td><b>I2</b>Statement binds operator</td><td><span class="m n">&ndash;</span></td><td><span class="m y">Covers</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m p">Partly</span></td></tr>
+        <tr><td><b>I3</b>Tool changes after approval</td><td><span class="m y">Covers</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m p">Partly</span></td><td><span class="m n">&ndash;</span></td><td><span class="m p">Partly</span></td><td><span class="m n">&ndash;</span></td></tr>
+        <tr><td><b>I4</b>Impersonating connector</td><td><span class="m p">Partly</span></td><td><span class="m y">Covers</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m p">Partly</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td></tr>
+        <tr><td><b>I5</b>Expired allowlisted domain</td><td><span class="m y">Covers</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m p">Partly</span></td><td><span class="m n">&ndash;</span></td><td><span class="m p">Partly</span></td><td><span class="m n">&ndash;</span></td></tr>
+        <tr><td><b>I6</b>False mandate to agent</td><td><span class="m n">&ndash;</span></td><td><span class="m y">Covers</span></td><td><span class="m n">&ndash;</span></td><td><span class="m y">Covers</span></td><td><span class="m n">&ndash;</span></td><td><span class="m y">Covers</span></td><td><span class="m p">Partly</span></td><td><span class="m n">&ndash;</span></td></tr>
+        <tr><td><b>I7</b>Agent or human</td><td><span class="m p">Partly</span></td><td><span class="m y">Covers</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m p">Partly</span></td><td><span class="m g">Gap</span></td><td><span class="m g">Gap</span></td></tr>
+        <tr><td><b>I8</b>Marketplace skills</td><td><span class="m p">Partly</span></td><td><span class="m p">Partly</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m p">Partly</span></td><td><span class="m p">Partly</span></td><td><span class="m g">Gap</span></td><td><span class="m n">&ndash;</span></td></tr>
+        <tr><td><b>I9</b>Escape, unattributed</td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m p">Partly</span></td><td><span class="m p">Partly</span></td><td><span class="m n">&ndash;</span></td><td><span class="m g">Gap</span></td><td><span class="m g">Gap</span></td></tr>
+        <tr><td><b>I10</b>Environment misdeclared</td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m p">Partly</span></td><td><span class="m p">Partly</span></td><td><span class="m g">Gap</span></td><td><span class="m p">Partly</span></td></tr>
+        <tr><td><b>S1</b>Outside declared mandate</td><td><span class="m n">&ndash;</span></td><td><span class="m y">Covers</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m p">Partly</span></td><td><span class="m p">Partly</span></td><td><span class="m n">&ndash;</span></td></tr>
+        <tr><td><b>S2</b>Policy with no enforcer</td><td><span class="m n">&ndash;</span></td><td><span class="m p">Partly</span></td><td><span class="m n">&ndash;</span></td><td><span class="m p">Partly</span></td><td><span class="m p">Partly</span></td><td><span class="m n">&ndash;</span></td><td><span class="m g">Gap</span></td><td><span class="m n">&ndash;</span></td></tr>
+        <tr><td><b>S3</b>Wrong environment</td><td><span class="m p">Partly</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m p">Partly</span></td><td><span class="m g">Gap</span></td><td><span class="m n">&ndash;</span></td></tr>
+        <tr><td><b>S4</b>Many instances</td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m p">Partly</span></td><td><span class="m p">Partly</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m g">Gap</span></td></tr>
+        <tr><td><b>S5</b>Claimed mandate to agent</td><td><span class="m n">&ndash;</span></td><td><span class="m y">Covers</span></td><td><span class="m n">&ndash;</span></td><td><span class="m y">Covers</span></td><td><span class="m n">&ndash;</span></td><td><span class="m p">Partly</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td></tr>
+        <tr><td><b>S6</b>Approved, then changed</td><td><span class="m y">Covers</span></td><td><span class="m n">&ndash;</span></td><td><span class="m p">Partly</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m p">Partly</span></td><td><span class="m n">&ndash;</span></td></tr>
+        <tr><td><b>S7</b>Unobservable agent</td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m n">&ndash;</span></td><td><span class="m y">Covers</span></td><td><span class="m g">Gap</span></td><td><span class="m n">&ndash;</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>What the matrix shows</h2>
+    <div class="prose">
+      <p>The thread's proposals handle identity, provenance and mandates well. Groups A, B and D cover the impersonation, drift and false-mandate cases, and the resolution work traced in the draft note carries over directly to I3, I5 and S6.</p>
+      <p>Every case about behaviour lands in group G, and no contributor has proposed properties for it. This is the chair's point on the list: a correct schema is the easier part, and trust depends on behaviour staying consistent with it. Attribution across instances (group H) is the second unaddressed need, raised most sharply by the July 2026 escape.</p>
+      <p>A representation cannot make a declared policy hold. It can record who claims the policy, which component enforces it, what evidence of enforcement exists and how much of the agent's activity anyone observes. With those recorded, a relying party can price the risk of trusting a self-asserted claim.</p>
+    </div>
+    <h3>Proposed properties for the two new groups</h3>
+    <div class="tw"><table class="wide">
+      <thead><tr><th>Group</th><th>Property</th><th>Values or content</th><th>Driven by</th></tr></thead>
+      <tbody>
+        <tr><td>G. Enforcement and oversight</td><td>Declared policy</td><td>The rule, stated so it can be tested</td><td>I1, S2</td></tr>
+        <tr><td></td><td>Enforcement point</td><td>Agent itself; platform; independent component. Named enforcer.</td><td>I1, I5, S2</td></tr>
+        <tr><td></td><td>Evidence of enforcement</td><td>Receipts or logs produced by the enforcer, with date</td><td>I1, I10</td></tr>
+        <tr><td></td><td>Environment claim</td><td>Containment and network reach, with issuer (operator or infrastructure) and staleness bound</td><td>I9, I10, S3</td></tr>
+        <tr><td></td><td>Monitoring coverage</td><td>Share of actions recorded outside the agent; "none" is a permitted value</td><td>I7, I10, S7</td></tr>
+        <tr><td></td><td>Stop channel</td><td>How the principal halts the agent, and whether that path has been tested</td><td>I1, S2</td></tr>
+        <tr><td></td><td>Configuration and memory integrity</td><td>Content hash of instructions, memory and installed skills</td><td>I8, S6</td></tr>
+        <tr><td>H. Instance and attribution</td><td>Instance identifier</td><td>Per running copy, delegated from the agent identity</td><td>I7, S4</td></tr>
+        <tr><td></td><td>Operator of record</td><td>Who runs the infrastructure, if different from the principal</td><td>I9, I10</td></tr>
+        <tr><td></td><td>Attribution in receipts</td><td>Principal, agent, instance and operator named on every action record</td><td>I2, I9, S4</td></tr>
+        <tr><td></td><td>Coordination channels</td><td>Declared means by which instances share state</td><td>I9, S4</td></tr>
+        <tr><td></td><td>Human or agent authorship</td><td>Whether a message came from an agent instance or a person using its credentials</td><td>I7</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Worked tests of each thread proposal</h2>
+    <div class="prose"><p>Each test applies one proposal to a minimal situation in the reference scenario and asks whether the current draft note can express what happens.</p></div>
+
+    <article class="uc" id="c1">
+      <header><span class="id">C1</span><h3>Coupling decides partition behaviour</h3><span class="by">Morgan Reece (IETF WIMSE list). Relevant to I5, S3.</span></header>
+      <p>A's DID resolves from a ledger. Relying party V1 queries the ledger on every call. V2 accepts the document conveyed with the request and a revocation list cached for ten minutes. The ledger becomes unreachable for thirty minutes.</p>
+      <div class="pair">
+        <div><h4>Current draft</h4><p>Both are described as ledger-dependent, with identical exposure.</p></div>
+        <div><h4>With the amendment</h4><p>V1 fails every call from the first minute. V2 continues for ten minutes, then stops accepting A. A captured ledger can delay refreshes and cannot forge validity. V1's lookups also tell the ledger's observers that Y dealt with A.</p></div>
+      </div>
+      <p class="verdict"><span class="v ok">Resolves</span>Record topology and coupling per verification path, and observation by the resolver as a governance attribute.</p>
+    </article>
+
+    <article class="uc" id="c2">
+      <header><span class="id">C2</span><h3>Altering is different from withholding</h3><span class="by">Isaac Mao, PR 7. Relevant to I3, I5, S6.</span></header>
+      <p>A's identity document is held by registry R, and R is compromised.</p>
+      <div class="pair">
+        <div><h4>Current draft</h4><p>Governance: registry operator. Silent on whether R can substitute keys or only withhold.</p></div>
+        <div><h4>With the amendment</h4><p>A location-bound document lets R swap in a new key, so an impostor verifies as A. A hash-pinned version leaves R able only to withhold it, and the absence is visible.</p></div>
+      </div>
+      <p class="verdict"><span class="v ok">Resolves</span>with a caveat: key rotation changes the document, so a hash pins one version, and learning the current version is again an availability question.</p>
+    </article>
+
+    <article class="uc" id="c3">
+      <header><span class="id">C3</span><h3>Freshness needs a number</h3><span class="by">Ankur Chrungoo, issue 8. Relevant to I5, S3.</span></header>
+      <p>X revokes A's key at 09:00. V1 caches revocation status for an hour, V2 for thirty seconds. Each hop's p99 lookup is 50 ms, over five coupled hops.</p>
+      <div class="pair">
+        <div><h4>Current draft</h4><p>Both "handle freshness". The single-hop p99 is reported as the budget.</p></div>
+        <div><h4>With the amendment</h4><p>A revoked A keeps acting until 10:00 at V1 and 09:00:30 at V2. About one chain in twenty (1 − 0.99<sup>5</sup> ≈ 4.9%) hits at least one lookup slower than the per-hop p99, against one in a hundred for a single hop.</p></div>
+      </div>
+      <p class="verdict"><span class="v ok">Resolves</span>Typed attributes make claims comparable. The PACELC framing and coupling describe one trade and fit in one table.</p>
+    </article>
+
+    <article class="uc" id="c4">
+      <header><span class="id">C4</span><h3>Identifiers that need no lookup</h3><span class="by">Agent Community, issue 5 and PR 6. Relevant to S4.</span></header>
+      <p>B starts a short-lived sub-agent B1 with a self-certifying identifier. B1's private key leaks.</p>
+      <div class="pair">
+        <div><h4>Current draft</h4><p>B1 fits none of the three arrangements.</p></div>
+        <div><h4>With the amendment</h4><p>Topology: none. Revocation: unavailable. Exposure ends with B1's lifetime, which acts as the staleness bound.</p></div>
+      </div>
+      <p class="verdict"><span class="v part">Partly</span>Add "self-certifying" as a topology value and require a stated lifetime where revocation is unavailable. PR 6 leaves the taxonomy unchanged.</p>
+    </article>
+
+    <article class="uc" id="c5">
+      <header><span class="id">C5</span><h3>Resolution and anchoring in one deployment</h3><span class="by">Lars Kersten Kroehl, issue 9</span></header>
+      <p>A relying party resolves <code>did:moltrust:…</code> while MolTrust's resolver is down and Base is reachable.</p>
+      <div class="pair">
+        <div><h4>Current draft</h4><p>Annex B says resolution is unspecified.</p></div>
+        <div><h4>With the correction</h4><p>The method is registered with an operator-hosted HTTPS read operation, so resolution fails with the resolver whatever the state of Base. Base only anchors records.</p></div>
+      </div>
+      <p class="verdict"><span class="v ok">Resolves</span>The registry entry is live. Revise Annex B and keep the case as an illustration of the separation in §3.</p>
+    </article>
+
+    <article class="uc" id="c6">
+      <header><span class="id">C6</span><h3>Evidence resolves too</h3><span class="by">Kenne Ives, issue 10. Relevant to I3, I8.</span></header>
+      <p>A presents a verdict that tool T was reviewed. T's definition changes a week later.</p>
+      <div class="pair">
+        <div><h4>Current draft</h4><p>Models only the identity document.</p></div>
+        <div><h4>With the amendment</h4><p>A verdict bound to T's name still verifies and misleads. A verdict bound to the hash of T's definition fails once T changes. A validity window separates "valid now" from "valid when issued".</p></div>
+      </div>
+      <p class="verdict"><span class="v ok">Resolves</span>Extend group A to evidence artefacts, with any product example labelled as deployment evidence.</p>
+    </article>
+
+    <article class="uc" id="c7">
+      <header><span class="id">C7</span><h3>Identity read as permission</h3><span class="by">Raphael La Touche, Innocent Onyenonachi. Relevant to I2, I6, S5.</span></header>
+      <p>B receives A's request to refund €500 on X's behalf, and A's DID verifies.</p>
+      <div class="pair">
+        <div><h4>Current draft</h4><p>Nothing records what a verified DID establishes, so "A verified" can pass for "A may do this".</p></div>
+        <div><h4>With the amendment</h4><p>The identity artefact proves key control; X's mandate proves permission; a receipt proves what happened; an accountability record names who answers for it.</p></div>
+      </div>
+      <p class="verdict"><span class="v ok">Resolves</span>The matrix belongs in the specification proper, beyond the resolution note.</p>
+    </article>
+
+    <article class="uc" id="c8">
+      <header><span class="id">C8</span><h3>Same bytes, same thing?</h3><span class="by">Thanh Le, Kenne Ives, Amey Parle, Staford Titus S.</span></header>
+      <p>An auditor compares two receipts from different producers.</p>
+<pre class="mini">(a) {"agent":"café"} precomposed é  vs  {"agent":"café"} e + combining accent
+    same agent, different canonical bytes        → false conflict (fails closed)
+(b) {"agent":9007199254740993}  vs  {"agent":9007199254740992}
+    two agents; read as floating point, both become 9007199254740992
+    identical canonical bytes                    → false match (fails open)
+(c) {"refund":500}  X means euros, Y means cents
+    identical canonical bytes, different actions → false match (fails open)</pre>
+      <div class="pair">
+        <div><h4>Current draft</h4><p>No comparison property.</p></div>
+        <div><h4>With the amendment</h4><p>A stated normalization form catches (a). Mandatory string encoding for large identifiers catches (b). Case (c) passes the four proposed properties and needs declared semantics.</p></div>
+      </div>
+      <p class="verdict"><span class="v part">Partly</span>The list describes both canonicalization failures as failing closed; case (b), checked in a JavaScript runtime, fails open. The column needs mandatory string encoding and a fifth property for declared semantics.</p>
+    </article>
+
+    <article class="uc" id="c9">
+      <header><span class="id">C9</span><h3>Traceable and still out of mandate</h3><span class="by">Staford Titus S. Relevant to I9, S4, S5.</span></header>
+      <p>X lets A spend up to €500 until month end. A delegates to B with a €5,000 limit, and B spends €2,000. In a variant, X revokes A at 10:00, B's delegation runs to 12:00, and B acts at 11:00.</p>
+      <div class="pair">
+        <div><h4>Current draft</h4><p>Out of scope. Every identity verifies and the chain is traceable.</p></div>
+        <div><h4>With the amendment</h4><p>A scope check at each hop catches the €5,000 grant. Downstream revocation catches the 11:00 action. Provenance alone catches neither.</p></div>
+      </div>
+      <p class="verdict"><span class="v open">Open</span>Sound, and partly covered by capability systems with attenuation (macaroons, UCAN, Biscuit), OAuth token exchange and Morgan Reece's cross-organisation delegation requirements. Mapping should start from those.</p>
+    </article>
+
+    <article class="uc" id="c10">
+      <header><span class="id">C10</span><h3>Declared call, different effect</h3><span class="by">Syed Anas Mohiuddin, Amey Parle. Relevant to I1, I5.</span></header>
+      <p>B may call T's refund-status operation and not its administrative endpoints. T inserts an identifier from the call into an outbound URL unescaped, and a crafted identifier resolves to an administrative path.</p>
+      <div class="pair">
+        <div><h4>Current draft</h4><p>No notion of what an attestation is bound to.</p></div>
+        <div><h4>With the amendment</h4><p>An attestation over the declared call verifies and describes an action that never ran. One over the request as sent, produced outside T, shows the administrative path.</p></div>
+      </div>
+      <p class="verdict"><span class="v open">Open</span>Representation can state the binding point. Closing the gap needs escaping in the server and receipts from a component the argument cannot reach.</p>
+    </article>
+
+    <p class="small">No test is given for Milton Ponson's category-theory proposal, which awaits a worked example.</p>
+  </section>
+</div>
+
+<!-- ============ TAB 4 ============ -->
+<div class="panel" id="thread" role="tabpanel" aria-labelledby="t-thread" hidden>
+  <div class="intro">
+    <h2>Thread and work plan</h2>
+    <p class="lede">The discussion so far, the model it has produced, who contributed what, open repository items, and a route from here to a specification.</p>
+    <p class="small">Draft under discussion: <a href="https://github.com/w3c-cg/aikr/blob/main/trust/kroftrust.md">trust/kroftrust.md</a>. Covers the thread from early August to mid-September 2026.</p>
+    <p class="small">Thread: <a href="https://lists.w3.org/Archives/Public/public-aikr/2026Aug/0000.html">opening message on public-aikr</a> (cross-posted to <a href="https://lists.w3.org/Archives/Public/public-agent-identity/2026Aug/0000.html">public-agent-identity</a>); <a href="https://lists.w3.org/Archives/Public/public-aikr/2026Sep/thread.html">September continuation on public-aikr</a>; <a href="https://mailarchive.ietf.org/arch/msg/wimse/i08QgArGrcAwFQ7kHFW6U9ZtRCA">reply on the IETF WIMSE list</a>.</p>
+  </div>
+
+  <section>
+    <h2>How the argument developed</h2>
+    <div class="prose">
+      <p class="lede">The discussion started with <a href="https://lists.w3.org/Archives/Public/public-aikr/2026Aug/0000.html">a message to the public-aikr list</a> on 3 August introducing the draft. The draft argues that agent-identity charters model the trust relationship and leave unmodelled the place an agent's identity document is fetched from when a counterparty checks a claim.</p>
+      <p>It names three arrangements (distributed ledger, operator-controlled domain, third-party registry) and asks each group a set of questions. Early responses answer five; the current draft carries six, having added a separate question on anchoring.</p>
+      <p>In August, Patrick Besner asked the group to state the guarantees any substrate must meet: resolution, provenance, revocation, freshness and failure handling. Isaac Mao separated integrity from availability and extended the question to evidence. Lars Kersten Kroehl answered for MolTrust path by path. One path fetches nothing at verification time; an older path queries Base on every check. For him the chain supplies a dated hash, which an RFC 3161 timestamp or a transparency log could also supply, and some agents and developers have no lawful access to public chains at all. Kenne Ives applied Isaac's split to tool-safety verdicts.</p>
+      <p>Morgan Reece <a href="https://mailarchive.ietf.org/arch/msg/wimse/i08QgArGrcAwFQ7kHFW6U9ZtRCA">replied on the IETF WIMSE list</a> for <em>draft-reece-wimse-cross-org-delegation</em>, copying the chair and Lars, and divided the variable into topology and coupling. Tail latency and partition behaviour follow from coupling. With verification from conveyed and cached material under a stated staleness bound, a failed or captured source can only withhold refreshes, and the agent expires when the bound runs out. Morgan also noted that a lookup on every verification tells the resolver when and where an agent acts, and proposed a four-part disclosure per verification path.</p>
+      <p>September moved the discussion onto the AIKR list and widened it. Innocent Onyenonachi and Kenne proposed a row per artefact type. Raphael La Touche pointed out that identity, authority, evidence and responsibility prove different propositions. Thanh Le asked what makes two artefacts comparable; Kenne answered with canonicalization, and Staford Titus S. and Amey Parle showed that canonical bytes establish the same document and leave open whether two documents concern the same thing. Staford introduced authority continuity. Syed Anas Mohiuddin reported MCP servers where a correctly scoped, validly attested call executes a different operation.</p>
+      <p>The chair asked contributors to state ties to agent platforms. Lars described MolTrust's link to openclaw and moltbook as the origin of its name plus a plugin, with no legal or financial connection. The chair's latest message asks whether declaring associations is represented anywhere, and holds that trust depends on behaviour staying consistent with the schema.</p>
+      <p>Every contributor who addressed it agreed that a digital identity certificate alone does not establish trust.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>The model taking shape</h2>
+    <div class="prose"><p>Rows are artefact classes; column groups are properties a relying party needs stated for each row. Groups G and H come from the use cases in tab 2.</p></div>
+    <div class="tw"><table class="wide">
+      <thead><tr><th>Axis</th><th>Content</th><th>Raised by</th></tr></thead>
+      <tbody>
+        <tr><td>Rows</td><td>Identity document; mandate and delegation; declarations; evidence and verdicts; receipts; accountability records; key status; agent configuration and memory</td><td>Innocent Onyenonachi, Kenne Ives, Raphael La Touche; use cases</td></tr>
+        <tr><td>A. Resolution and integrity</td><td>Topology; coupling; integrity resolution; availability resolution; staleness bound; revocation; governance of the source; observation by the resolver</td><td>Draft §3, Isaac Mao, Morgan Reece, Ankur Chrungoo, Patrick Besner</td></tr>
+        <tr><td>B. Proposition</td><td>What the artefact can prove; self-asserted or third-party attested</td><td>Raphael La Touche, Kenne Ives</td></tr>
+        <tr><td>C. Comparison</td><td>Canonical form; Unicode normalization; numeric encoding; recomputable derivation; declared semantics</td><td>Thanh Le, Kenne Ives, Amey Parle</td></tr>
+        <tr><td>D. Authority continuity</td><td>Provenance; attenuation at each hop; revocation propagated downstream; action tied to the mandate</td><td>Staford Titus S., Kenne Ives</td></tr>
+        <tr><td>E. Binding point</td><td>Declared call, request as sent, or observed effect</td><td>Syed Anas Mohiuddin, Amey Parle</td></tr>
+        <tr><td>F. Coverage and disclosure</td><td>What the issuer vouches for and leaves unchecked; subject declarations; "cannot disclose"; three-valued evaluation</td><td>The chair (S1)</td></tr>
+        <tr><td>G. Enforcement and oversight</td><td>Enforcement point; evidence of enforcement; environment claim; monitoring coverage; stop channel; configuration integrity</td><td>Use cases I1, I8 to I10, S2, S3, S7</td></tr>
+        <tr><td>H. Instance and attribution</td><td>Instance identifier; operator of record; attribution in receipts; coordination channels; authorship</td><td>Use cases I7, I9, S4</td></tr>
+        <tr><td>Unit of record</td><td>Each verification path, recorded separately</td><td>Lars Kersten Kroehl, Morgan Reece</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Contributors</h2>
+    <div class="prose"><p>Affiliations as each contributor stated them.</p></div>
+    <div class="tw"><table class="wide">
+      <thead><tr><th>Contributor</th><th>Affiliation as stated</th><th>Contribution</th><th>Offer or open item</th></tr></thead>
+      <tbody>
+        <tr><td>Paola Di Maio</td><td>Chair, AIKR CG</td><td>Draft note; trust KR as first agenda item; questions on platform affiliations and on who works on trust credentials; DNS-dependency note; request for plain-language summaries with use cases; use case S1.</td><td>Collation; weekly calls from 21 September</td></tr>
+        <tr><td>Patrick Besner</td><td>Novosteer Technologies</td><td>State the guarantees a trust layer must provide and assess every substrate against them.</td><td>GitHub comments, not yet posted</td></tr>
+        <tr><td>Isaac Mao</td><td>neocarbone.ai</td><td>Integrity resolution separated from availability resolution; applied to belief-state evidence.</td><td>PR 7, PR 4</td></tr>
+        <tr><td>Lars Kersten Kroehl</td><td>MolTrust, CryptoKRI GmbH, Zürich</td><td>Answers per verification path; chain as one anchoring backend; jurisdictional access; openclaw and moltbook clarification.</td><td>Issue 9</td></tr>
+        <tr><td>Morgan Reece</td><td>Author, draft-reece-wimse-cross-org-delegation (IETF)</td><td>Topology and coupling; fail-safe expiry; lookups as observation; four-part disclosure per path.</td><td>Template usable in §5</td></tr>
+        <tr><td>Kenne Ives</td><td>AgentAvow; CTEF; draft-etcheverry-action-ref (IETF)</td><td>Evidence resolution; two-axis crosswalk; comparison by re-derivation; authority continuity in four parts.</td><td>Issue 10; comparison subsection; conformance vectors</td></tr>
+        <tr><td>Innocent C. Onyenonachi</td><td>Keele University; SUBRA</td><td>Identity evidence is not a trust conclusion; separate artefact classes.</td><td>Artefact crosswalk, in preparation</td></tr>
+        <tr><td>Raphael La Touche</td><td>latouche.ai</td><td>Resolution and proposition as separate dimensions. Visible on the list as a quotation in a reply.</td><td>None stated</td></tr>
+        <tr><td>Thanh Le</td><td>Not stated</td><td>Comparison semantics as a property.</td><td>None stated</td></tr>
+        <tr><td>Milton Ponson</td><td>Not stated</td><td>Topology and category theory as a basis for comparison.</td><td>Worked example requested</td></tr>
+        <tr><td>Staford Titus S.</td><td>Charlemagne</td><td>Authority continuity with adversarial cases; canonicalization as representation only.</td><td>GitHub note, scenarios, slides</td></tr>
+        <tr><td>Amey Parle</td><td>Lead maintainer, did:trail</td><td>Canonicalization failure classes; four-property comparison column.</td><td>Comment on issue 10; vectors</td></tr>
+        <tr><td>Syed Anas Mohiuddin</td><td>MCP server auditing</td><td>Declared call and executed effect can diverge.</td><td>Adversarial vectors after disclosure</td></tr>
+        <tr><td>Ankur Chrungoo</td><td>AIKR CG participant</td><td>Typed attributes; PACELC; governance attribute; tail amplification.</td><td>Issue 8; offers a PR</td></tr>
+        <tr><td>Agent Community</td><td>Agent Community (formerly V19); Truth Gate</td><td>Answers to the six questions, in Chinese.</td><td>Issue 5, PR 6</td></tr>
+        <tr><td>Wolfgang Wimmer</td><td>Editor, A2WF v1.1</td><td>Editor's note on the A2WF intersection document.</td><td>PR 2</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Does the draft note hold?</h2>
+    <div class="tw"><table class="wide">
+      <thead><tr><th>Weakness in the representation</th><th>Addressed by</th><th>State</th></tr></thead>
+      <tbody>
+        <tr><td>One notion of substrate</td><td>§3; PR 7; Morgan Reece</td><td><span class="v ok">Resolves</span></td></tr>
+        <tr><td>Properties stated only in prose</td><td>Issue 8; Morgan's template</td><td><span class="v ok">Resolves</span></td></tr>
+        <tr><td>Whole system as unit of record</td><td>Lars Kersten Kroehl; Morgan Reece</td><td><span class="v ok">Resolves</span></td></tr>
+        <tr><td>Resolver as observer</td><td>Morgan Reece</td><td><span class="v ok">Resolves</span></td></tr>
+        <tr><td>Annex B on did:moltrust</td><td>Issue 9</td><td><span class="v ok">Resolves</span></td></tr>
+        <tr><td>Identity document as the only artefact</td><td>Issue 10</td><td><span class="v ok">Resolves</span></td></tr>
+        <tr><td>Identity read as authority</td><td>Raphael La Touche; Innocent Onyenonachi</td><td><span class="v ok">Resolves</span></td></tr>
+        <tr><td>Self-certifying identifiers</td><td>Issue 5</td><td><span class="v part">Partly</span></td></tr>
+        <tr><td>Comparability</td><td>Thanh Le; Kenne Ives; Amey Parle</td><td><span class="v part">Partly</span></td></tr>
+        <tr><td>Authority across delegation</td><td>Staford Titus S.</td><td><span class="v open">Open</span></td></tr>
+        <tr><td>Declared call against executed effect</td><td>Syed Anas Mohiuddin</td><td><span class="v open">Open</span></td></tr>
+        <tr><td>Activity outside the declared mandate</td><td>The chair (S1)</td><td><span class="v open">Open</span></td></tr>
+        <tr><td>Behaviour consistent with declarations</td><td>Use cases; no proposal yet</td><td><span class="v open">Open</span></td></tr>
+        <tr><td>Attribution across instances</td><td>Use cases; no proposal yet</td><td><span class="v open">Open</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Issues and pull requests</h2>
+    <div class="tw"><table class="wide">
+      <thead><tr><th>Item</th><th>From</th><th>Content</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://github.com/w3c-cg/aikr/issues/5">Issue 5</a></td><td>Agent Community</td><td>Answers to the six questions: DNS-anchored DIDs for long-lived agents, self-certifying keys for short-lived sub-agents, Merkle-chain anchoring, latency table, tiered fallback, ledger for audit anchoring only.</td><td>Open</td></tr>
+        <tr><td><a href="https://github.com/w3c-cg/aikr/issues/8">Issue 8</a></td><td>Ankur Chrungoo</td><td>Typed integrity and staleness attributes; PACELC and governance; tail amplification.</td><td>Open; contributor offers a PR</td></tr>
+        <tr><td><a href="https://github.com/w3c-cg/aikr/issues/9">Issue 9</a></td><td>Lars Kersten Kroehl</td><td>Correction to Annex B on <code>did:moltrust</code> resolution, with disclosure of interest.</td><td>Open</td></tr>
+        <tr><td><a href="https://github.com/w3c-cg/aikr/issues/10">Issue 10</a></td><td>Kenne Ives; comment by Amey Parle</td><td>Resolution properties for verdict evidence; comparison column; test vectors.</td><td>Open</td></tr>
+        <tr><td><a href="https://github.com/w3c-cg/aikr/pull/2">PR 2</a></td><td>Wolfgang Wimmer</td><td>Editor's note on <code>A2WF/intersection.md</code>; ODRL 2.2 date.</td><td>Open</td></tr>
+        <tr><td><a href="https://github.com/w3c-cg/aikr/pull/4">PR 4</a></td><td>Isaac Mao</td><td>Glossary terms marked as draft CG extensions.</td><td>Open</td></tr>
+        <tr><td><a href="https://github.com/w3c-cg/aikr/pull/6">PR 6</a></td><td>Agent Community</td><td>Editorial emphasis, DIF traits, checklist note.</td><td>Open; chair's questions posted</td></tr>
+        <tr><td><a href="https://github.com/w3c-cg/aikr/pull/7">PR 7</a></td><td>Isaac Mao</td><td>§3.1 on integrity and availability.</td><td>Open; chair's request for a source posted</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Route to a specification</h2>
+    <div class="prose"><p>The draft note stays as the motivating document on resolution dependency. The specification is a separate text built from the use cases, with every requirement traceable to one of them.</p></div>
+    <ol class="route">
+      <li><b>Fix the vocabulary.</b> Circulate tab 1 for comment and adopt it as the terms section. Contributors write in these terms from then on.</li>
+      <li><b>Close the note's open items.</b> Work through the open repository items with their authors and update the note.</li>
+      <li><b>Open the use-case register.</b> Publish I1 to I10 and S1 to S7 in the repository and invite additions in one format: what happened, what could not be relied on, why, and what the trust layer needs.</li>
+      <li><b>Assign property groups.</b> Ask contributors to take a group each, starting with the unaddressed ones (G and H), and to express each property as a named attribute with permitted values.</li>
+      <li><b>Draft the specification.</b> Sections: terms; artefact classes; property groups A to H; three-valued evaluation and policy on unknown; disclosure per verification path; conformance with test vectors tied to use cases.</li>
+      <li><b>Test against the register.</b> For each use case, show which properties a relying party would have needed and whether the draft lets it state them.</li>
+      <li><b>Set the consultation close.</b> The draft note still lists its closing date as to be announced. The weekly calls from 21 September are the place to agree it.</li>
+    </ol>
+  </section>
+</div>
+
+</main>
+
+<footer>
+  Sources: <a href="https://lists.w3.org/Archives/Public/public-aikr/2026Aug/0000.html">thread opening</a> and <a href="https://lists.w3.org/Archives/Public/public-aikr/2026Sep/thread.html">continuation</a> in the W3C public-agent-identity and public-aikr archives; IETF WIMSE archive; github.com/w3c-cg/aikr; W3C DID Extensions registry; incident reports linked in tab 2. Prepared by the Epistemic Systems Lab for the AIKR CG. Corrections via GitHub issue and a note to public-aikr.<br>
+  © Copyright Paola Di Maio, ESL Labs
+</footer>
+
+<script>
+(function(){
+  var tabs=[].slice.call(document.querySelectorAll('[role="tab"]'));
+  var panels=tabs.map(function(t){return document.getElementById(t.getAttribute('aria-controls'));});
+  function show(i,focus,push){
+    tabs.forEach(function(t,j){
+      var on=j===i;
+      t.setAttribute('aria-selected',on?'true':'false');
+      t.tabIndex=on?0:-1;
+      panels[j].hidden=!on;
+    });
+    if(focus)tabs[i].focus();
+    if(push){try{history.replaceState(null,'','#'+panels[i].id);}catch(e){}}
+  }
+  tabs.forEach(function(t,i){
+    t.addEventListener('click',function(){show(i,false,true);window.scrollTo({top:document.querySelector('.tabbar').offsetTop,behavior:'auto'});});
+    t.addEventListener('keydown',function(e){
+      var k=e.key,n=tabs.length,j=null;
+      if(k==='ArrowRight')j=(i+1)%n; else if(k==='ArrowLeft')j=(i-1+n)%n; else if(k==='Home')j=0; else if(k==='End')j=n-1;
+      if(j!==null){e.preventDefault();show(j,true,true);}
+    });
+  });
+  function fromHash(){
+    var h=(location.hash||'').slice(1); if(!h)return;
+    var target=document.getElementById(h); if(!target)return;
+    for(var i=0;i<panels.length;i++){
+      if(panels[i]===target||panels[i].contains(target)){
+        show(i,false,false);
+        if(target!==panels[i])setTimeout(function(){target.scrollIntoView();},0);
+        return;
+      }
+    }
+  }
+  window.addEventListener('hashchange',fromHash);
+  fromHash();
+})();
+</script>
+</body>
+</html>

@@ -113,6 +113,19 @@ ol.steps b{font-family:var(--sans);font-weight:600;display:block;margin-bottom:.
 .correction{border:1px solid var(--gold);background:var(--panel);padding:.7rem 1rem;margin:.8rem 0 0;max-width:46rem;font-size:.98rem}
 .correction b{font-family:var(--sans);font-weight:600}
 .krtdia{background:var(--panel);border:1px solid var(--rule);padding:1rem;margin:1rem 0}
+.filters{display:flex;flex-wrap:wrap;gap:.6rem 1.2rem;align-items:center;font-family:var(--sans);font-size:.9rem;margin:1.2rem 0 .4rem}
+.filters select,.filters button{font:inherit;padding:.3rem .5rem;border:1px solid var(--rule);background:var(--panel);color:var(--ink);border-radius:3px}
+.filters button{cursor:pointer}
+table.trace td{min-width:7rem}
+table.trace td:nth-child(2){min-width:7rem}
+table.trace td:nth-child(2) .v{white-space:normal;border-radius:4px}
+table.trace td:nth-child(3){min-width:15rem}
+table.trace td:nth-child(4){min-width:6.5rem}
+table.trace td:nth-child(6){min-width:13rem}
+table.trace td:nth-child(7){white-space:nowrap;min-width:3.5rem}
+table.trace tr[hidden]{display:none}
+code.wrap{white-space:normal}
+td.ucs a{margin-right:.25rem;white-space:nowrap}
 .src{font-family:var(--sans);font-size:.82rem;color:var(--muted);margin:.6rem 0 0}
 .src a{color:var(--muted)}
 pre.mini{font-size:.82rem;line-height:1.45;background:var(--panel);border:1px solid var(--rule);padding:.7rem .9rem;overflow-x:auto;margin:.5rem 0 .9rem}
@@ -181,8 +194,9 @@ footer{max-width:74rem;margin:0 auto;padding:2rem 1.5rem 3rem;border-top:1px sol
   <div class="inner" role="tablist">
     <button role="tab" id="t-vocab" aria-controls="vocab" aria-selected="true"><span>1</span>Shared vocabulary</button>
     <button role="tab" id="t-cases" aria-controls="cases" aria-selected="false" tabindex="-1"><span>2</span>Use cases</button>
-    <button role="tab" id="t-coverage" aria-controls="coverage" aria-selected="false" tabindex="-1"><span>3</span>Coverage</button>
-    <button role="tab" id="t-thread" aria-controls="thread" aria-selected="false" tabindex="-1"><span>4</span>Thread and work plan</button>
+    <button role="tab" id="t-trace" aria-controls="trace" aria-selected="false" tabindex="-1"><span>3</span>Trace</button>
+    <button role="tab" id="t-coverage" aria-controls="coverage" aria-selected="false" tabindex="-1"><span>4</span>Coverage</button>
+    <button role="tab" id="t-thread" aria-controls="thread" aria-selected="false" tabindex="-1"><span>5</span>Thread and work plan</button>
   </div>
 </nav>
 
@@ -524,6 +538,45 @@ B's policy      on UNKNOWN for this sector: refuse, or ask for a further attesta
   </section>
 </div>
 
+<!-- ============ TAB 3: TRACE ============ -->
+<div class="panel" id="trace" role="tabpanel" aria-labelledby="t-trace" hidden>
+  <div class="intro">
+    <h2>Trace</h2>
+    <p class="lede">Each row follows one weak point in the trust model from the person who raised it to the fix, the ontology term that records it, the use cases it protects and the test that shows it working.</p>
+    <p class="small">Read a row left to right. Pick a use case to see which weak points bear on it, or a status to see what still needs an owner.</p>
+  </div>
+  <div class="filters" role="group" aria-label="Filter the trace">
+    <label>Use case <select id="f-uc"><option value="">all</option><option value="I1">I1</option><option value="I2">I2</option><option value="I3">I3</option><option value="I4">I4</option><option value="I5">I5</option><option value="I6">I6</option><option value="I7">I7</option><option value="I8">I8</option><option value="I9">I9</option><option value="I10">I10</option><option value="S1">S1</option><option value="S2">S2</option><option value="S3">S3</option><option value="S4">S4</option><option value="S5">S5</option><option value="S6">S6</option><option value="S7">S7</option></select></label>
+    <label>Group <select id="f-g"><option value="">all</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option></select></label>
+    <label>Status <select id="f-s"><option value="">all</option><option value="ok">Agreed on list</option><option value="prop">Proposed</option><option value="gh">Open on GitHub</option><option value="gap">Gap: needs an owner</option></select></label>
+    <button type="button" id="f-reset">Clear</button>
+    <span id="f-count" class="small" aria-live="polite"></span>
+  </div>
+  <div class="tw"><table class="trace">
+    <thead><tr><th>Trace</th><th>Status</th><th>Weak point</th><th>Use cases</th><th>Raised by</th><th>Proposed fix</th><th>Group</th><th>KRT term and rule</th><th>Test</th></tr></thead>
+    <tbody>
+      <tr data-uc="I5 S3" data-g="A" data-s="prop"><td>T1</td><td><span class="v part">Proposed on list</span></td><td>Outages, delays and "who can make an agent disappear" are pinned on the substrate, though they depend on how verification fetches its data.</td><td class="ucs"><a href="#i5">I5</a> <a href="#s3">S3</a></td><td>Morgan Reece, <a href="https://mailarchive.ietf.org/arch/msg/wimse/i08QgArGrcAwFQ7kHFW6U9ZtRCA">WIMSE list</a></td><td>Record where trust material comes from and whether it is fetched on every check, per verification path, with a staleness bound.</td><td>A</td><td><code class="wrap">topology, coupling, stalenessBound</code></td><td><a href="#c1">C1</a></td></tr>
+      <tr data-uc="I3 I5 S6" data-g="A" data-s="gh"><td>T2</td><td><span class="v part">Open on GitHub</span></td><td>A compromised registry could swap an agent's keys, and the model cannot tell that apart from an outage.</td><td class="ucs"><a href="#i3">I3</a> <a href="#i5">I5</a> <a href="#s6">S6</a></td><td>Isaac Mao, <a href="https://github.com/w3c-cg/aikr/pull/7">PR 7</a></td><td>Mark each artefact as content-addressed or location-bound.</td><td>A</td><td><code class="wrap">integrityMode, contentHash</code></td><td><a href="#c2">C2</a></td></tr>
+      <tr data-uc="I5 S3" data-g="A" data-s="gh"><td>T3</td><td><span class="v part">Open on GitHub</span></td><td>Freshness and speed are described in prose, so two systems cannot be compared.</td><td class="ucs"><a href="#i5">I5</a> <a href="#s3">S3</a></td><td>Ankur Chrungoo, <a href="https://github.com/w3c-cg/aikr/issues/8">issue 8</a></td><td>Typed attributes: a staleness bound in time units, tail latency per chain.</td><td>A</td><td><code class="wrap">stalenessBound</code></td><td><a href="#c3">C3</a></td></tr>
+      <tr data-uc="S4" data-g="A" data-s="gh"><td>T4</td><td><span class="v part">Open on GitHub</span></td><td>Identifiers carrying their own key fit none of the three arrangements and cannot be revoked.</td><td class="ucs"><a href="#s4">S4</a></td><td>Agent Community, <a href="https://github.com/w3c-cg/aikr/issues/5">issue 5</a></td><td>Add "self-certifying" as a topology value and require a stated lifetime.</td><td>A</td><td><code class="wrap">SelfCertifying, validUntil</code></td><td><a href="#c4">C4</a></td></tr>
+      <tr data-uc="" data-g="A" data-s="gh"><td>T5</td><td><span class="v part">Open on GitHub</span></td><td>Annex B misdescribes how did:moltrust resolves.</td><td class="ucs"><span class="small">none in the register yet</span></td><td>Lars Kersten Kroehl, <a href="https://github.com/w3c-cg/aikr/issues/9">issue 9</a></td><td>Correct the annex; keep resolution and anchoring apart.</td><td>A</td><td><code class="wrap">topology, anchoredIn</code></td><td><a href="#c5">C5</a></td></tr>
+      <tr data-uc="I3 I8 S6" data-g="A, B" data-s="gh"><td>T6</td><td><span class="v part">Open on GitHub</span></td><td>Only identity documents are modelled, so a verdict about a tool can outlive changes to the tool.</td><td class="ucs"><a href="#i3">I3</a> <a href="#i8">I8</a> <a href="#s6">S6</a></td><td>Kenne Ives, <a href="https://github.com/w3c-cg/aikr/issues/10">issue 10</a></td><td>Treat evidence as artefacts bound to a content hash, with a validity window.</td><td>A, B</td><td><code class="wrap">Verdict, contentHash, validUntil</code></td><td><a href="#c6">C6</a></td></tr>
+      <tr data-uc="I2 I4 I6 S5" data-g="B" data-s="prop"><td>T7</td><td><span class="v part">Proposed on list</span></td><td>A verified identity is read as permission to act.</td><td class="ucs"><a href="#i2">I2</a> <a href="#i4">I4</a> <a href="#i6">I6</a> <a href="#s5">S5</a></td><td>Raphael La Touche, Innocent Onyenonachi, <a href="https://lists.w3.org/Archives/Public/public-aikr/2026Sep/thread.html">list</a></td><td>State what each artefact can prove.</td><td>B</td><td><code class="wrap">canProve, Proposition; rule R1</code></td><td><a href="#c7">C7</a></td></tr>
+      <tr data-uc="S6" data-g="C" data-s="ok"><td>T8</td><td><span class="v ok">Agreed on list</span></td><td>Two artefacts with identical bytes can refer to different things, and large numbers collide silently.</td><td class="ucs"><a href="#s6">S6</a></td><td>Thanh Le, Kenne Ives, Amey Parle, <a href="https://lists.w3.org/Archives/Public/public-aikr/2026Sep/0027.html">corrected on list</a></td><td>Mandatory string encoding for large identifiers, stated normalization, declared semantics.</td><td>C</td><td><code class="wrap">largeIntegersAsStrings, declaredSemantics; rule R11</code></td><td><a href="#c8">C8</a></td></tr>
+      <tr data-uc="I6 I9 S4 S5" data-g="D" data-s="prop"><td>T9</td><td><span class="v part">Proposed on list</span></td><td>Authority can widen, or survive revocation, as it passes along a delegation chain.</td><td class="ucs"><a href="#i6">I6</a> <a href="#i9">I9</a> <a href="#s4">S4</a> <a href="#s5">S5</a></td><td>Staford Titus S., <a href="https://lists.w3.org/Archives/Public/public-aikr/2026Sep/thread.html">list</a></td><td>Check scope at each hop and propagate revocation downstream.</td><td>D</td><td><code class="wrap">attenuationChecked, revocationPropagates</code></td><td><a href="#c9">C9</a></td></tr>
+      <tr data-uc="I1 I5" data-g="E" data-s="prop"><td>T10</td><td><span class="v part">Proposed on list</span></td><td>An attestation covers the call the agent declared while the server runs something else.</td><td class="ucs"><a href="#i1">I1</a> <a href="#i5">I5</a></td><td>Syed Anas Mohiuddin, Amey Parle, <a href="https://lists.w3.org/Archives/Public/public-aikr/2026Sep/thread.html">list</a></td><td>State the binding point; take receipts from a component outside the agent.</td><td>E</td><td><code class="wrap">bindingPoint, producedBy; rule R5</code></td><td><a href="#c10">C10</a></td></tr>
+      <tr data-uc="S1 I6" data-g="F" data-s="prop"><td>T11</td><td><span class="v part">Proposed by chair</span></td><td>A credential's silence is read as "nothing else to know" about its subject.</td><td class="ucs"><a href="#s1">S1</a> <a href="#i6">I6</a></td><td>The chair, use case S1</td><td>State what the issuer checked, let subjects sign declarations, and evaluate to yes, no or unknown.</td><td>F</td><td><code class="wrap">completeness, controlDisclosure, onUnknown; rule R10</code></td><td><a href="#s1">S1</a></td></tr>
+      <tr data-uc="I1 I8 S2 S7" data-g="G" data-s="gap"><td>T12</td><td><span class="v open">Gap: needs an owner</span></td><td>Declared policies have no named enforcer, and stop commands can be lost.</td><td class="ucs"><a href="#i1">I1</a> <a href="#i8">I8</a> <a href="#s2">S2</a> <a href="#s7">S7</a></td><td>Use cases; no contributor yet</td><td>Name the enforcement point of every policy; test the stop channel.</td><td>G</td><td><code class="wrap">enforcedAt, stopChannel; rule R6</code></td><td><span class="small">to write</span></td></tr>
+      <tr data-uc="I9 I10 S3" data-g="G" data-s="gap"><td>T13</td><td><span class="v open">Gap: needs an owner</span></td><td>Sandbox and network claims come from configuration files.</td><td class="ucs"><a href="#i9">I9</a> <a href="#i10">I10</a> <a href="#s3">S3</a></td><td>Use cases; no contributor yet</td><td>Environment claims attested by the infrastructure, dated.</td><td>G</td><td><code class="wrap">EnvironmentAttestation; rule R9</code></td><td><span class="small">to write</span></td></tr>
+      <tr data-uc="I7 I9 S4" data-g="H" data-s="gap"><td>T14</td><td><span class="v open">Gap: needs an owner</span></td><td>Actions cannot be traced to the instance or operator behind them.</td><td class="ucs"><a href="#i7">I7</a> <a href="#i9">I9</a> <a href="#s4">S4</a></td><td>Use cases; no contributor yet</td><td>Instance identifiers and an operator of record on every receipt.</td><td>H</td><td><code class="wrap">AgentInstance, operatorOfRecord; rule R8</code></td><td><span class="small">to write</span></td></tr>
+      <tr data-uc="I5 I6 S2" data-g="D, G" data-s="prop"><td>T15</td><td><span class="v part">Proposed in KRT</span></td><td>Instructions found in content get treated as authorised, and irreversible actions proceed on weak evidence.</td><td class="ucs"><a href="#i5">I5</a> <a href="#i6">I6</a> <a href="#s2">S2</a></td><td><a href="https://w3c-cg.github.io/aikr/trust/krt.html">KRT skeleton</a></td><td>Record instruction provenance and reversibility; require independent evidence for irreversible actions.</td><td>D, G</td><td><code class="wrap">instructionProvenance, reversibility; rules R2, R4</code></td><td><span class="small">to write</span></td></tr>
+      <tr data-uc="" data-g="A, G" data-s="prop"><td>T16</td><td><span class="v part">Proposed in KRT</span></td><td>Revoking access leaves copies and summaries usable.</td><td class="ucs"><span class="small">none in the register yet</span></td><td><a href="https://w3c-cg.github.io/aikr/trust/krt.html">KRT skeleton</a></td><td>A revocation states which derived data it reaches and its staleness bound.</td><td>A, G</td><td><code class="wrap">Revocation, coversDerivedData; rule R7</code></td><td><span class="small">to write</span></td></tr>
+    </tbody>
+  </table></div>
+  <p id="f-gapnote" class="small" hidden></p>
+  <div class="prose small"><p>Groups: A resolution and integrity, B proposition, C comparison, D authority continuity, E binding point, F coverage and disclosure, G enforcement and oversight, H instance and attribution. Rules R1 to R11 are defined on the <a href="https://w3c-cg.github.io/aikr/trust/krt.html">KRT page</a>. Tests C1 to C10 are the worked cases in tab 4; S1 is in tab 2.</p></div>
+</div>
+
 <!-- ============ TAB 3 ============ -->
 <div class="panel" id="coverage" role="tabpanel" aria-labelledby="t-coverage" hidden>
   <div class="intro">
@@ -534,7 +587,7 @@ B's policy      on UNKNOWN for this sector: refuse, or ask for a further attesta
   <section>
     <h2>Use cases against property groups</h2>
     <div class="prose">
-      <p>Groups A to F come from the thread (tab 4). Groups G and H, shaded, are needed by the use cases and have no proposal yet.</p>
+      <p>Groups A to F come from the thread (tab 5). Tab 3 traces each weak point row by row. Groups G and H, shaded, are needed by the use cases and have no proposal yet.</p>
       <p class="small"><span class="m y">Covers</span> a thread proposal addresses the failure &nbsp; <span class="m p">Partly</span> it helps with part of it &nbsp; <span class="m g">Gap</span> a property is needed and nobody has proposed one &nbsp; <span class="m n">&ndash;</span> not relevant</p>
     </div>
     <div class="tw"><table class="matrix">
@@ -903,6 +956,29 @@ B's policy      on UNKNOWN for this sector: refuse, or ask for a further attesta
   }
   window.addEventListener('hashchange',fromHash);
   fromHash();
+})();
+
+(function(){
+  var fu=document.getElementById('f-uc'),fg=document.getElementById('f-g'),fs=document.getElementById('f-s');
+  if(!fu)return;
+  var rows=[].slice.call(document.querySelectorAll('table.trace tbody tr'));
+  var cnt=document.getElementById('f-count'),note=document.getElementById('f-gapnote');
+  function apply(){
+    var u=fu.value,g=fg.value,st=fs.value,n=0;
+    rows.forEach(function(r){
+      var ok=(!u||(' '+r.dataset.uc+' ').indexOf(' '+u+' ')>-1)&&(!g||r.dataset.g.split(', ').indexOf(g)>-1)&&(!st||r.dataset.s===st);
+      r.hidden=!ok; if(ok)n++;
+    });
+    cnt.textContent=n+' of '+rows.length+' rows';
+    if(u){
+      var gaps=rows.filter(function(r){return !r.hidden&&r.dataset.s==='gap';}).length;
+      note.hidden=false;
+      note.textContent=n===0?('No weak point in the trace is linked to '+u+' yet.'):(u+': '+n+' weak point'+(n>1?'s':'')+' apply, '+gaps+' still without an owner.');
+    } else note.hidden=true;
+  }
+  [fu,fg,fs].forEach(function(x){x.addEventListener('change',apply);});
+  document.getElementById('f-reset').addEventListener('click',function(){fu.value='';fg.value='';fs.value='';apply();});
+  apply();
 })();
 </script>
 </body>

@@ -1,0 +1,153 @@
+# KR for Trust Ontology (KRT), validation shapes v0.1, DRAFT
+# Each shape expresses one design rule derived from case work.
+# R11 added 17 September 2026 after discussion on public-aikr.
+# (c) Paola Di Maio, ESL Labs. Contributed to the W3C AIKR CG.
+
+@prefix krt:  <https://w3c-cg.github.io/aikr/trust/krt#> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+krt:shapes-prefixes
+    sh:declare [ sh:prefix "krt" ; sh:namespace "https://w3c-cg.github.io/aikr/trust/krt#"^^xsd:anyURI ] .
+
+# R0 A decision record is complete
+krt:DecisionShape a sh:NodeShape ;
+    sh:targetClass krt:TrustDecision ;
+    rdfs:label "R0 decision record is complete" ;
+    sh:property [ sh:path krt:relyingParty ; sh:minCount 1 ; sh:message "R0: name the relying party." ] ;
+    sh:property [ sh:path krt:proposition ; sh:minCount 1 ; sh:message "R0: state the proposition being decided." ] ;
+    sh:property [ sh:path krt:forAction ; sh:minCount 1 ; sh:message "R0: state the action the decision is for." ] ;
+    sh:property [ sh:path krt:outcome ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( krt:Yes krt:No krt:Unknown ) ;
+                  sh:message "R0: exactly one outcome: yes, no or unknown." ] ;
+    sh:property [ sh:path krt:appliesPolicy ; sh:minCount 1 ; sh:message "R0: name the policy applied." ] .
+
+# R1 A channel is not evidence: a positive decision cites at least one artefact
+krt:EvidenceShape a sh:NodeShape ;
+    sh:targetClass krt:TrustDecision ;
+    rdfs:label "R1 presentation proves nothing" ;
+    sh:sparql [
+        sh:message "R1: a yes outcome must cite at least one artefact; the channel alone establishes nothing." ;
+        sh:prefixes krt:shapes-prefixes ;
+        sh:select """SELECT $this WHERE {
+            $this krt:outcome krt:Yes .
+            FILTER NOT EXISTS { $this krt:usesEvidence ?e }
+        }""" ] .
+
+# R2 Content with no principal carries no authority
+krt:InstructionAuthorityShape a sh:NodeShape ;
+    sh:targetClass krt:TrustDecision ;
+    rdfs:label "R2 instructions carry their principal's authority" ;
+    sh:sparql [
+        sh:message "R2: authority cannot be affirmed for an action requested by content with no principal." ;
+        sh:prefixes krt:shapes-prefixes ;
+        sh:select """SELECT $this WHERE {
+            $this krt:proposition krt:AuthorityToAct ; krt:outcome krt:Yes ; krt:forAction ?a .
+            ?a krt:requestedBy ?i .
+            ?i krt:instructionProvenance krt:UnattributedContent .
+        }""" ] .
+
+# R3 Actions touching third parties need their authority checked
+krt:ThirdPartyShape a sh:NodeShape ;
+    sh:targetClass krt:Action ;
+    rdfs:label "R3 requester and third-party authority are separate" ;
+    sh:sparql [
+        sh:severity sh:Warning ;
+        sh:message "R3: this action affects a third party; record a decision on authority over that party." ;
+        sh:prefixes krt:shapes-prefixes ;
+        sh:select """SELECT $this WHERE {
+            $this krt:affects ?p .
+            FILTER NOT EXISTS { ?d krt:forAction $this ; krt:subject ?p ; krt:proposition krt:AuthorityToAct }
+        }""" ] .
+
+# R4 Irreversible actions need third-party attested evidence
+krt:IrreversibleShape a sh:NodeShape ;
+    sh:targetClass krt:TrustDecision ;
+    rdfs:label "R4 gate by reversibility" ;
+    sh:sparql [
+        sh:message "R4: a yes outcome for an irreversible action needs evidence attested by a party other than the subject." ;
+        sh:prefixes krt:shapes-prefixes ;
+        sh:select """SELECT $this WHERE {
+            $this krt:outcome krt:Yes ; krt:forAction ?a .
+            ?a krt:reversibility krt:Irreversible .
+            FILTER NOT EXISTS { $this krt:usesEvidence ?e . ?e krt:attestationMode krt:ThirdPartyAttested }
+        }""" ] .
+
+# R5 Self-reports are not receipts
+krt:ReceiptShape a sh:NodeShape ;
+    sh:targetClass krt:TrustDecision ;
+    rdfs:label "R5 self-reports are claims" ;
+    sh:sparql [
+        sh:message "R5: that an action occurred cannot be affirmed from receipts the acting party produced itself." ;
+        sh:prefixes krt:shapes-prefixes ;
+        sh:select """SELECT $this WHERE {
+            $this krt:proposition krt:ActionOccurred ; krt:outcome krt:Yes ; krt:forAction ?a .
+            ?a krt:performedBy ?actor .
+            FILTER NOT EXISTS { $this krt:usesEvidence ?r . ?r a krt:Receipt ; krt:producedBy ?p . FILTER (?p != ?actor) }
+        }""" ] .
+
+# R6 Every declared policy names where it is enforced
+krt:PolicyShape a sh:NodeShape ;
+    sh:targetClass krt:DeclaredPolicy ;
+    rdfs:label "R6 policies live outside the context window" ;
+    sh:property [ sh:path krt:enforcedAt ; sh:minCount 1 ; sh:message "R6: name the enforcement point for this policy." ] .
+
+krt:EnforcementPointShape a sh:NodeShape ;
+    sh:targetClass krt:EnforcementPoint ;
+    sh:property [ sh:path krt:location ; sh:minCount 1 ;
+                  sh:in ( krt:InsideAgent krt:Platform krt:ActedOnSystem krt:IndependentComponent ) ;
+                  sh:message "R6: state where the enforcement point is." ] .
+
+# R7 Revocation states what it reaches
+krt:RevocationShape a sh:NodeShape ;
+    sh:targetClass krt:Revocation ;
+    rdfs:label "R7 revocation reaches copies" ;
+    sh:property [ sh:path krt:coversDerivedData ; sh:minCount 1 ; sh:message "R7: state which copies, indexes and summaries the revocation covers." ] ;
+    sh:property [ sh:path krt:stalenessBound ; sh:minCount 1 ; sh:datatype xsd:duration ; sh:message "R7: state the staleness bound." ] .
+
+# R8 Acting instances have an operator of record
+krt:InstanceShape a sh:NodeShape ;
+    sh:targetClass krt:AgentInstance ;
+    rdfs:label "R8 no operator of record, no public action" ;
+    sh:property [ sh:path krt:instanceOf ; sh:minCount 1 ; sh:message "R8: link the instance to its agent." ] ;
+    sh:property [ sh:path krt:operatorOfRecord ; sh:minCount 1 ; sh:message "R8: name the operator of record." ] .
+
+# R9 Environment claims come from infrastructure
+krt:EnvironmentShape a sh:NodeShape ;
+    sh:targetClass krt:EnvironmentAttestation ;
+    rdfs:label "R9 environment attested by infrastructure" ;
+    sh:property [ sh:path krt:attestationMode ; sh:hasValue krt:ThirdPartyAttested ;
+                  sh:severity sh:Warning ; sh:message "R9: environment claims made only by the operator are weak evidence." ] ;
+    sh:property [ sh:path krt:validFrom ; sh:minCount 1 ; sh:message "R9: date the environment attestation." ] .
+
+# R10 Control disclosure is explicit
+krt:ControlShape a sh:NodeShape ;
+    sh:targetClass krt:Credential ;
+    rdfs:label "R10 presenting subject and controlling principal" ;
+    sh:property [ sh:path krt:completeness ; sh:minCount 1 ; sh:message "R10: state whether completeness is attested." ] ;
+    sh:property [ sh:path krt:controlDisclosure ; sh:minCount 1 ;
+                  sh:in ( krt:Disclosed krt:NotDisclosed krt:CannotDisclose ) ;
+                  sh:message "R10: state disclosure of the controlling principal." ] .
+
+# R11 Artefacts compared by canonical form are safe to compare
+krt:ComparisonShape a sh:NodeShape ;
+    sh:targetSubjectsOf krt:canonicalForm ;
+    rdfs:label "R11 comparison needs string-encoded large integers and declared semantics" ;
+    sh:property [ sh:path krt:largeIntegersAsStrings ; sh:hasValue true ;
+                  sh:message "R11: large identifiers must be carried as strings; numeric encoding can collide silently and fail open." ] ;
+    sh:property [ sh:path krt:unicodeNormalization ; sh:minCount 1 ;
+                  sh:message "R11: state the Unicode normalization form." ] ;
+    sh:property [ sh:path krt:declaredSemantics ; sh:minCount 1 ;
+                  sh:message "R11: declare units, namespace or schema; identical bytes can still mean different things." ] .
+
+# Delegations are checked for attenuation
+krt:DelegationShape a sh:NodeShape ;
+    sh:targetClass krt:Delegation ;
+    sh:property [ sh:path krt:derivedFrom ; sh:minCount 1 ; sh:message "D: link the delegation to its parent mandate." ] ;
+    sh:property [ sh:path krt:attenuationChecked ; sh:hasValue true ; sh:severity sh:Warning ;
+                  sh:message "D: check the delegation is no wider than its parent." ] .
+
+# A policy states what happens on unknown
+krt:TrustPolicyShape a sh:NodeShape ;
+    sh:targetClass krt:TrustPolicy ;
+    sh:property [ sh:path krt:onUnknown ; sh:minCount 1 ; sh:message "F: state what the relying party does when an outcome is unknown." ] .

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DRAFT: KR for Trust Ontology (KRT), skeleton v0.1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#16264a;--gold:#c9a13b;--gold-soft:#e3c878;--gold-ink:#8d6e1d;--page:#e5e3df;--panel:#eeede9;--ink:#1d1f24;--muted:#595b61;--rule:#c4c0b8;--bad:#8a2f2f;--bad-bg:#f0dddd;
+--serif:"Newsreader",Georgia,"Times New Roman",serif;--sans:"Archivo","Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--page:#1b1d21;--panel:#23262b;--ink:#e7e5e0;--muted:#a6a8ad;--rule:#3a3d44;--gold-ink:#d8b65a;--bad:#e59a9a;--bad-bg:#3a2224}}
+:root[data-theme="dark"]{--page:#1b1d21;--panel:#23262b;--ink:#e7e5e0;--muted:#a6a8ad;--rule:#3a3d44;--gold-ink:#d8b65a;--bad:#e59a9a;--bad-bg:#3a2224}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:var(--serif);font-size:1.08rem;line-height:1.6}
+a{color:inherit;text-decoration-color:var(--gold);text-decoration-thickness:2px;text-underline-offset:3px}
+a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+svg{max-width:100%}
+.draft{background:var(--gold);color:#16264a;font-family:var(--sans)}
+.draft .inner{max-width:70rem;margin:0 auto;padding:.8rem 1.5rem;display:flex;flex-wrap:wrap;gap:.3rem 1.2rem;align-items:baseline}
+.draft strong{font-size:1.15rem;letter-spacing:.06em}
+.draft p{margin:0;flex:1 1 30rem;font-size:.95rem}
+.draft .links{flex-basis:100%;font-weight:600}
+.draft a{text-decoration-color:#16264a}
+.banner{background:var(--navy);color:var(--gold);position:relative;overflow:hidden}
+.banner .inner{max-width:70rem;margin:0 auto;padding:2.6rem 1.5rem 2.2rem;position:relative;z-index:1}
+.banner .org{font-family:var(--sans);font-size:.86rem;color:var(--gold-soft);margin:0 0 1.1rem}
+.banner h1{font-weight:500;font-size:clamp(1.9rem,4vw,2.9rem);line-height:1.08;margin:0;max-width:20ch}
+.banner .sub{font-style:italic;color:#e9dcb4;margin:.8rem 0 0;max-width:46ch}
+.banner svg.rings{position:absolute;right:-7rem;top:50%;transform:translateY(-50%);width:30rem;height:30rem;opacity:.45}
+@media (max-width:640px){.banner svg.rings{right:-15rem;opacity:.25}}
+main{max-width:70rem;margin:0 auto;padding:0 1.5rem 4rem}
+section{margin-top:3rem}
+h2{font-weight:500;font-size:clamp(1.4rem,2.3vw,1.8rem);line-height:1.15;margin:0 0 .9rem;padding-top:.8rem;border-top:3px solid var(--navy)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) h2{border-top-color:var(--gold)}}
+:root[data-theme="dark"] h2{border-top-color:var(--gold)}
+.prose{max-width:44rem}.prose p{margin:0 0 1rem}
+.lede{font-size:1.18rem;line-height:1.5}
+.provenance{border-left:4px solid var(--gold);background:var(--panel);padding:1rem 1.2rem;max-width:44rem;margin:1.2rem 0 0;font-size:1rem}
+.provenance b{font-family:var(--sans);font-weight:600}
+.tw{overflow-x:auto;margin:1rem 0;border-top:2px solid var(--ink)}
+table{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:.88rem;line-height:1.45}
+th{text-align:left;font-weight:600;padding:.55rem .7rem;border-bottom:1px solid var(--ink);vertical-align:bottom}
+td{padding:.55rem .7rem;border-bottom:1px solid var(--rule);vertical-align:top}
+td:first-child{font-weight:600;white-space:nowrap}
+code{font-family:var(--mono);font-size:.84em;background:var(--panel);padding:.05em .3em;border-radius:3px}
+td code{white-space:nowrap}
+.classes{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));border-top:2px solid var(--ink);margin-top:1rem}
+.classes div{padding:.8rem 1rem 1rem 0;font-family:var(--sans);font-size:.9rem}
+.classes h3{font-family:var(--sans);font-size:.8rem;font-weight:600;color:var(--gold-ink);margin:0 0 .45rem}
+.classes ul{list-style:none;margin:0;padding:0}
+.classes li{padding:.18rem 0;border-bottom:1px solid var(--rule)}
+.classes li.sub{padding-left:1.1rem;color:var(--muted)}
+.diagram{background:var(--panel);border:1px solid var(--rule);padding:1rem;margin:1rem 0}
+pre{font-family:var(--mono);font-size:.8rem;line-height:1.5;background:var(--panel);border:1px solid var(--rule);padding:.8rem 1rem;overflow-x:auto;margin:.6rem 0}
+.fail{color:var(--bad);background:var(--bad-bg);padding:.05em .35em;border-radius:3px}
+.files{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:0;border-top:2px solid var(--ink);margin-top:1rem}
+.files a{display:block;padding:.9rem 1rem .9rem 0;border-bottom:1px solid var(--rule);text-decoration:none;font-family:var(--sans)}
+.files a b{display:block;font-weight:600}
+.files a span{font-size:.85rem;color:var(--muted)}
+.files a:hover b{text-decoration:underline;text-decoration-color:var(--gold)}
+ol.q{max-width:44rem;padding-left:1.3rem}
+ol.q li{margin:0 0 .5rem}
+footer{max-width:70rem;margin:0 auto;padding:1.8rem 1.5rem 3rem;border-top:1px solid var(--rule);font-family:var(--sans);font-size:.84rem;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<div class="draft" role="note"><div class="inner">
+  <strong>DRAFT</strong>
+  <p>Skeleton proposed for discussion at weekly AIKR CG calls starting Monday 21 September 2026. Nothing here has been agreed by the group.</p>
+  <p class="links">Main, ongoing: <a href="https://github.com/w3c-cg/aikr/tree/main/trust">AIKR CG trust folder on GitHub</a>. Thread: <a href="https://lists.w3.org/Archives/Public/public-aikr/2026Aug/0000.html">public-aikr, opened 3 August 2026 and ongoing</a>. Companion: <a href="https://w3c-cg.github.io/aikr/trust/trust-layer-thread-summary.html">vocabulary and thread summary</a>.</p>
+</div></div>
+
+<header class="banner">
+  <svg class="rings" viewBox="0 0 400 400" aria-hidden="true"><g fill="none" stroke="#c9a13b">
+    <circle cx="200" cy="200" r="190"/><circle cx="200" cy="200" r="160" stroke-width="6" stroke-dasharray="2 10"/>
+    <circle cx="200" cy="200" r="128"/><circle cx="200" cy="200" r="98" stroke-width="14" opacity=".35"/>
+    <circle cx="200" cy="200" r="64"/><circle cx="200" cy="200" r="30" stroke-width="3"/><circle cx="262" cy="112" r="46"/></g></svg>
+  <div class="inner">
+    <p class="org">W3C AI Knowledge Representation Community Group, prepared with the Epistemic Systems Lab</p>
+    <h1>KR for Trust Ontology (KRT)</h1>
+    <p class="sub">Skeleton v0.1. Classes, properties, controlled values and validation rules for recording trust decisions involving AI agents.</p>
+  </div>
+</header>
+
+<main>
+  <section>
+    <h2>What the skeleton does</h2>
+    <div class="prose">
+      <p class="lede">KRT records a trust decision: a relying party's judgement about one proposition, for one action, at one time.</p>
+      <p>The record names who presented a claim and through which channel, on whose authority, with what evidence, for an action of what reversibility, enforced where, with an outcome of yes, no or unknown and a stated policy for unknown. A relying party, an auditor or a regulator can then see which part of a decision rested on something nobody checked.</p>
+      <p>The vocabulary follows the property groups A to H developed in the trust thread and uses the terms of the companion glossary.</p>
+    </div>
+    <div class="provenance">
+      <b>Provenance.</b> The skeleton was derived from case work: structured analysis by the Epistemic Systems Lab of documented incidents involving AI agents, read against the contributions to the AIKR CG trust thread. Each design rule below corresponds to a failure pattern found in that analysis. The case material itself is not reproduced here.
+    </div>
+  </section>
+
+  <section>
+    <h2>Core pattern</h2>
+    <div class="diagram">
+      <svg viewBox="0 0 760 300" role="img" aria-label="A trust decision links a relying party, a subject, a proposition, an action, evidence, a channel, a policy and an outcome">
+        <g font-family="Archivo, sans-serif" font-size="13" text-anchor="middle">
+          <g stroke="#8d6e1d" stroke-width="1.3" fill="none">
+            <path d="M380 150L130 60M380 150L130 150M380 150L130 240M380 150L630 60M380 150L630 150M380 150L630 240M380 150L380 40M380 150L380 262"/>
+          </g>
+          <rect x="300" y="126" width="160" height="48" rx="4" fill="#16264a"/>
+          <text x="380" y="155" fill="#e3c878" font-weight="700">TrustDecision</text>
+          <g fill="#eeede9" stroke="#8d6e1d">
+            <rect x="50" y="42" width="160" height="36" rx="3"/><rect x="50" y="132" width="160" height="36" rx="3"/><rect x="50" y="222" width="160" height="36" rx="3"/>
+            <rect x="550" y="42" width="160" height="36" rx="3"/><rect x="550" y="132" width="160" height="36" rx="3"/><rect x="550" y="222" width="160" height="36" rx="3"/>
+            <rect x="310" y="8" width="140" height="34" rx="3"/><rect x="275" y="258" width="210" height="34" rx="3"/>
+          </g>
+          <g fill="#1d1f24">
+            <text x="130" y="65">RelyingParty</text><text x="130" y="155">Party (subject)</text><text x="130" y="245">Channel</text>
+            <text x="630" y="65">Proposition</text><text x="630" y="155">Action</text><text x="630" y="245">Artefact (evidence)</text>
+            <text x="380" y="30">TrustPolicy</text><text x="380" y="280">Outcome: yes | no | unknown</text>
+          </g>
+          <g fill="#595b61" font-size="11" stroke="#eeede9" stroke-width="5" paint-order="stroke" stroke-linejoin="round">
+            <text x="262" y="96">relyingParty</text><text x="245" y="144">subject</text><text x="222" y="206">presentedVia</text>
+            <text x="540" y="96">proposition</text><text x="515" y="144">forAction</text><text x="540" y="206">usesEvidence</text>
+            <text x="420" y="92">appliesPolicy</text><text x="415" y="226">outcome</text>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <section>
+    <h2>Classes</h2>
+    <div class="classes">
+      <div><h3>Decision</h3><ul><li>TrustDecision</li><li>Proposition</li><li>Outcome</li><li>TrustPolicy</li></ul></div>
+      <div><h3>Parties</h3><ul><li>Party</li><li class="sub">Principal</li><li class="sub">Agent</li><li class="sub">AgentInstance</li><li class="sub">Operator</li><li class="sub">RelyingParty</li><li class="sub">Issuer</li></ul></div>
+      <div><h3>Artefacts</h3><ul><li>Artefact</li><li class="sub">IdentityDocument</li><li class="sub">Credential</li><li class="sub">Mandate, Delegation</li><li class="sub">Declaration</li><li class="sub">Verdict</li><li class="sub">Receipt</li><li class="sub">AccountabilityRecord</li><li class="sub">Revocation</li><li class="sub">EnvironmentAttestation</li><li class="sub">AgentConfiguration</li></ul></div>
+      <div><h3>Activity and control</h3><ul><li>Action</li><li>Instruction</li><li>DeclaredPolicy</li><li>EnforcementPoint</li><li>Channel</li><li>VerificationPath</li></ul></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Properties by group</h2>
+    <div class="tw"><table>
+      <thead><tr><th>Group</th><th>Properties</th><th>Controlled values</th></tr></thead>
+      <tbody>
+        <tr><td>Decision</td><td><code>relyingParty</code> <code>subject</code> <code>proposition</code> <code>forAction</code> <code>presentedVia</code> <code>usesEvidence</code> <code>outcome</code> <code>appliesPolicy</code> <code>onUnknown</code> <code>actionTaken</code> <code>decidedAt</code></td><td>Outcome: yes, no, unknown. Propositions: key control, authority to act, action occurred, responsibility, controlling principal known, containment holds, artefact integrity.</td></tr>
+        <tr><td>A. Resolution and integrity</td><td><code>viaPath</code> <code>topology</code> <code>coupling</code> <code>integrityMode</code> <code>stalenessBound</code> <code>governedBy</code> <code>observableBy</code> <code>contentHash</code> <code>anchoredIn</code></td><td>Topology: ledger, operator domain, third-party registry, self-certifying. Coupling: coupled, decoupled. Integrity: content-addressed, location-bound.</td></tr>
+        <tr><td>B. Proposition and attestation</td><td><code>issuedBy</code> <code>about</code> <code>canProve</code> <code>attestationMode</code> <code>validFrom</code> <code>validUntil</code></td><td>Self-asserted, third-party attested.</td></tr>
+        <tr><td>C. Comparison</td><td><code>canonicalForm</code> <code>unicodeNormalization</code> <code>largeIntegersAsStrings</code> <code>declaredSemantics</code></td><td></td></tr>
+        <tr><td>D. Authority continuity</td><td><code>grantedBy</code> <code>grantedTo</code> <code>derivedFrom</code> <code>scope</code> <code>valueLimit</code> <code>currency</code> <code>attenuationChecked</code> <code>revocationPropagates</code> <code>underMandate</code></td><td></td></tr>
+        <tr><td>E. Binding point</td><td><code>bindingPoint</code> <code>producedBy</code></td><td>Declared call, request as sent, observed effect.</td></tr>
+        <tr><td>F. Coverage and disclosure</td><td><code>vouchesFor</code> <code>claimSource</code> <code>completeness</code> <code>presentingSubject</code> <code>controllingPrincipal</code> <code>controlDisclosure</code> <code>declaresNoActivityIn</code></td><td>Completeness attested or not. Disclosure: disclosed, unknown, cannot disclose.</td></tr>
+        <tr><td>G. Enforcement and oversight</td><td><code>declaresPolicy</code> <code>rule</code> <code>enforcedAt</code> <code>location</code> <code>enforcer</code> <code>enforcementEvidence</code> <code>monitoringCoverage</code> <code>stopChannel</code> <code>stopChannelTested</code> <code>environment</code> <code>networkReach</code> <code>configuration</code></td><td>Location: inside the agent, platform, system acted on, independent component. Monitoring: none, partial, full.</td></tr>
+        <tr><td>H. Instance and attribution</td><td><code>instanceOf</code> <code>onBehalfOf</code> <code>operatorOfRecord</code> <code>performedBy</code> <code>coordinationChannel</code> <code>authorship</code></td><td>Authorship: agent instance, person using agent credentials, unknown.</td></tr>
+        <tr><td>Actions and instructions</td><td><code>reversibility</code> <code>affects</code> <code>requestedBy</code> <code>instructionProvenance</code> <code>issuingPrincipal</code> <code>revokes</code> <code>coversDerivedData</code></td><td>Reversible, compensable, irreversible. Provenance: signed by a mandate holder, authenticated principal session, content with no principal.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Design rules</h2>
+    <div class="prose"><p>Each rule is expressed as a SHACL shape in <code>krt-shapes.ttl</code>, so a set of decision records can be checked mechanically.</p></div>
+    <div class="tw"><table>
+      <thead><tr><th>Rule</th><th>Statement</th><th>Shape</th></tr></thead>
+      <tbody>
+        <tr><td>R0</td><td>A decision record names relying party, proposition, action, one outcome and the policy applied.</td><td><code>DecisionShape</code></td></tr>
+        <tr><td>R1</td><td>A channel establishes no identity. A yes outcome cites at least one artefact.</td><td><code>EvidenceShape</code></td></tr>
+        <tr><td>R2</td><td>Instructions carry their principal's authority. Content with no principal carries none.</td><td><code>InstructionAuthorityShape</code></td></tr>
+        <tr><td>R3</td><td>Authority over affected third parties is decided separately from the requester's.</td><td><code>ThirdPartyShape</code></td></tr>
+        <tr><td>R4</td><td>A yes outcome for an irreversible action needs evidence attested by someone other than the subject.</td><td><code>IrreversibleShape</code></td></tr>
+        <tr><td>R5</td><td>An agent's report of its own action is a claim. Receipts come from another component.</td><td><code>ReceiptShape</code></td></tr>
+        <tr><td>R6</td><td>Every declared policy names its enforcement point and where it sits.</td><td><code>PolicyShape</code></td></tr>
+        <tr><td>R7</td><td>A revocation states which copies it reaches and its staleness bound.</td><td><code>RevocationShape</code></td></tr>
+        <tr><td>R8</td><td>An acting instance is linked to its agent and an operator of record.</td><td><code>InstanceShape</code></td></tr>
+        <tr><td>R9</td><td>Environment claims are dated and preferably attested by infrastructure.</td><td><code>EnvironmentShape</code></td></tr>
+        <tr><td>R10</td><td>Credentials state their completeness and whether the controlling principal is disclosed.</td><td><code>ControlShape</code></td></tr>
+        <tr><td>R11</td><td>Artefacts compared by canonical form carry large identifiers as strings, state their Unicode normalization, and declare their semantics. Added after the correction <a href="https://lists.w3.org/Archives/Public/public-aikr/2026Sep/0027.html">posted on the list</a>.</td><td><code>ComparisonShape</code></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Example</h2>
+    <div class="prose"><p><code>krt-example.ttl</code> uses the reference scenario from the glossary: X, agents A and B, operator Y. Decision <code>d1</code> passes. Decision <code>d2</code> affirms authority for an irreversible transfer requested by unattributed content, citing only a self-asserted declaration.</p></div>
+<pre>ex:i2 a krt:Instruction ; krt:instructionProvenance krt:UnattributedContent .
+ex:transfer2 a krt:Action ; krt:requestedBy ex:i2 ; krt:performedBy ex:A-7 ;
+    krt:reversibility krt:Irreversible .
+ex:d2 a krt:TrustDecision ;
+    krt:relyingParty ex:B ; krt:subject ex:A-7 ;
+    krt:proposition krt:AuthorityToAct ; krt:forAction ex:transfer2 ;
+    krt:usesEvidence ex:selfNote ;          # self-asserted
+    krt:outcome krt:Yes ; krt:appliesPolicy ex:policyY .</pre>
+<pre>Validation (pySHACL, RDFS inference):  conforms = false
+<span class="fail">ex:d2  R2</span>  authority cannot be affirmed for an action requested by content with no principal
+<span class="fail">ex:d2  R4</span>  a yes outcome for an irreversible action needs evidence attested by a party other than the subject</pre>
+  </section>
+
+  <section>
+    <h2>Alignment</h2>
+    <div class="prose"><p>Parties specialise <code>prov:Agent</code>, artefacts <code>prov:Entity</code> and actions <code>prov:Activity</code>; <code>onBehalfOf</code> specialises <code>prov:actedOnBehalfOf</code>. Identity documents point to DID Core, credentials to the Verifiable Credentials Data Model 2.0, and mandates to ODRL. Controlled values are SKOS concepts, and rules are SHACL shapes.</p></div>
+  </section>
+
+  <section>
+    <h2>Questions for the calls</h2>
+    <ol class="q">
+      <li>Are the property groups A to H the right partition, and which group does each contributor take on?</li>
+      <li>Should mandates and declared policies reuse ODRL directly, with KRT adding only the enforcement properties?</li>
+      <li>Which rules are errors and which are warnings, and should R4 apply to compensable actions above a value limit?</li>
+      <li>How are "unknown" and "cannot disclose" handled where disclosure conflicts with privacy law or legal secrecy?</li>
+      <li>What test records should accompany each rule in a conformance suite?</li>
+      <li>Should the namespace be fixed now, or held until the vocabulary settles?</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Files</h2>
+    <div class="files">
+      <a href="https://w3c-cg.github.io/aikr/trust/krt.ttl"><b>krt.ttl</b><span>Ontology: classes, properties, controlled values</span></a>
+      <a href="https://w3c-cg.github.io/aikr/trust/krt-shapes.ttl"><b>krt-shapes.ttl</b><span>SHACL shapes for rules R0 to R11</span></a>
+      <a href="https://w3c-cg.github.io/aikr/trust/krt-example.ttl"><b>krt-example.ttl</b><span>Reference-scenario records, one passing, one failing</span></a>
+    </div>
+    <p class="small" style="font-family:var(--sans);font-size:.85rem;color:var(--muted)">Namespace (provisional): <code>https://w3c-cg.github.io/aikr/trust/krt#</code></p>
+  </section>
+</main>
+
+<footer>
+  KR for Trust Ontology, skeleton v0.1, draft for discussion. Contributed to the W3C AI Knowledge Representation Community Group under the W3C Community Contributor License Agreement. Derived from case work by the Epistemic Systems Lab, which employs software agents in its drafting workflows.<br>
+  © Copyright Paola Di Maio, ESL Labs
+</footer>
+</body>
+</html>

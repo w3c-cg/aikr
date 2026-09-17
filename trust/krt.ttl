@@ -1,0 +1,385 @@
+# KR for Trust Ontology (KRT), skeleton v0.1, DRAFT
+# W3C AI Knowledge Representation Community Group, trust work item
+# Derived from case work by the Epistemic Systems Lab (analysis of documented
+# incidents involving AI agents) and from the AIKR CG trust thread.
+# The case material is not reproduced here.
+# Contributed under the W3C Community Contributor License Agreement.
+# (c) Paola Di Maio, ESL Labs. ESL employs software agents in its drafting workflows.
+
+@prefix krt:  <https://w3c-cg.github.io/aikr/trust/krt#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+
+<https://w3c-cg.github.io/aikr/trust/krt>
+    a owl:Ontology ;
+    dct:title "KR for Trust Ontology (KRT)"@en ;
+    dct:description "Skeleton vocabulary for recording trust decisions involving AI agents: who presents a claim, on whose authority, with what evidence, for which action, enforced where, and with what outcome. Derived from case work on documented agent incidents and from the AIKR CG trust thread."@en ;
+    owl:versionInfo "0.1 draft for discussion" ;
+    dct:creator "Paola Di Maio, Epistemic Systems Lab (ESL Labs)" ;
+    dct:publisher "W3C AI Knowledge Representation Community Group" ;
+    rdfs:seeAlso <https://github.com/w3c-cg/aikr/tree/main/trust> ,
+                 <https://lists.w3.org/Archives/Public/public-aikr/2026Aug/0000.html> .
+
+#################################################################
+# Core: the trust decision
+#################################################################
+
+krt:TrustDecision a owl:Class ;
+    rdfs:label "Trust decision"@en ;
+    rdfs:comment "A relying party's decision about one proposition, for one action, at one time. The central record of the ontology."@en .
+
+krt:Proposition a owl:Class ;
+    rdfs:label "Proposition"@en ;
+    rdfs:comment "What a claim or artefact is capable of establishing, for example key control or authority to act."@en .
+
+krt:Outcome a owl:Class ;
+    rdfs:label "Outcome"@en ;
+    rdfs:comment "Result of evaluating a proposition: yes, no or unknown."@en .
+
+krt:TrustPolicy a owl:Class ;
+    rdfs:label "Trust policy"@en ;
+    rdfs:comment "A relying party's stated rule for acting on outcomes, including outcome unknown."@en .
+
+#################################################################
+# Parties
+#################################################################
+
+krt:Party a owl:Class ;
+    rdfs:subClassOf prov:Agent ;
+    rdfs:label "Party"@en ;
+    rdfs:comment "Any person, organisation or software agent that can hold a role in a trust decision."@en .
+
+krt:Principal a owl:Class ; rdfs:subClassOf krt:Party ;
+    rdfs:label "Principal"@en ;
+    rdfs:comment "The person or organisation whose authority an agent exercises."@en .
+
+krt:Agent a owl:Class ; rdfs:subClassOf krt:Party , prov:SoftwareAgent ;
+    rdfs:label "Agent"@en ;
+    rdfs:comment "Software acting on a principal's behalf with some autonomy."@en .
+
+krt:AgentInstance a owl:Class ; rdfs:subClassOf krt:Party , prov:SoftwareAgent ;
+    rdfs:label "Agent instance"@en ;
+    rdfs:comment "One running copy of an agent. Many instances may share one agent identity."@en .
+
+krt:Operator a owl:Class ; rdfs:subClassOf krt:Party ;
+    rdfs:label "Operator"@en ;
+    rdfs:comment "Whoever runs the infrastructure an agent executes on. May differ from the principal."@en .
+
+krt:RelyingParty a owl:Class ; rdfs:subClassOf krt:Party ;
+    rdfs:label "Relying party"@en ;
+    rdfs:comment "The party deciding whether to act on a claim."@en .
+
+krt:Issuer a owl:Class ; rdfs:subClassOf krt:Party ;
+    rdfs:label "Issuer"@en ;
+    rdfs:comment "The party that signs an artefact."@en .
+
+#################################################################
+# Artefacts
+#################################################################
+
+krt:Artefact a owl:Class ; rdfs:subClassOf prov:Entity ;
+    rdfs:label "Artefact"@en ;
+    rdfs:comment "A signed or hashed object a trust decision relies on."@en .
+
+krt:IdentityDocument a owl:Class ; rdfs:subClassOf krt:Artefact ;
+    rdfs:label "Identity document"@en ;
+    rdfs:comment "Document binding an identifier to verification keys, for example a DID document."@en ;
+    rdfs:seeAlso <https://www.w3.org/TR/did-core/> .
+
+krt:Credential a owl:Class ; rdfs:subClassOf krt:Artefact ;
+    rdfs:label "Credential"@en ;
+    rdfs:comment "A signed claim about a subject, for example a Verifiable Credential."@en ;
+    rdfs:seeAlso <https://www.w3.org/TR/vc-data-model-2.0/> .
+
+krt:Mandate a owl:Class ; rdfs:subClassOf krt:Artefact ;
+    rdfs:label "Mandate"@en ;
+    rdfs:comment "Scope of action a principal grants an agent: what, how much, until when."@en ;
+    rdfs:seeAlso <https://www.w3.org/TR/odrl-model/> .
+
+krt:Delegation a owl:Class ; rdfs:subClassOf krt:Mandate ;
+    rdfs:label "Delegation"@en ;
+    rdfs:comment "A mandate passed on, in whole or in part, to another agent or tool."@en .
+
+krt:Declaration a owl:Class ; rdfs:subClassOf krt:Artefact ;
+    rdfs:label "Declaration"@en ;
+    rdfs:comment "A statement a subject signs about itself, such as affiliations or activities it does not engage in."@en .
+
+krt:Verdict a owl:Class ; rdfs:subClassOf krt:Artefact ;
+    rdfs:label "Verdict"@en ;
+    rdfs:comment "A signed finding about something, for example that a tool was reviewed."@en .
+
+krt:Receipt a owl:Class ; rdfs:subClassOf krt:Artefact ;
+    rdfs:label "Receipt"@en ;
+    rdfs:comment "A signed record that an action happened."@en .
+
+krt:AccountabilityRecord a owl:Class ; rdfs:subClassOf krt:Artefact ;
+    rdfs:label "Accountability record"@en ;
+    rdfs:comment "States who answers for an action, legally or organisationally."@en .
+
+krt:Revocation a owl:Class ; rdfs:subClassOf krt:Artefact ;
+    rdfs:label "Revocation"@en ;
+    rdfs:comment "Withdrawal of an artefact, key or access, with the scope of what it covers."@en .
+
+krt:EnvironmentAttestation a owl:Class ; rdfs:subClassOf krt:Artefact ;
+    rdfs:label "Environment attestation"@en ;
+    rdfs:comment "A claim about where an agent runs and what it can reach."@en .
+
+krt:AgentConfiguration a owl:Class ; rdfs:subClassOf krt:Artefact ;
+    rdfs:label "Agent configuration"@en ;
+    rdfs:comment "Instructions, persistent memory and installed tools or skills that shape an agent's behaviour."@en .
+
+#################################################################
+# Actions, instructions, policies, channels, paths
+#################################################################
+
+krt:Action a owl:Class ; rdfs:subClassOf prov:Activity ;
+    rdfs:label "Action"@en ;
+    rdfs:comment "Something an agent does or is asked to do."@en .
+
+krt:Instruction a owl:Class ;
+    rdfs:label "Instruction"@en ;
+    rdfs:comment "A request for action, with a recorded provenance."@en .
+
+krt:DeclaredPolicy a owl:Class ;
+    rdfs:label "Declared policy"@en ;
+    rdfs:comment "A behaviour an agent or its operator claims the agent follows."@en .
+
+krt:EnforcementPoint a owl:Class ;
+    rdfs:label "Enforcement point"@en ;
+    rdfs:comment "The component that makes a declared policy or limit hold."@en .
+
+krt:Channel a owl:Class ;
+    rdfs:label "Channel"@en ;
+    rdfs:comment "The medium a claim or instruction arrives through: call, message, API, file, page."@en .
+
+krt:VerificationPath a owl:Class ;
+    rdfs:label "Verification path"@en ;
+    rdfs:comment "One route by which a relying party obtains and checks trust material. Properties are recorded per path."@en .
+
+#################################################################
+# Value vocabularies (SKOS)
+#################################################################
+
+krt:Value a owl:Class ; rdfs:subClassOf skos:Concept ;
+    rdfs:label "Controlled value"@en .
+
+# Outcomes
+krt:Yes a krt:Outcome ; rdfs:label "yes"@en .
+krt:No a krt:Outcome ; rdfs:label "no"@en .
+krt:Unknown a krt:Outcome ; rdfs:label "unknown"@en .
+
+# Propositions
+krt:PropositionScheme a skos:ConceptScheme ; rdfs:label "Propositions"@en .
+krt:KeyControl a krt:Proposition , skos:Concept ; skos:inScheme krt:PropositionScheme ; skos:prefLabel "controls the identifier's key"@en .
+krt:AuthorityToAct a krt:Proposition , skos:Concept ; skos:inScheme krt:PropositionScheme ; skos:prefLabel "is authorised for this action"@en .
+krt:ActionOccurred a krt:Proposition , skos:Concept ; skos:inScheme krt:PropositionScheme ; skos:prefLabel "the action took place as recorded"@en .
+krt:Responsibility a krt:Proposition , skos:Concept ; skos:inScheme krt:PropositionScheme ; skos:prefLabel "a named party answers for the action"@en .
+krt:ControllingPrincipalKnown a krt:Proposition , skos:Concept ; skos:inScheme krt:PropositionScheme ; skos:prefLabel "the controlling principal is known"@en .
+krt:ContainmentHolds a krt:Proposition , skos:Concept ; skos:inScheme krt:PropositionScheme ; skos:prefLabel "the agent runs within stated limits"@en .
+krt:ArtefactIntegrity a krt:Proposition , skos:Concept ; skos:inScheme krt:PropositionScheme ; skos:prefLabel "the artefact is the right version"@en .
+
+# Group A
+krt:ResolutionTopology a skos:ConceptScheme ; rdfs:label "Resolution topology"@en .
+krt:Ledger a krt:Value ; skos:inScheme krt:ResolutionTopology ; skos:prefLabel "distributed ledger"@en .
+krt:OperatorDomain a krt:Value ; skos:inScheme krt:ResolutionTopology ; skos:prefLabel "operator-controlled domain"@en .
+krt:ThirdPartyRegistry a krt:Value ; skos:inScheme krt:ResolutionTopology ; skos:prefLabel "third-party registry"@en .
+krt:SelfCertifying a krt:Value ; skos:inScheme krt:ResolutionTopology ; skos:prefLabel "self-certifying, no resolution"@en .
+
+krt:ResolutionCoupling a skos:ConceptScheme ; rdfs:label "Resolution coupling"@en .
+krt:Coupled a krt:Value ; skos:inScheme krt:ResolutionCoupling ; skos:prefLabel "resolved during each verification"@en .
+krt:Decoupled a krt:Value ; skos:inScheme krt:ResolutionCoupling ; skos:prefLabel "verified from conveyed or cached material"@en .
+
+krt:IntegrityMode a skos:ConceptScheme ; rdfs:label "Integrity mode"@en .
+krt:ContentAddressed a krt:Value ; skos:inScheme krt:IntegrityMode ; skos:prefLabel "content-addressed"@en .
+krt:LocationBound a krt:Value ; skos:inScheme krt:IntegrityMode ; skos:prefLabel "location-bound"@en .
+
+# Group B
+krt:AttestationMode a skos:ConceptScheme ; rdfs:label "Attestation mode"@en .
+krt:SelfAsserted a krt:Value ; skos:inScheme krt:AttestationMode ; skos:prefLabel "self-asserted"@en .
+krt:ThirdPartyAttested a krt:Value ; skos:inScheme krt:AttestationMode ; skos:prefLabel "third-party attested"@en .
+
+# Group E
+krt:BindingPoint a skos:ConceptScheme ; rdfs:label "Binding point"@en .
+krt:DeclaredCall a krt:Value ; skos:inScheme krt:BindingPoint ; skos:prefLabel "declared call"@en .
+krt:RequestAsSent a krt:Value ; skos:inScheme krt:BindingPoint ; skos:prefLabel "request as sent"@en .
+krt:ObservedEffect a krt:Value ; skos:inScheme krt:BindingPoint ; skos:prefLabel "observed effect"@en .
+
+# Group F
+krt:DisclosureStatus a skos:ConceptScheme ; rdfs:label "Disclosure status"@en .
+krt:Disclosed a krt:Value ; skos:inScheme krt:DisclosureStatus ; skos:prefLabel "disclosed"@en .
+krt:NotDisclosed a krt:Value ; skos:inScheme krt:DisclosureStatus ; skos:prefLabel "unknown"@en .
+krt:CannotDisclose a krt:Value ; skos:inScheme krt:DisclosureStatus ; skos:prefLabel "cannot disclose"@en .
+
+krt:Completeness a skos:ConceptScheme ; rdfs:label "Completeness"@en .
+krt:CompletenessAttested a krt:Value ; skos:inScheme krt:Completeness ; skos:prefLabel "completeness attested"@en .
+krt:CompletenessNotAttested a krt:Value ; skos:inScheme krt:Completeness ; skos:prefLabel "completeness not attested"@en .
+
+# Group G
+krt:EnforcementLocation a skos:ConceptScheme ; rdfs:label "Enforcement location"@en .
+krt:InsideAgent a krt:Value ; skos:inScheme krt:EnforcementLocation ; skos:prefLabel "inside the agent"@en .
+krt:Platform a krt:Value ; skos:inScheme krt:EnforcementLocation ; skos:prefLabel "agent platform"@en .
+krt:ActedOnSystem a krt:Value ; skos:inScheme krt:EnforcementLocation ; skos:prefLabel "system acted on"@en .
+krt:IndependentComponent a krt:Value ; skos:inScheme krt:EnforcementLocation ; skos:prefLabel "independent component"@en .
+
+krt:MonitoringLevel a skos:ConceptScheme ; rdfs:label "Monitoring coverage"@en .
+krt:NoMonitoring a krt:Value ; skos:inScheme krt:MonitoringLevel ; skos:prefLabel "none"@en .
+krt:PartialMonitoring a krt:Value ; skos:inScheme krt:MonitoringLevel ; skos:prefLabel "partial"@en .
+krt:FullMonitoring a krt:Value ; skos:inScheme krt:MonitoringLevel ; skos:prefLabel "full"@en .
+
+# Group H
+krt:Authorship a skos:ConceptScheme ; rdfs:label "Authorship"@en .
+krt:AgentAuthored a krt:Value ; skos:inScheme krt:Authorship ; skos:prefLabel "agent instance"@en .
+krt:HumanAuthored a krt:Value ; skos:inScheme krt:Authorship ; skos:prefLabel "person using agent credentials"@en .
+krt:AuthorshipUnknown a krt:Value ; skos:inScheme krt:Authorship ; skos:prefLabel "unknown"@en .
+
+# Actions and instructions
+krt:Reversibility a skos:ConceptScheme ; rdfs:label "Reversibility"@en .
+krt:Reversible a krt:Value ; skos:inScheme krt:Reversibility ; skos:prefLabel "reversible"@en .
+krt:Compensable a krt:Value ; skos:inScheme krt:Reversibility ; skos:prefLabel "compensable"@en .
+krt:Irreversible a krt:Value ; skos:inScheme krt:Reversibility ; skos:prefLabel "irreversible"@en .
+
+krt:InstructionProvenance a skos:ConceptScheme ; rdfs:label "Instruction provenance"@en .
+krt:PrincipalSigned a krt:Value ; skos:inScheme krt:InstructionProvenance ; skos:prefLabel "signed by a mandate holder"@en .
+krt:PrincipalAuthenticated a krt:Value ; skos:inScheme krt:InstructionProvenance ; skos:prefLabel "from an authenticated principal session"@en .
+krt:UnattributedContent a krt:Value ; skos:inScheme krt:InstructionProvenance ; skos:prefLabel "content with no principal"@en .
+
+#################################################################
+# Properties: trust decision
+#################################################################
+
+krt:relyingParty a owl:ObjectProperty ; rdfs:domain krt:TrustDecision ; rdfs:range krt:Party ; rdfs:label "relying party"@en .
+krt:subject a owl:ObjectProperty ; rdfs:domain krt:TrustDecision ; rdfs:range krt:Party ; rdfs:label "subject"@en .
+krt:proposition a owl:ObjectProperty ; rdfs:domain krt:TrustDecision ; rdfs:range krt:Proposition ; rdfs:label "proposition"@en .
+krt:forAction a owl:ObjectProperty ; rdfs:domain krt:TrustDecision ; rdfs:range krt:Action ; rdfs:label "for action"@en .
+krt:decidedAt a owl:DatatypeProperty ; rdfs:domain krt:TrustDecision ; rdfs:range xsd:dateTime ; rdfs:label "decided at"@en .
+krt:presentedVia a owl:ObjectProperty ; rdfs:range krt:Channel ; rdfs:label "presented via"@en ;
+    rdfs:comment "Channel through which a claim or instruction arrived. A channel establishes no identity by itself."@en .
+krt:usesEvidence a owl:ObjectProperty ; rdfs:domain krt:TrustDecision ; rdfs:range krt:Artefact ; rdfs:label "uses evidence"@en .
+krt:outcome a owl:ObjectProperty , owl:FunctionalProperty ; rdfs:domain krt:TrustDecision ; rdfs:range krt:Outcome ; rdfs:label "outcome"@en .
+krt:appliesPolicy a owl:ObjectProperty ; rdfs:domain krt:TrustDecision ; rdfs:range krt:TrustPolicy ; rdfs:label "applies policy"@en .
+krt:onUnknown a owl:DatatypeProperty ; rdfs:domain krt:TrustPolicy ; rdfs:range xsd:string ; rdfs:label "on unknown"@en ;
+    rdfs:comment "What the relying party does when an outcome is unknown."@en .
+krt:actionTaken a owl:DatatypeProperty ; rdfs:domain krt:TrustDecision ; rdfs:range xsd:string ; rdfs:label "action taken"@en ;
+    rdfs:comment "proceed, refuse, pause, escalate or restrict."@en .
+
+#################################################################
+# Group A: resolution and integrity
+#################################################################
+
+krt:viaPath a owl:ObjectProperty ; rdfs:domain krt:Artefact ; rdfs:range krt:VerificationPath ; rdfs:label "via path"@en .
+krt:topology a owl:ObjectProperty ; rdfs:domain krt:VerificationPath ; rdfs:range krt:Value ; rdfs:label "resolution topology"@en .
+krt:coupling a owl:ObjectProperty ; rdfs:domain krt:VerificationPath ; rdfs:range krt:Value ; rdfs:label "resolution coupling"@en .
+krt:integrityMode a owl:ObjectProperty ; rdfs:domain krt:VerificationPath ; rdfs:range krt:Value ; rdfs:label "integrity mode"@en .
+krt:stalenessBound a owl:DatatypeProperty ; rdfs:range xsd:duration ; rdfs:label "staleness bound"@en ;
+    rdfs:comment "Longest interval during which a revoked item can still pass verification."@en .
+krt:governedBy a owl:ObjectProperty ; rdfs:domain krt:VerificationPath ; rdfs:range krt:Party ; rdfs:label "governed by"@en .
+krt:observableBy a owl:ObjectProperty ; rdfs:domain krt:VerificationPath ; rdfs:range krt:Party ; rdfs:label "observable by"@en ;
+    rdfs:comment "Parties that learn of lookups made on this path."@en .
+krt:contentHash a owl:DatatypeProperty ; rdfs:domain krt:Artefact ; rdfs:range xsd:string ; rdfs:label "content hash"@en .
+krt:anchoredIn a owl:ObjectProperty ; rdfs:domain krt:Artefact ; rdfs:range krt:Party ; rdfs:label "anchored in"@en ;
+    rdfs:comment "Service recording the artefact's existence in time. Independent of resolution."@en .
+
+#################################################################
+# Group B: proposition and attestation
+#################################################################
+
+krt:issuedBy a owl:ObjectProperty ; rdfs:domain krt:Artefact ; rdfs:range krt:Party ; rdfs:label "issued by"@en .
+krt:about a owl:ObjectProperty ; rdfs:domain krt:Artefact ; rdfs:range krt:Party ; rdfs:label "about"@en .
+krt:canProve a owl:ObjectProperty ; rdfs:domain krt:Artefact ; rdfs:range krt:Proposition ; rdfs:label "can prove"@en .
+krt:attestationMode a owl:ObjectProperty ; rdfs:domain krt:Artefact ; rdfs:range krt:Value ; rdfs:label "attestation mode"@en .
+krt:validFrom a owl:DatatypeProperty ; rdfs:domain krt:Artefact ; rdfs:range xsd:dateTime ; rdfs:label "valid from"@en .
+krt:validUntil a owl:DatatypeProperty ; rdfs:domain krt:Artefact ; rdfs:range xsd:dateTime ; rdfs:label "valid until"@en .
+
+#################################################################
+# Group C: comparison
+#################################################################
+
+krt:canonicalForm a owl:DatatypeProperty ; rdfs:domain krt:Artefact ; rdfs:range xsd:anyURI ; rdfs:label "canonical form"@en .
+krt:unicodeNormalization a owl:DatatypeProperty ; rdfs:domain krt:Artefact ; rdfs:range xsd:string ; rdfs:label "Unicode normalization"@en .
+krt:largeIntegersAsStrings a owl:DatatypeProperty ; rdfs:domain krt:Artefact ; rdfs:range xsd:boolean ; rdfs:label "large integers as strings"@en ;
+    rdfs:comment "True when identifiers and integers outside the exact-integer range of IEEE 754 doubles are carried as JSON strings, as RFC 8785 recommends. Required for comparison: carried as numbers, distinct values can serialize identically and match silently."@en .
+krt:declaredSemantics a owl:DatatypeProperty ; rdfs:domain krt:Artefact ; rdfs:range xsd:anyURI ; rdfs:label "declared semantics"@en ;
+    rdfs:comment "Schema, namespace or unit reference fixing what fields mean."@en .
+
+#################################################################
+# Group D: authority continuity
+#################################################################
+
+krt:grantedBy a owl:ObjectProperty ; rdfs:domain krt:Mandate ; rdfs:range krt:Party ; rdfs:label "granted by"@en .
+krt:grantedTo a owl:ObjectProperty ; rdfs:domain krt:Mandate ; rdfs:range krt:Party ; rdfs:label "granted to"@en .
+krt:derivedFrom a owl:ObjectProperty ; rdfs:subPropertyOf prov:wasDerivedFrom ; rdfs:domain krt:Delegation ; rdfs:range krt:Mandate ; rdfs:label "derived from"@en .
+krt:scope a owl:DatatypeProperty ; rdfs:domain krt:Mandate ; rdfs:range xsd:string ; rdfs:label "scope"@en .
+krt:valueLimit a owl:DatatypeProperty ; rdfs:range xsd:decimal ; rdfs:label "value limit"@en .
+krt:currency a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "currency"@en .
+krt:attenuationChecked a owl:DatatypeProperty ; rdfs:domain krt:Delegation ; rdfs:range xsd:boolean ; rdfs:label "attenuation checked"@en ;
+    rdfs:comment "True when the delegation has been checked to be no wider than its parent mandate."@en .
+krt:revocationPropagates a owl:DatatypeProperty ; rdfs:domain krt:Mandate ; rdfs:range xsd:boolean ; rdfs:label "revocation propagates"@en .
+krt:underMandate a owl:ObjectProperty ; rdfs:range krt:Mandate ; rdfs:label "under mandate"@en .
+
+#################################################################
+# Group E: binding point
+#################################################################
+
+krt:bindingPoint a owl:ObjectProperty ; rdfs:domain krt:Artefact ; rdfs:range krt:Value ; rdfs:label "binding point"@en .
+krt:producedBy a owl:ObjectProperty ; rdfs:domain krt:Receipt ; rdfs:range krt:Party ; rdfs:label "produced by"@en ;
+    rdfs:comment "Component that produced the receipt. A receipt produced by the acting agent is self-asserted."@en .
+
+#################################################################
+# Group F: coverage and disclosure
+#################################################################
+
+krt:vouchesFor a owl:DatatypeProperty ; rdfs:domain krt:Credential ; rdfs:range xsd:string ; rdfs:label "vouches for"@en .
+krt:claimSource a owl:DatatypeProperty ; rdfs:domain krt:Credential ; rdfs:range xsd:string ; rdfs:label "claim source"@en .
+krt:completeness a owl:ObjectProperty ; rdfs:domain krt:Credential ; rdfs:range krt:Value ; rdfs:label "completeness"@en .
+krt:presentingSubject a owl:ObjectProperty ; rdfs:range krt:Party ; rdfs:label "presenting subject"@en .
+krt:controllingPrincipal a owl:ObjectProperty ; rdfs:range krt:Party ; rdfs:label "controlling principal"@en ;
+    rdfs:comment "The party with effective control over the subject, where it differs from the presenting subject."@en .
+krt:controlDisclosure a owl:ObjectProperty ; rdfs:range krt:Value ; rdfs:label "control disclosure"@en .
+krt:declaresNoActivityIn a owl:DatatypeProperty ; rdfs:domain krt:Declaration ; rdfs:range xsd:string ; rdfs:label "declares no activity in"@en .
+
+#################################################################
+# Group G: enforcement and oversight
+#################################################################
+
+krt:declaresPolicy a owl:ObjectProperty ; rdfs:range krt:DeclaredPolicy ; rdfs:label "declares policy"@en .
+krt:rule a owl:DatatypeProperty ; rdfs:domain krt:DeclaredPolicy ; rdfs:range xsd:string ; rdfs:label "rule"@en .
+krt:enforcedAt a owl:ObjectProperty ; rdfs:range krt:EnforcementPoint ; rdfs:label "enforced at"@en .
+krt:location a owl:ObjectProperty ; rdfs:domain krt:EnforcementPoint ; rdfs:range krt:Value ; rdfs:label "location"@en .
+krt:enforcer a owl:ObjectProperty ; rdfs:domain krt:EnforcementPoint ; rdfs:range krt:Party ; rdfs:label "enforcer"@en .
+krt:enforcementEvidence a owl:ObjectProperty ; rdfs:domain krt:EnforcementPoint ; rdfs:range krt:Receipt ; rdfs:label "enforcement evidence"@en .
+krt:monitoringCoverage a owl:ObjectProperty ; rdfs:range krt:Value ; rdfs:label "monitoring coverage"@en .
+krt:stopChannel a owl:ObjectProperty ; rdfs:range krt:Channel ; rdfs:label "stop channel"@en .
+krt:stopChannelTested a owl:DatatypeProperty ; rdfs:range xsd:date ; rdfs:label "stop channel tested"@en .
+krt:environment a owl:ObjectProperty ; rdfs:range krt:EnvironmentAttestation ; rdfs:label "environment"@en .
+krt:networkReach a owl:DatatypeProperty ; rdfs:domain krt:EnvironmentAttestation ; rdfs:range xsd:string ; rdfs:label "network reach"@en .
+krt:configuration a owl:ObjectProperty ; rdfs:range krt:AgentConfiguration ; rdfs:label "configuration"@en .
+
+#################################################################
+# Group H: instance and attribution
+#################################################################
+
+krt:instanceOf a owl:ObjectProperty ; rdfs:domain krt:AgentInstance ; rdfs:range krt:Agent ; rdfs:label "instance of"@en .
+krt:onBehalfOf a owl:ObjectProperty ; rdfs:subPropertyOf prov:actedOnBehalfOf ; rdfs:range krt:Principal ; rdfs:label "on behalf of"@en .
+krt:operatorOfRecord a owl:ObjectProperty ; rdfs:range krt:Operator ; rdfs:label "operator of record"@en .
+krt:performedBy a owl:ObjectProperty ; rdfs:subPropertyOf prov:wasAssociatedWith ; rdfs:domain krt:Action ; rdfs:range krt:Party ; rdfs:label "performed by"@en .
+krt:coordinationChannel a owl:ObjectProperty ; rdfs:range krt:Channel ; rdfs:label "coordination channel"@en .
+krt:authorship a owl:ObjectProperty ; rdfs:range krt:Value ; rdfs:label "authorship"@en .
+
+#################################################################
+# Actions, instructions, revocation
+#################################################################
+
+krt:reversibility a owl:ObjectProperty ; rdfs:domain krt:Action ; rdfs:range krt:Value ; rdfs:label "reversibility"@en .
+krt:affects a owl:ObjectProperty ; rdfs:domain krt:Action ; rdfs:range krt:Party ; rdfs:label "affects"@en ;
+    rdfs:comment "Parties other than the principal whose interests the action touches."@en .
+krt:requestedBy a owl:ObjectProperty ; rdfs:domain krt:Action ; rdfs:range krt:Instruction ; rdfs:label "requested by"@en .
+krt:instructionProvenance a owl:ObjectProperty ; rdfs:domain krt:Instruction ; rdfs:range krt:Value ; rdfs:label "instruction provenance"@en .
+krt:issuingPrincipal a owl:ObjectProperty ; rdfs:domain krt:Instruction ; rdfs:range krt:Party ; rdfs:label "issuing principal"@en .
+krt:revokes a owl:ObjectProperty ; rdfs:domain krt:Revocation ; rdfs:label "revokes"@en .
+krt:coversDerivedData a owl:DatatypeProperty ; rdfs:domain krt:Revocation ; rdfs:range xsd:string ; rdfs:label "covers derived data"@en ;
+    rdfs:comment "Copies, indexes, caches and summaries the revocation reaches."@en .

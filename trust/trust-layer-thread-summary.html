@@ -110,6 +110,9 @@ ol.steps b{font-family:var(--sans);font-weight:600;display:block;margin-bottom:.
 @media (max-width:720px){.pair{grid-template-columns:1fr}.pair > div + div{border-left:0;border-top:1px solid var(--rule)}}
 .verdict{margin:.9rem 0 0;max-width:46rem;font-size:1rem}
 .verdict .v{margin-right:.5rem}
+.correction{border:1px solid var(--gold);background:var(--panel);padding:.7rem 1rem;margin:.8rem 0 0;max-width:46rem;font-size:.98rem}
+.correction b{font-family:var(--sans);font-weight:600}
+.krtdia{background:var(--panel);border:1px solid var(--rule);padding:1rem;margin:1rem 0}
 .src{font-family:var(--sans);font-size:.82rem;color:var(--muted);margin:.6rem 0 0}
 .src a{color:var(--muted)}
 pre.mini{font-size:.82rem;line-height:1.45;background:var(--panel);border:1px solid var(--rule);padding:.7rem .9rem;overflow-x:auto;margin:.5rem 0 .9rem}
@@ -149,7 +152,8 @@ footer{max-width:74rem;margin:0 auto;padding:2rem 1.5rem 3rem;border-top:1px sol
   <div class="inner">
     <strong>DRAFT</strong>
     <p>Proposed for discussion at weekly AIKR CG calls starting Monday 21 September 2026. Agenda: go over this draft, and discuss the path to publishing a specification. Nothing here has been agreed by the group.</p>
-    <p class="draftlinks">Main, ongoing: <a href="https://github.com/w3c-cg/aikr/tree/main/trust">AIKR CG trust folder on GitHub</a>. Thread: <a href="https://lists.w3.org/Archives/Public/public-aikr/2026Aug/0000.html">public-aikr, opened 3 August 2026 and ongoing</a>. Related: <a href="https://mailarchive.ietf.org/arch/msg/wimse/i08QgArGrcAwFQ7kHFW6U9ZtRCA">Morgan Reece on the IETF WIMSE list</a>.</p>
+    <p class="draftlinks">Main, ongoing: <a href="https://github.com/w3c-cg/aikr/tree/main/trust">AIKR CG trust folder on GitHub</a>. Thread: <a href="https://lists.w3.org/Archives/Public/public-aikr/2026Aug/0000.html">public-aikr, opened 3 August 2026 and ongoing</a>. Related: <a href="https://mailarchive.ietf.org/arch/msg/wimse/i08QgArGrcAwFQ7kHFW6U9ZtRCA">Morgan Reece on the IETF WIMSE list</a>. Companion: <a href="https://w3c-cg.github.io/aikr/trust/krt.html">KRT ontology skeleton</a>.</p>
+    <p class="draftlinks">Revised 17 September 2026: case C8 updated after <a href="https://lists.w3.org/Archives/Public/public-aikr/2026Sep/0027.html">a correction posted on the list</a>.</p>
   </div>
 </div>
 
@@ -672,9 +676,10 @@ B's policy      on UNKNOWN for this sector: refuse, or ask for a further attesta
     identical canonical bytes, different actions → false match (fails open)</pre>
       <div class="pair">
         <div><h4>Current draft</h4><p>No comparison property.</p></div>
-        <div><h4>With the amendment</h4><p>A stated normalization form catches (a). Mandatory string encoding for large identifiers catches (b). Case (c) passes the four proposed properties and needs declared semantics.</p></div>
+        <div><h4>With the amendment</h4><p>A stated normalization form catches (a). Case (b) is a silent collision a verifier cannot see, so stating how large integers are encoded is insufficient and string encoding is mandatory. Case (c) passes the four originally proposed properties and is caught by declared semantics (units, namespace, schema reference).</p></div>
       </div>
-      <p class="verdict"><span class="v part">Partly</span>The list describes both canonicalization failures as failing closed; case (b), checked in a JavaScript runtime, fails open. The column needs mandatory string encoding and a fifth property for declared semantics.</p>
+      <p class="verdict"><span class="v ok">Resolves</span>The comparison column now requires string encoding for identifiers outside the exact-integer range, following RFC 8785 as cited on the list, and adds declared semantics as a fifth property. <a href="https://github.com/giskard09/draft-etcheverry-action-ref/pull/7">Conformance vectors</a> for the three cases state the failure mode of each vector and are anchored to the RFC 8785 reference data.</p>
+      <p class="correction"><b>Corrected on the list, 17 September 2026.</b> An earlier message had described both canonicalization failures as failing closed. Amey Parle <a href="https://lists.w3.org/Archives/Public/public-aikr/2026Sep/0027.html">confirmed on public-aikr</a> that only case (a) fails closed and case (b) fails open, called (b) the more dangerous of the two, and agreed to declared semantics as a fifth property.</p>
     </article>
 
     <article class="uc" id="c9">
@@ -717,7 +722,7 @@ B's policy      on UNKNOWN for this sector: refuse, or ask for a further attesta
       <p>It names three arrangements (distributed ledger, operator-controlled domain, third-party registry) and asks each group a set of questions. Early responses answer five; the current draft carries six, having added a separate question on anchoring.</p>
       <p>In August, Patrick Besner asked the group to state the guarantees any substrate must meet: resolution, provenance, revocation, freshness and failure handling. Isaac Mao separated integrity from availability and extended the question to evidence. Lars Kersten Kroehl answered for MolTrust path by path. One path fetches nothing at verification time; an older path queries Base on every check. For him the chain supplies a dated hash, which an RFC 3161 timestamp or a transparency log could also supply, and some agents and developers have no lawful access to public chains at all. Kenne Ives applied Isaac's split to tool-safety verdicts.</p>
       <p>Morgan Reece <a href="https://mailarchive.ietf.org/arch/msg/wimse/i08QgArGrcAwFQ7kHFW6U9ZtRCA">replied on the IETF WIMSE list</a> for <em>draft-reece-wimse-cross-org-delegation</em>, copying the chair and Lars, and divided the variable into topology and coupling. Tail latency and partition behaviour follow from coupling. With verification from conveyed and cached material under a stated staleness bound, a failed or captured source can only withhold refreshes, and the agent expires when the bound runs out. Morgan also noted that a lookup on every verification tells the resolver when and where an agent acts, and proposed a four-part disclosure per verification path.</p>
-      <p>September moved the discussion onto the AIKR list and widened it. Innocent Onyenonachi and Kenne proposed a row per artefact type. Raphael La Touche pointed out that identity, authority, evidence and responsibility prove different propositions. Thanh Le asked what makes two artefacts comparable; Kenne answered with canonicalization, and Staford Titus S. and Amey Parle showed that canonical bytes establish the same document and leave open whether two documents concern the same thing. Staford introduced authority continuity. Syed Anas Mohiuddin reported MCP servers where a correctly scoped, validly attested call executes a different operation.</p>
+      <p>September moved the discussion onto the AIKR list and widened it. Innocent Onyenonachi and Kenne proposed a row per artefact type. Raphael La Touche pointed out that identity, authority, evidence and responsibility prove different propositions. Thanh Le asked what makes two artefacts comparable; Kenne answered with canonicalization, and Staford Titus S. and Amey Parle showed that canonical bytes establish the same document and leave open whether two documents concern the same thing. Amey later <a href="https://lists.w3.org/Archives/Public/public-aikr/2026Sep/0027.html">corrected his account on the list</a>: a Unicode mismatch fails closed, while large integers carried as JSON numbers collide silently and fail open. Staford introduced authority continuity. Syed Anas Mohiuddin reported MCP servers where a correctly scoped, validly attested call executes a different operation.</p>
       <p>The chair asked contributors to state ties to agent platforms. Lars described MolTrust's link to openclaw and moltbook as the origin of its name plus a plugin, with no legal or financial connection. The chair's latest message asks whether declaring associations is represented anywhere, and holds that trust depends on behaviour staying consistent with the schema.</p>
       <p>Every contributor who addressed it agreed that a digital identity certificate alone does not establish trust.</p>
     </div>
@@ -732,7 +737,7 @@ B's policy      on UNKNOWN for this sector: refuse, or ask for a further attesta
         <tr><td>Rows</td><td>Identity document; mandate and delegation; declarations; evidence and verdicts; receipts; accountability records; key status; agent configuration and memory</td><td>Innocent Onyenonachi, Kenne Ives, Raphael La Touche; use cases</td></tr>
         <tr><td>A. Resolution and integrity</td><td>Topology; coupling; integrity resolution; availability resolution; staleness bound; revocation; governance of the source; observation by the resolver</td><td>Draft §3, Isaac Mao, Morgan Reece, Ankur Chrungoo, Patrick Besner</td></tr>
         <tr><td>B. Proposition</td><td>What the artefact can prove; self-asserted or third-party attested</td><td>Raphael La Touche, Kenne Ives</td></tr>
-        <tr><td>C. Comparison</td><td>Canonical form; Unicode normalization; numeric encoding; recomputable derivation; declared semantics</td><td>Thanh Le, Kenne Ives, Amey Parle</td></tr>
+        <tr><td>C. Comparison</td><td>Canonical form; Unicode normalization; mandatory string encoding for large identifiers; recomputable derivation; declared semantics (units, namespace, schema reference)</td><td>Thanh Le, Kenne Ives, Amey Parle</td></tr>
         <tr><td>D. Authority continuity</td><td>Provenance; attenuation at each hop; revocation propagated downstream; action tied to the mandate</td><td>Staford Titus S., Kenne Ives</td></tr>
         <tr><td>E. Binding point</td><td>Declared call, request as sent, or observed effect</td><td>Syed Anas Mohiuddin, Amey Parle</td></tr>
         <tr><td>F. Coverage and disclosure</td><td>What the issuer vouches for and leaves unchecked; subject declarations; "cannot disclose"; three-valued evaluation</td><td>The chair (S1)</td></tr>
@@ -741,6 +746,38 @@ B's policy      on UNKNOWN for this sector: refuse, or ask for a further attesta
         <tr><td>Unit of record</td><td>Each verification path, recorded separately</td><td>Lars Kersten Kroehl, Morgan Reece</td></tr>
       </tbody>
     </table></div>
+  </section>
+
+  <section>
+    <h2>Ontology skeleton</h2>
+    <div class="prose">
+      <p>The property groups above are expressed in a draft vocabulary, the KR for Trust Ontology (KRT). It records a trust decision: a relying party's judgement about one proposition, for one action, at one time, with an outcome of yes, no or unknown and a stated policy for unknown. Eleven design rules come with it as SHACL shapes, so decision records can be checked mechanically. The skeleton was derived from case work on documented agent incidents, read against this thread.</p>
+      <p><a href="https://w3c-cg.github.io/aikr/trust/krt.html">KRT skeleton v0.1</a>: classes, properties, controlled values, rules and a worked example.</p>
+    </div>
+    <div class="krtdia">
+      <svg viewBox="0 0 760 300" role="img" aria-label="A trust decision links a relying party, a subject, a proposition, an action, evidence, a channel, a policy and an outcome">
+        <g font-family="Archivo, sans-serif" font-size="13" text-anchor="middle">
+          <g stroke="#8d6e1d" stroke-width="1.3" fill="none"><path d="M380 150L130 60M380 150L130 150M380 150L130 240M380 150L630 60M380 150L630 150M380 150L630 240M380 150L380 40M380 150L380 262"/></g>
+          <rect x="300" y="126" width="160" height="48" rx="4" fill="#16264a"/>
+          <text x="380" y="155" fill="#e3c878" font-weight="700">TrustDecision</text>
+          <g fill="#eeede9" stroke="#8d6e1d">
+            <rect x="50" y="42" width="160" height="36" rx="3"/><rect x="50" y="132" width="160" height="36" rx="3"/><rect x="50" y="222" width="160" height="36" rx="3"/>
+            <rect x="550" y="42" width="160" height="36" rx="3"/><rect x="550" y="132" width="160" height="36" rx="3"/><rect x="550" y="222" width="160" height="36" rx="3"/>
+            <rect x="310" y="8" width="140" height="34" rx="3"/><rect x="275" y="258" width="210" height="34" rx="3"/>
+          </g>
+          <g fill="#1d1f24">
+            <text x="130" y="65">RelyingParty</text><text x="130" y="155">Party (subject)</text><text x="130" y="245">Channel</text>
+            <text x="630" y="65">Proposition</text><text x="630" y="155">Action</text><text x="630" y="245">Artefact (evidence)</text>
+            <text x="380" y="30">TrustPolicy</text><text x="380" y="280">Outcome: yes | no | unknown</text>
+          </g>
+          <g fill="#595b61" font-size="11" stroke="#eeede9" stroke-width="5" paint-order="stroke" stroke-linejoin="round">
+            <text x="222" y="96">relyingParty</text><text x="245" y="144">subject</text><text x="222" y="206">presentedVia</text>
+            <text x="540" y="96">proposition</text><text x="515" y="144">forAction</text><text x="540" y="206">usesEvidence</text>
+            <text x="420" y="92">appliesPolicy</text><text x="415" y="226">outcome</text>
+          </g>
+        </g>
+      </svg>
+    </div>
   </section>
 
   <section>
@@ -760,7 +797,7 @@ B's policy      on UNKNOWN for this sector: refuse, or ask for a further attesta
         <tr><td>Thanh Le</td><td>Not stated</td><td>Comparison semantics as a property.</td><td>None stated</td></tr>
         <tr><td>Milton Ponson</td><td>Not stated</td><td>Topology and category theory as a basis for comparison.</td><td>Worked example requested</td></tr>
         <tr><td>Staford Titus S.</td><td>Charlemagne</td><td>Authority continuity with adversarial cases; canonicalization as representation only.</td><td>GitHub note, scenarios, slides</td></tr>
-        <tr><td>Amey Parle</td><td>Lead maintainer, did:trail</td><td>Canonicalization failure classes; four-property comparison column.</td><td>Comment on issue 10; vectors</td></tr>
+        <tr><td>Amey Parle</td><td>Lead maintainer, did:trail</td><td>Canonicalization failure classes, <a href="https://lists.w3.org/Archives/Public/public-aikr/2026Sep/0027.html">corrected on the list</a> to show that large integers fail open; comparison column, extended with declared semantics.</td><td>§4 subsection with Kenne Ives; <a href="https://github.com/giskard09/draft-etcheverry-action-ref/pull/7">conformance vectors</a> published; available for a comparison-semantics session</td></tr>
         <tr><td>Syed Anas Mohiuddin</td><td>MCP server auditing</td><td>Declared call and executed effect can diverge.</td><td>Adversarial vectors after disclosure</td></tr>
         <tr><td>Ankur Chrungoo</td><td>AIKR CG participant</td><td>Typed attributes; PACELC; governance attribute; tail amplification.</td><td>Issue 8; offers a PR</td></tr>
         <tr><td>Agent Community</td><td>Agent Community (formerly V19); Truth Gate</td><td>Answers to the six questions, in Chinese.</td><td>Issue 5, PR 6</td></tr>
@@ -782,7 +819,7 @@ B's policy      on UNKNOWN for this sector: refuse, or ask for a further attesta
         <tr><td>Identity document as the only artefact</td><td>Issue 10</td><td><span class="v ok">Resolves</span></td></tr>
         <tr><td>Identity read as authority</td><td>Raphael La Touche; Innocent Onyenonachi</td><td><span class="v ok">Resolves</span></td></tr>
         <tr><td>Self-certifying identifiers</td><td>Issue 5</td><td><span class="v part">Partly</span></td></tr>
-        <tr><td>Comparability</td><td>Thanh Le; Kenne Ives; Amey Parle</td><td><span class="v part">Partly</span></td></tr>
+        <tr><td>Comparability</td><td>Thanh Le; Kenne Ives; Amey Parle, with a correction on the list</td><td><span class="v ok">Resolves</span></td></tr>
         <tr><td>Authority across delegation</td><td>Staford Titus S.</td><td><span class="v open">Open</span></td></tr>
         <tr><td>Declared call against executed effect</td><td>Syed Anas Mohiuddin</td><td><span class="v open">Open</span></td></tr>
         <tr><td>Activity outside the declared mandate</td><td>The chair (S1)</td><td><span class="v open">Open</span></td></tr>
@@ -800,7 +837,7 @@ B's policy      on UNKNOWN for this sector: refuse, or ask for a further attesta
         <tr><td><a href="https://github.com/w3c-cg/aikr/issues/5">Issue 5</a></td><td>Agent Community</td><td>Answers to the six questions: DNS-anchored DIDs for long-lived agents, self-certifying keys for short-lived sub-agents, Merkle-chain anchoring, latency table, tiered fallback, ledger for audit anchoring only.</td><td>Open</td></tr>
         <tr><td><a href="https://github.com/w3c-cg/aikr/issues/8">Issue 8</a></td><td>Ankur Chrungoo</td><td>Typed integrity and staleness attributes; PACELC and governance; tail amplification.</td><td>Open; contributor offers a PR</td></tr>
         <tr><td><a href="https://github.com/w3c-cg/aikr/issues/9">Issue 9</a></td><td>Lars Kersten Kroehl</td><td>Correction to Annex B on <code>did:moltrust</code> resolution, with disclosure of interest.</td><td>Open</td></tr>
-        <tr><td><a href="https://github.com/w3c-cg/aikr/issues/10">Issue 10</a></td><td>Kenne Ives; comment by Amey Parle</td><td>Resolution properties for verdict evidence; comparison column; test vectors.</td><td>Open</td></tr>
+        <tr><td><a href="https://github.com/w3c-cg/aikr/issues/10">Issue 10</a></td><td>Kenne Ives; comment by Amey Parle</td><td>Resolution properties for verdict evidence; comparison column; test vectors.</td><td>Open; correction and vectors posted on the list</td></tr>
         <tr><td><a href="https://github.com/w3c-cg/aikr/pull/2">PR 2</a></td><td>Wolfgang Wimmer</td><td>Editor's note on <code>A2WF/intersection.md</code>; ODRL 2.2 date.</td><td>Open</td></tr>
         <tr><td><a href="https://github.com/w3c-cg/aikr/pull/4">PR 4</a></td><td>Isaac Mao</td><td>Glossary terms marked as draft CG extensions.</td><td>Open</td></tr>
         <tr><td><a href="https://github.com/w3c-cg/aikr/pull/6">PR 6</a></td><td>Agent Community</td><td>Editorial emphasis, DIF traits, checklist note.</td><td>Open; chair's questions posted</td></tr>

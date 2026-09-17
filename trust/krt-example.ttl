@@ -1,0 +1,89 @@
+# KR for Trust Ontology (KRT), example records v0.1, DRAFT
+# Reference scenario: organisation X runs agent A; A delegates payment to agent B,
+# operated by payments provider Y; B calls refund tool T.
+# Decision d1 conforms to the shapes. Decision d2 is deliberately faulty.
+
+@prefix krt: <https://w3c-cg.github.io/aikr/trust/krt#> .
+@prefix ex:  <https://example.org/krt-example#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:X a krt:Principal .
+ex:Y a krt:Operator , krt:RelyingParty .
+ex:R a krt:Issuer .
+ex:A a krt:Agent .
+ex:A-7 a krt:AgentInstance ; krt:instanceOf ex:A ; krt:onBehalfOf ex:X ; krt:operatorOfRecord ex:Y .
+ex:B a krt:Agent , krt:RelyingParty .
+
+ex:api a krt:Channel .
+ex:console a krt:Channel .
+
+# Credential about X, with explicit coverage
+ex:regCred a krt:Credential ;
+    krt:issuedBy ex:R ; krt:about ex:X ;
+    krt:attestationMode krt:ThirdPartyAttested ;
+    krt:vouchesFor "legal registration; declared activity: travel services" ;
+    krt:claimSource "registration: issuer records; activity: subject statement" ;
+    krt:completeness krt:CompletenessNotAttested ;
+    krt:controlDisclosure krt:NotDisclosed ;
+    krt:canProve krt:KeyControl ;
+    krt:canonicalForm <https://www.rfc-editor.org/rfc/rfc8785> ;
+    krt:unicodeNormalization "NFC" ;
+    krt:largeIntegersAsStrings true ;
+    krt:declaredSemantics <https://example.org/schemas/registration-v1> .
+
+# Mandate from X to A, and delegation from A to B
+ex:m1 a krt:Mandate ;
+    krt:grantedBy ex:X ; krt:grantedTo ex:A ;
+    krt:scope "refunds for bookings made by X" ;
+    krt:valueLimit 500.00 ; krt:currency "EUR" ;
+    krt:validUntil "2026-09-30T23:59:59Z"^^xsd:dateTime ;
+    krt:revocationPropagates true ;
+    krt:issuedBy ex:X ; krt:attestationMode krt:ThirdPartyAttested ;
+    krt:canProve krt:AuthorityToAct .
+
+ex:m2 a krt:Delegation ;
+    krt:derivedFrom ex:m1 ; krt:grantedBy ex:A ; krt:grantedTo ex:B ;
+    krt:valueLimit 500.00 ; krt:currency "EUR" ;
+    krt:attenuationChecked true .
+
+# Declared policy with an enforcement point outside the agent
+ex:limitPolicy a krt:DeclaredPolicy ;
+    krt:rule "no single refund above the mandate limit" ;
+    krt:enforcedAt [ a krt:EnforcementPoint ; krt:location krt:ActedOnSystem ; krt:enforcer ex:Y ] .
+ex:A krt:declaresPolicy ex:limitPolicy ;
+    krt:monitoringCoverage krt:PartialMonitoring ;
+    krt:stopChannel ex:console ; krt:stopChannelTested "2026-09-10"^^xsd:date .
+
+# Relying party policy
+ex:policyY a krt:TrustPolicy ;
+    krt:onUnknown "refuse irreversible actions; pause and escalate others" .
+
+# d1: a signed instruction, third-party evidence, conforming
+ex:i1 a krt:Instruction ; krt:instructionProvenance krt:PrincipalSigned ; krt:issuingPrincipal ex:X .
+ex:refund1 a krt:Action ;
+    krt:requestedBy ex:i1 ; krt:performedBy ex:A-7 ;
+    krt:reversibility krt:Compensable ; krt:underMandate ex:m2 .
+
+ex:d1 a krt:TrustDecision ;
+    krt:relyingParty ex:B ; krt:subject ex:A-7 ;
+    krt:proposition krt:AuthorityToAct ; krt:forAction ex:refund1 ;
+    krt:presentedVia ex:api ;
+    krt:usesEvidence ex:m1 , ex:m2 , ex:regCred ;
+    krt:decidedAt "2026-09-17T10:02:00Z"^^xsd:dateTime ;
+    krt:outcome krt:Yes ; krt:appliesPolicy ex:policyY ; krt:actionTaken "proceed" .
+
+# d2: faulty. Instruction came from content with no principal, the action is
+# irreversible, and the only evidence is self-asserted.
+ex:selfNote a krt:Declaration ; krt:issuedBy ex:A ; krt:about ex:A ;
+    krt:attestationMode krt:SelfAsserted .
+ex:i2 a krt:Instruction ; krt:instructionProvenance krt:UnattributedContent .
+ex:transfer2 a krt:Action ;
+    krt:requestedBy ex:i2 ; krt:performedBy ex:A-7 ;
+    krt:reversibility krt:Irreversible .
+
+ex:d2 a krt:TrustDecision ;
+    krt:relyingParty ex:B ; krt:subject ex:A-7 ;
+    krt:proposition krt:AuthorityToAct ; krt:forAction ex:transfer2 ;
+    krt:presentedVia ex:api ;
+    krt:usesEvidence ex:selfNote ;
+    krt:outcome krt:Yes ; krt:appliesPolicy ex:policyY .

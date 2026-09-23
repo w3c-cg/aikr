@@ -77,6 +77,20 @@ A knowledge representation adequate to this layer therefore needs resolution dep
 
 An ontology of the agentic trust layer that omits resolution dependency describes a trust relationship without describing the conditions under which the relationship holds.
 
+#### 4.1 Comparison semantics
+
+The resolution properties establish things about a single artefact. None of them establishes that two independently produced artefacts carrying the same identifier concern the same subject. Canonicalization (RFC 8785) establishes that two artefacts are the same document, not that they are about the same thing, and three cases show where the difference matters.
+
+- **(a) One name, two encodings — visible (fails closed).** An identifier written in two Unicode forms produces two different records for the same subject. The mismatch is visible and costs investigation.
+- **(b) Large numeric identifiers — silent (fails open).** Two distinct identifiers too large for a JSON number serialize to the same value, so two subjects become one record and no error is raised. The remedy sits inside the record: carry such identifiers as text.
+- **(c) Undeclared meaning — silent (fails open).** Two parties record `{"refund": 500}` in different units, and the records are byte-identical. No property of the encoding can separate them. The remedy sits outside the record, in a declaration of what the field means.
+
+A signature over either silent case verifies correctly over the wrong match. A profile therefore has to state its canonical form as a version, its normalization, its numeric encoding, its declared semantics, and whether the derivation is recomputable by a third party.
+
+These properties settle the comparison of what was declared, not of what was executed. Comparing the two needs a mandate written down to compare against, and remains open.
+
+Full text, including the attestation analysis, the conformance vectors and the declared-against-executed boundary: [trust/comparison-semantics.md](comparison-semantics.md)
+
 ### 5. The ask
 
 Each group is invited to state, briefly and publicly:

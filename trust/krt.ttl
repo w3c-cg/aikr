@@ -133,6 +133,10 @@ krt:AgentConfiguration a owl:Class ; rdfs:subClassOf krt:Artefact ;
     rdfs:label "Agent configuration"@en ;
     rdfs:comment "Instructions, persistent memory and installed tools or skills that shape an agent's behaviour."@en .
 
+krt:OversightRecord a owl:Class ; rdfs:subClassOf krt:Artefact ;
+    rdfs:label "Oversight record"@en ;
+    rdfs:comment "An artefact issued by a person, recording one oversight act on one object at one time. What the record is evidence of depends on the kind of act: only a check whose result is holds is evidence that the checked proposition is true; a release is evidence that the action was permitted, as far as the record names the mandate relied on; a decision shows which course was chosen, not that it was right; an observation is evidence of neither. One record carries one act; a release is recorded as its own kind of act, not as a decision."@en .
+
 #################################################################
 # Actions, instructions, policies, channels, paths
 #################################################################
@@ -230,6 +234,23 @@ krt:MonitoringLevel a skos:ConceptScheme ; rdfs:label "Monitoring coverage"@en .
 krt:NoMonitoring a krt:Value ; skos:inScheme krt:MonitoringLevel ; skos:prefLabel "none"@en .
 krt:PartialMonitoring a krt:Value ; skos:inScheme krt:MonitoringLevel ; skos:prefLabel "partial"@en .
 krt:FullMonitoring a krt:Value ; skos:inScheme krt:MonitoringLevel ; skos:prefLabel "full"@en .
+
+krt:OversightActKind a skos:ConceptScheme ; rdfs:label "Oversight act"@en .
+krt:ObservationAct a krt:Value ; skos:inScheme krt:OversightActKind ; skos:prefLabel "observation"@en ;
+    skos:definition "A person perceived the object. Evidence of neither the object's properties nor permission."@en .
+krt:CheckAct a krt:Value ; skos:inScheme krt:OversightActKind ; skos:prefLabel "check"@en ;
+    skos:definition "A person tested one stated proposition about the object and recorded the result."@en .
+krt:DecisionAct a krt:Value ; skos:inScheme krt:OversightActKind ; skos:prefLabel "decision"@en ;
+    skos:definition "A person chose one course among stated alternatives. Shows the choice, not that it was right."@en .
+krt:ReleaseAct a krt:Value ; skos:inScheme krt:OversightActKind ; skos:prefLabel "release"@en ;
+    skos:definition "A person permitted the action, relying on a named mandate."@en .
+
+krt:CheckResult a skos:ConceptScheme ; rdfs:label "Check result"@en .
+krt:CheckHolds a krt:Value ; skos:inScheme krt:CheckResult ; skos:prefLabel "holds"@en .
+krt:CheckDoesNotHold a krt:Value ; skos:inScheme krt:CheckResult ; skos:prefLabel "does not hold"@en .
+krt:CheckUndetermined a krt:Value ; skos:inScheme krt:CheckResult ; skos:prefLabel "undetermined"@en .
+krt:CheckNotPerformed a krt:Value ; skos:inScheme krt:CheckResult ; skos:prefLabel "not performed"@en ;
+    skos:scopeNote "Records a check step that was skipped, so that a skipped check cannot be read as a passed one."@en .
 
 # Group H
 krt:Authorship a skos:ConceptScheme ; rdfs:label "Authorship"@en .
@@ -358,6 +379,18 @@ krt:stopChannelTested a owl:DatatypeProperty ; rdfs:range xsd:date ; rdfs:label 
 krt:environment a owl:ObjectProperty ; rdfs:range krt:EnvironmentAttestation ; rdfs:label "environment"@en .
 krt:networkReach a owl:DatatypeProperty ; rdfs:domain krt:EnvironmentAttestation ; rdfs:range xsd:string ; rdfs:label "network reach"@en .
 krt:configuration a owl:ObjectProperty ; rdfs:range krt:AgentConfiguration ; rdfs:label "configuration"@en .
+
+# Oversight records. A release names its mandate with underMandate (group D).
+krt:actKind a owl:ObjectProperty , owl:FunctionalProperty ; rdfs:domain krt:OversightRecord ; rdfs:range krt:Value ; rdfs:label "act kind"@en ;
+    rdfs:comment "Observation, check, decision or release."@en .
+krt:actOn a owl:ObjectProperty ; rdfs:domain krt:OversightRecord ; rdfs:label "act on"@en ;
+    rdfs:comment "The object the act concerns, usually an action or an artefact."@en .
+krt:actAt a owl:DatatypeProperty ; rdfs:domain krt:OversightRecord ; rdfs:range xsd:dateTime ; rdfs:label "act at"@en .
+krt:checkedProposition a owl:ObjectProperty ; rdfs:domain krt:OversightRecord ; rdfs:range krt:Proposition ; rdfs:label "checked proposition"@en .
+krt:checkResult a owl:ObjectProperty ; rdfs:domain krt:OversightRecord ; rdfs:range krt:Value ; rdfs:label "check result"@en ;
+    rdfs:comment "Holds, does not hold, undetermined or not performed."@en .
+krt:checkTested a owl:DatatypeProperty ; rdfs:domain krt:OversightRecord ; rdfs:range xsd:date ; rdfs:label "check tested"@en ;
+    rdfs:comment "Date the check step was last run against an input built to make it fail. A check step can fail open; compare stopChannelTested."@en .
 
 #################################################################
 # Group H: instance and attribution

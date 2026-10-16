@@ -133,7 +133,7 @@ footer{max-width:70rem;margin:0 auto;padding:1.8rem 1.5rem 3rem;border-top:1px s
     <div class="classes">
       <div><h3>Decision</h3><ul><li>TrustDecision</li><li>Proposition</li><li>Outcome</li><li>TrustPolicy</li></ul></div>
       <div><h3>Parties</h3><ul><li>Party</li><li class="sub">Principal</li><li class="sub">Agent</li><li class="sub">AgentInstance</li><li class="sub">Operator</li><li class="sub">RelyingParty</li><li class="sub">Issuer</li></ul></div>
-      <div><h3>Artefacts</h3><ul><li>Artefact</li><li class="sub">IdentityDocument</li><li class="sub">Credential</li><li class="sub">Mandate, Delegation</li><li class="sub">Declaration</li><li class="sub">Verdict</li><li class="sub">Receipt</li><li class="sub">AccountabilityRecord</li><li class="sub">Revocation</li><li class="sub">EnvironmentAttestation</li><li class="sub">AgentConfiguration</li></ul></div>
+      <div><h3>Artefacts</h3><ul><li>Artefact</li><li class="sub">IdentityDocument</li><li class="sub">Credential</li><li class="sub">Mandate, Delegation</li><li class="sub">Declaration</li><li class="sub">Verdict</li><li class="sub">Receipt</li><li class="sub">AccountabilityRecord</li><li class="sub">Revocation</li><li class="sub">EnvironmentAttestation</li><li class="sub">AgentConfiguration</li><li class="sub">OversightRecord</li></ul></div>
       <div><h3>Activity and control</h3><ul><li>Action</li><li>Instruction</li><li>DeclaredPolicy</li><li>EnforcementPoint</li><li>Channel</li><li>VerificationPath</li></ul></div>
     </div>
   </section>
@@ -150,7 +150,7 @@ footer{max-width:70rem;margin:0 auto;padding:1.8rem 1.5rem 3rem;border-top:1px s
         <tr><td>D. Authority continuity</td><td><code>grantedBy</code> <code>grantedTo</code> <code>derivedFrom</code> <code>scope</code> <code>valueLimit</code> <code>currency</code> <code>attenuationChecked</code> <code>revocationPropagates</code> <code>underMandate</code></td><td></td></tr>
         <tr><td>E. Binding point</td><td><code>bindingPoint</code> <code>producedBy</code></td><td>Declared call, request as sent, observed effect.</td></tr>
         <tr><td>F. Coverage and disclosure</td><td><code>vouchesFor</code> <code>claimSource</code> <code>completeness</code> <code>presentingSubject</code> <code>controllingPrincipal</code> <code>controlDisclosure</code> <code>declaresNoActivityIn</code></td><td>Completeness attested or not. Disclosure: disclosed, unknown, cannot disclose.</td></tr>
-        <tr><td>G. Enforcement and oversight</td><td><code>declaresPolicy</code> <code>rule</code> <code>enforcedAt</code> <code>location</code> <code>enforcer</code> <code>enforcementEvidence</code> <code>monitoringCoverage</code> <code>stopChannel</code> <code>stopChannelTested</code> <code>environment</code> <code>networkReach</code> <code>configuration</code></td><td>Location: inside the agent, platform, system acted on, independent component. Monitoring: none, partial, full.</td></tr>
+        <tr><td>G. Enforcement and oversight</td><td><code>declaresPolicy</code> <code>rule</code> <code>enforcedAt</code> <code>location</code> <code>enforcer</code> <code>enforcementEvidence</code> <code>monitoringCoverage</code> <code>stopChannel</code> <code>stopChannelTested</code> <code>environment</code> <code>networkReach</code> <code>configuration</code> <code>actKind</code> <code>actOn</code> <code>actAt</code> <code>checkedProposition</code> <code>checkResult</code> <code>checkTested</code></td><td>Location: inside the agent, platform, system acted on, independent component. Monitoring: none, partial, full. Oversight act: observation, check, decision, release. Check result: holds, does not hold, undetermined, not performed.</td></tr>
         <tr><td>H. Instance and attribution</td><td><code>instanceOf</code> <code>onBehalfOf</code> <code>operatorOfRecord</code> <code>performedBy</code> <code>coordinationChannel</code> <code>authorship</code></td><td>Authorship: agent instance, person using agent credentials, unknown.</td></tr>
         <tr><td>Actions and instructions</td><td><code>reversibility</code> <code>affects</code> <code>requestedBy</code> <code>instructionProvenance</code> <code>issuingPrincipal</code> <code>revokes</code> <code>coversDerivedData</code></td><td>Reversible, compensable, irreversible. Provenance: signed by a mandate holder, authenticated principal session, content with no principal.</td></tr>
       </tbody>
@@ -167,7 +167,7 @@ footer{max-width:70rem;margin:0 auto;padding:1.8rem 1.5rem 3rem;border-top:1px s
         <tr><td>R1</td><td>A channel establishes no identity. A yes outcome cites at least one artefact.</td><td><code>EvidenceShape</code></td></tr>
         <tr><td>R2</td><td>Instructions carry their principal's authority. Content with no principal carries none.</td><td><code>InstructionAuthorityShape</code></td></tr>
         <tr><td>R3</td><td>Authority over affected third parties is decided separately from the requester's.</td><td><code>ThirdPartyShape</code></td></tr>
-        <tr><td>R4</td><td>A yes outcome for an irreversible action needs evidence attested by someone other than the subject.</td><td><code>IrreversibleShape</code></td></tr>
+        <tr><td>R4</td><td>A yes outcome for an irreversible action needs evidence attested by someone other than the subject. An oversight record counts only for what its act establishes, and only if it is third-party attested, about this action and issued by someone other than the subject: a release under a mandate for authority to act, or, for other propositions, a check of the decided proposition with result holds.</td><td><code>IrreversibleShape</code></td></tr>
         <tr><td>R5</td><td>An agent's report of its own action is a claim. Receipts come from another component.</td><td><code>ReceiptShape</code></td></tr>
         <tr><td>R6</td><td>Every declared policy names its enforcement point and where it sits.</td><td><code>PolicyShape</code></td></tr>
         <tr><td>R7</td><td>A revocation states which copies it reaches and its staleness bound.</td><td><code>RevocationShape</code></td></tr>
@@ -175,6 +175,7 @@ footer{max-width:70rem;margin:0 auto;padding:1.8rem 1.5rem 3rem;border-top:1px s
         <tr><td>R9</td><td>Environment claims are dated and preferably attested by infrastructure.</td><td><code>EnvironmentShape</code></td></tr>
         <tr><td>R10</td><td>Credentials state their completeness and whether the controlling principal is disclosed.</td><td><code>ControlShape</code></td></tr>
         <tr><td>R11</td><td>Artefacts compared by canonical form carry large identifiers as strings, state their Unicode normalization, and declare their semantics. Added after the correction <a href="https://lists.w3.org/Archives/Public/public-aikr/2026Sep/0027.html">posted on the list</a>.</td><td><code>ComparisonShape</code></td></tr>
+        <tr><td>R12</td><td>An oversight record states one kind of act, one object, one time and the person. A check states the proposition and the result; a release names its mandate. A check that holds should record when the check step was last tested against an input built to defeat it.</td><td><code>OversightRecordShape</code> <code>CheckTestedShape</code></td></tr>
       </tbody>
     </table></div>
   </section>
@@ -192,7 +193,8 @@ ex:d2 a krt:TrustDecision ;
     krt:outcome krt:Yes ; krt:appliesPolicy ex:policyY .</pre>
 <pre>Validation (pySHACL, RDFS inference):  conforms = false
 <span class="fail">ex:d2  R2</span>  authority cannot be affirmed for an action requested by content with no principal
-<span class="fail">ex:d2  R4</span>  a yes outcome for an irreversible action needs evidence attested by a party other than the subject</pre>
+<span class="fail">ex:d2  R4</span>  a yes outcome for an irreversible action needs evidence attested by a party other than the subject; an oversight record counts only as a release under a mandate or a check that holds, about this action
+<span class="fail">ex:d3  R4</span>  a yes outcome for an irreversible action needs evidence attested by a party other than the subject; an oversight record counts only as a release under a mandate or a check that holds, about this action</pre>
   </section>
 
   <section>
@@ -216,8 +218,8 @@ ex:d2 a krt:TrustDecision ;
     <h2>Files</h2>
     <div class="files">
       <a href="https://w3c-cg.github.io/aikr/trust/krt.ttl"><b>krt.ttl</b><span>Ontology: classes, properties, controlled values</span></a>
-      <a href="https://w3c-cg.github.io/aikr/trust/krt-shapes.ttl"><b>krt-shapes.ttl</b><span>SHACL shapes for rules R0 to R11</span></a>
-      <a href="https://w3c-cg.github.io/aikr/trust/krt-example.ttl"><b>krt-example.ttl</b><span>Reference-scenario records, one passing, one failing</span></a>
+      <a href="https://w3c-cg.github.io/aikr/trust/krt-shapes.ttl"><b>krt-shapes.ttl</b><span>SHACL shapes for rules R0 to R12</span></a>
+      <a href="https://w3c-cg.github.io/aikr/trust/krt-example.ttl"><b>krt-example.ttl</b><span>Reference-scenario records, two passing, two failing</span></a>
     </div>
     <p class="small" style="font-family:var(--sans);font-size:.85rem;color:var(--muted)">Namespace (provisional): <code>https://w3c-cg.github.io/aikr/trust/krt#</code></p>
   </section>

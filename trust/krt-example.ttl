@@ -2,6 +2,7 @@
 # Reference scenario: organisation X runs agent A; A delegates payment to agent B,
 # operated by payments provider Y; B calls refund tool T.
 # Decision d1 conforms to the shapes. Decision d2 is deliberately faulty.
+# Added 16 October 2026: d3 (faulty) and d4 (conforming) use oversight records.
 
 @prefix krt: <https://w3c-cg.github.io/aikr/trust/krt#> .
 @prefix ex:  <https://example.org/krt-example#> .
@@ -87,3 +88,48 @@ ex:d2 a krt:TrustDecision ;
     krt:presentedVia ex:api ;
     krt:usesEvidence ex:selfNote ;
     krt:outcome krt:Yes ; krt:appliesPolicy ex:policyY .
+
+# d3: faulty under amended R4 (the S8 pattern). A person's confirmation of an
+# irreversible deletion is recorded as what it was, an observation. It is third-party
+# attested, so the original R4 accepted it; the amended R4 does not, because an
+# observation establishes neither the action's properties nor permission.
+ex:U a krt:Principal .
+ex:i3 a krt:Instruction ; krt:instructionProvenance krt:PrincipalSigned ; krt:issuingPrincipal ex:X .
+ex:delete3 a krt:Action ;
+    krt:requestedBy ex:i3 ; krt:performedBy ex:A-7 ;
+    krt:reversibility krt:Irreversible .
+ex:confirm3 a krt:OversightRecord ;
+    krt:issuedBy ex:U ; krt:attestationMode krt:ThirdPartyAttested ;
+    krt:actKind krt:ObservationAct ; krt:actOn ex:delete3 ;
+    krt:actAt "2026-09-18T09:14:00Z"^^xsd:dateTime .
+
+ex:d3 a krt:TrustDecision ;
+    krt:relyingParty ex:B ; krt:subject ex:A-7 ;
+    krt:proposition krt:AuthorityToAct ; krt:forAction ex:delete3 ;
+    krt:presentedVia ex:console ;
+    krt:usesEvidence ex:confirm3 ;
+    krt:outcome krt:Yes ; krt:appliesPolicy ex:policyY .
+
+# d4: conforming. The same person releases the deletion under a mandate that
+# names who may release deletions.
+ex:m4 a krt:Mandate ;
+    krt:grantedBy ex:X ; krt:grantedTo ex:U ;
+    krt:scope "release irreversible deletions of production data" ;
+    krt:issuedBy ex:X ; krt:attestationMode krt:ThirdPartyAttested ;
+    krt:canProve krt:AuthorityToAct .
+ex:i4 a krt:Instruction ; krt:instructionProvenance krt:PrincipalSigned ; krt:issuingPrincipal ex:X .
+ex:delete4 a krt:Action ;
+    krt:requestedBy ex:i4 ; krt:performedBy ex:A-7 ;
+    krt:reversibility krt:Irreversible .
+ex:release4 a krt:OversightRecord ;
+    krt:issuedBy ex:U ; krt:attestationMode krt:ThirdPartyAttested ;
+    krt:actKind krt:ReleaseAct ; krt:actOn ex:delete4 ; krt:underMandate ex:m4 ;
+    krt:actAt "2026-09-18T09:20:00Z"^^xsd:dateTime .
+
+ex:d4 a krt:TrustDecision ;
+    krt:relyingParty ex:B ; krt:subject ex:A-7 ;
+    krt:proposition krt:AuthorityToAct ; krt:forAction ex:delete4 ;
+    krt:presentedVia ex:console ;
+    krt:usesEvidence ex:release4 ;
+    krt:decidedAt "2026-09-18T09:21:00Z"^^xsd:dateTime ;
+    krt:outcome krt:Yes ; krt:appliesPolicy ex:policyY ; krt:actionTaken "proceed" .

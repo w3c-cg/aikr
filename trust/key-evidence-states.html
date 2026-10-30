@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Illustrated plain-language explainer of the key and evidence state test cases proposed in W3C AI KR CG pull request #25.">
+<title>Key and Evidence States</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap">
+<style>
+/* Layout: navy banner with gold type and a woven band, then one reading column on warm stone; comic panels break out to a wider grid. Rules over boxes. */
+:root{
+  --stone:#ECE8E1; --paper:#F7F5F0; --ink:#1B1A22; --muted:#5C5866; --rule:#CBC4B8;
+  --loom:#1D2147; --gilt:#C9A64A; --giltink:#8A6A1E; --violet:#5B3A8C; --orchid:#B784C8;
+  --ok:#2F6B3A; --okbg:#E4EFDF; --no:#9B2C2C; --nobg:#F5E1DE; --wait:#8A5A0B; --waitbg:#F6EAD2;
+  --face:#FFFFFF; --code:#E3DED4;
+  --display:"Newsreader",Georgia,"Times New Roman",serif;
+  --body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --stone:#17161C; --paper:#201E27; --ink:#ECE8E1; --muted:#A9A3B3; --rule:#3A3644;
+  --loom:#141733; --gilt:#D8B85E; --giltink:#D8B85E; --violet:#B99BE3; --orchid:#C99AD8;
+  --ok:#8FC79A; --okbg:#1F3324; --no:#E8988F; --nobg:#3B2020; --wait:#E3B663; --waitbg:#382B14;
+  --face:#2A2733; --code:#2A2733; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --stone:#17161C; --paper:#201E27; --ink:#ECE8E1; --muted:#A9A3B3; --rule:#3A3644;
+  --loom:#141733; --gilt:#D8B85E; --giltink:#D8B85E; --violet:#B99BE3; --orchid:#C99AD8;
+  --ok:#8FC79A; --okbg:#1F3324; --no:#E8988F; --nobg:#3B2020; --wait:#E3B663; --waitbg:#382B14;
+  --face:#2A2733; --code:#2A2733; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--stone);color:var(--ink);font:15px/1.6 var(--body)}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.col{max-width:680px}
+header{background:var(--loom);color:#F3E7C4}
+header .wrap{padding-block:30px 22px}
+.kick{font:500 12px/1.4 var(--body);letter-spacing:.14em;text-transform:uppercase;color:#C9A64A}
+h1{font:400 clamp(30px,4.6vw,46px)/1.05 var(--display);margin:10px 0 14px;color:#E8C96A;text-wrap:balance;letter-spacing:-.01em}
+h1 em{font-style:italic;color:#F3E7C4}
+.dek{font:400 17px/1.5 var(--display);max-width:600px;margin:0;color:#E9E1CF}
+.weave{height:12px;background:
+  repeating-linear-gradient(90deg,#C9A64A 0 8px,#5B3A8C 8px 16px,#1D2147 16px 20px),
+  #1D2147;background-blend-mode:normal;
+  -webkit-mask:repeating-linear-gradient(0deg,#000 0 4px,rgba(0,0,0,.55) 4px 8px);mask:repeating-linear-gradient(0deg,#000 0 4px,rgba(0,0,0,.55) 4px 8px)}
+main .wrap{padding-block:8px 64px}
+section{padding-top:30px}
+h2{font:500 24px/1.2 var(--display);margin:0 0 6px;text-wrap:balance}
+h2 + .sub{color:var(--muted);margin:0 0 12px;font-size:14px}
+h3{font:500 17px/1.25 var(--display);margin:0}
+p{margin:0 0 12px}
+hr{border:0;border-top:1px solid var(--rule);margin:36px 0 0}
+a{color:var(--violet);text-underline-offset:2px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gilt);outline-offset:2px}
+.story p{font:400 17px/1.6 var(--display)}
+.story p:first-child::first-letter{font-size:3.1em;float:left;line-height:.85;padding:6px 8px 0 0;color:var(--giltink)}
+.cast{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px 28px;margin-top:6px}
+.cast div{border-top:2px solid var(--ink);padding-top:8px}
+.cast b{display:block;font:500 13px/1.3 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--violet);margin-bottom:4px}
+.cast span{font-size:15px}
+.doors{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.pill{font:500 13px/1 var(--body);padding:6px 11px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.adm{color:var(--ok);background:var(--okbg)} .ref{color:var(--no);background:var(--nobg)} .hld{color:var(--wait);background:var(--waitbg)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px 18px;margin-top:16px}
+.panel{background:var(--paper);border:1px solid var(--rule);border-radius:4px;padding:12px 14px 14px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.ph{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.ph .id{font:500 12px/1 var(--mono);color:var(--muted)}
+.panel svg{display:block;width:100%;max-width:170px;height:auto}
+.bub{font:italic 400 15px/1.35 var(--display);border-left:3px solid var(--gilt);padding:2px 0 2px 10px}
+.what{font-size:14px;margin:0}
+.terms{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0 28px;margin:10px 0 0}
+.terms div{border-top:1px solid var(--rule);padding:8px 0 10px;min-width:0}
+.terms dt{font:500 14px/1.3 var(--body);color:var(--violet);margin-bottom:2px}
+.terms dd{margin:0;font-size:14px;line-height:1.5}
+.lbl{font:500 11px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:3px}
+.code{font:400 12px/1.3 var(--mono);color:var(--muted)}
+.note{font-size:14px;color:var(--muted);border-top:1px dashed var(--rule);padding-top:8px;margin:0}
+.mut{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:0 24px;margin-top:12px}
+.m{border-top:1px solid var(--rule);padding:9px 0;font-size:14px;line-height:1.45}
+.m b{font:500 12px var(--mono);margin-right:6px}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;font:400 13px/1.6 var(--mono);margin:0;color:var(--ink)}
+.cmd{position:relative;margin:10px 0 18px}
+.cmd button{position:absolute;top:8px;right:8px;font:500 12px var(--body);background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:4px;padding:4px 9px;cursor:pointer}
+.result{display:flex;gap:14px;align-items:baseline;border-top:2px solid var(--ok);border-bottom:1px solid var(--rule);padding:10px 0;margin:6px 0 18px;flex-wrap:wrap}
+.result strong{font:500 26px/1 var(--display);color:var(--ok)}
+ol.steps{padding-left:22px;margin:0 0 12px} ol.steps li{margin-bottom:6px}
+ul.limits{padding-left:20px;margin:0} ul.limits li{margin-bottom:6px}
+.wide{max-width:820px}
+footer{border-top:1px solid var(--rule);padding-block:18px 30px;color:var(--muted);font-size:13px}
+code{font:400 .88em var(--mono);background:var(--code);padding:1px 5px;border-radius:3px}
+@media (max-width:420px){h2{font-size:26px}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="kick">W3C AI KR Community Group · trust work · pull request #25</div>
+    <h1>Key and evidence <em>states</em></h1>
+    <p class="dek">A cartoon guide to ten test cases that check how software should decide whether to believe a signed statement when keys get old, replaced, revoked or hard to look up.</p>
+    <p class="kick" style="margin-top:16px;color:#E9E1CF;letter-spacing:.08em">Proposed for merge · open for comments on public-aikr</p>
+  </div>
+  <div class="weave" aria-hidden="true"></div>
+</header>
+
+<main><div class="wrap">
+
+<section class="col">
+  <h2>Why these tests exist</h2>
+  <p>When software receives a signed statement, the honest answer to “is this genuine?” is sometimes yes, sometimes no, and sometimes “I can’t tell right now”. The key may be an old one that was valid when it signed. The list of keys the software holds may be out of date. The place that publishes the keys may be offline.</p>
+  <p>These tests pin down, case by case, what a careful checker should conclude. Each case has fixed inputs and an expected answer written by hand, so two pieces of software built by different people can be run on the same inputs and compared. The rule the whole set defends: a check that could not be completed is never quietly counted as a yes, and never quietly counted as a no.</p>
+  <p>The idea came from Nicholas Templeman, replying on the public-aikr list to the group’s note on the DNS root KSK rollover of 11 October. A rollover is a real case of an old key handing over to a new one. Nicholas asked for a “fixture table”. In software testing a fixture is a fixed, prepared input that a test always runs against, so everyone gets the same result. A fixture table lists those inputs row by row, with the answer each should produce. Kenne Ives wrote the table and turned it into runnable tests. The keys here are invented for practice. Nothing in the set touches real DNS.</p>
+</section>
+
+<section class="col story">
+  <h2>Story version</h2>
+  <p>Imagine a town where people send letters, and every letter is sealed with wax pressed by a key. Each family has its own key. Keys wear out, so every year a family gets a new key, and the old key writes a little signed note saying “this is my successor, trust the new one”.</p>
+  <p>At the castle gate a guard reads every letter before letting it in. She asks four things. Is this seal really from this family’s key? Was the key allowed to be used on the day the letter was sealed? Has anyone reported the key stolen? Is my list of keys fresh enough to know?</p>
+  <p>If everything checks out, the letter goes through the green door. If something is definitely wrong, it goes through the red door. And sometimes she simply can’t tell, so the letter waits on the bench. She never pretends that “I couldn’t check” means yes, and never pretends it means no.</p>
+</section>
+
+<section class="wide">
+  <h2>Who is who</h2>
+  <div class="cast">
+    <div><b>Key</b><span>A signing key belonging to some identifier: an organisation, a service or an AI agent. The set keeps the owner abstract.</span></div>
+    <div><b>Envelope</b><span>A signed statement. Any claim that someone stamped with that key.</span></div>
+    <div><b>Gatekeeper</b><span>The checking software of whoever receives the statement and must decide whether to rely on it.</span></div>
+    <div><b>Doors</b><span>The decision. In the group’s trust ontology these map to <code>krt:Yes</code>, <code>krt:No</code> and <code>krt:Unknown</code>.</span></div>
+  </div>
+  <div class="doors"><span class="pill adm">pass · admit</span><span class="pill ref">fail · refuse</span><span class="pill hld">could not determine · hold</span></div>
+  <p style="font-size:15px;color:var(--muted);max-width:680px;margin-top:8px">Green means “this was signed by a valid key for that identifier”. What happens after the green door is left open on purpose. A pass grants no authority to act, so an agent admitted here still needs separate permission for whatever it wants to do.</p>
+</section>
+
+<section>
+  <h2>Ten cases</h2>
+  <p class="sub">Every case is judged at the same instant, 11 October 2026 at midnight UTC. The checker’s key list counts as fresh for 24 hours.</p>
+  <div class="grid" id="g"></div>
+</section>
+
+<section class="wide">
+  <h2>Testing the gatekeeper</h2>
+  <p class="col">Getting the right answers on ten cases could be luck. So the set also tampers with cases that passed, one change at a time, and the verdict has to move to refuse or hold. If a checker still says yes after a forged byte, it is broken.</p>
+  <div class="mut" id="mm"></div>
+</section>
+
+<section class="col">
+  <h2>Running the tests</h2>
+  <p>You need Python 3.12 or later and two packages. Until the pull request is merged, the files live on Kenne Ives’s branch.</p>
+  <ol class="steps">
+    <li>Fetch the branch and move into the test folder.</li>
+    <li>Make a private Python environment and install the two packages.</li>
+    <li>Run the checker.</li>
+  </ol>
+  <div class="cmd"><pre id="c1">git clone -b trust/key-evidence-states-v0 https://github.com/kenneives/aikr.git
+cd aikr/trust/key-evidence-states-v0
+python3 -m venv .venv &amp;&amp; . .venv/bin/activate
+pip install cryptography rfc8785
+python check.py</pre><button type="button" data-copy="c1">Copy</button></div>
+  <p>The checker first confirms that no fixture file has been altered, then runs the ten cases and eleven tamper tests and compares every answer with <code>expected.json</code>. Add <code>-v</code> to see all eight checks for every case.</p>
+  <div class="result"><strong>21 / 21</strong><span>match <code>expected.json</code> when run on 30 October 2026 with Python 3.13. Fixtures matched their recorded fingerprints.</span></div>
+  <pre>ok   C04  could-not-determine  hold    STALE_LOOKUP
+       freshness       could-not-determine  STALE_LOOKUP
+ok   C05  fail                 refuse  NO_LINEAGE
+ok   M01  fail                 refuse  BAD_SIGNATURE</pre>
+  <p style="margin-top:14px">Someone who has written their own checker in another language can skip <code>check.py</code> and compare their results with <code>expected.json</code> directly. That comparison is the main use of the set.</p>
+</section>
+
+<section class="col">
+  <h2>What the tests leave open</h2>
+  <ul class="limits">
+    <li>No real DNSSEC, DANE or DID method is implemented. Mapping these rows onto a real DNSSEC chain is separate work.</li>
+    <li>A pass says a key signed some bytes. It says nothing about who now holds the name, or about authority to act.</li>
+    <li>A key office that quietly deletes a revocation from its list is not caught.</li>
+    <li>The timestamp service is trusted as given, and only one handover link is tested.</li>
+    <li>The rules are one profile’s choices, written down so the group can dispute them. Case C05 is the main candidate.</li>
+  </ul>
+</section>
+
+<section class="wide">
+  <h2>Terms</h2>
+  <p class="sub" style="color:var(--muted);font-size:14px;margin:0">Plain meanings of the words used in the pull request and its README.</p>
+  <dl class="terms">
+    <div><dt>Fixture</dt><dd>A fixed, prepared input that a test always runs against. Here the fixtures are invented keys, key lists and signed statements, kept in the <code>fixtures</code> folder.</dd></div>
+    <div><dt>Fixture table</dt><dd>A table listing each fixture with the result it should produce. “Templeman’s fixture table” means Nicholas’s proposal for such a table. It is not a named standard.</dd></div>
+    <div><dt>Relying party</dt><dd>Whoever receives a signed statement and has to decide whether to rely on it. The gatekeeper in the cartoon.</dd></div>
+    <div><dt>Signing key</dt><dd>A private key makes signatures and its public partner lets anyone check them. The test keys use the Ed25519 method and protect nothing.</dd></div>
+    <div><dt>Validity interval</dt><dd>The period during which a key may be used to sign. Last year’s key here served from January 2025 to April 2026.</dd></div>
+    <div><dt>Anchor</dt><dd>The one key the checker trusts from the start. Every other key must link back to it. At the DNS root the KSK plays this role.</dd></div>
+    <div><dt>Lineage</dt><dd>A handover note, signed by an old key, naming its successor. Without it a new key has no proven link to the anchor.</dd></div>
+    <div><dt>Revocation</dt><dd>A signed notice that a key must not be trusted from a stated moment onward (its <code>effectiveFrom</code> time).</dd></div>
+    <div><dt>Key history</dt><dd>The document the key office publishes: the keys, the handover notes and the revocations.</dd></div>
+    <div><dt>Lookup and as-of time</dt><dd>Fetching the key history from its source. The as-of time records when that fetch happened.</dd></div>
+    <div><dt>Staleness bound</dt><dd>How old a fetched key history may be before the checker stops relying on it. Here, 24 hours.</dd></div>
+    <div><dt>Evaluation instant</dt><dd>The fixed moment every case is judged at, so results never depend on the day you run them.</dd></div>
+    <div><dt>Timestamp token</dt><dd>A signed record from an independent service saying a statement existed at a given time. A date the sender writes in does not count.</dd></div>
+    <div><dt>Digest (SHA-256)</dt><dd>A short fingerprint computed from a file. Changing a single byte changes it, so it reveals tampering.</dd></div>
+    <div><dt>JCS (RFC 8785)</dt><dd>A fixed byte layout for JSON data, so the bytes that get signed are the same on every computer. The <code>rfc8785</code> package does this.</dd></div>
+    <div><dt>Three-valued result</dt><dd>Pass, fail, or could-not-determine. The third value is never folded into either of the others.</dd></div>
+    <div><dt>Positive control</dt><dd>A case built to pass (C01). It shows the checker can say yes when it should.</dd></div>
+    <div><dt>Mutation control</dt><dd>Take a passing case, change one thing, and the verdict must flip. The M cases.</dd></div>
+    <div><dt>KRT</dt><dd>The group’s KR for Trust ontology (<code>krt.ttl</code> in the trust folder). The README maps each row to its terms.</dd></div>
+    <div><dt>DNSSEC, KSK, rollover</dt><dd>DNSSEC signs DNS records in a chain of trust. The root key-signing key (KSK) anchors that chain. On 11 October the root switched from KSK-2017 to KSK-2024.</dd></div>
+  </dl>
+</section>
+
+<hr class="col">
+<section class="col" style="padding-top:20px">
+  <h2>Sources</h2>
+  <p style="font-size:15px"><a href="https://github.com/w3c-cg/aikr/pull/25">Pull request #25</a> and its README · <a href="https://lists.w3.org/Archives/Public/public-aikr/2026Oct/0002.html">Nicholas Templeman’s proposal on public-aikr</a> · <a href="https://github.com/w3c-cg/aikr/blob/main/trust/ksk.md">Root KSK rollover note</a> · <a href="https://github.com/w3c-cg/aikr/issues/16">Issue #16, trust evidence next steps</a></p>
+</section>
+
+</div></main>
+<footer><div class="wrap">Explainer for the W3C AI KR Community Group. Test set by Kenne Ives after a proposal by Nicholas Templeman. Draft for discussion.</div></footer>
+
+<script>
+const C=[
+["C01","Everything in order","adm","ok","All eight checks clear. In you go.","Current key, fresh key list, a signed handover from last year’s key, and an empty stolen-key list.","The control case. It proves the checker can say yes when it should.","OK_CURRENT"],
+["C02","Old key, signed in time","adm","old","You were valid when you signed.","Last year’s key sealed this letter in February, while it was still in service (until April).","A genuine letter from the past stays genuine. The checker marks the yes as historical, since that key is no longer the current one.","OK_HISTORICAL"],
+["C03","Old key, signed too late","ref","late","Your key retired in April. You signed in May.","The same old key, used after its service ended.","Like stamping a document with a seal that was already withdrawn.","KEY_OUTSIDE_VALIDITY"],
+["C04","Out-of-date key list","hld","stale","My key list is five days old. Please wait.","Everything checks out on the data held, but the list was fetched five days ago and the limit is one day.","A key reported stolen since then would be invisible. So the answer is “can’t tell yet”.","STALE_LOOKUP"],
+["C05","Heir without a will","ref","orphan","Nobody at the old key signed for you.","A new key claims to succeed last year’s key. The key office lists it, but the old key never signed a handover note.","In a rollover the new key earns trust through a published handover. Here the handover is missing. The fail means continuity was not shown. It does not prove an impostor.","NO_LINEAGE","Open question: under rules that let the handover note live elsewhere, this case should read hold. The group is invited to choose."],
+["C06","Stolen later, signed before","adm","revbefore","Reported stolen from 1 September. You sealed 15 August.","The key was later revoked, but this letter predates the revocation.","A revocation does not reach backwards. If the theft really began earlier, this yes would be wrong, and nothing in the inputs could show it.","OK_HISTORICAL"],
+["C07","Signed after it was stolen","ref","revoked","Revoked on 1 September. You sealed 10 October.","The same revoked key, used after the revocation took effect.","The plain case of a stolen key in use.","KEY_REVOKED"],
+["C08","Key office unreachable","hld","offline","The key office isn’t answering. Hold.","The lookup timed out, so the checker has no keys to check against.","The letter may be perfectly fine. Nobody can know yet.","SOURCE_UNAVAILABLE"],
+["C09","No stolen-key list at all","hld","nolist","An empty list I can read. A missing one says nothing.","The key office publishes keys and handovers but keeps no revocation list.","An empty list says nothing was stolen. An absent list says nothing at all.","NO_STATUS_SOURCE"],
+["C10","Date in the sender’s own hand","hld","pencil","Anyone holding an old key can write any date.","An old key, with the date written by the sender and no independent timestamp.","Without a trusted date the letter is judged as of today, when that key has already retired.","SIGNING_TIME_UNATTESTED"]];
+const col={adm:"var(--ok)",ref:"var(--no)",hld:"var(--wait)"},bg={adm:"var(--okbg)",ref:"var(--nobg)",hld:"var(--waitbg)"};
+const P="var(--ink)",S="var(--face)",M="var(--muted)";
+function key(old){const f=old?"var(--waitbg)":S;return `<circle cx="50" cy="48" r="17" fill="${f}" stroke="${P}" stroke-width="1.5"/><circle cx="44" cy="45" r="2" fill="${P}"/><circle cx="56" cy="45" r="2" fill="${P}"/><path d="M44 54 Q50 58 56 54" fill="none" stroke="${P}" stroke-width="1.2"/><rect x="46" y="65" width="8" height="42" fill="${f}" stroke="${P}" stroke-width="1.5"/><rect x="54" y="88" width="9" height="5" fill="${f}" stroke="${P}" stroke-width="1.2"/><rect x="54" y="98" width="6" height="5" fill="${f}" stroke="${P}" stroke-width="1.2"/>${old?`<path d="M36 36 L42 40 M58 34 L62 38" stroke="${P}" stroke-width="1"/>`:""}<rect x="68" y="70" width="26" height="17" rx="2" fill="${S}" stroke="${P}" stroke-width="1.2"/><path d="M68 70 L81 80 L94 70" fill="none" stroke="${P}" stroke-width="1"/>`}
+function keeper(){return `<circle cx="168" cy="50" r="13" fill="${S}" stroke="${P}" stroke-width="1.5"/><circle cx="164" cy="48" r="1.8" fill="${P}"/><circle cx="172" cy="48" r="1.8" fill="${P}"/><path d="M155 40 L181 40 L177 32 L159 32Z" fill="var(--gilt)" stroke="${P}" stroke-width="1"/><path d="M152 108 L156 68 L180 68 L184 108Z" fill="var(--loom)" stroke="${P}" stroke-width="1.5"/><path d="M156 76 L140 86" stroke="${P}" stroke-width="1.5"/><rect x="128" y="82" width="16" height="20" rx="2" fill="${S}" stroke="${P}" stroke-width="1"/><path d="M131 88h10M131 93h10M131 98h6" stroke="${M}" stroke-width="1"/>`}
+function door(v){const c=col[v],b=bg[v];let d=`<rect x="220" y="28" width="60" height="80" fill="${b}" stroke="${c}" stroke-width="1.5"/>`;
+if(v==="adm")d+=`<path d="M220 28 L246 36 L246 100 L220 108Z" fill="${S}" stroke="${c}" stroke-width="1.5"/><path d="M252 68 l6 6 l12 -14" fill="none" stroke="${c}" stroke-width="2.5"/>`;
+if(v==="ref")d+=`<path d="M238 56 l24 24 M262 56 l-24 24" stroke="${c}" stroke-width="3"/>`;
+if(v==="hld")d+=`<rect x="228" y="60" width="44" height="16" rx="3" fill="${S}" stroke="${c}" stroke-width="1.2"/><path d="M234 68h32" stroke="${c}" stroke-width="2" stroke-dasharray="3 3"/><rect x="286" y="96" width="12" height="4" fill="${c}"/><path d="M288 100v8M296 100v8" stroke="${c}" stroke-width="1.5"/>`;
+return d+`<path d="M210 108 H300" stroke="${P}" stroke-width="1"/>`}
+function prop(p){const x=110,y=18;switch(p){
+case"ok":return `<circle cx="${x}" cy="${y+4}" r="9" fill="var(--okbg)" stroke="var(--ok)"/><path d="M${x-4} ${y+4} l3 3 l6 -6" fill="none" stroke="var(--ok)" stroke-width="1.8"/>`;
+case"old":case"late":return `<rect x="${x-11}" y="${y-6}" width="22" height="20" rx="2" fill="${S}" stroke="${P}"/><rect x="${x-11}" y="${y-6}" width="22" height="6" fill="${p==="late"?"var(--nobg)":"var(--okbg)"}" stroke="${P}"/><path d="M${x-6} ${y+5}h12M${x-6} ${y+9}h8" stroke="${M}"/>`;
+case"stale":return `<circle cx="${x}" cy="${y+4}" r="10" fill="${S}" stroke="var(--wait)" stroke-width="1.5"/><path d="M${x} ${y+4} V${y-2} M${x} ${y+4} H${x+5}" stroke="var(--wait)" stroke-width="1.5"/>`;
+case"orphan":return `<circle cx="${x-8}" cy="${y+4}" r="5" fill="none" stroke="${P}" stroke-width="1.5"/><circle cx="${x+10}" cy="${y+4}" r="5" fill="none" stroke="${P}" stroke-width="1.5"/><path d="M${x-1} ${y-3} l3 14" stroke="var(--no)" stroke-width="1.5"/>`;
+case"revbefore":case"revoked":return `<rect x="${x-12}" y="${y-6}" width="24" height="20" rx="2" fill="var(--nobg)" stroke="var(--no)"/><path d="M${x-6} ${y}h12M${x-6} ${y+5}h12" stroke="var(--no)"/>${p==="revbefore"?`<path d="M${x-30} ${y+4} H${x-16} M${x-20} ${y} l4 4 l-4 4" fill="none" stroke="var(--ok)" stroke-width="1.5"/>`:""}`;
+case"offline":return `<path d="M${x-14} ${y+10} a7 7 0 0 1 2 -13 a9 9 0 0 1 17 -2 a7 7 0 0 1 9 15Z" fill="${S}" stroke="${M}" stroke-width="1.3"/><path d="M${x-2} ${y+12} l10 -10 M${x+8} ${y+12} l-10 -10" stroke="var(--wait)" stroke-width="1.5"/>`;
+case"nolist":return `<rect x="${x-10}" y="${y-8}" width="20" height="24" rx="2" fill="${S}" stroke="${P}" stroke-dasharray="3 2"/><rect x="${x-5}" y="${y-11}" width="10" height="5" fill="${P}"/>`;
+case"pencil":return `<path d="M${x-14} ${y+12} L${x+8} ${y-10} L${x+13} ${y-5} L${x-9} ${y+17}Z" fill="var(--waitbg)" stroke="${P}"/><path d="M${x-14} ${y+12} l-2 7 l7 -2" fill="none" stroke="${P}"/>`}}
+const word={adm:"admit",ref:"refuse",hld:"hold"};
+document.getElementById("g").innerHTML=C.map(([id,t,v,p,say,what,sense,code,note])=>`<article class="panel"><div class="ph"><h3>${t}</h3><span class="pill ${v}">${word[v]}</span></div><svg viewBox="0 0 310 118" role="img" aria-label="${t}: the guard sends the letter to ${word[v]}">${key(p==="old"||p==="late"||p==="pencil")}${prop(p)}${keeper()}${door(v)}</svg><div class="bub">“${say}”</div><p class="what"><span class="lbl">What happens</span>${what}</p><p class="what"><span class="lbl">In plain terms</span>${sense}</p>${note?`<p class="note">${note}</p>`:""}<div class="ph"><span class="id">${id}</span><span class="code">${code}</span></div></article>`).join("");
+const MU=[["M01","C01","one byte of the signature flipped","ref","BAD_SIGNATURE"],["M02","C01","judged three days later, so the list goes stale","hld","STALE_LOOKUP"],["M03","C01","the handover note removed","ref","NO_LINEAGE"],["M04","C01","one byte of the handover signature flipped","ref","BAD_LINEAGE"],["M05","C02","the old key’s service ended before the signing","ref","KEY_OUTSIDE_VALIDITY"],["M06","C02","timestamp moved one second without re-signing","ref","BAD_TIMESTAMP"],["M07","C02","timestamp removed","hld","SIGNING_TIME_UNATTESTED"],["M08","C06","revocation date edited without re-signing","hld","REVOCATION_UNVERIFIABLE"],["M09","C01","key office made unreachable","hld","SOURCE_UNAVAILABLE"],["M10","C01","stolen-key list removed","hld","NO_STATUS_SOURCE"],["M11","C01","key list altered but its fingerprint left unchanged","ref","HISTORY_DIGEST_MISMATCH"]];
+document.getElementById("mm").innerHTML=MU.map(([i,b,c,v,r])=>`<div class="m"><b>${i}</b>Start from ${b}, ${c}.<br><span style="color:${col[v]};font-weight:500">→ ${word[v]}</span> <span class="code">${r}</span></div>`).join("");
+document.querySelectorAll("[data-copy]").forEach(b=>b.addEventListener("click",()=>{const el=document.getElementById(b.dataset.copy);const t=el.textContent;const done=()=>{b.textContent="Copied";setTimeout(()=>b.textContent="Copy",1500)};const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Selected"};try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}}));
+</script>
+</body>
+</html>

@@ -34,13 +34,13 @@
 <nav class="toc"><b>Contents</b><ul>
 <li><a href="#c1">1. Agent types & autonomy</a> <span class="ct">(8)</span></li>
 <li><a href="#c2">2. Cognition & capability</a> <span class="ct">(7)</span></li>
-<li><a href="#c3">3. Interaction, communication & identity</a> <span class="ct">(18)</span></li>
+<li><a href="#c3">3. Interaction, communication & identity</a> <span class="ct">(19)</span></li>
 <li><a href="#c4">4. Commerce & settlement</a> <span class="ct">(26)</span></li>
 <li><a href="#c5">5. Oversight, safety & interpretability</a> <span class="ct">(26)</span></li>
 <li><a href="#c6">6. Regulation & governance</a> <span class="ct">(30)</span></li>
 <li><a href="#c7">7. Agentic standards & standards bodies</a> <span class="ct">(13)</span></li>
 <li><a href="#c8">8. Applied domains</a> <span class="ct">(26)</span></li>
-<li><a href="#acr">Acronyms — quick reference</a> <span class="ct">(42)</span></li>
+<li><a href="#acr">Acronyms — quick reference</a> <span class="ct">(43)</span></li>
 </ul></nav>
 
 <p>This vocabulary is organised under the eight categories of the <a href="https://w3c-cg.github.io/aikr/taxonomy/">Agentic AI Knowledge-Domains taxonomy</a>, so each term sits in the same category used across the repository. Columns: the proposed definition, the canonical source, and SKOS-style relations (broader / narrower / partOf / related / regulates / mitigates …).</p>
@@ -68,7 +68,7 @@
 <tr><td class="t">Planning</td><td>Capability to generate action sequences to reach goals.</td><td class="s">AI-KR CG agent ontology (AIAO)</td><td class="r">partOf: capability</td></tr>
 <tr><td class="t">Reasoning</td><td>Capability to apply logic and knowledge to decisions.</td><td class="s">AI-KR CG agent ontology (AIAO)</td><td class="r">partOf: capability</td></tr>
 </tbody></table>
-<h2 id="c3">3. Interaction, communication &amp; identity <span class="ct">(18 terms)</span></h2>
+<h2 id="c3">3. Interaction, communication &amp; identity <span class="ct">(19 terms)</span></h2>
 <table class="voc"><thead><tr><th>Term</th><th>Proposed definition</th><th>Source</th><th>Relations</th></tr></thead>
 <tbody>
 <tr><td class="t">A2A</td><td>Agent-to-Agent. Protocols and frameworks linking independent agents without human intervention.</td><td class="s">Google (Agent2Agent protocol)</td><td class="r">related: MCP, AP2</td></tr>
@@ -83,6 +83,7 @@
 <tr><td class="t">MCP</td><td>Model Context Protocol. An open standard for connecting models to external data, tools, and applications.</td><td class="s">Anthropic (Model Context Protocol)</td><td class="r">related: A2A, tool use</td></tr>
 <tr><td class="t">NANDA</td><td>Networked AI Agents in a Decentralized Architecture; DID-based global agent discovery/registry (MIT Media Lab).</td><td class="s"><a href="https://nanda.media.mit.edu/">MIT Media Lab (Project NANDA)</a></td><td class="r">related: DID, ANP</td></tr>
 <tr><td class="t">OASF (Open Agent Schema Framework)</td><td>Standard schema for describing agent capabilities and interfaces in machine-readable form.</td><td class="s"><a href="https://agntcy.org/">AGNTCY</a></td><td class="r">related: ACP</td></tr>
+<tr><td class="t">OpenAgenet (OAN)</td><td>Open-source infrastructure for DID-based identity, verifiable registration, semantic discovery, and mutual identity verification of agents and related resources; complements A2A and MCP through SDK, skill, Runtime, Sidecar, and Gateway integration options.</td><td class="s"><a href="https://www.openagenet.xyz/">OpenAgenet</a>; <a href="https://github.com/OpenAgenet">source repositories</a></td><td class="r">related: DID, Verifiable Credentials, A2A, MCP</td></tr>
 <tr><td class="t">origin-bound authority</td><td>Binding an agent&#x27;s authorisation to execute a tool to the verified source of the initiating request.</td><td class="s">Agent-security literature</td><td class="r">mitigates: indirect prompt injection</td></tr>
 <tr><td class="t">root KSK (key-signing key)</td><td>The key that signs the DNS root&#x27;s key set and serves as the trust anchor for DNSSEC. KSK-2024 is scheduled to replace KSK-2017 on 11 October 2026.</td><td class="s"><a href="https://blog.cloudflare.com/root-ksk-2024-rollover/">Cloudflare (2026)</a>; <a href="https://www.iana.org/dnssec/files">IANA</a></td><td class="r">partOf: DNSSEC; related: trust anchor, trust anchor sentinel</td></tr>
 <tr><td class="t">Sybil resistance</td><td>A system&#x27;s capacity to defend against attackers creating many fake identities to gain influence.</td><td class="s">Douceur (2002)</td><td class="r">related: KYA; mitigates: fake-identity attacks</td></tr>
@@ -232,7 +233,7 @@
 <tr><td class="t">target identification</td><td>The phase pinpointing a biological molecule or pathway central to a disease.</td><td class="s">Beyond SMILES, arXiv 2602.10163</td><td class="r">partOf: agentic drug discovery</td></tr>
 </tbody></table>
 
-<h2 id="acr">Acronyms — quick reference <span class="ct">(42)</span></h2>
+<h2 id="acr">Acronyms — quick reference <span class="ct">(43)</span></h2>
 <p style="font-size:.88em;color:#5a6570">Auto-derived from the terms above. RAILS and GAIE expansions remain <i>unconfirmed</i>.</p>
 <table class="acr"><thead><tr><th>Acronym</th><th>Expansion / meaning</th></tr></thead><tbody>
 <tr><td class="t">A2A</td><td>Agent</td></tr>
@@ -267,6 +268,7 @@
 <tr><td class="t">MiCA</td><td>Markets in Crypto</td></tr>
 <tr><td class="t">MIDAS</td><td>Mixed Data Sampling</td></tr>
 <tr><td class="t">NANDA</td><td>Networked AI Agents in a Decentralized Architecture; DID</td></tr>
+<tr><td class="t">OAN</td><td>OpenAgenet</td></tr>
 <tr><td class="t">PPSI</td><td>Permitted Payment Stablecoin Issuer</td></tr>
 <tr><td class="t">RAILS</td><td>A three</td></tr>
 <tr><td class="t">ReactiveAgent</td><td>Agent with simple stimulus</td></tr>

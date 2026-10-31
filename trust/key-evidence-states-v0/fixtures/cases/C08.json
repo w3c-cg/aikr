@@ -1,0 +1,14 @@
+{
+  "evaluationInstant": "2026-10-11T00:00:00Z",
+  "id": "C08",
+  "lookup": {
+    "error": "connection timed out",
+    "fetchedAt": "2026-10-10T23:00:00Z",
+    "method": "https GET of key history document",
+    "source": "https://keys.example/subject-a/history.json",
+    "status": "unavailable"
+  },
+  "policy": "policy.json",
+  "situation": "Validation source unavailable",
+  "statement": "statements/s-current.json"
+}

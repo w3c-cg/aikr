@@ -1,0 +1,16 @@
+{
+  "anchor": {
+    "kid": "k-2025",
+    "publicKey": "2XSZ9G2Fji-7_trfhgIq_s2S3fg4NdREcg8WP5d34es",
+    "validFrom": "2025-01-01T00:00:00Z",
+    "validUntil": "2026-04-01T00:00:00Z"
+  },
+  "identifier": "urn:example:subject-a",
+  "lineageComplete": true,
+  "onUnknown": "hold",
+  "stalenessBound": "PT24H",
+  "timestampAuthority": {
+    "kid": "tsa-1",
+    "publicKey": "KZpWnL-slL9CUiqbRtsStPjqZ_ndkFBOU4SpSJTjHtg"
+  }
+}

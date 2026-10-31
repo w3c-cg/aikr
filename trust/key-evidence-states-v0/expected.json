@@ -1,0 +1,28 @@
+{
+  "cases": {
+    "C01": {"result": "pass", "decision": "admit", "reason": "OK_CURRENT"},
+    "C02": {"result": "pass", "decision": "admit", "reason": "OK_HISTORICAL"},
+    "C03": {"result": "fail", "decision": "refuse", "reason": "KEY_OUTSIDE_VALIDITY"},
+    "C04": {"result": "could-not-determine", "decision": "hold", "reason": "STALE_LOOKUP"},
+    "C05": {"result": "fail", "decision": "refuse", "reason": "NO_LINEAGE"},
+    "C06": {"result": "pass", "decision": "admit", "reason": "OK_HISTORICAL"},
+    "C07": {"result": "fail", "decision": "refuse", "reason": "KEY_REVOKED"},
+    "C08": {"result": "could-not-determine", "decision": "hold", "reason": "SOURCE_UNAVAILABLE"},
+    "C09": {"result": "could-not-determine", "decision": "hold", "reason": "NO_STATUS_SOURCE"},
+    "C10": {"result": "could-not-determine", "decision": "hold", "reason": "SIGNING_TIME_UNATTESTED"},
+    "C11": {"result": "could-not-determine", "decision": "hold", "reason": "LINEAGE_NOT_ESTABLISHED"}
+  },
+  "mutations": {
+    "M01": {"base": "C01", "result": "fail", "decision": "refuse", "reason": "BAD_SIGNATURE"},
+    "M02": {"base": "C01", "result": "could-not-determine", "decision": "hold", "reason": "STALE_LOOKUP"},
+    "M03": {"base": "C01", "result": "fail", "decision": "refuse", "reason": "NO_LINEAGE"},
+    "M04": {"base": "C01", "result": "fail", "decision": "refuse", "reason": "BAD_LINEAGE"},
+    "M05": {"base": "C02", "result": "fail", "decision": "refuse", "reason": "KEY_OUTSIDE_VALIDITY"},
+    "M06": {"base": "C02", "result": "fail", "decision": "refuse", "reason": "BAD_TIMESTAMP"},
+    "M07": {"base": "C02", "result": "could-not-determine", "decision": "hold", "reason": "SIGNING_TIME_UNATTESTED"},
+    "M08": {"base": "C06", "result": "could-not-determine", "decision": "hold", "reason": "REVOCATION_UNVERIFIABLE"},
+    "M09": {"base": "C01", "result": "could-not-determine", "decision": "hold", "reason": "SOURCE_UNAVAILABLE"},
+    "M10": {"base": "C01", "result": "could-not-determine", "decision": "hold", "reason": "NO_STATUS_SOURCE"},
+    "M11": {"base": "C01", "result": "fail", "decision": "refuse", "reason": "HISTORY_DIGEST_MISMATCH"}
+  }
+}

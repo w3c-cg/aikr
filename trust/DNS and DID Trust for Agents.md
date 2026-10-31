@@ -1,6 +1,6 @@
 # DNS and DID Trust for Agents
 
-Oct 31, 2026 · @Paola · Draft for comment
+Oct 31, 2026 · Draft for comment to be incorporated in the AI KR CG report
 
 ## Summary
 

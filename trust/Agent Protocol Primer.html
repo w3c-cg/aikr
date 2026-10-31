@@ -1,4 +1,8 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Agent Protocol Primer</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -126,7 +130,8 @@ footer ul{padding-left:18px;margin:8px 0 18px}
 footer li{margin-bottom:4px;overflow-wrap:anywhere}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
-
+</head>
+<body>
 <header class="mast">
   <div class="wrap">
     <p class="kicker">Epistemic Systems Lab · Field guide</p>
@@ -137,12 +142,12 @@ footer li{margin-bottom:4px;overflow-wrap:anywhere}
 </header>
 <div class="weave" aria-hidden="true"></div>
 <nav class="toc" aria-label="Contents"><div class="wrap wide">
-  <a href="#why">Why the list is hard to read</a><a href="#stack">Map of the stack</a><a href="#lease">Lease experiment</a><a href="#halt">Refuse or halt</a><a href="#threads">Thread decoder</a><a href="#glossary">Glossary</a><a href="#read">Reading order</a>
+  <a href="#why">Field guide</a><a href="#stack">Map of the stack</a><a href="#lease">Lease experiment</a><a href="#halt">Refuse or halt</a><a href="#threads">Thread decoder</a><a href="#glossary">Glossary</a><a href="#read">Reading order</a>
 </div></nav>
 
 <main>
 <section id="why"><div class="wrap">
-  <h2>Why the list is hard to read</h2>
+  <h2>Field guide to the AI Agent Protocol CG</h2>
   <p>The group was founded to write open protocols that let AI agents discover, identify and collaborate with each other across the Web. Its starting material is the Agent Network Protocol (ANP), an open-source design by co-chair Gaowei Chang. Song Xu of China Mobile is the other co-chair. For most of its life the list carried a handful of messages a month, mostly meeting notices and minutes.</p>
   <p>October 2026 brought 96 messages. Most of them come from a small set of people who each maintain their own draft specification, published elsewhere (IETF Internet-Drafts, GitHub repositories, other W3C groups). They use the list to compare designs, and each brings the vocabulary of his own draft. Terms like <span class="term">lease</span>, <span class="term">standing read</span>, <span class="term">envelope</span> or <span class="term">sidecar</span> are private coinages from one draft, used without definition because the author assumes readers have opened the link.</p>
   <p>Three older vocabularies run underneath. W3C identity work supplies <span class="term">DID</span> and <span class="term">verifiable credential</span>. Web security supplies <span class="term">OAuth</span>, <span class="term">client_id</span> and certificate checking (<span class="term">OCSP</span>). Software testing supplies <span class="term">test vectors</span>, <span class="term">digests</span> and <span class="term">conformance suites</span>. Once you can tell which vocabulary a sentence is speaking, most threads become legible.</p>
@@ -417,4 +422,5 @@ footer li{margin-bottom:4px;overflow-wrap:anywhere}
 })();
 </script>
 
-</body></html>
+</body>
+</html>

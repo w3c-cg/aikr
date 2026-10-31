@@ -4,7 +4,7 @@ Oct 31, 2026 · @Paola · Draft for comment
 
 ## Summary
 
-Yes, agent trust work is following two lines with different roots. DNS-anchored trust starts from the DNS root key and the registries below it. DID-anchored trust starts from keys the agent's controller holds and publishes in a DID document.
+Agent trust work is following two lines with different roots. DNS-anchored trust starts from the DNS root key and the registries below it. DID-anchored trust starts from keys the agent's controller holds and publishes in a DID document.
 
 The split is less clean than it looks. The DID methods now used for agents (did:web, did:wba, did:atp) fetch their documents over HTTPS from a domain, so they already depend on DNS and the WebPKI, usually without DNSSEC. Bridging work exists at the IETF and in the W3C Credentials CG, but none of it has been adopted yet.
 

@@ -1,0 +1,420 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Agent Protocol Primer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: woven masthead band, single reading column, wide panels for the stack map, timeline and glossary */
+:root{
+  --ground:#ecebf1; --surface:#f8f7fb; --ink:#1d1838; --fg:#24203a; --muted:#5d5873;
+  --rule:#cfcbdc; --gilt:#a8862a; --gilt-band:#c9a43a; --violet:#5b3a8c; --orchid:#9c4a86;
+  --teal:#2b6f6d; --crimson:#a3303c; --peri:#6f80c4; --chip:#e2dff0;
+  --ok-bg:#dcefe9; --no-bg:#f6dde0; --wait-bg:#efe6c9;
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
+  --body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#15131f; --surface:#1f1c2c; --ink:#0f0d1a; --fg:#e7e3ef; --muted:#a39db8;
+  --rule:#37324a; --gilt:#d9b85a; --gilt-band:#c9a43a; --violet:#b59ce0; --orchid:#d58bc0;
+  --teal:#6cc0bb; --crimson:#ec8a93; --peri:#9fb0ee; --chip:#2b2740;
+  --ok-bg:#1d3a35; --no-bg:#432129; --wait-bg:#3d3420; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --ground:#15131f; --surface:#1f1c2c; --ink:#0f0d1a; --fg:#e7e3ef; --muted:#a39db8;
+  --rule:#37324a; --gilt:#d9b85a; --gilt-band:#c9a43a; --violet:#b59ce0; --orchid:#d58bc0;
+  --teal:#6cc0bb; --crimson:#ec8a93; --peri:#9fb0ee; --chip:#2b2740;
+  --ok-bg:#1d3a35; --no-bg:#432129; --wait-bg:#3d3420; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--fg);font-family:var(--body);font-size:16.5px;line-height:1.62;margin:0}
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wide{max-width:1020px}
+a{color:var(--violet);text-underline-offset:2px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--gilt);outline-offset:2px}
+/* masthead */
+.mast{background:#1d1838;color:#f0e6c4}
+.mast .wrap{padding-block:44px 30px}
+.kicker{font-family:var(--body);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#c9a43a;margin:0 0 10px}
+.mast h1{font-family:var(--display);font-weight:700;font-size:clamp(34px,6vw,54px);line-height:1.04;margin:0 0 14px;color:#f3e7bd;text-wrap:balance;font-variation-settings:"opsz" 144}
+.mast p.dek{max-width:58ch;margin:0;color:#d9d2e8;font-size:17px}
+.mast .meta{margin-top:18px;font-size:13px;color:#a9a0c6}
+.weave{height:14px;background:
+  repeating-linear-gradient(90deg,#5b3a8c 0 10px,#c9a43a 10px 14px,#9c4a86 14px 24px,#2b6f6d 24px 28px),
+  #1d1838;position:relative}
+.weave::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(29,24,56,.55) 0 3px,transparent 3px 7px)}
+nav.toc{border-bottom:1px solid var(--rule);background:var(--surface)}
+nav.toc .wrap{padding-block:12px;display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px}
+nav.toc a{color:var(--muted);text-decoration:none}
+nav.toc a:hover{color:var(--violet)}
+section{padding-block:38px 6px}
+h2{font-family:var(--display);font-weight:600;font-size:clamp(25px,3.4vw,31px);line-height:1.15;margin:0 0 6px;color:var(--fg);text-wrap:balance}
+h2 + .lede{color:var(--muted);margin-top:0}
+h3{font-family:var(--display);font-weight:600;font-size:20px;margin:26px 0 6px;text-wrap:balance}
+p{margin:0 0 14px;max-width:66ch}
+.term{font-family:var(--mono);font-size:.88em;background:var(--chip);padding:1px 5px;border-radius:3px;white-space:nowrap}
+.aside{border-left:3px solid var(--gilt);padding:4px 0 4px 16px;margin:18px 0;color:var(--muted);font-size:15px}
+/* stack map */
+.stack{display:grid;gap:0;border:1px solid var(--rule);background:var(--surface);margin:22px 0}
+.layer{display:grid;grid-template-columns:200px 1fr;gap:18px;padding:16px 18px;border-top:1px solid var(--rule)}
+.layer:first-child{border-top:0}
+.layer .q{font-family:var(--display);font-size:18px;font-weight:600;line-height:1.25}
+.layer .q small{display:block;font-family:var(--body);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gilt);font-weight:600;margin-bottom:3px}
+.layer .body{min-width:0;font-size:15px}
+.layer .body p{margin-bottom:6px}
+.layer .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.layer .tags span{font-family:var(--mono);font-size:12.5px;background:var(--chip);padding:2px 7px;border-radius:3px}
+.layer.hot{background:linear-gradient(90deg,color-mix(in srgb,var(--orchid) 9%,transparent),transparent 70%)}
+.hotnote{font-size:12px;color:var(--orchid);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+@media (max-width:620px){.layer{grid-template-columns:1fr;gap:6px}}
+/* timeline */
+.lab{background:var(--surface);border:1px solid var(--rule);padding:20px 18px;margin:22px 0}
+.controls{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;margin-bottom:18px;font-size:14.5px}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+.seg button{font:inherit;font-size:14px;padding:7px 12px;border:0;background:transparent;color:var(--fg);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--violet);color:var(--surface)}
+.controls label{display:flex;gap:8px;align-items:center;cursor:pointer}
+.tl{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.tick{border-top:3px solid var(--rule);padding-top:10px;min-width:0}
+.tick .t{font-family:var(--mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.tick .ev{font-weight:600;font-size:14.5px;margin:2px 0 6px;line-height:1.3}
+.out{font-size:13px;padding:6px 8px;border-radius:3px;line-height:1.35}
+.out.ok{background:var(--ok-bg)} .out.no{background:var(--no-bg)} .out.info{background:var(--chip)}
+.tick.rev{border-top-color:var(--crimson)}
+.verdict{margin-top:16px;font-size:15px;max-width:70ch}
+@media (max-width:640px){.tl{grid-template-columns:1fr 1fr}}
+/* two-col tables */
+.tablebox{overflow-x:auto;margin:18px 0;border:1px solid var(--rule);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:560px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-top:1px solid var(--rule)}
+thead th{border-top:0;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td:first-child{font-weight:600;width:30%}
+td code{font-family:var(--mono);font-size:.9em}
+/* states flow */
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:12px 0 16px;font-family:var(--mono);font-size:13px}
+.flow span{padding:4px 8px;border:1px solid var(--rule);background:var(--surface);border-radius:3px}
+.flow span.halt{border-color:var(--crimson);color:var(--crimson)}
+.flow i{font-style:normal;color:var(--muted)}
+/* glossary */
+.gtools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}
+.gtools input{font:inherit;font-size:15px;padding:8px 12px;border:1px solid var(--rule);background:var(--surface);color:var(--fg);border-radius:4px;flex:1 1 220px;min-width:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{font:inherit;font-size:13px;padding:5px 10px;border:1px solid var(--rule);background:transparent;color:var(--fg);border-radius:20px;cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--ink);color:#f3e7bd;border-color:var(--ink)}
+:root[data-theme="dark"] .chips button[aria-pressed="true"]{background:var(--gilt);color:#15131f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .chips button[aria-pressed="true"]{background:var(--gilt);color:#15131f}}
+.gloss{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:0 28px}
+.g{border-top:1px solid var(--rule);padding:12px 0 14px;min-width:0}
+.g dt{font-family:var(--mono);font-weight:500;font-size:14.5px;color:var(--violet)}
+.g .grp{font-family:var(--body);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-left:6px}
+.g dd{margin:4px 0 0;font-size:14.5px;line-height:1.5}
+.g dd a{font-size:12.5px;white-space:nowrap}
+.count{font-size:13px;color:var(--muted)}
+.empty{color:var(--muted);font-size:15px}
+/* threads */
+.threads{display:grid;gap:0;margin:16px 0}
+.th{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:14px 0;border-top:1px solid var(--rule)}
+.th .who{font-size:13px;color:var(--muted)}
+.th .who b{display:block;font-family:var(--display);font-size:16px;color:var(--fg);font-weight:600}
+.th .what{min-width:0;font-size:15px}
+.th .what p{margin-bottom:6px}
+@media (max-width:600px){.th{grid-template-columns:1fr;gap:4px}}
+ol.reading{padding-left:22px;max-width:66ch}
+ol.reading li{margin-bottom:8px}
+footer{margin-top:40px;border-top:1px solid var(--rule);background:var(--surface)}
+footer .wrap{padding-block:26px 40px;font-size:13.5px;color:var(--muted)}
+footer ul{padding-left:18px;margin:8px 0 18px}
+footer li{margin-bottom:4px;overflow-wrap:anywhere}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="mast">
+  <div class="wrap">
+    <p class="kicker">Epistemic Systems Lab · Field guide</p>
+    <h1>Agent Protocol Primer</h1>
+    <p class="dek">A newcomer's guide to the vocabulary on <span style="font-family:var(--mono);font-size:.92em">public-agentprotocol@w3.org</span>, the list of the W3C AI Agent Protocol Community Group. Every definition is drawn from messages on the list or from the specifications they cite.</p>
+    <p class="meta">Covers list traffic up to the end of October 2026</p>
+  </div>
+</header>
+<div class="weave" aria-hidden="true"></div>
+<nav class="toc" aria-label="Contents"><div class="wrap wide">
+  <a href="#why">Why the list is hard to read</a><a href="#stack">Map of the stack</a><a href="#lease">Lease experiment</a><a href="#halt">Refuse or halt</a><a href="#threads">Thread decoder</a><a href="#glossary">Glossary</a><a href="#read">Reading order</a>
+</div></nav>
+
+<main>
+<section id="why"><div class="wrap">
+  <h2>Why the list is hard to read</h2>
+  <p>The group was founded to write open protocols that let AI agents discover, identify and collaborate with each other across the Web. Its starting material is the Agent Network Protocol (ANP), an open-source design by co-chair Gaowei Chang. Song Xu of China Mobile is the other co-chair. For most of its life the list carried a handful of messages a month, mostly meeting notices and minutes.</p>
+  <p>October 2026 brought 96 messages. Most of them come from a small set of people who each maintain their own draft specification, published elsewhere (IETF Internet-Drafts, GitHub repositories, other W3C groups). They use the list to compare designs, and each brings the vocabulary of his own draft. Terms like <span class="term">lease</span>, <span class="term">standing read</span>, <span class="term">envelope</span> or <span class="term">sidecar</span> are private coinages from one draft, used without definition because the author assumes readers have opened the link.</p>
+  <p>Three older vocabularies run underneath. W3C identity work supplies <span class="term">DID</span> and <span class="term">verifiable credential</span>. Web security supplies <span class="term">OAuth</span>, <span class="term">client_id</span> and certificate checking (<span class="term">OCSP</span>). Software testing supplies <span class="term">test vectors</span>, <span class="term">digests</span> and <span class="term">conformance suites</span>. Once you can tell which vocabulary a sentence is speaking, most threads become legible.</p>
+  <p class="aside">The September proposal on governance gaps opens by citing a "Layer Zero" discussion in the AI Knowledge Representation CG. Some of this traffic therefore crosses over from groups you already know. For a reference on the identity and trust layers, see the AIKR CG draft technical note <a href="https://github.com/w3c-cg/aikr/blob/main/trust/kroftrust.md" target="_blank" rel="noopener">The Knowledge Representation of the Trust Layer Through the Lens of Digital Identity Chains</a>, open for consultation.</p>
+</div></section>
+
+<section id="stack"><div class="wrap wide">
+  <h2>Map of the stack</h2>
+  <p class="lede">Each layer answers one question an agent faces when it deals with another agent. Threads can be placed on this map; October's long threads all sit in the shaded rows.</p>
+  <div class="stack">
+    <div class="layer">
+      <div class="q"><small>Identity</small>Who are you?</div>
+      <div class="body"><p>An agent needs a name that it controls and can prove. The group uses W3C Decentralized Identifiers. ANP defines its own DID method, <span class="term">did:wba</span> (Web-Based Agent). It runs on ordinary web servers. ANP also adds human-readable <span class="term">WNS</span> handles that resolve to a DID.</p>
+      <div class="tags"><span>DID</span><span>DID document</span><span>did:wba</span><span>WNS handle</span><span>agent passport</span></div></div>
+    </div>
+    <div class="layer">
+      <div class="q"><small>Discovery</small>Where are you, and what can you do?</div>
+      <div class="body"><p>An agent publishes a structured <em>description</em> of its functions and interfaces, and others find it through a <em>discovery</em> mechanism. July minutes record the group's recommendation to separate discovery from flows that assume the remote agent's URL is already known.</p>
+      <div class="tags"><span>agent description</span><span>/.well-known/agent-descriptions</span><span>Agent Discovery Service Protocol</span><span>address assurance</span></div></div>
+    </div>
+    <div class="layer">
+      <div class="q"><small>Communication</small>How do we talk?</div>
+      <div class="body"><p>ANP adds a <em>meta-protocol</em> layer in which agents negotiate, in natural language, which protocol to use, plus end-to-end encrypted messaging. Outside the group, MCP connects an agent to its tools and A2A connects agents to each other; both now sit under the Linux Foundation's Agentic AI Foundation.</p>
+      <div class="tags"><span>ANP</span><span>meta-protocol</span><span>MCP</span><span>A2A</span><span>instant messaging suite</span></div></div>
+    </div>
+    <div class="layer hot">
+      <div class="q"><small>Authorization</small>Are you allowed to do this?</div>
+      <div class="body"><p>Proving who you are does not grant permission. An ANP issue spells this out: did:wba authentication identifies the caller, and approval is left to higher layers. The group's open proposal (PR #46) separates roles and direct mandates from ordinary OAuth access permission.</p>
+      <div class="tags"><span>OAuth client_id</span><span>CIMD</span><span>mandate</span><span>delegation chain</span><span>authorization envelope</span></div>
+      <p class="hotnote">Open decision in the group</p></div>
+    </div>
+    <div class="layer hot">
+      <div class="q"><small>Freshness &amp; revocation</small>Are you still allowed, right now?</div>
+      <div class="body"><p>Permission can expire or be withdrawn. The October threads argue about how long a verified statement may be trusted, what happens when revocation lands while an agent is mid-task, and what to record when the revocation service cannot be reached.</p>
+      <div class="tags"><span>lease</span><span>revocation</span><span>fail-closed</span><span>runtime halt</span><span>refusal reason</span></div>
+      <p class="hotnote">Most of October's traffic</p></div>
+    </div>
+    <div class="layer hot">
+      <div class="q"><small>Accountability</small>Who answers for it afterwards?</div>
+      <div class="body"><p>Audit trails, decision receipts, provenance records and legal accountability. Some contributors want enforcement at the moment of action; others want a verifiable record for later review. A regulatory practitioner argues that identity alone says nothing about who is liable.</p>
+      <div class="tags"><span>receipt</span><span>provenance</span><span>HDP</span><span>LGD</span><span>issuance authority</span></div></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="lease"><div class="wrap wide">
+  <h2>Lease experiment</h2>
+  <p class="lede">The longest thread turned into a shared test. Larry Lewis (chair of the Agent Trust Protocol CG) proposed one timeline that every participant runs against their own design. Play with it below.</p>
+  <div class="lab" id="lab">
+    <div class="controls">
+      <span>Mode in the RTTP/IQA draft:</span>
+      <span class="seg" role="group" aria-label="Verification mode">
+        <button type="button" id="m-cached" aria-pressed="true">Cached lease</button>
+        <button type="button" id="m-live" aria-pressed="false">Live standing read</button>
+      </span>
+      <label for="unreach"><input type="checkbox" id="unreach"> Revocation service unreachable</label>
+    </div>
+    <div class="tl" id="tl"></div>
+    <p class="verdict" id="verdict"></p>
+  </div>
+  <div class="wrap" style="padding:0;margin:0">
+  <p>The scenario: at second 0 an agent receives valid identity and authorization evidence. At second 10 the issuer revokes it. At seconds 30, 60 and 119 the agent tries to act. The numbers come from ShaoBao Li's draft, where every statement carries a 120-second <span class="term">freshness lease</span>. Tymofii Pidlisnyi (Agent Passport System) pointed out the weak spot: an action at second 119 can rely on a statement its issuer revoked at second 10.</p>
+  <p>Li's reply describes two modes with different trade-offs. A cached lease keeps working offline and caps the exposure at one window. A live read refuses as soon as revocation is visible, and refuses again when the service is silent, because an unreachable authority is not read as consent. The participants then agreed to record results along separate axes so that each design is scored only on what it claims to do.</p>
+  </div>
+</div></section>
+
+<section id="halt"><div class="wrap">
+  <h2>Refuse or halt</h2>
+  <p>Larry Lewis's framing has become the reference point for the whole discussion. He asks implementers to keep three questions apart.</p>
+  <div class="tablebox"><table>
+    <thead><tr><th>Question</th><th>What it asks</th></tr></thead>
+    <tbody>
+      <tr><td>Evidence freshness</td><td>How recently was the statement or credential verified?</td></tr>
+      <tr><td>Authority validity</td><td>Is the delegation still valid and unrevoked?</td></tr>
+      <tr><td>Action-time authorization</td><td>Is this specific operation permitted now, under the constraints that apply?</td></tr>
+    </tbody>
+  </table></div>
+  <p>Li's draft claims the first two and leaves the third to the "calling layer", the software that actually performs the action. When it refuses, it must give one of five reasons, each a fact a third party can recompute.</p>
+  <div class="tablebox"><table>
+    <thead><tr><th>Refusal reason</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>Evidence did not match</td><td>The presented proof fails to check.</td></tr>
+      <tr><td><code>evidence_expired</code></td><td>The lease ran out.</td></tr>
+      <tr><td>Authority not determined</td><td>The verifier could not reach the source. Kept separate so a record never invents a decision nobody made.</td></tr>
+      <tr><td><code>authority_revoked</code></td><td>The grant was withdrawn.</td></tr>
+      <tr><td>Operation not permitted</td><td>The grant exists but does not cover this act.</td></tr>
+    </tbody>
+  </table></div>
+  <p>Steven Zhao (Zhao Xinghua) then asked about the agent already halfway through a job when revocation lands. A refusal stops the next call at the boundary, he argued, but a running chain makes no new call and never meets that boundary. It needs a <em>halt transition</em>, demonstrated in his runnable state machine:</p>
+  <div class="flow" aria-label="State sequence"><span>REGISTERED</span><i>→</i><span>GATE_PASSED</span><i>→</i><span>ACTIVE</span><i>→</i><span>ANOMALY</span><i>→</i><span class="halt">PAUSE</span><i>→</i><span class="halt">ROLLBACK</span><i>→</i><span>REVERIFY</span><i>→</i><span>RESUMED</span></div>
+  <p>The chain pauses at the next safe point between sub-calls, rolls back to its last checkpoint, and resumes only when a registered <em>restore condition</em> is met. Without one, he warns, a temporary problem kills the job for good, as with eIDAS Article 28(4), under which a revoked certificate can never be reinstated. He borrowed the failure vocabulary from OCSP, the long-standing certificate status protocol, where "unknown" is distinct from "good" and <code>tryLater</code> marks a responder that exists but cannot answer yet.</p>
+  <p>The open question at month's end: where exactly is the safe interruption point, and should the group define it or leave it to each runtime?</p>
+</div></section>
+
+<section id="threads"><div class="wrap">
+  <h2>Thread decoder</h2>
+  <p class="lede">October's threads, the person who started each, and what they are arguing about in plain terms.</p>
+  <div class="threads">
+    <div class="th"><div class="who"><b>Four open questions</b>ShaoBao Li (RTTP/IQA)</div><div class="what"><p>A review of the group's Agentic Web report with four gaps: detecting a swapped identity document (<em>preimage defense</em>), who vouches for the address of a description (<em>address assurance</em>), whether trust expires (<em>trust leases</em>), and whether interoperability works platform by platform or statement by statement (<em>granularity</em>). It became the joint revocation test described above, with Agent Passport System, Agent Trust Protocol and Agent Authorization Envelope authors taking part.</p></div></div>
+    <div class="th"><div class="who"><b>Remaining questions for Zoom</b>Ren Yushan</div><div class="what"><p>Should the protocol define what counts as trustworthy at all? Ren argues for reference methods agents may choose, since a hard-coded check becomes a hole once it is broken. Alan Karp replies with prior questions: does the agent decide, or its human operator, and what happens when agents share credentials?</p></div></div>
+    <div class="th"><div class="who"><b>Revocation vocabulary and runtime halt</b>branched from the above</div><div class="what"><p>What a running agent must do, and what its receipt must record, when authority disappears or cannot be checked mid-task.</p></div></div>
+    <div class="th"><div class="who"><b>Neutral Trust Infrastructure</b>Abisheak P</div><div class="what"><p>NTI is an enforcement layer that intercepts an agent's tool calls and blocks unsigned or out-of-scope ones. Alan Karp points to HDP, an IETF draft that keeps an audit trail. Abisheak quotes HDP saying its tokens must not drive access decisions, and calls the two complementary: one blocks at the door, the other records who entered. NTI also publishes a daily leaderboard scoring agent frameworks against NTI's own standard.</p></div></div>
+    <div class="th"><div class="who"><b>AIW #3 topics</b>Steven Zhao</div><div class="what"><p>A request for someone attending the Agentic Internet Workshop in Mountain View to raise two topics: delegation chains that cross MCP and A2A, and keeping authority revocable and auditable when every hop looks compliant but the whole chain exceeds its mandate.</p></div></div>
+    <div class="th"><div class="who"><b>Meeting minutes, 21 October</b>Song Xu and Gaowei Chang</div><div class="what"><p>The group's own business. Gaowei presented the Agent Authorization proposal (PR #46). Two designs are open: use a DID as the OAuth <code>client_id</code>, or keep CIMD's HTTPS <code>client_id</code> and bind a DID to it. No decision was recorded. Song reviewed 15 TPAC 2026 Agentic Web breakout proposals; a charter for a proposed Agentic Web Working Group is still being drafted.</p></div></div>
+    <div class="th"><div class="who"><b>Smaller threads</b>various</div><div class="what"><p>Cost and budget fields so a calling agent can cap what a delegated task spends (Mehek Mandal). Heartbeats that suspend an agent's authority when it goes silent (Athar Nouman, Living Agents Protocol). An open map of agentic-commerce standards across W3C, IETF, GS1 and industry (Francesco Marinoni Moretto). A TPAC breakout on browsers for spatial computing and robotics.</p></div></div>
+  </div>
+</div></section>
+
+<section id="glossary"><div class="wrap wide">
+  <h2>Glossary</h2>
+  <p class="lede">Each entry links to the message or specification it is drawn from.</p>
+  <div class="gtools">
+    <input id="q" type="search" placeholder="Search terms, e.g. lease, DID, fail-closed" aria-label="Search glossary">
+    <div class="chips" id="chips" role="group" aria-label="Filter by group"></div>
+  </div>
+  <p class="count" id="count"></p>
+  <dl class="gloss" id="gloss"></dl>
+</div></section>
+
+<section id="read"><div class="wrap">
+  <h2>Reading order</h2>
+  <ol class="reading">
+    <li>Read the meeting minutes first. Gaowei Chang posts a summary after each biweekly call, and these record what the group itself has discussed and decided. Proposals in other threads carry no group endorsement until they appear here.</li>
+    <li>Keep the protocol draft and the ANP documentation open. They define the identity, description and discovery layers the group actually owns.</li>
+    <li>For any long thread, find the first message and the draft it links. Each participant writes in the terms of his own draft, so the draft is the dictionary.</li>
+    <li>Place each message on the stack map. Ask which of the three questions (freshness, validity, action-time authorization) it addresses and which it leaves to someone else.</li>
+    <li>Skip calendar notices ("Event Updated") unless you plan to attend.</li>
+  </ol>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <strong>Sources</strong>
+  <ul>
+    <li>Further reference: <a href="https://github.com/w3c-cg/aikr/blob/main/trust/kroftrust.md" target="_blank" rel="noopener">AIKR CG, The Knowledge Representation of the Trust Layer Through the Lens of Digital Identity Chains (draft technical note)</a></li>
+    <li><a href="https://lists.w3.org/Archives/Public/public-agentprotocol/" target="_blank" rel="noopener">public-agentprotocol mail archive</a></li>
+    <li><a href="https://www.w3.org/groups/cg/agentprotocol" target="_blank" rel="noopener">AI Agent Protocol Community Group</a></li>
+    <li><a href="https://lists.w3.org/Archives/Public/public-agentprotocol/2026Oct/0019.html" target="_blank" rel="noopener">Minutes, 21 October 2026</a> · <a href="https://lists.w3.org/Archives/Public/public-agentprotocol/2026Jul/0010.html" target="_blank" rel="noopener">Minutes, 15 July 2026</a></li>
+    <li><a href="https://lists.w3.org/Archives/Public/public-agentprotocol/2026Oct/0009.html" target="_blank" rel="noopener">Four open questions</a> · <a href="https://lists.w3.org/Archives/Public/public-agentprotocol/2026Oct/0011.html" target="_blank" rel="noopener">APS reply</a> · <a href="https://lists.w3.org/Archives/Public/public-agentprotocol/2026Oct/0072.html" target="_blank" rel="noopener">Lease and refusal exchange</a> · <a href="https://lists.w3.org/Archives/Public/public-agentprotocol/2026Oct/0073.html" target="_blank" rel="noopener">Runtime halt</a> · <a href="https://lists.w3.org/Archives/Public/public-agentprotocol/2026Oct/0090.html" target="_blank" rel="noopener">Incomplete checks and OCSP</a></li>
+    <li><a href="https://lists.w3.org/Archives/Public/public-agentprotocol/2026Oct/0016.html" target="_blank" rel="noopener">Ren Yushan on trust</a> · <a href="https://lists.w3.org/Archives/Public/public-agentprotocol/2026Oct/0017.html" target="_blank" rel="noopener">Alan Karp reply</a> · <a href="https://lists.w3.org/Archives/Public/public-agentprotocol/2026Oct/0046.html" target="_blank" rel="noopener">NTI and AIW #3</a> · <a href="https://lists.w3.org/Archives/Public/public-agentprotocol/2026Oct/0033.html" target="_blank" rel="noopener">Rejection classes</a> · <a href="https://lists.w3.org/Archives/Public/public-agentprotocol/2026Oct/0034.html" target="_blank" rel="noopener">NTI leaderboard</a></li>
+    <li><a href="https://lists.w3.org/Archives/Public/public-agentprotocol/2026Oct/0001.html" target="_blank" rel="noopener">Cost and budget metadata</a> · <a href="https://lists.w3.org/Archives/Public/public-agentprotocol/2026Oct/0004.html" target="_blank" rel="noopener">Living Agents Protocol</a> · <a href="https://lists.w3.org/Archives/Public/public-agentprotocol/2026Oct/0005.html" target="_blank" rel="noopener">Agentic standards map</a> · <a href="https://lists.w3.org/Archives/Public/public-agentprotocol/2026Sep/0002.html" target="_blank" rel="noopener">Layer Zero governance gaps</a></li>
+    <li><a href="https://github.com/OceanSunlight/AgentNetworkProtocol" target="_blank" rel="noopener">Agent Network Protocol README</a> · <a href="https://arxiv.org/pdf/2508.00007" target="_blank" rel="noopener">ANP technical white paper</a> · <a href="https://github.com/agent-network-protocol/AgentNetworkProtocol/releases/tag/v1.1" target="_blank" rel="noopener">ANP 1.1 release</a> · <a href="https://github.com/agent-network-protocol/AgentNetworkProtocol/issues/90" target="_blank" rel="noopener">ANP issue #90</a></li>
+    <li><a href="https://www.w3.org/TR/2021/WD-did-core-20210305/" target="_blank" rel="noopener">W3C DID Core</a> · <a href="https://www.w3.org/TR/vc-data-model/" target="_blank" rel="noopener">W3C Verifiable Credentials 2.0</a> · <a href="https://curity.io/resources/learn/oauth-client-id-metadata-document/" target="_blank" rel="noopener">OAuth Client ID Metadata Document</a> · <a href="https://www.rfc-editor.org/about/independent/" target="_blank" rel="noopener">RFC Editor, Independent Submissions</a></li>
+    <li><a href="https://www.encryptionconsulting.com/education-center/ml-dsa-fips-204/" target="_blank" rel="noopener">ML-DSA (FIPS 204)</a> · <a href="https://redis.io/en/blog/mcp-vs-a2a-which-protocol-do-you-need/" target="_blank" rel="noopener">MCP and A2A</a> · <a href="https://w3c.github.io/charter-drafts/2026/agenticweb-wg.html" target="_blank" rel="noopener">Draft Agentic Web WG charter</a> · <a href="https://www.w3.org/community/a2wf/" target="_blank" rel="noopener">W3C Community Group membership note</a></li>
+  </ul>
+  <p>© Copyright 2026 Epistemic Systems Lab</p>
+</div></footer>
+
+<script>
+(function(){
+  /* ---------- lease timeline ---------- */
+  var mode='cached', unreach=false;
+  var bC=document.getElementById('m-cached'), bL=document.getElementById('m-live'), cb=document.getElementById('unreach');
+  function render(){
+    var pts=[
+      {t:'T = 0 s',ev:'Evidence issued',out:['info','Agent holds valid identity and authorization evidence.']},
+      {t:'T = 10 s',ev:'Issuer revokes',rev:true,out:['info', unreach?'Revocation recorded, but the service then stops answering.':'Revocation recorded at the issuer.']}
+    ];
+    [30,60,119].forEach(function(s){
+      var o;
+      if(mode==='cached'){ o=['ok','Goes through. The cached statement is still inside its 120 s lease.']; }
+      else if(unreach){ o=['no','Refused, fail-closed. Reason: authority could not be determined.']; }
+      else { o=['no','Refused. Reason: authority revoked.']; }
+      pts.push({t:'T = '+s+' s',ev:'Agent tries to act',out:o});
+    });
+    document.getElementById('tl').innerHTML=pts.map(function(p){
+      return '<div class="tick'+(p.rev?' rev':'')+'"><div class="t">'+p.t+'</div><div class="ev">'+p.ev+'</div><div class="out '+p.out[0]+'">'+p.out[1]+'</div></div>';
+    }).join('');
+    var v;
+    if(mode==='cached') v=unreach?'Cached lease, service down: the calls still complete. Li calls offline completion the design point and says the exposure is bounded by the lease itself.':'Cached lease: the agent checks freshness against its own clock and never asks the issuer again, so revocation at T = 10 s has no effect until the window closes.';
+    else v=unreach?'Live read, service down: every call is refused. Silence from the authority is not treated as consent. Participants want this case recorded under its own reason so it cannot be mistaken for a real revocation.':'Live standing read: each call asks the issuer for the agent’s current standing, so the revocation is seen at once.';
+    document.getElementById('verdict').textContent=v;
+    bC.setAttribute('aria-pressed',mode==='cached'); bL.setAttribute('aria-pressed',mode==='live');
+  }
+  bC.addEventListener('click',function(){mode='cached';render();});
+  bL.addEventListener('click',function(){mode='live';render();});
+  cb.addEventListener('change',function(){unreach=cb.checked;render();});
+  render();
+
+  /* ---------- glossary ---------- */
+  var M='https://lists.w3.org/Archives/Public/public-agentprotocol/';
+  var G=[
+  ['Community Group (CG)','Venues','A W3C group anyone with a W3C account can join without W3C membership. Its reports are drafts by participants and carry no standards status.','https://www.w3.org/community/a2wf/'],
+  ['AI Agent Protocol CG','Venues','This group. Mission: open, interoperable protocols for agents to discover, identify and collaborate across the Web. Chairs Gaowei Chang and Song Xu; biweekly Zoom calls.','https://www.w3.org/groups/cg/agentprotocol'],
+  ['Agentic Web','Venues','The group’s name for a Web in which agents act on people’s behalf. The group describes its purpose as laying the technical foundations for it.','https://www.w3.org/groups/cg/agentprotocol'],
+  ['Agentic Web Working Group','Venues','A proposed W3C Working Group for specifications that let web pages and applications be used by LLMs and agents. Its charter is still in development.','https://w3c.github.io/charter-drafts/2026/agenticweb-wg.html'],
+  ['TPAC breakouts','Venues','Sessions at W3C’s TPAC 2026 meeting. Song Xu counted 15 Agentic Web breakout proposals across five themes.',M+'2026Oct/0019.html'],
+  ['AIW #3','Venues','Agentic Internet Workshop, an open-space event in the IIW tradition held at the Computer History Museum, Mountain View. Notes go into a public Book of Proceedings.',M+'2026Oct/0046.html'],
+  ['Internet-Draft (I-D)','Venues','A working document posted to the IETF. Several list participants cite their drafts by name, e.g. draft-li-rttp-iqa-addressing, draft-kroehl-agentic-trust-aae, draft-pidlisnyi-aps.','https://www.rfc-editor.org/about/independent/'],
+  ['ISE review','Venues','The Independent Submission Editor publishes RFCs from outside the IETF’s own working-group process. "In ISE review" means a draft is on that route, with no IETF working-group endorsement.','https://www.rfc-editor.org/about/independent/'],
+  ['Provisional URI scheme','Venues','RTTP (rttp://) and IQA (iqa://) are registered provisionally at IANA. The authors cite them as CRI 27 and CRI 28.',M+'2026Oct/0009.html'],
+  ['PR #46','Venues','The pull request on the group’s GitHub that holds the Agent Authorization proposal. The chairs ask for comments there.',M+'2026Oct/0019.html'],
+  ['AAIF','Venues','Agentic AI Foundation, a Linux Foundation body that now hosts both MCP and A2A.','https://redis.io/en/blog/mcp-vs-a2a-which-protocol-do-you-need/'],
+  ['DID','Identity','Decentralized Identifier. A W3C identifier its controller creates and proves control of with cryptographic proofs, without permission from a central registry.','https://www.w3.org/TR/2021/WD-did-core-20210305/'],
+  ['DID document','Identity','What a DID resolves to: keys and verification methods for authenticating the controller, plus service endpoints.','https://www.w3.org/TR/2021/WD-did-core-20210305/'],
+  ['did:wba','Identity','ANP’s DID method ("Web-Based Agent"). Built on existing web infrastructure, with a cross-platform authentication flow for agents.','https://arxiv.org/pdf/2508.00007'],
+  ['WNS handle','Identity','A human-readable name for a DID-based agent, added in ANP 1.1, with handle-to-DID resolution and support for rotating the DID.','https://github.com/agent-network-protocol/AgentNetworkProtocol/releases/tag/v1.1'],
+  ['Verifiable credential (VC)','Identity','A W3C format for claims an issuer makes about a subject. Issuers give credentials to holders; holders present them to verifiers.','https://www.w3.org/TR/vc-data-model/'],
+  ['Agent passport','Identity','Used by two projects. Agent Passport System (APS): delegations carry their own expiry and are checked at the moment of action. Living Agents Protocol: an identity bound to a responsible principal, carried as a compact signed token.',M+'2026Oct/0011.html'],
+  ['Preimage defense','Identity','Li’s Q1. A DID document shows who holds a key; which layer detects that the document itself was swapped to impersonate an authority in use?',M+'2026Oct/0009.html'],
+  ['Presence / heartbeat','Identity','Living Agents Protocol: signed heartbeats chained to the agent’s log. Authority suspends after a declared silence and resumes on recovery, with the same identity.',M+'2026Oct/0004.html'],
+  ['Memory continuity (MAIT)','Identity','Steven Zhao’s proposed "fifth pillar" of agent identity: an agent with the same credential but different memory is a different accountable entity.',M+'2026Sep/0002.html'],
+  ['Agent description','Discovery','A structured document in which an agent publishes its functions and interfaces (ANP’s Agent Description Protocol).','https://arxiv.org/pdf/2508.00007'],
+  ['Agent discovery','Discovery','How agents find each other before connecting. July minutes recommend separating it from flows that assume a known URL and studying prior art (IEEE 802.11u, Passpoint, ANQP).',M+'2026Jul/0010.html'],
+  ['/.well-known/agent-descriptions','Discovery','A fixed web path where an agent’s descriptions can be found. The standards map lists it beside other discovery paths in use or proposed.',M+'2026Oct/0005.html'],
+  ['Address assurance','Discovery','Li’s Q2: who vouches for the address of a description document? His draft derives the address from the first 16 bytes of a SHA-256 hash over a canonical authority.',M+'2026Oct/0009.html'],
+  ['Granularity','Discovery','Li’s Q4: does interoperability work platform by platform (federated) or per signed statement (registry-free)? Larry Lewis sees the two as complementary.',M+'2026Oct/0072.html'],
+  ['ANP','Communication','Agent Network Protocol, Gaowei Chang’s open-source design and the group’s starting material. Three layers: identity and encryption, meta-protocol, application protocols.','https://github.com/OceanSunlight/AgentNetworkProtocol'],
+  ['Meta-protocol','Communication','ANP layer in which agents negotiate, in natural language, which communication protocol to use.','https://arxiv.org/pdf/2508.00007'],
+  ['MCP','Communication','Model Context Protocol. Connects one agent to its tools and data.','https://redis.io/en/blog/mcp-vs-a2a-which-protocol-do-you-need/'],
+  ['A2A','Communication','Agent2Agent protocol. Connects independent agents owned by different parties. Introduced by Google and donated to the Linux Foundation.','https://redis.io/en/blog/mcp-vs-a2a-which-protocol-do-you-need/'],
+  ['Normative','Communication','Written as a requirement implementations must meet. Ren Yushan argues trust should be offered as reference methods agents choose, so a broken check does not become a hole in the protocol.',M+'2026Oct/0016.html'],
+  ['Authentication vs authorization','Permission','Authentication proves who is calling; authorization decides what that caller may do. An ANP issue confirms did:wba authentication does not mean approval has been given.','https://github.com/agent-network-protocol/AgentNetworkProtocol/issues/90'],
+  ['OAuth client_id','Permission','The identifier of the software asking for access in an OAuth flow. PR #46 debates whether an agent’s DID should serve as its client_id.',M+'2026Oct/0019.html'],
+  ['CIMD','Permission','Client ID Metadata Document. The client_id is an HTTPS URL pointing to a JSON document describing the client, so no prior registration is needed.','https://curity.io/resources/learn/oauth-client-id-metadata-document/'],
+  ['Mandate','Permission','What a delegator asks an agent to do, under which constraints and for how long. PR #46 separates mandates and roles from resource-access permission.',M+'2026Oct/0019.html'],
+  ['Delegation chain','Permission','Authority passed from a person to an agent and onward. The worry: every hop individually compliant while the whole chain exceeds the original mandate.',M+'2026Oct/0046.html'],
+  ['Authorization envelope (AAE)','Permission','Lars Kersten Kroehl’s Agent Authorization Envelope draft. A container carrying the mandate, covering delegation and revocation.',M+'2026Oct/0072.html'],
+  ['The "Please"','Permission','Alan Karp’s term for a delegator’s standing wishes, e.g. "only within the company". No system has a place for them, and blocking without explanation leads people to share credentials.',M+'2026Oct/0072.html'],
+  ['Calling layer / relying party','Permission','The relying party is whoever acts on a verification answer. Li assigns the final "may I do this?" decision to the calling layer, the software performing the action.',M+'2026Oct/0072.html'],
+  ['Capability token, caveats, max_hops','Permission','NTI terms. A signed token states what an agent may do; caveats narrow it; max_hops limits how far it can be passed on.',M+'2026Oct/0073.html'],
+  ['Revocation','Time','Withdrawing authority before it would expire. Most of October asks how fast revocation must take effect and what happens while it travels.',M+'2026Oct/0072.html'],
+  ['Freshness lease','Time','In the RTTP/IQA draft every statement may be relied on for 120 seconds. The lease also bounds how long activity can continue after a revocation.',M+'2026Oct/0073.html'],
+  ['Three axes','Time','Larry Lewis: evidence freshness, authority validity, action-time authorization. A design is scored only on the axes it claims.',M+'2026Oct/0072.html'],
+  ['Standing states','Time','RTTP/IQA reports an agent’s standing as one of four states: ghost, probation, radiant, genesis.',M+'2026Oct/0072.html'],
+  ['Cached lease / live standing read','Time','Li’s two modes. Cached: check freshness locally, works offline. Live: ask for current standing on each call.',M+'2026Oct/0072.html'],
+  ['Refusal reason','Time','A closed set of five values in Li’s draft, each an authority fact. A response that refuses without giving the reason is non-conformant.',M+'2026Oct/0072.html'],
+  ['Fail-closed','Time','When the authority cannot be reached, refuse. Silence is never read as consent.',M+'2026Oct/0033.html'],
+  ['Indeterminate / authority_not_determined','Time','The outcome when a check could not complete. Participants insist it be recorded apart from "revoked" so the record never shows a decision nobody made.',M+'2026Oct/0090.html'],
+  ['Runtime halt','Time','Stopping a job already running when authority disappears, as opposed to refusing the next call.',M+'2026Oct/0073.html'],
+  ['Safe interruption point','Time','Where a running chain may be paused without corrupting work. Steven Zhao suggests between sub-calls and asks whether the group should define it.',M+'2026Oct/0073.html'],
+  ['Restore condition','Time','The evidence, verifier role and validity window that must arrive before a paused chain may resume.',M+'2026Oct/0073.html'],
+  ['OCSP','Time','The certificate status protocol cited as precedent. Answers good, revoked or unknown; failures include tryLater, unauthorized and internalError.',M+'2026Oct/0090.html'],
+  ['Receipt / grant reference','Time','The record of a decision. Participants want it to name the grant as it stood when the decision was made, so later changes cannot rewrite the verdict.',M+'2026Oct/0072.html'],
+  ['Test vectors','Testing','Fixed inputs with expected outputs that every implementation runs, so results can be compared.',M+'2026Oct/0072.html'],
+  ['Conformance suite','Testing','The aps-conformance-suite repository holds shared test cases, starting with the lease-revocation family. Revision 3 adds refusal reasons and grant references; revision 2 stays frozen.',M+'2026Oct/0072.html'],
+  ['Digest-gated run','Testing','The test runner refuses to score any input set whose SHA-256 digest differs from the published one, so everyone provably ran the same cases.',M+'2026Oct/0072.html'],
+  ['Mode B','Testing','A run produced by a design’s own author using the shared definitions, labelled as such in the report.',M+'2026Oct/0072.html'],
+  ['AST scan / leaderboard','Testing','NTI scans frameworks’ source code daily against its own NTI-1 criteria and publishes scores. Its own implementation is included and scores 100.',M+'2026Oct/0034.html'],
+  ['Ed25519','Crypto','A signature algorithm in common use today. HDP uses it; DID documents often list it as a key type.',M+'2026Oct/0046.html'],
+  ['ML-DSA / Dilithium','Crypto','NIST’s post-quantum signature standard (FIPS 204), the standardized form of CRYSTALS-Dilithium. NTI uses it so delegation chains survive quantum attacks.','https://www.encryptionconsulting.com/education-center/ml-dsa-fips-204/'],
+  ['Merkle-chained registry','Crypto','NTI keeps revocations in a hash-chained registry. On every loop its sidecar checks the token’s proof against the registry’s latest root hash.',M+'2026Oct/0073.html'],
+  ['JCS (RFC 8785)','Crypto','JSON Canonicalization Scheme. Puts JSON in one fixed form before hashing so a signature validates the same on any machine.',M+'2026Oct/0033.html'],
+  ['Sidecar','Crypto','A process running beside an agent that intercepts its internal execution loop, NTI’s enforcement model.',M+'2026Oct/0073.html'],
+  ['NTI','Governance','Neutral Trust Infrastructure. Abisheak P’s fail-closed enforcement layer that blocks tool calls whose signature or scope fails.',M+'2026Oct/0046.html'],
+  ['HDP','Governance','An IETF draft on agentic delegation with an append-only, offline-verifiable chain of custody. Its text says HDP tokens must not feed access decisions.',M+'2026Oct/0046.html'],
+  ['Layer Zero','Governance','A discussion begun in the AIKR CG about a base trust layer for agents. Steven Zhao argues it also needs governance semantics.',M+'2026Sep/0002.html'],
+  ['LGD (Registry / Evidence / Gates)','Governance','Steven Zhao’s Lifecycle Governance Doctrine from medical-device regulation: registration alone is insufficient without evidence chains and release gates.',M+'2026Sep/0002.html'],
+  ['Issuance authority','Governance','Who may create a new agent identity. Zhao proposes agents may request it but only a human authorizes it.',M+'2026Sep/0002.html'],
+  ['eIDAS Art. 28(4)','Governance','Cited by Zhao: a revoked qualified certificate can never be reinstated. He warns against copying that one-way rule for running agents.',M+'2026Oct/0073.html'],
+  ['Cost and budget metadata','Governance','Proposed optional fields: an agent advertises its pricing, a caller sets a budget limit and receives token and cost usage back.',M+'2026Oct/0001.html'],
+  ['Agentic standards map','Governance','Francesco Marinoni Moretto’s open map of standards work on how agents discover, identify and transact with sellers. Descriptive; it does not rank.',M+'2026Oct/0005.html']
+  ];
+  var groups=['All','Venues','Identity','Discovery','Communication','Permission','Time','Testing','Crypto','Governance'];
+  var labels={Time:'Freshness & revocation'};
+  var active='All';
+  var chips=document.getElementById('chips'), q=document.getElementById('q');
+  chips.innerHTML=groups.map(function(g){return '<button type="button" data-g="'+g+'" aria-pressed="'+(g==='All')+'">'+(labels[g]||g)+'</button>';}).join('');
+  chips.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;active=b.dataset.g;
+    chips.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',x===b);});draw();});
+  q.addEventListener('input',draw);
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+  function draw(){
+    var s=q.value.trim().toLowerCase();
+    var list=G.filter(function(r){return (active==='All'||r[1]===active)&&(!s||(r[0]+' '+r[2]).toLowerCase().indexOf(s)>-1);});
+    document.getElementById('count').textContent=list.length+' of '+G.length+' terms';
+    document.getElementById('gloss').innerHTML=list.length?list.map(function(r){
+      return '<div class="g"><dt>'+esc(r[0])+'<span class="grp">'+(labels[r[1]]||r[1])+'</span></dt><dd>'+esc(r[2])+' <a href="'+r[3]+'" target="_blank" rel="noopener">source</a></dd></div>';
+    }).join(''):'<p class="empty">No term matches. Try a shorter word.</p>';
+  }
+  draw();
+})();
+</script>
+
+</body></html>

@@ -1,0 +1,68 @@
+Fabian, Chairs and Participants
+Thanks for the invitation to introduce ourselves
+
+The web is of the most transformational technologies we have seen in of our lifetime, with incalculable impact on  humanity.
+our lives depend on it .
+
+
+It central architecture  gives the ability to publish information and knowledge and to search/find based on natural language keywords
+in real time. This is invaluable.
+
+This simple feature has delivered powerful capabilities and deep societal transformations through new services and tools
+
+But the web has become overwhelmed, admittedly polluted by a lot of junk and discredited, with tons of misinformation and noise.
+
+The architecture of the web itself is no longer clearcut as it once was with decentralization.
+
+New distributed architectures changing the way files are stored and retrieved, search engines as we know them may become a thing of the past
+In fact, the quality fo search results has already been challenged in recent years, requiring much higher precision to retrieve results
+For how long will it be working?
+
+The availability of LLMs and AI, Machine learning, neural networks, the web is a platform for scientific and technological change
+For how long before ot becomes inaccessible?
+
+
+New languages, terminologies, protocols, new possibilities and new risks
+And who to ask what's happening? If not the W3C?
+
+Agentic AI is delivering powerful capabilities and making the means of production more accessible,
+they are also been used in malicious ways, to create agent trolls.  So everywhere on the web now there are trolling AI agents
+ready to intervene and make sure users do not get to the knowledge they want.
+
+The fact is, that even just the complexity of the landscape can point to the fact that the web itself
+is shifting from a realm of endless possibilities, to a risky minefield just to be on
+
+So hands off to everyone who works robustly to make the web accessible, safe and maintaining it its best possible shape
+
+We love the web the way it was,  many say 'can we have the old web back'
+
+The vision at AI KR CG is to leverage the power of agentic AI in every possible way to make
+sure that the world wide web does not get buried in inextricable layer of complexity with a minefield of hidden
+vulnerabilities
+
+Explicit, shared, findable knowledge remains central critical feature.  The Agentic Web can develop to serve
+that purpose, or against it
+
+Here our latest work
+
+
+Overview (updated once every month or two)
+
+MCP vs WebMCP
+https://github.com/w3c-cg/aikr/blob/main/webMCP/webmcp-vs-mcp.md
+
+DNS vs DID
+
+Search on the decentralized web
+https://github.com/w3c-cg/aikr/blob/main/webaisearch/discoverablity.md
+
+AI supported standards   AWISS
+
+
+
+PDM
+
+
+
+
+

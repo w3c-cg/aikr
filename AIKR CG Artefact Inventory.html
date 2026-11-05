@@ -1,0 +1,266 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>AIKR CG Artefact Inventory</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap">
+<style>
+/* Layout: woven-check navy banner over stone ground; filter rail, year-grouped register below */
+:root{
+  --ground:#ecebe7; --paper:#f7f6f3; --ink:#1d1a24; --muted:#5d5866; --rule:#d3d0ca;
+  --loom:#1f2347; --gilt:#c9a24a; --violet:#5b3a8c; --orchid:#a8579b; --teal:#2f7a7a; --crimson:#a3324a; --peri:#6e7cc4;
+  --chip:#e2e0f0;
+  --display:"Newsreader",Georgia,"Times New Roman",serif;
+  --body:"Archivo","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#16151c; --paper:#1f1e27; --ink:#ecebf2; --muted:#a6a2b3; --rule:#36343f;
+  --loom:#141733; --gilt:#d8b45e; --violet:#a98be0; --orchid:#d58ac8; --teal:#6fc0bd; --crimson:#e07a8f; --peri:#9aa6ea; --chip:#2b2940; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --ground:#16151c; --paper:#1f1e27; --ink:#ecebf2; --muted:#a6a2b3; --rule:#36343f;
+  --loom:#141733; --gilt:#d8b45e; --violet:#a98be0; --orchid:#d58ac8; --teal:#6fc0bd; --crimson:#e07a8f; --peri:#9aa6ea; --chip:#2b2940; color-scheme:dark}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+.band{background:var(--loom);color:#f3ead2;position:relative}
+.band::after{content:"";display:block;height:8px;background:
+  repeating-linear-gradient(90deg,var(--gilt) 0 12px,transparent 12px 24px),
+  repeating-linear-gradient(0deg,var(--violet) 0 4px,var(--orchid) 4px 8px)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.band .wrap{padding-block:28px 22px}
+.kicker{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gilt);font-weight:600}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,4.6vw,44px);line-height:1.08;margin:6px 0 10px;text-wrap:balance;color:#f8f1dc}
+.lede{max-width:68ch;color:#d9d4e6;margin:0}
+.lede a{color:var(--gilt)}
+main .wrap{padding-block:22px 48px;display:grid;gap:22px}
+.tally{display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline;border-bottom:1px solid var(--rule);padding-bottom:14px}
+.tally div{display:flex;gap:8px;align-items:baseline}
+.tally b{font-family:var(--display);font-size:30px;font-weight:600;font-variant-numeric:tabular-nums}
+.tally span{color:var(--muted);font-size:13px}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px 16px;align-items:end}
+.controls label{display:grid;gap:4px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+select,input[type=search]{font:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);border-radius:3px;min-width:0}
+.types{display:flex;flex-wrap:wrap;gap:6px}
+.types button{font:inherit;font-size:13px;padding:5px 11px;border-radius:999px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);cursor:pointer}
+.types button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--gilt);outline-offset:2px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;font-size:13px;color:var(--muted)}
+.bar button{font:inherit;font-size:13px;padding:6px 12px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;border-radius:3px}
+.tablebox{overflow-x:auto;background:var(--paper);border-top:3px solid var(--loom)}
+table{border-collapse:collapse;width:100%;min-width:900px}
+th{position:sticky;top:0;background:var(--paper);text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:10px 10px;border-bottom:1px solid var(--rule)}
+td{padding:10px;border-bottom:1px solid var(--rule);vertical-align:top;font-size:14px}
+tr.yr td{background:var(--ground);font-family:var(--display);font-size:20px;font-weight:600;padding:14px 10px 6px;border-bottom:1px solid var(--ink)}
+td.date{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--muted);font-size:13px}
+.ttl{font-weight:600}
+.note{color:var(--muted);font-size:13px;margin-top:3px;max-width:62ch}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:2px;white-space:nowrap}
+.t-Vocabulary{background:color-mix(in srgb,var(--teal) 18%,transparent);color:var(--teal)}
+.t-Ontology{background:color-mix(in srgb,var(--violet) 18%,transparent);color:var(--violet)}
+.t-Taxonomy{background:color-mix(in srgb,var(--crimson) 16%,transparent);color:var(--crimson)}
+.t-Other{background:var(--chip);color:var(--muted)}
+.form{display:block;font-size:12px;color:var(--muted);margin-top:4px}
+.dom{font-size:13px}
+.ev{font-size:12px;white-space:nowrap}
+.ev.read{color:var(--teal)} .ev.ann{color:var(--orchid)}
+td a{color:var(--peri);text-underline-offset:2px;word-break:break-word}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+.todo{background:var(--paper);border-left:4px solid var(--orchid);padding:16px 20px}
+.todo h2{font-family:var(--display);font-size:22px;margin:4px 0 6px;font-weight:600}
+.todo p{margin:0 0 8px;max-width:68ch}
+.todo ol{margin:0;padding-left:20px;display:grid;gap:8px;max-width:78ch}
+.todo a{color:var(--peri)}
+.method{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px 32px;border-top:1px solid var(--rule);padding-top:18px;font-size:14px}
+.method h2{font-family:var(--display);font-size:20px;margin:0 0 6px;font-weight:600}
+.method p{margin:0 0 8px;max-width:62ch}
+.method ul{margin:0;padding-left:18px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="band"><div class="wrap">
+  <div class="kicker">W3C AI Knowledge Representation Community Group · July 2018 to November 2026</div>
+  <h1>Artefact inventory</h1>
+  <p class="lede">Every artefact traceable in the <a href="https://lists.w3.org/Archives/Public/public-aikr/" target="_blank" rel="noopener">public-aikr archive</a> (1,006 threads, 102 months), the <a href="https://www.w3.org/community/aikr/wiki/Main_Page" target="_blank" rel="noopener">CG wiki</a>, the 2018 task-list pages and the <a href="https://github.com/w3c-cg/aikr" target="_blank" rel="noopener">w3c-cg/aikr</a> repository, tagged by kind of KR and by the domain it describes.</p>
+</div></header>
+
+<main><div class="wrap">
+  <section class="tally" id="tally" aria-label="Counts by KR type"></section>
+
+  <section class="controls" aria-label="Filters">
+    <div style="grid-column:1/-1;display:grid;gap:4px">
+      <span style="font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600">KR type</span>
+      <div class="types" id="types"></div>
+    </div>
+    <label for="fDom">Domain<select id="fDom"></select></label>
+    <label for="fOrig">Origin<select id="fOrig">
+      <option value="">All</option><option value="CG">CG output</option><option value="Member">Member contribution</option></select></label>
+    <label for="fEv">Evidence<select id="fEv">
+      <option value="">All</option><option value="read">Content read</option><option value="ann">Announced only</option></select></label>
+    <label for="fQ">Search<input type="search" id="fQ" placeholder="title, contributor, note"></label>
+  </section>
+
+  <div class="bar"><span id="count"></span><button type="button" id="copy">Copy filtered rows as CSV</button></div>
+
+  <div class="tablebox"><table>
+    <thead><tr><th style="width:92px">Date</th><th>Artefact</th><th style="width:150px">KR type</th><th style="width:170px">Domain</th><th style="width:140px">Contributor</th><th style="width:110px">Evidence</th><th style="width:90px">Source</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table></div>
+
+  <section class="todo" aria-label="Open tasks for volunteers">
+    <div class="kicker" style="color:var(--orchid)">Open tasks · volunteers wanted</div>
+    <h2>Help finish this inventory</h2>
+    <p>Reply on <a href="https://lists.w3.org/Archives/Public/public-aikr/" target="_blank" rel="noopener">public-aikr</a> to take a task. Each one can be done independently.</p>
+    <ol>
+      <li><b>Review edge-case tags.</b> Check the KR type given to the crosswalks, the ARIA disambiguation note, the Digital Forensics Model Card specification (tagged Vocabulary) and the Nov 2025 vocabs map (tagged Taxonomy). Propose corrections with a one-line reason.</li>
+      <li><b>Propose inclusion criteria for member contributions.</b> Draft a short rule for when work posted by members (K3D, Samaruga, Sobieski, Wang, Ehstand, Ives) counts as a CG artefact, for the chair to approve.</li>
+      <li><b>Verify the "Announced only" items.</b> Open each item held in Google Drive or an attachment, confirm its KR type and domain, and add the term or class count where there is one. Access to some folders must be requested from the owner.</li>
+      <li><b>Find unlisted wiki pages.</b> Browse the wiki by hand for pages not linked from the main page and add any artefacts found.</li>
+    </ol>
+  </section>
+
+  <section class="method">
+    <div><h2>How the list was built</h2>
+      <p>All 102 monthly subject indexes of public-aikr were downloaded and every thread read by subject. Threads that announce, share or circulate something made for or inside the group were opened and their first message read. Reading suggestions, calls for papers, news and other groups' announcements were left out.</p>
+      <p>The wiki was read through its main page and the pages it links. The repository was cloned with full history; dates for repository documents are the first commit.</p></div>
+    <div><h2>Tags</h2>
+      <ul>
+        <li><b>Vocabulary</b> covers term lists, glossaries, controlled vocabularies and term crosswalks.</li>
+        <li><b>Ontology</b> means classes and properties with relations, formal or skeletal, and ontology alignments.</li>
+        <li><b>Taxonomy</b> means a hierarchy or category scheme.</li>
+        <li><b>Other</b> holds the rest, with the form named under the tag: reports, notes, StratML plans, specifications, schemas, concept maps, surveys.</li>
+      </ul></div>
+    <div><h2>Limits</h2>
+      <p><b>Announced only</b> marks items held in Google Drive, attachments or external sites that were not opened; the tag comes from the announcing message. Wiki special pages refuse automated access, so wiki pages not linked from the main page may be missing. Member contributions are listed because they were submitted to the group; filter them out for CG-only output.</p></div>
+  </section>
+</div></main>
+
+<script>
+const L="https://lists.w3.org/Archives/Public/public-aikr/", W="https://www.w3.org/community/aikr/wiki/", R="https://github.com/w3c-cg/aikr/blob/main/", P="https://w3c-cg.github.io/aikr/", T="https://www.w3.org/community/aikr/welcome/ai-kr-task-list/";
+// d,date | t,title | k,KR type | f,form | dom,domain | by | o,origin | v,evidence | s,source | n,note
+const D=[
+["2018-07-06","AI metadata set (draft)","Vocabulary","metadata term set","AI KR core","Paola Di Maio","CG","read",T+"metadata/","Candidate terms with function, source and method columns. Seeded with one example row."],
+["2018-07-06","Knowledge sources for AI KR","Other","resource list with tentative resource schema","AI KR core","Paola Di Maio","CG","read",T+"knowledge-sources-for-ai-kr/","Open-access references collected through a Google form."],
+["2018-07-09","Concept map(s) and topic list","Other","concept map + topic list","AI KR core","Paola Di Maio; wiki pages by Chris Harding","CG","read",T+"concept-maps/","Editable Google Drawing of top-level concepts plus about 23 topic areas. Wiki copies added Aug 2018; the drawing was reused as the shared mind map for the 2021 report."],
+["2018-07-10","AIKR CG plan in StratML","Other","StratML strategic plan (XML)","CG governance","Owen Ambur","CG","read",L+"2018Jul/0014.html","Goal 3 of the plan is a natural-language vocabulary for AI. Parts 1 and 2 plus proposed deliverables rendered again in Dec 2019."],
+["2018-07-11","AI KR vocabulary (entry form and spreadsheet)","Vocabulary","collaborative term register","AI KR core","Paola Di Maio","CG","read",T+"vocabulary/","Long-running register of KR terms tied to AI risks. Form reset and spreadsheet cleared Nov 2024."],
+["2018-10-04","URL-addressable predicate calculus","Other","KR formalism proposal","Logic and semantic web","Adam Sobieski","Member","read",L+"2018Oct/0001.html","Predicates addressed by URL with argument parameters. Followed by an enhanced predicate calculus note (Jul 2020)."],
+["2018-11","AIKR map (draft Nov 2018)","Other","concept map","AI KR core","not credited","CG","read",W+"Concept_Maps","Image on the Concept Maps wiki page."],
+["2019-03-12","Public schema for AI ethics (plan)","Vocabulary","planned schema from mapped ethics standards","AI ethics","Paola Di Maio","CG","announced",L+"2019Mar/0030.html","Plan to map concepts in AI ethics standards into an abstract public schema."],
+["2019-08-03","Zotero KR library","Other","shared bibliography with folder structure","AI KR core","Paola Di Maio; Mike B.","CG","read","https://www.zotero.org/groups/2351244/knowledge_representation/items/","Listed on the wiki main page under contributions."],
+["2019-08-26","Feedback to NIST on the AI standards plan","Other","consultation response","AI standards","Paola Di Maio","CG","read",L+"2019Aug/0044.html","Late feedback on the US federal AI standards engagement plan."],
+["2019-09","Deep KR for eGovernance (Taipei slides)","Other","slides","eGovernance","Paola Di Maio","CG","announced",W+"Main_Page","Listed as in progress on the wiki main page."],
+["2019-11","Shared KR for AI Commons (paper draft)","Other","paper draft","AI commons","Paola Di Maio","CG","announced",W+"Main_Page","Google Doc marked as needing advancement."],
+["2019-12-06","AI KR guidelines, first deliverable outline","Other","report outline","AI KR core","Paola Di Maio","CG","read",W+"Report_Draft","Five-section outline aimed at the EU AI Alliance and educators."],
+["2020-01","AI KR guideline: eGovernance of KR for trustworthy AI systems","Other","guideline draft","eGovernance; trustworthy AI","Carl Mattocks","CG","read",L+"2020Jan/0090.html","Wiki content draft on accountable, transparent governance of KR."],
+["2020-02-29","AI KR education survey","Other","survey instrument","Education","Paola Di Maio","CG","read",L+"2020Feb/0057.html","International survey of how KR is taught. Teaching resource collection announced Apr 2020."],
+["2020-04-22","Template for social impact statements for algorithms","Other","StratML template","Algorithmic accountability","Owen Ambur","Member","read",L+"2020Apr/0055.html","Editable in a StratML XForm."],
+["2020-04-26","KR schema for COVID-19 (proposal)","Vocabulary","proposed vocabulary or entity-relationship catalogue","Health (COVID-19)","Paola Di Maio","CG","announced",L+"2020Apr/0059.html","Proposed as a public KR schema to support interoperability."],
+["2020-05-23","KRID, knowledge resource identifier","Other","identifier scheme","KR provenance","Paul Alagna","Member","read",L+"2020May/0044.html","Stable identifiers for instances of discourse. Paul also shared StratML XSD CSV keys (May 2020)."],
+["2020-06-03","AI KRID core ontology v1","Ontology","core ontology (attachment)","Health (disease control)","Carl Mattocks","CG","announced",L+"2020Jun/0005.html","For KR and disease control frameworks using AI (KRIDs)."],
+["2020-06-10","AI KR strategist role plan","Other","StratML plan with KPIs","AI strategy and governance","Carl Mattocks","CG","read",L+"2020Jul/0040.html","Goals and objectives for an AI strategist role, kept in StratNav."],
+["2020-06-12","AI KR role 2: identify and prevent bias","Other","slides","Bias and ethics","Paola Di Maio","CG","announced",L+"2020Jun/0036.html","Representational and algorithmic bias."],
+["2020-07-05","Model of systemic bias (part 1)","Taxonomy","top-level taxonomy of systemic bias","Bias and ethics","Paola Di Maio","CG","read",L+"2020Jul/0004.html","Later offered to IEEE P7003 as the systemic bias top-level taxonomy (Aug 2020)."],
+["2020-09","AIKR value chain (KVC in StratML)","Other","StratML value-chain model","Knowledge management","Carl Mattocks; Owen Ambur","CG","read",L+"2020Sep/0017.html","Knowledge-value chain rendered in StratML for publishing knowledge representations."],
+["2020-10-14","Feedback to NIST on draft explainability principles","Other","consultation response","Explainable AI","Paola Di Maio","CG","read",L+"2020Oct/0004.html","Listed on the wiki as the NIST research note (PDF)."],
+["2020-10-28","Register of algorithmic AI systems (proposal)","Other","proposal","Public-sector AI registers","Carl Mattocks","CG","read",L+"2020Oct/0019.html",""],
+["2021-04-23","Vocabulary for the new EU AI legislation","Vocabulary","term table (outline)","AI regulation (EU AI Act)","Paola Di Maio","CG","announced",L+"2021Apr/0014.html","Editable outline with a starter set of terms."],
+["2021-06-28","Draft specification: AI KR adequacy","Other","specification draft","AI KR core","Paola Di Maio","CG","announced",L+"2021Jun/0019.html","Adequacy criteria for AI KR."],
+["2021-10","AI KR CG first report (published version)","Other","CG report (PDF)","AI KR core","Paola Di Maio","CG","announced",W+"Main_Page","Presented at TPAC 2021. Fed by a stakeholder survey and the shared mind map."],
+["2022-05-25","AI KR glossary: concepts and nomenclature","Vocabulary","glossary spreadsheet (CC BY)","AI KR core","Paola Di Maio","CG","read",L+"2022May/0028.html","Seeded with terms extracted from a KR textbook."],
+["2023-05-01","Towards a web standard for neuro-symbolic integration and KR using model cards","Other","book chapter","Neurosymbolic AI; model cards","Paola Di Maio","CG","read",L+"2023May/0000.html","Listed on the wiki under contributions."],
+["2024-02-28","W3CAIKRCG model cards on Hugging Face","Other","model card schema","ML documentation","Paola Di Maio","CG","announced","https://huggingface.co/W3CAIKRCG","Model card ML v1 posted Mar 2024, reposted Dec 2025 and Jan 2026."],
+["2024-12-11","AI KR vocab concept note","Vocabulary","scope note","AI KR core","Paola Di Maio","CG","announced",L+"2024Dec/0016.html","Scope of work for the vocabulary. HTML Vocabulary cited as a structural model (Dec 2024)."],
+["2024-12-19","KR glossary rendered in SKOS","Vocabulary","SKOS glossary (LLM-assisted)","AI KR core","Owen Ambur","Member","announced",L+"2024Dec/0023.html","Described in the message; no link given."],
+["2025-03-07","AI KR vocabulary A–C v1","Vocabulary","term list with definitions (PDF)","AI KR core","Paola Di Maio","CG","announced",W+"File:AI_KR_VOCABULARY_A-C_v1.pdf","Core KR terms compiled from reference sources."],
+["2025-05-19","Reliability engineering terms for trustworthy AI","Vocabulary","long term list with rationale","Reliability; trustworthy AI","Paola Di Maio","CG","announced",L+"2025May/0001.html","Transposes reliability-engineering concepts to AI."],
+["2025-05-29","AI KR learning resource","Taxonomy","curriculum with KR subdomain taxonomy","Education; AI KR core","not credited","CG","read",W+"AI_KR_Learning_Resource","Eight KR subdomains (logic, ontologies, frames, rules, probabilistic, non-monotonic, case-based, multi-agent) plus readings, courses and tools."],
+["2025-06-23","First AI KR vocabulary set, subsets by subdomain","Vocabulary","vocabulary subsets (slides and narrated video)","AI KR core","Paola Di Maio","CG","announced",L+"2025Jun/0010.html","First release against a Q1 2025 commitment."],
+["2025-07","Reference model draft (EAI framework)","Other","reference model","Enterprise integration; semantic BI","Sebastian Samaruga","Member","read",L+"2025Jul/0003.html","Revised Jul 2025 with BRD, FRS and SRS documents."],
+["2025-08-13","K3D (Knowledge3D) spatial KR framework","Other","spatial KR specification with vocabulary","Spatial KR","Daniel Campos Ramos","Member","read","https://github.com/danielcamposramos/Knowledge3D","Invitation to co-shape a standard; TPAC 2025 demo with a 10-term vocabulary slide; spatial encoding spec (Nov 2025)."],
+["2025-11","KRL vocabulary in the DCMI 2025 proceedings","Vocabulary","vocabulary with evaluation method","KR languages","Paola Di Maio","CG","announced",L+"2025Nov/0054.html","The one vocabulary set published so far; the corpus holds over 1,400 unique terms in one category alone."],
+["2025-11","AI KR vocabs map (Nov 2025)","Taxonomy","domain map of KR subspaces (bubble diagram)","AI KR core","Paola Di Maio","CG","read",W+"File:AI_KR_VOCABS_NOV_2025.jpg","Each bubble is a container for a vocabulary. Also used as the AIKR metamodel when reliability was added (May 2026)."],
+["2025-11","AI-driven web standards generator","Other","wiki concept page","Standards engineering","Paola Di Maio","CG","announced",W+"AI_DRIVEN_WEB_STANDARDS_GENERATOR","Notes prepared for TPAC 2025."],
+["2026-01-12","Knowledge representation project (expressions, rules, queries in .NET)","Other","KR API design","KR software","Adam Sobieski","Member","read","https://github.com/AdamSobieski/Narratology/blob/main/Content/Knowledge.md",""],
+["2026-01-30","MCP work for W3C review: three complementary documents","Vocabulary","crosswalk of agentic standards via MCP","Agentic AI","Paola Di Maio","CG","announced",L+"2026Jan/0010.html","Mapping of agentic standards with MCP as the reference point."],
+["2026-02-01","AI agents ontology v1","Ontology","ontology (technical report)","Agentic AI","Paola Di Maio","CG","announced",L+"2026Feb/0001.html","Submitted for publication; open for discussion."],
+["2026-02-01","Privacy use cases and draft specifications for AI agents","Other","use cases + draft specs","Agent privacy","Paola Di Maio","CG","announced",L+"2026Feb/0001.html","Two use cases."],
+["2026-02-14","MCP model card generator","Other","model card schema and tool","Agentic AI (MCP)","Paola Di Maio","CG","read","https://github.com/Starborn/MCP-Model-Card-Generator","Includes a tutorial."],
+["2026-02-26","WebMCP technical notes","Other","technical note","Web platform; agents","AI KR CG","CG","read",R+"webMCP/webmcp-technical-notes.html","Companion note comparing WebMCP and MCP added Oct 2026."],
+["2026-02-26","Configurable voice interaction standards framework","Other","specification (ReSpec)","Voice AI","AI KR CG","CG","read",R+"voiceAI/voice-ai-standards-respec.html","Second version adds proposed new types not yet in ReSpec references."],
+["2026-03-09","Agent ontology alignment: IDL agent ontology and HMAS stack","Ontology","ontology alignment","Agentic AI","AI KR CG","CG","read",R+"agonalign/index.html","Class, property, interaction and regulation mappings with example RDF."],
+["2026-03-09","Foundations and applications of a large graph model","Other","formal model (FCA)","Semantic graph applications","Sebastian Samaruga","Member","read",L+"2026Mar/0003.html","Continued as the semantic execution model (Oct 2026)."],
+["2026-03-11","Ontic categories notes for the Agent Protocol CG","Taxonomy","category scheme (technical notes)","Agentic AI","Paola Di Maio","CG","announced",L+"2026Mar/0007.html","Taxonomies and ontic categories offered to the Public Agent Protocol CG."],
+["2026-03-11","How to use Solid: a practical guide","Other","guide","Decentralised data","AI KR CG","CG","read",R+"Solid/solidguide.html",""],
+["2026-03-24","Missing layer zero: agent payment protocols and MCP capability declarations","Other","technical note","Agent payments","AI KR CG; Epistemic Systems Lab","CG","read",R+"conduit/index.html",""],
+["2026-03-29","Guidelines for writing machine-consumable specifications","Other","technical note","Standards engineering","AI KR CG","CG","read",R+"TNAI/machine-consumable-specs.html",""],
+["2026-03-29","Accessibility and sustainability principles for AI code assistants","Other","technical note","Web accessibility; sustainability","AI KR CG","CG","read",R+"TN-S/sustainability-ai-assistants.html","Related note on W3C code quality principles for AI-generated code (Apr 2026)."],
+["2026-04-03","Understanding robots.txt: a primer for AI agents","Other","primer","Web crawling; agents","AI KR CG","CG","read",R+"robot_text_explainer.md",""],
+["2026-04-18","Digital forensics model card specification","Vocabulary","schema with seven controlled vocabularies","Digital forensics","AI KR CG","CG","read",R+"DFMC/index.html","Controlled vocabularies for usage context, forensic domain, reasoning type, bias type and cause, error type and cause."],
+["2026-05-14","Reliability engineering domain (wiki)","Taxonomy","categories + extracted concepts + concept map","Reliability engineering","not credited","CG","read",W+"Reliability_Engineering","Categories for RE: about 19 AI reliability terms and six classical RE categories (draft)."],
+["2026-05-14","Inventory of efforts related to A2WF","Other","inventory","Agent-website frameworks","AI KR CG; A2WF CG editor","CG","read",R+"A2WF/intersection.md",""],
+["2026-06-25","Agentic AI semantic graph","Other","concept graph","Agentic AI standards","AI KR CG","CG","read",P+"map/","Links each repository note to the W3C effort and neighbouring standard it bridges."],
+["2026-06-26","Agentic AI standards landscape map","Other","landscape map","Agentic AI standards","AI KR CG","CG","read",P+"landscape/","Efforts placed by framework layer and openness."],
+["2026-06-26","Summary and repository map","Other","organising note","CG governance","AI KR CG","CG","read",P+"summary/","Same document also at sdo-inventory/."],
+["2026-06-27","Open standard vocabularies for e-commerce and the agentic interoperability gap","Vocabulary","vocabulary layer analysis","E-commerce","AI KR CG","CG","read",R+"ecommerce/index.html","schema.org, GoodRelations, GS1 Web Vocabulary and UN/CEFACT with a gap analysis for agents."],
+["2026-06-30","Agentic AI vocabulary (working draft)","Vocabulary","vocabulary in 8 categories","Agentic AI","AI KR CG","CG","read",P+"VOCAB29June/","154 terms plus 42 acronyms. An earlier walkthrough and tutorial page is retired."],
+["2026-06-30","Agentic AI knowledge domains","Taxonomy","category map / taxonomy","Agentic AI","AI KR CG","CG","read",P+"taxonomy/","Eight categories with example terms linked to sources."],
+["2026-07-01","Agentic AI standards inventory and gap analysis","Other","inventory by taxonomy category","Agentic AI standards","AI KR CG","CG","read",P+"standards/","Coverage rated per category with priority gaps."],
+["2026-07-03","AI Act high-risk classification glossary v1","Vocabulary","glossary","AI regulation (EU AI Act)","AI KR CG","CG","read",R+"high%20risk%20classification/AIKR_AI-Act-HighRisk-Classification_Glossary.md","Built from the draft Commission guidelines on Article 6 for the targeted consultation."],
+["2026-07-03","Voice agents vocabulary (CG draft)","Vocabulary","vocabulary in 8 categories with appendices","Voice AI","AI KR CG","CG","read",R+"voiceAI/vocab/index.html","Appendices from open-source code, a voice AI manuscript and the Smart Voice Agents workshop report."],
+["2026-07-16","W3C AI and agentic AI vocabulary crosswalk","Vocabulary","crosswalk across W3C groups","Agentic AI","AI KR CG","CG","read",P+"crosswalks/agenticaivocabs.html","Opened for consultation; Google Sheet copy for non-GitHub users."],
+["2026-07-16","Agent trust and identity vocabulary crosswalk","Vocabulary","crosswalk across W3C CGs","Trust and identity","AI KR CG","CG","read",R+"trust/Crosswalk.html","Correction and alignment received from the ATP CG (Nov 2026)."],
+["2026-07-16","ARIA terminology disambiguation: WAI-ARIA vs Agent-ARIA","Vocabulary","term disambiguation note","Trust and identity; accessibility","AI KR CG","CG","read",R+"trust/aria.html","Plain-language explainer added alongside."],
+["2026-08-03","KR of the trust layer through digital identity chains","Other","technical note","Trust and identity","Paola Di Maio","CG","read",R+"trust/kroftrust.md","Comparison semantics (§4.1) added Sep 2026 after issue #10."],
+["2026-08","Assessment claims, evidence sufficiency and defeater conditions","Ontology","ontology design pattern (concept note)","Reliability assessment of agentic AI","Yuqiang Wang","Member","read",L+"2026Aug/0005.html","Links an assessment claim, evidence artefact, sufficiency criterion and defeater condition."],
+["2026-09-09","DNS anchoring and the ARIA public surface","Other","technical note","Trust and identity","AI KR CG","CG","read",R+"trust/dns-dependency-agent-identity-note.html",""],
+["2026-09-12","Bilingual concept map for human–AI oversight distinctions (offer)","Other","concept map (ISO 704)","Human oversight","Andreas Ehstand","Member","announced",L+"2026Sep/0016.html","Separates observe, check, decide and authorise. Offered; draft not yet posted."],
+["2026-09-16","KR for trust: vocabulary, use cases and working draft","Vocabulary","vocabulary + use cases","Trust and identity","AI KR CG","CG","read",R+"trust/trust-layer-thread-summary.html","Status per item: agreed, open, proposed, gap."],
+["2026-09-17","KR for Trust ontology (KRT) skeleton v0.1","Ontology","OWL/Turtle skeleton with SHACL shapes and examples","Trust and identity; agent delegation","Paola Di Maio","CG","read",R+"trust/krt.ttl","About 30 classes; shapes encode design rules from case work. Proposed for weekly calls from 21 Sep 2026."],
+["2026-10-10","Root KSK rollover, W3C trust groups and AI KR","Other","technical note","DNS trust anchors","Paola Di Maio","CG","read",R+"trust/ksk.md","Basis for the TPAC 2026 breakout and mini-workshop."],
+["2026-10-29","Key and evidence states test cases (PR #25)","Other","runnable test suite + illustrated guide","Trust and identity","Kenne Ives","Member","read","https://github.com/w3c-cg/aikr/pull/25","Pass, fail or could-not-determine outcomes for key lifecycle cases."],
+["2026-10-31","Agent Protocol primer","Vocabulary","glossary drawn from list messages","Agentic AI protocols","Epistemic Systems Lab","CG","read",R+"trust/Agent_Protocol_Primer.html","Newcomer's guide to the vocabulary of the AI Agent Protocol CG list."],
+["2026-10-31","DNS and DID trust for agents","Other","technical note (draft)","Trust and identity","AI KR CG","CG","read",R+"trust/DNS_and_DIDTrustforAgents.md","Draft for the CG report."],
+["2026-11-04","The discoverability gap in the AI-mediated web","Other","discussion draft","Web search","AI KR CG","CG","read",R+"webaisearch/discoverability.md",""],
+["2026-11-04","AI implementations in standards delivery (AIWSS case repository)","Other","technical note","Standards engineering","AI KR CG","CG","read",R+"aiws/TN_%20AIWSS.md","Scoping input for the AI-Driven Web Standards Specification CG."]
+];
+const KEYS=["date","title","type","form","domain","contributor","origin","evidence","source","note"];
+const rows=D.map(a=>Object.fromEntries(KEYS.map((k,i)=>[k,a[i]])));
+const TYPES=["Vocabulary","Ontology","Taxonomy","Other"];
+const state={types:new Set(TYPES)};
+const $=id=>document.getElementById(id);
+
+// tally
+$("tally").innerHTML=`<div><b>${rows.length}</b><span>artefacts</span></div>`+TYPES.map(t=>`<div><b>${rows.filter(r=>r.type===t).length}</b><span>${t.toLowerCase()}</span></div>`).join("")+`<div><b>${rows.filter(r=>r.origin==="Member").length}</b><span>member contributions</span></div>`;
+
+// type chips
+$("types").innerHTML=TYPES.map(t=>`<button type="button" id="ty-${t}" aria-pressed="true" data-t="${t}">${t}</button>`).join("");
+$("types").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const t=b.dataset.t;
+  state.types.has(t)?state.types.delete(t):state.types.add(t);b.setAttribute("aria-pressed",state.types.has(t));render();});
+
+// domain options (split multi-domain cells on ';')
+const doms=[...new Set(rows.flatMap(r=>r.domain.split(";").map(s=>s.trim())))].sort();
+$("fDom").innerHTML=`<option value="">All domains</option>`+doms.map(d=>`<option>${d}</option>`).join("");
+["fDom","fOrig","fEv","fQ"].forEach(id=>$(id).addEventListener("input",render));
+
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function filtered(){const dom=$("fDom").value,o=$("fOrig").value,ev=$("fEv").value,q=$("fQ").value.trim().toLowerCase();
+  return rows.filter(r=>state.types.has(r.type)&&(!dom||r.domain.split(";").map(s=>s.trim()).includes(dom))&&(!o||r.origin===o)&&(!ev||r.evidence===ev)
+   &&(!q||(r.title+" "+r.contributor+" "+r.note+" "+r.form+" "+r.domain).toLowerCase().includes(q)));}
+function render(){const f=filtered();let html="",yr="";
+  for(const r of f){const y=r.date.slice(0,4);if(y!==yr){yr=y;html+=`<tr class="yr"><td colspan="7">${y}</td></tr>`;}
+    html+=`<tr><td class="date">${esc(r.date)}</td><td><div class="ttl">${esc(r.title)}</div>${r.note?`<div class="note">${esc(r.note)}</div>`:""}</td>
+    <td><span class="tag t-${r.type}">${r.type}</span><span class="form">${esc(r.form)}</span></td><td class="dom">${esc(r.domain)}</td>
+    <td class="dom">${esc(r.contributor)}${r.origin==="Member"?`<span class="form">member contribution</span>`:""}</td>
+    <td class="ev ${r.evidence==="read"?"read":"ann"}">${r.evidence==="read"?"Content read":"Announced only"}</td>
+    <td><a href="${esc(r.source)}" target="_blank" rel="noopener">Open</a></td></tr>`;}
+  $("rows").innerHTML=html||`<tr><td colspan="7" class="empty">No artefacts match these filters. Clear a filter to see more.</td></tr>`;
+  $("count").textContent=`Showing ${f.length} of ${rows.length}`;}
+render();
+
+$("copy").addEventListener("click",()=>{const f=filtered();const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
+  const csv=[KEYS.join(","),...f.map(r=>KEYS.map(k=>q(k==="evidence"?(r[k]==="read"?"content read":"announced only"):r[k])).join(","))].join("\n");
+  const b=$("copy");const done=t=>{b.textContent=t;setTimeout(()=>b.textContent="Copy filtered rows as CSV",1800);};
+  try{navigator.clipboard.writeText(csv).then(()=>done(`Copied ${f.length} rows`),()=>fallback());}catch(e){fallback();}
+  function fallback(){const ta=document.createElement("textarea");ta.value=csv;ta.style.position="fixed";ta.style.top="0";document.body.appendChild(ta);ta.select();
+    try{document.execCommand("copy");done(`Copied ${f.length} rows`);}catch(e){done("Copy failed: select rows manually");}ta.remove();}
+});
+</script>
+
+</body></html>

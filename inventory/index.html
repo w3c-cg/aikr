@@ -1,6 +1,9 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>AIKR CG Artefact Inventory</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap">
 <style>
@@ -73,6 +76,9 @@ td a{color:var(--peri);text-underline-offset:2px;word-break:break-word}
 .method ul{margin:0;padding-left:18px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
 
 <header class="band"><div class="wrap">
   <div class="kicker">W3C AI Knowledge Representation Community Group · July 2018 to November 2026</div>
@@ -103,7 +109,7 @@ td a{color:var(--peri);text-underline-offset:2px;word-break:break-word}
     <tbody id="rows"></tbody>
   </table></div>
 
-  <section class="todo" aria-label="Open tasks for volunteers">
+  <section class="todo" id="tasks" aria-label="Open tasks for volunteers">
     <div class="kicker" style="color:var(--orchid)">Open tasks · volunteers wanted</div>
     <h2>Help finish this inventory</h2>
     <p>Reply on <a href="https://lists.w3.org/Archives/Public/public-aikr/" target="_blank" rel="noopener">public-aikr</a> to take a task. Each one can be done independently.</p>
@@ -263,4 +269,5 @@ $("copy").addEventListener("click",()=>{const f=filtered();const q=v=>'"'+String
 });
 </script>
 
-</body></html>
+</body>
+</html>

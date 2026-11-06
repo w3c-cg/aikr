@@ -1,0 +1,14 @@
+{
+  "payload": {
+    "claim": "example claim, content irrelevant to the checks",
+    "identifier": "urn:example:subject-a",
+    "kid": "k-2025",
+    "signedAt": "2026-02-01T12:00:00Z",
+    "type": "statement"
+  },
+  "sig": {
+    "alg": "Ed25519",
+    "kid": "k-2025",
+    "value": "I7ZVjJuciS6jn5HjTVSiHQ7FWTnxRCYVr5ypMUAXzCHkvfRADz21wfh9zU7PDYwrUL5H967Gcpl8sM8H3MLvDA"
+  }
+}

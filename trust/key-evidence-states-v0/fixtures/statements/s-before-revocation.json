@@ -1,0 +1,26 @@
+{
+  "payload": {
+    "claim": "example claim, content irrelevant to the checks",
+    "identifier": "urn:example:subject-a",
+    "kid": "k-2026",
+    "signedAt": "2026-08-15T12:00:00Z",
+    "type": "statement"
+  },
+  "sig": {
+    "alg": "Ed25519",
+    "kid": "k-2026",
+    "value": "FAGMG3lxWTOO09BTERj-Vdf-oU6jl_NYkmHX7KlDxVg6qzX98GxvKWdP5nHX1l_vPtX3L68sHhwRYOjzGYlLCQ"
+  },
+  "timestamp": {
+    "payload": {
+      "digest": "sha256:4a09b57382ca4bfae29854da618f30153473b777f0691a13b0abb02de54e7ecf",
+      "time": "2026-08-15T12:00:00Z",
+      "type": "timestamp"
+    },
+    "sig": {
+      "alg": "Ed25519",
+      "kid": "tsa-1",
+      "value": "k-HNejXN-YDEsF3jPWq5rLmyzo0SzYn3eMZiCBOxwQx_3D5qEfVTBlVdq9b4-lob1UKtGuEbhcqegqc0IWi9Ag"
+    }
+  }
+}

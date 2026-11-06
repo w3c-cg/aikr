@@ -1,0 +1,15 @@
+{
+  "evaluationInstant": "2026-10-11T00:00:00Z",
+  "id": "C07",
+  "lookup": {
+    "document": "history/revoked.json",
+    "fetchedAt": "2026-10-10T23:00:00Z",
+    "method": "https GET of key history document",
+    "sha256": "d6546498ffe7e381e099bf4b48cd0ea04b5c0af868b91535da7ed89fea146d70",
+    "source": "https://keys.example/subject-a/history.json",
+    "status": "ok"
+  },
+  "policy": "policy.json",
+  "situation": "Revoked key, signature timestamped after the revocation took effect",
+  "statement": "statements/s-current.json"
+}

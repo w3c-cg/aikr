@@ -1,0 +1,50 @@
+{
+  "identifier": "urn:example:subject-a",
+  "keys": [
+    {
+      "kid": "k-2025",
+      "publicKey": "2XSZ9G2Fji-7_trfhgIq_s2S3fg4NdREcg8WP5d34es"
+    },
+    {
+      "kid": "k-2026",
+      "publicKey": "piCd8AffzuMMZNvV7LShejbbjClpiXSqIEb1Uci0EY4",
+      "successorOf": "k-2025"
+    },
+    {
+      "kid": "k-x",
+      "publicKey": "qiVY2SvdaMJLbgQ9jr9197qnHVaufNxwW51x-SgUiO4",
+      "successorOf": "k-2025"
+    }
+  ],
+  "lineage": [
+    {
+      "payload": {
+        "identifier": "urn:example:subject-a",
+        "predecessor": "k-2025",
+        "successor": "k-2026",
+        "successorPublicKey": "piCd8AffzuMMZNvV7LShejbbjClpiXSqIEb1Uci0EY4",
+        "successorValidFrom": "2026-03-01T00:00:00Z",
+        "successorValidUntil": null,
+        "type": "lineage"
+      },
+      "sig": {
+        "alg": "Ed25519",
+        "kid": "k-2025",
+        "value": "-uziXm4liVbrPj3sfh3OarTrycgTxxZQZX05SbffqESMnSEDOd5olLSoOIOKgmzLV-QbM-o1GSXByzm4KooqCA"
+      },
+      "timestamp": {
+        "payload": {
+          "digest": "sha256:2a2014c343beee74c3f9f10d5ea17d3ec449cd696d41d65e5693eb2cd99e0e7e",
+          "time": "2026-03-01T00:00:00Z",
+          "type": "timestamp"
+        },
+        "sig": {
+          "alg": "Ed25519",
+          "kid": "tsa-1",
+          "value": "IJvOb0xNTXmTJdK39UvFegjcIEzwYCLWell7iwT1AJ6N7s63nqw0wkosDrHuf_V__49LOnAU9xmoRG6NQCC5DQ"
+        }
+      }
+    }
+  ],
+  "revocations": []
+}

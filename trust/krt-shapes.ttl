@@ -1,6 +1,7 @@
 # KR for Trust Ontology (KRT), validation shapes v0.1, DRAFT
 # Each shape expresses one design rule derived from case work.
 # R11 added 17 September 2026 after discussion on public-aikr.
+# R4 amended and R12 added 16 October 2026 (oversight records), contributed by Andreas Ehstand.
 # (c) Paola Di Maio, ESL Labs. Contributed to the W3C AIKR CG.
 
 @prefix krt:  <https://w3c-cg.github.io/aikr/trust/krt#> .
@@ -60,17 +61,35 @@ krt:ThirdPartyShape a sh:NodeShape ;
             FILTER NOT EXISTS { ?d krt:forAction $this ; krt:subject ?p ; krt:proposition krt:AuthorityToAct }
         }""" ] .
 
-# R4 Irreversible actions need third-party attested evidence
+# R4 Irreversible actions need third-party attested evidence.
+# Amended: an oversight record counts only for what its act establishes, and
+# only if it is third-party attested, about this action, and issued by someone
+# other than the subject: a release under a mandate for authority to act, or,
+# for other propositions, a check of the decided proposition with result holds.
+# An observation or a decision does not count.
 krt:IrreversibleShape a sh:NodeShape ;
     sh:targetClass krt:TrustDecision ;
     rdfs:label "R4 gate by reversibility" ;
     sh:sparql [
-        sh:message "R4: a yes outcome for an irreversible action needs evidence attested by a party other than the subject." ;
+        sh:message "R4: a yes outcome for an irreversible action needs evidence attested by a party other than the subject; an oversight record counts only as a release under a mandate or a check that holds, about this action." ;
         sh:prefixes krt:shapes-prefixes ;
         sh:select """SELECT $this WHERE {
-            $this krt:outcome krt:Yes ; krt:forAction ?a .
+            $this krt:outcome krt:Yes ; krt:forAction ?a ; krt:subject ?s .
             ?a krt:reversibility krt:Irreversible .
-            FILTER NOT EXISTS { $this krt:usesEvidence ?e . ?e krt:attestationMode krt:ThirdPartyAttested }
+            FILTER NOT EXISTS {
+                $this krt:usesEvidence ?e . ?e krt:attestationMode krt:ThirdPartyAttested .
+                FILTER NOT EXISTS { ?e a krt:OversightRecord }
+            }
+            FILTER NOT EXISTS {
+                $this krt:proposition ?p ; krt:usesEvidence ?o .
+                ?o a krt:OversightRecord ; krt:attestationMode krt:ThirdPartyAttested ;
+                   krt:actOn ?a ; krt:issuedBy ?who .
+                FILTER (?who != ?s)
+                { ?o krt:actKind krt:ReleaseAct ; krt:underMandate ?m . $this krt:proposition krt:AuthorityToAct }
+                UNION
+                { ?o krt:actKind krt:CheckAct ; krt:checkedProposition ?p ; krt:checkResult krt:CheckHolds .
+                  FILTER (?p != krt:AuthorityToAct) }
+            }
         }""" ] .
 
 # R5 Self-reports are not receipts
@@ -139,6 +158,45 @@ krt:ComparisonShape a sh:NodeShape ;
                   sh:message "R11: state the Unicode normalization form." ] ;
     sh:property [ sh:path krt:declaredSemantics ; sh:minCount 1 ;
                   sh:message "R11: declare units, namespace or schema; identical bytes can still mean different things." ] .
+
+# R12 An oversight record states what was done, to what, when, and by whom
+krt:OversightRecordShape a sh:NodeShape ;
+    sh:targetClass krt:OversightRecord ;
+    rdfs:label "R12 oversight records state the kind of act" ;
+    sh:property [ sh:path krt:actKind ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:in ( krt:ObservationAct krt:CheckAct krt:DecisionAct krt:ReleaseAct ) ;
+                  sh:message "R12: state exactly one kind of act: observation, check, decision or release." ] ;
+    sh:property [ sh:path krt:actOn ; sh:minCount 1 ; sh:maxCount 1 ; sh:message "R12: name the one object of the act." ] ;
+    sh:property [ sh:path krt:actAt ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:dateTime ; sh:message "R12: date the act once." ] ;
+    sh:property [ sh:path krt:checkedProposition ; sh:maxCount 1 ; sh:message "R12: a check has one checked proposition." ] ;
+    sh:property [ sh:path krt:issuedBy ; sh:minCount 1 ; sh:message "R12: name the person who performed the act." ] ;
+    sh:sparql [
+        sh:message "R12: a check states the proposition checked and one result: holds, does not hold, undetermined or not performed." ;
+        sh:prefixes krt:shapes-prefixes ;
+        sh:select """SELECT $this WHERE {
+            $this krt:actKind krt:CheckAct .
+            FILTER (NOT EXISTS { $this krt:checkedProposition ?p }
+                 || NOT EXISTS { $this krt:checkResult ?r . FILTER (?r IN (krt:CheckHolds, krt:CheckDoesNotHold, krt:CheckUndetermined, krt:CheckNotPerformed)) })
+        }""" ] ;
+    sh:sparql [
+        sh:message "R12: a release names the mandate it relies on." ;
+        sh:prefixes krt:shapes-prefixes ;
+        sh:select """SELECT $this WHERE {
+            $this krt:actKind krt:ReleaseAct .
+            FILTER NOT EXISTS { $this krt:underMandate ?m }
+        }""" ] .
+
+krt:CheckTestedShape a sh:NodeShape ;
+    sh:targetClass krt:OversightRecord ;
+    sh:severity sh:Warning ;
+    rdfs:label "R12 check steps are tested against inputs built to defeat them" ;
+    sh:sparql [
+        sh:message "R12: a check step can fail open; record when it was last tested against an input built to defeat it." ;
+        sh:prefixes krt:shapes-prefixes ;
+        sh:select """SELECT $this WHERE {
+            $this krt:actKind krt:CheckAct ; krt:checkResult krt:CheckHolds .
+            FILTER NOT EXISTS { $this krt:checkTested ?d }
+        }""" ] .
 
 # Delegations are checked for attenuation
 krt:DelegationShape a sh:NodeShape ;

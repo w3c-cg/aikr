@@ -1,0 +1,15 @@
+{
+  "evaluationInstant": "2026-10-11T00:00:00Z",
+  "id": "C02",
+  "lookup": {
+    "document": "history/complete.json",
+    "fetchedAt": "2026-10-10T23:00:00Z",
+    "method": "https GET of key history document",
+    "sha256": "6afb97a71576d336fd0dcc9f6a1851ce9f95b87a270fe2eb9e12f5e7387e8950",
+    "source": "https://keys.example/subject-a/history.json",
+    "status": "ok"
+  },
+  "policy": "policy.json",
+  "situation": "Old key, signature timestamped inside its historical interval",
+  "statement": "statements/s-old-inside.json"
+}

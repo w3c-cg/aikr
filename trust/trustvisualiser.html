@@ -1,1 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Agent Trust Record Visualisation</title>
+<script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove" defer></script>
+<script class="remove">
+var respecConfig = {
+  specStatus: "CG-DRAFT",
+  group: "cg/aikr",
+  shortName: "trustvisualiser",
+  latestVersion: "https://w3c-cg.github.io/aikr/trust/trustvisualiser.html",
+  github: { repoURL: "https://github.com/w3c-cg/aikr", branch: "main", pathPrefix: "trust/" },
+  editors: [{
+    name: "Paola Di Maio",
+    note: "Chair, W3C AI KR Community Group"
+  }],
+  localBiblio: {
+    "AIAO": {
+      title: "AIAO AI Agent Ontology v1",
+      authors: ["Paola Di Maio"],
+      href: "https://figshare.com/articles/journal_contribution/AIAO_AI_Agent_Ontology_v1/31231783",
+      date: "2026"
+    },
+    "KRT": {
+      title: "KR for Trust Ontology (KRT), skeleton v0.1",
+      publisher: "W3C AI Knowledge Representation Community Group",
+      href: "https://github.com/w3c-cg/aikr/blob/main/trust/krt.ttl",
+      date: "2026"
+    },
+    "KR-OF-TRUST": {
+      title: "The Knowledge Representation of the Trust Layer Through the Lens of Digital Identity Chains",
+      publisher: "W3C AI Knowledge Representation Community Group",
+      href: "https://github.com/w3c-cg/aikr/blob/main/trust/kroftrust.md",
+      date: "2026"
+    },
+    "TRUST-RECORD-VIS": {
+      title: "AI Agent Trust Record (visualiser)",
+      publisher: "W3C AI Knowledge Representation Community Group",
+      href: "https://w3c-cg.github.io/aikr/trust/AI_Agent_Trust_Record.html"
+    },
+    "AGENT-ONTO-EXPLORER": {
+      title: "Agent Ontologies Explorer",
+      publisher: "W3C AI Knowledge Representation Community Group",
+      href: "https://w3c-cg.github.io/aikr/ontologies/Agent_Ontologies_Explorer.html"
+    }
+  }
+};
+</script>
+</head>
+<body>
 
+<section id="abstract">
+<p>This document specifies how an agent trust record is displayed, written and exported. A trust record describes one AI agent: its identity, interface, mandate and the parties who build, run and authorise it, together with a trust assertion over its identity, mandate and policy. Agent type is described with the Agentic AI Ontology [[AIAO]], and the record terms are aligned with the KR for Trust ontology [[KRT]].</p>
+</section>
+
+<section id="sotd">
+<p><strong>DRAFT.</strong> This is a draft for discussion in the AI Knowledge Representation Community Group. It has not been adopted by the group. The fields, views and vocabulary alignment described here are open for comment, and the reference visualiser [[TRUST-RECORD-VIS]] is offered for testing. After review, the group will decide whether to publish a revised version as a Community Group Report.</p>
+<p>To enter comments, suggestions, sections or evaluation results for this visualiser specification, <a href="https://github.com/w3c-cg/aikr/issues/new?title=%5Btrustvisualiser%5D%20">open an issue</a> or <a href="https://github.com/w3c-cg/aikr/edit/main/trust/trustvisualiser.html">PR</a> in <a href="https://github.com/w3c-cg/aikr/tree/main/trust">this folder</a>. Posts to the group's mailing list, <a href="mailto:public-aikr@w3.org?subject=%5Btrustvisualiser%5D">public-aikr@w3.org</a>, should carry <code>[trustvisualiser]</code> in the subject.</p>
+</section>
+
+<section id="scope">
+<h2>Scope</h2>
+<p>This specification covers how an agent trust record is shown, written and exported. Verification of the claims in a record is out of scope; that work belongs to [[KRT]] and the trust-layer technical note [[KR-OF-TRUST]].</p>
+<p>Reference implementations:</p>
+<ul>
+<li><a href="https://w3c-cg.github.io/aikr/trust/AI_Agent_Trust_Record.html">AI Agent Trust Record visualiser</a> [[TRUST-RECORD-VIS]]</li>
+<li>Agent Ontologies Explorer [[AGENT-ONTO-EXPLORER]], with views for <a href="https://w3c-cg.github.io/aikr/ontologies/Agent_Ontologies_Explorer.html#aiao">AIAO</a>, AgentO, MBAD and the <a href="https://w3c-cg.github.io/aikr/ontologies/Agent_Ontologies_Explorer.html#crosswalk">crosswalk to KRT</a></li>
+</ul>
+</section>
+
+<section id="conformance"></section>
+
+<section id="data-model">
+<h2>Data model</h2>
+<p>A trust record describes one agent with ten declared fields in four groups, followed by a trust assertion over three of them. Fields marked <em>proposed</em> have draft descriptions open for review.</p>
+<table class="data">
+<thead><tr><th>Group</th><th>Field</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>Identity</td><td>Agent name</td><td>The name the agent is known by.</td></tr>
+<tr><td>Identity</td><td>Agent type</td><td>One class per AIAO dimension, plus cognitive capabilities.</td></tr>
+<tr><td>Interface</td><td>Protocol (proposed)</td><td>How it talks to other agents and services, e.g. MCP, A2A, an HTTP API.</td></tr>
+<tr><td>Interface</td><td>Where it lives and operates</td><td>URL, DID address or other.</td></tr>
+<tr><td>Mandate</td><td>Mandate / functions</td><td>What the agent does.</td></tr>
+<tr><td>Mandate</td><td>Authority (proposed)</td><td>Who granted it the power to act, and within which limits.</td></tr>
+<tr><td>Mandate</td><td>Policy (proposed)</td><td>The rules it operates under, e.g. a published usage or data policy.</td></tr>
+<tr><td>Parties</td><td>Developer</td><td>Writes the agent.</td></tr>
+<tr><td>Parties</td><td>Deployer</td><td>Runs the agent.</td></tr>
+<tr><td>Parties</td><td>User</td><td>Authorises use as per the mandate, under the policy.</td></tr>
+</tbody>
+</table>
+<p>The trust assertion states that the agent's identity, mandate and policy hold:</p>
+<dl>
+<dt>Identity</dt><dd>Name and location resolve to the agent.</dd>
+<dt>Mandate</dt><dd>Its actions stay inside the declared functions and authority.</dd>
+<dt>Policy</dt><dd>It runs under the declared policy.</dd>
+</dl>
+<p class="note">A record states what was declared. Checking a declaration against what the agent did is outside this specification.</p>
+</section>
+
+<section id="views">
+<h2>Visualisation requirements</h2>
+<p>A conforming visualiser MUST provide the three views below.</p>
+<ol>
+<li><strong>Model</strong>: shows the four groups and the trust assertion side by side, each field with its description, and a diagram of the parties around the agent (developer builds, deployer operates, user authorises per mandate under policy, trust checks).</li>
+<li><strong>Write a record</strong>: a form with one input per field. Agent type offers one class per AIAO dimension and a list of cognitive capabilities; any of them MAY be left blank. A preview card SHOULD show the record as it is written.</li>
+<li><strong>Register</strong>: a table of all records, one row per agent, in the field order of the <a href="#data-model">data model</a>. An invented example row MAY be included and MUST be marked as an example.</li>
+</ol>
+<p>A conforming visualiser MUST export records as:</p>
+<ul>
+<li>CSV and JSON, one object per record;</li>
+<li>Turtle, typing each agent with its AIAO classes and linking capabilities with <code>aiao:hasCapability</code>.</li>
+</ul>
+<p>Records SHOULD be kept in the viewer's browser only, with nothing sent to a server.</p>
+<p>Each view SHOULD link to the Agent Ontologies Explorer [[AGENT-ONTO-EXPLORER]], so readers can look up an AIAO class from a record.</p>
+</section>
+
+<section id="alignment">
+<h2>Alignment with AIAO and KRT</h2>
+<p>AIAO describes what kind of agent is involved; KRT records whether a relying party could act on a claim the agent presented. The draft mapping below is preliminary and open for review.</p>
+<table class="data">
+<thead><tr><th>Trust record or AIAO term</th><th>KRT term (v0.1)</th><th>Relation</th></tr></thead>
+<tbody>
+<tr><td>Agent (AIAO)</td><td><code>krt:Agent</code></td><td>AIAO classes describe the kind of agent.</td></tr>
+<tr><td>Functional role (AIAO)</td><td><code>krt:Mandate</code></td><td>A role names the kind of work; a mandate states the scope granted.</td></tr>
+<tr><td>Activity (AIAO)</td><td><code>krt:Action</code></td><td>AIAO activity classes, once defined, can type KRT actions.</td></tr>
+<tr><td>Deployer</td><td><code>krt:Operator</code></td><td>Equivalent.</td></tr>
+<tr><td>User</td><td><code>krt:Principal</code></td><td>Equivalent.</td></tr>
+<tr><td>Policy</td><td><code>krt:DeclaredPolicy</code></td><td>Equivalent.</td></tr>
+<tr><td>Developer</td><td>none</td><td>Gap; proposed as an addition to KRT.</td></tr>
+</tbody>
+</table>
+<p class="issue">The visualiser's type picker uses AIAO v1.1 (eight dimensions). AIAO version 2.3 describes six dimensions and models functional roles as roles an agent plays. The two need to be brought into line.</p>
+</section>
+
+<section id="evaluation" class="informative">
+<h2>Questions for evaluation</h2>
+<p>Comments are especially welcome on these points:</p>
+<ol>
+<li>Are the ten fields enough to describe an agent you build, run or rely on? Which are missing or redundant?</li>
+<li>Should the descriptions of Protocol, Authority and Policy be adopted as drafted?</li>
+<li>Should Developer be added to KRT, or recorded outside it?</li>
+<li>Should "Where it lives and operates" accept several values, such as a URL and a DID together?</li>
+<li>Which AIAO version should the type picker follow: v1.1 (eight dimensions) or v2.3 (six dimensions, roles)?</li>
+<li>Do the three views make a record easy to read for someone outside the group? Try writing a record for an agent you know and report what was unclear.</li>
+<li>Are CSV, JSON and Turtle the right exports, and is the Turtle output usable with KRT?</li>
+<li>Does the visualiser work with a keyboard and a screen reader?</li>
+</ol>
+<p>Example records for real agents are especially useful for testing. The chair will collect the comments, revise this draft and the visualiser, and bring a revised version to the group for a decision on publication.</p>
+</section>
+
+</body>
+</html>

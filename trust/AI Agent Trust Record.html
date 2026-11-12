@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Agent Trust Record</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0E2440;--gold:#E3B23C;--stone:#F1F0EC;--paper:#FBFAF7;--ink:#1B1A22;--muted:#5D5A66;--rule:#D8D4CC;
+--loom:#1B1530;--violet:#4B2A7B;--orchid:#A04FB3;--peri:#6F82C9;--fuchsia:#B5175A;--crimson:#9E1B32;--teal:#1F7A7A;--gilt:#B8901F;--bronze:#8C6A3F}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--stone);color:var(--ink)}
+body{font-family:'Newsreader',Georgia,serif;font-size:17px;line-height:1.5}
+.mono{font-family:'DM Mono',monospace}.ui{font-family:'Archivo',sans-serif}
+header.banner{background:var(--navy);color:var(--gold);padding:22px 28px 18px;position:relative;overflow:hidden}
+header.banner .rings{position:absolute;right:-60px;top:-70px;opacity:.22}
+.kicker{font-family:'Archivo',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:11.5px;font-weight:600}
+header.banner h1{font-family:'Fraunces',serif;font-weight:800;font-size:clamp(28px,4.2vw,48px);line-height:1.02;margin:6px 0}
+header.banner .sub{font-style:italic;color:#F3E2B3;font-size:18px;max-width:48em}
+.weave{height:12px;background:repeating-linear-gradient(90deg,var(--violet) 0 14px,var(--gold) 14px 18px,var(--orchid) 18px 32px,var(--teal) 32px 36px,var(--peri) 36px 50px,var(--fuchsia) 50px 54px);
+-webkit-mask:repeating-linear-gradient(0deg,#000 0 3px,rgba(0,0,0,.55) 3px 6px);mask:repeating-linear-gradient(0deg,#000 0 3px,rgba(0,0,0,.55) 3px 6px)}
+nav.tabs{display:flex;flex-wrap:wrap;border-bottom:2px solid var(--ink);background:var(--paper);padding:0 20px}
+nav.tabs a{font-family:'Archivo',sans-serif;font-weight:600;font-size:14px;text-decoration:none;color:var(--muted);padding:12px 14px 10px;border-bottom:3px solid transparent;margin-bottom:-2px}
+nav.tabs a.on{color:var(--ink);border-bottom-color:var(--gold)}
+main{max-width:1280px;margin:0 auto;padding:22px 24px 60px}
+section.view{display:none}section.view.on{display:block}
+h2{font-family:'Fraunces',serif;font-weight:600;font-size:28px;margin:0 0 4px;line-height:1.15}
+h3{font-family:'Fraunces',serif;font-weight:600;font-size:20px;margin:0 0 4px}
+p.lede{margin:0 0 18px;max-width:46em;color:#34313d}
+
+/* schema */
+.schema{display:grid;grid-template-columns:repeat(5,1fr);border-top:2px solid var(--ink);background:var(--paper)}
+@media(max-width:1000px){.schema{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.schema{grid-template-columns:1fr}}
+.grp{padding:14px 16px 16px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.grp .gk{font-family:'Archivo',sans-serif;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.grp h3{font-size:22px;margin:2px 0 10px}
+.fld{border-top:1px solid var(--rule);padding:8px 0 6px}
+.fld .fn{font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px}
+.fld .fd{font-size:15px;color:#3a3742}
+.fld .fd em{color:var(--muted)}
+.grp.trust{background:var(--navy);color:#F3E2B3}
+.grp.trust .fld{border-top-color:#2c4566}.grp.trust .fd{color:#F3E2B3}.grp.trust h3{color:var(--gold)}
+.aiao-mini{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.aiao-mini span{font-family:'DM Mono',monospace;font-size:11.5px;padding:1px 6px;border-left:4px solid;background:#fff}
+
+.flow{margin:26px 0 0;background:var(--paper);border-top:2px solid var(--ink);padding:10px}
+.flow svg{width:100%;height:auto;display:block}
+.note{font-size:15px;color:#3F3B47;max-width:48em}
+
+/* builder */
+.bgrid{display:grid;grid-template-columns:minmax(320px,1.1fr) minmax(320px,1fr);gap:28px;align-items:start}
+@media(max-width:900px){.bgrid{grid-template-columns:1fr}}
+form fieldset{border:0;border-top:2px solid var(--ink);margin:0 0 16px;padding:10px 0 0;background:transparent}
+legend{font-family:'Archivo',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:0 8px 0 0}
+label{display:block;font-family:'Archivo',sans-serif;font-size:13px;font-weight:600;margin:8px 0 3px}
+label small{font-weight:400;color:var(--muted)}
+input[type=text],textarea,select{width:100%;font-family:'Newsreader',serif;font-size:16px;padding:7px 9px;border:1px solid var(--rule);background:#fff;border-radius:2px}
+textarea{min-height:58px;resize:vertical}
+select{font-family:'DM Mono',monospace;font-size:13.5px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:110px 1fr;gap:10px}
+.dimsel{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px}
+@media(max-width:560px){.dimsel{grid-template-columns:1fr}}
+.dimsel label{display:flex;align-items:center;gap:6px}
+.sw{width:9px;height:9px;display:inline-block;flex:none}
+.caps{display:flex;flex-wrap:wrap;gap:6px;margin-top:3px}
+.caps label{display:inline-flex;align-items:center;gap:4px;margin:0;font-family:'DM Mono',monospace;font-weight:400;font-size:13px;padding:3px 7px;border:1px solid var(--rule);background:#fff;cursor:pointer}
+.caps input{margin:0}
+button{font-family:'Archivo',sans-serif;font-weight:600;font-size:13px;padding:8px 12px;border:1px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer;border-radius:2px}
+button:hover{background:var(--ink);color:var(--paper)}
+button.gold{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+button.gold:hover{background:var(--navy);color:var(--gold);border-color:var(--navy)}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px}
+.toast{font-family:'Archivo',sans-serif;font-size:13px;color:var(--teal)}
+
+/* card */
+.card{position:sticky;top:12px;background:var(--paper);border-top:6px solid var(--navy)}
+.card .hd{padding:16px 20px 10px}
+.card .hd .id{font-family:'DM Mono',monospace;font-size:12.5px;color:var(--muted)}
+.card .hd h2{font-size:30px;word-break:break-word}
+.card .types{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.card .types span{font-family:'DM Mono',monospace;font-size:12px;padding:2px 7px;background:#fff;border-left:4px solid}
+.card dl{margin:0;padding:6px 20px 14px;display:grid;grid-template-columns:8.5em 1fr;gap:6px 12px;border-top:1px solid var(--rule)}
+.card dt{font-family:'Archivo',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.card dd{margin:0;font-size:15.5px;word-break:break-word}
+.card .blank{color:#B3ADA2;font-style:italic}
+.chain{background:var(--navy);color:#F3E2B3;padding:14px 20px 16px}
+.chain h3{color:var(--gold);font-size:18px;margin-bottom:8px}
+.chk{display:grid;grid-template-columns:22px 1fr;gap:6px;font-size:15px;margin:5px 0}
+.chk b{font-family:'Archivo',sans-serif;font-size:13px}
+.ok{color:#8FD0C6}.miss{color:#F0A0A8}
+.chain .fine{font-size:13px;color:#C9BE9C;margin-top:8px;font-style:italic}
+
+/* table */
+.tablewrap{overflow-x:auto;background:var(--paper);border-top:2px solid var(--ink)}
+table{border-collapse:collapse;min-width:1200px;width:100%;font-size:14.5px}
+thead tr.g th{font-family:'Archivo',sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#fff;padding:6px 10px;text-align:left}
+th{font-family:'Archivo',sans-serif;font-size:12px;text-align:left;color:var(--ink);border-bottom:2px solid var(--ink);padding:8px 10px;vertical-align:bottom}
+th small{display:block;font-weight:400;color:var(--muted)}
+td{border-bottom:1px solid var(--rule);padding:8px 10px;vertical-align:top}
+td .t{display:block;font-family:'DM Mono',monospace;font-size:11.5px;border-left:3px solid;padding-left:5px;margin-bottom:2px}
+td.trustc{background:#F0EEF7;white-space:nowrap}
+tr.ex td{font-style:italic;color:#4a4652}
+tr:hover td{background:#FBF3DA}
+td .acts button{padding:3px 7px;font-size:11.5px;margin:0 3px 3px 0}
+pre.code{background:var(--loom);color:#EDE6F7;font-family:'DM Mono',monospace;font-size:12.5px;line-height:1.5;padding:14px 16px;max-height:55vh;overflow:auto;margin:10px 0 0;white-space:pre-wrap}
+footer{border-top:1px solid var(--rule);padding:18px 24px 30px;font-family:'Archivo',sans-serif;font-size:12.5px;color:var(--muted);max-width:1280px;margin:0 auto}
+a{color:var(--violet)}
+</style>
+</head>
+<body>
+<header class="banner">
+  <svg class="rings" width="320" height="320" viewBox="0 0 320 320" aria-hidden="true"><g fill="none" stroke="#E3B23C" stroke-width="2"><circle cx="160" cy="160" r="150"/><circle cx="160" cy="160" r="120"/><circle cx="160" cy="160" r="90"/><circle cx="160" cy="160" r="60"/><circle cx="160" cy="160" r="30"/></g></svg>
+  <div class="kicker">Epistemic Systems Lab · Working draft</div>
+  <h1>A representation of AI agent trust</h1>
+  <div class="sub">One record per agent: who it is, where it acts, what it may do, who wrote it, who runs it, who authorised it. Agent type is described with the AIAO dimensions.</div>
+</header>
+<div class="weave" aria-hidden="true"></div>
+<nav class="tabs" id="tabs">
+  <a href="#model" data-v="model">Model</a>
+  <a href="#record" data-v="record">Write a record</a>
+  <a href="#register" data-v="register">Register</a>
+</nav>
+
+<main>
+<section class="view" id="v-model">
+  <div class="kicker" style="color:var(--violet)">Schema</div>
+  <h2>Fields, grouped</h2>
+  <p class="lede">Your eleven columns, kept in order and gathered into five groups. Agent type now takes one value per AIAO dimension, with cognitive capabilities listed as properties.</p>
+  <div class="schema" id="schema"></div>
+  <div class="flow">
+    <svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Parties around the agent">
+      <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1B1A22"/></marker></defs>
+      <g font-family="Archivo,sans-serif" font-size="13">
+        <rect x="30" y="40" width="170" height="64" fill="#fff" stroke="#8C6A3F" stroke-width="2"/><text x="115" y="67" text-anchor="middle" font-weight="700">Developer</text><text x="115" y="87" text-anchor="middle" fill="#5D5A66">writes the agent</text>
+        <rect x="30" y="190" width="170" height="64" fill="#fff" stroke="#8C6A3F" stroke-width="2"/><text x="115" y="217" text-anchor="middle" font-weight="700">Deployer</text><text x="115" y="237" text-anchor="middle" fill="#5D5A66">runs the agent</text>
+        <rect x="380" y="95" width="240" height="110" fill="#0E2440"/><text x="500" y="128" text-anchor="middle" fill="#E3B23C" font-family="Fraunces,serif" font-size="22" font-weight="800">Agent</text>
+        <text x="500" y="152" text-anchor="middle" fill="#F3E2B3">name · AIAO type</text><text x="500" y="172" text-anchor="middle" fill="#F3E2B3">protocol · where it operates</text><text x="500" y="192" text-anchor="middle" fill="#F3E2B3">mandate · authority · policy</text>
+        <rect x="800" y="40" width="170" height="64" fill="#fff" stroke="#1F7A7A" stroke-width="2"/><text x="885" y="67" text-anchor="middle" font-weight="700">User</text><text x="885" y="87" text-anchor="middle" fill="#5D5A66">authorises use</text>
+        <rect x="800" y="190" width="170" height="64" fill="#F0EEF7" stroke="#4B2A7B" stroke-width="2"/><text x="885" y="217" text-anchor="middle" font-weight="700">Trust</text><text x="885" y="237" text-anchor="middle" fill="#5D5A66">identity · mandate · policy</text>
+      </g>
+      <g stroke="#1B1A22" stroke-width="1.6" fill="none" marker-end="url(#ar)">
+        <path d="M200,72 C290,72 300,120 378,130"/><path d="M200,222 C290,222 300,180 378,170"/>
+        <path d="M800,72 C710,72 700,120 622,130"/><path d="M800,222 C710,222 700,180 622,170"/>
+      </g>
+      <g font-family="DM Mono,monospace" font-size="11.5" fill="#5D5A66">
+        <text x="222" y="62">builds</text><text x="222" y="250">operates</text>
+        <text x="690" y="40">per mandate,</text><text x="690" y="56">under policy</text><text x="730" y="250">checks</text>
+      </g>
+    </svg>
+  </div>
+  <p class="note" style="margin-top:12px">Wording in the field descriptions is yours where your table defined the field. Hints in italics are suggestions for fields your table left open (protocol, authority, policy) and need your decision.</p>
+</section>
+
+<section class="view" id="v-record">
+  <div class="kicker" style="color:var(--violet)">Builder</div>
+  <h2>Write a record</h2>
+  <p class="lede">Fill in the form; the card on the right updates as you type. Add it to the register when done.</p>
+  <div class="bgrid">
+    <form id="f" autocomplete="off">
+      <fieldset><legend style="color:var(--violet)">Identity</legend>
+        <label for="name">Agent name</label><input type="text" id="name">
+        <label>Agent type <small>one class per AIAO dimension; leave blank if not known</small></label>
+        <div class="dimsel" id="dimsel"></div>
+        <label>Cognitive capabilities <small>properties, tick any</small></label>
+        <div class="caps" id="caps"></div>
+      </fieldset>
+      <fieldset><legend style="color:var(--teal)">Interface</legend>
+        <label for="protocol">Protocol <small>e.g. MCP, A2A, HTTP API</small></label><input type="text" id="protocol">
+        <label>Where does it live and operate?</label>
+        <div class="row3"><select id="loctype"><option>URL</option><option>DID</option><option>Other</option></select><input type="text" id="loc" placeholder="https://… or did:…"></div>
+      </fieldset>
+      <fieldset><legend style="color:var(--fuchsia)">Mandate</legend>
+        <label for="mandate">Mandate / functions <small>what does it do?</small></label><textarea id="mandate"></textarea>
+        <div class="row2">
+          <div><label for="authority">Authority</label><input type="text" id="authority"></div>
+          <div><label for="policy">Policy</label><input type="text" id="policy"></div>
+        </div>
+      </fieldset>
+      <fieldset><legend style="color:var(--bronze)">Parties</legend>
+        <div class="row2">
+          <div><label for="developer">Developer <small>writes the agent</small></label><input type="text" id="developer"></div>
+          <div><label for="deployer">Deployer <small>runs the agent</small></label><input type="text" id="deployer"></div>
+        </div>
+        <label for="user">User <small>authorises the use as per the mandate under the policy</small></label><input type="text" id="user">
+      </fieldset>
+      <div class="bar"><button type="button" class="gold" id="add">Add to register</button><button type="button" id="clear">Clear form</button><span class="toast" id="addmsg"></span></div>
+    </form>
+    <aside class="card" id="card"></aside>
+  </div>
+</section>
+
+<section class="view" id="v-register">
+  <div class="kicker" style="color:var(--violet)">Register</div>
+  <h2>Agent trust register</h2>
+  <p class="lede">Your table, regrouped. The first row is an invented example to show the shape; delete it when you add your own.</p>
+  <div class="tablewrap"><table id="reg"></table></div>
+  <div class="bar" style="margin-top:12px">
+    <button class="gold" data-copy="csv">Copy CSV</button><button class="gold" data-copy="json">Copy JSON</button><button class="gold" data-copy="ttl">Copy Turtle</button>
+    <span class="toast" id="copymsg"></span>
+  </div>
+  <pre class="code" id="out" hidden></pre>
+  <p class="note" style="margin-top:10px">The register is kept in this browser only. Copy the CSV or JSON to keep it elsewhere.</p>
+</section>
+</main>
+
+<footer>© Copyright 2026 Epistemic Systems Lab · Editor: Paola Di Maio · Agent types follow AIAO v1.1 (eight dimensions). Working draft for the W3C AI KR Community Group trust work.</footer>
+
+<script>
+(function(){
+"use strict";
+var DIMS = [
+ {id:"AutonomyLevel",name:"Autonomy Level",c:"#4B2A7B",cls:["ReactiveAgent","DeliberativeAgent","LearningAgent","AutonomousGoalSeekingAgent"]},
+ {id:"FunctionalRole",name:"Functional Role",c:"#B5175A",cls:["AssistantAgent","AnalyticalAgent","CreativeAgent","TaskAgent"]},
+ {id:"Embodiment",name:"Embodiment",c:"#8C6A3F",cls:["PureSoftwareAgent","RoboticAgent","HybridAgent"]},
+ {id:"InteractionStyle",name:"Interaction Style",c:"#1F7A7A",cls:["HumanInTheLoopAgent","CollaborativeAgent","AutonomousAgent"]},
+ {id:"OperationalScope",name:"Operational Scope",c:"#B8901F",cls:["SingleTaskAgent","MultiTaskAgent","OpenEndedAgent"]},
+ {id:"InterfaceModality",name:"Interface Modality",c:"#6F82C9",cls:["TextAgent","VoiceAgent","VisualAgent","MultimodalAgent"]},
+ {id:"InteractionParadigm",name:"Interaction Paradigm",c:"#9E1B32",cls:["TransactionalAgent","RelationalAgent","HybridParadigmAgent"]}
+];
+var CAPS = ["Perception","Planning","Reasoning","Learning","Memory"], CAPC = "#A04FB3";
+var COLOR = {}; DIMS.forEach(function(d){ d.cls.forEach(function(c){ COLOR[c]=d.c; }); }); CAPS.forEach(function(c){COLOR[c]=CAPC;});
+
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+
+// ---- schema view
+var GROUPS = [
+ {k:"Identity",c:"var(--violet)",f:[["Agent name","The name the agent is known by."],["Agent type","Its classification in AIAO: one class per dimension, plus cognitive capabilities.",true]]},
+ {k:"Interface",c:"var(--teal)",f:[["Protocol","<em>How it talks to other agents and services, e.g. MCP, A2A, an HTTP API.</em>"],["Where does it live and operate?","URL? DID address? Other?"]]},
+ {k:"Mandate",c:"var(--fuchsia)",f:[["Mandate / functions","What does it do?"],["Authority","<em>Who granted it the power to act, and within which limits.</em>"],["Policy","<em>The rules it operates under, e.g. a published usage or data policy.</em>"]]},
+ {k:"Parties",c:"var(--bronze)",f:[["Developer","Writes the agent."],["Deployer","Who runs the agent."],["User","Authorises the use as per the mandate under the policy."]]},
+ {k:"Trust",trust:true,f:[["Trust","Ensures the agent identity, that it operates the declared mandate, under the declared policy."],["Identity","Name and location resolve to the agent."],["Mandate","Its actions stay inside the declared functions and authority."],["Policy","It runs under the declared policy."]]}
+];
+document.getElementById("schema").innerHTML = GROUPS.map(function(g){
+  return '<div class="grp'+(g.trust?' trust':'')+'"><div class="gk" style="color:'+(g.trust?'var(--gold)':g.c)+'">'+(g.trust?'Assertion':'Group')+'</div><h3>'+g.k+'</h3>'+
+    g.f.map(function(f){
+      var mini = f[2] ? '<div class="aiao-mini">'+DIMS.map(function(d){return '<span style="border-color:'+d.c+'">'+d.name+'</span>';}).join("")+'<span style="border-color:'+CAPC+'">+ capabilities</span></div>' : '';
+      return '<div class="fld"><div class="fn">'+f[0]+'</div><div class="fd">'+f[1]+'</div>'+mini+'</div>';
+    }).join("")+'</div>';
+}).join("");
+
+// ---- form
+var dimsel = document.getElementById("dimsel");
+dimsel.innerHTML = DIMS.map(function(d){
+  return '<div><label for="d-'+d.id+'"><span class="sw" style="background:'+d.c+'"></span>'+d.name+'</label><select id="d-'+d.id+'"><option value="">not known</option>'+
+    d.cls.map(function(c){return '<option>'+c+'</option>';}).join("")+'</select></div>';
+}).join("");
+document.getElementById("caps").innerHTML = CAPS.map(function(c){return '<label><input type="checkbox" value="'+c+'"> '+c+'</label>';}).join("");
+
+var TEXT = ["name","protocol","loc","mandate","authority","policy","developer","deployer","user"];
+function readForm(){
+  var r = {};
+  TEXT.forEach(function(k){ r[k] = document.getElementById(k).value.trim(); });
+  r.loctype = document.getElementById("loctype").value;
+  r.type = {}; DIMS.forEach(function(d){ var v=document.getElementById("d-"+d.id).value; if(v) r.type[d.id]=v; });
+  r.caps = [].slice.call(document.querySelectorAll("#caps input:checked")).map(function(i){return i.value;});
+  return r;
+}
+function typeChips(r){
+  var a = DIMS.filter(function(d){return r.type[d.id];}).map(function(d){return r.type[d.id];}).concat(r.caps||[]);
+  return a;
+}
+function checks(r){
+  return [
+    ["Identity", !!(r.name && r.loc), "name and "+r.loctype+" declared"],
+    ["Mandate", !!(r.mandate && r.authority), "functions and authority declared"],
+    ["Policy", !!r.policy, "policy declared"],
+    ["Parties", !!(r.developer && r.deployer && r.user), "developer, deployer and user named"]
+  ];
+}
+function renderCard(){
+  var r = readForm(), b = function(v){ return v ? esc(v) : '<span class="blank">not declared</span>'; };
+  var t = typeChips(r);
+  document.getElementById("card").innerHTML =
+   '<div class="hd"><div class="id">agent trust record</div><h2>'+(r.name?esc(r.name):'<span class="blank">Unnamed agent</span>')+'</h2>'+
+   '<div class="types">'+(t.length? t.map(function(c){return '<span style="border-color:'+COLOR[c]+'">'+c+'</span>';}).join("") : '<span class="blank" style="border:0;background:none">no AIAO type selected</span>')+'</div></div>'+
+   '<dl><dt>Protocol</dt><dd>'+b(r.protocol)+'</dd><dt>Operates at</dt><dd>'+(r.loc? '<span class="mono" style="font-size:13px">'+esc(r.loctype)+'</span> '+esc(r.loc) : b(""))+'</dd>'+
+   '<dt>Mandate</dt><dd>'+b(r.mandate)+'</dd><dt>Authority</dt><dd>'+b(r.authority)+'</dd><dt>Policy</dt><dd>'+b(r.policy)+'</dd>'+
+   '<dt>Developer</dt><dd>'+b(r.developer)+'</dd><dt>Deployer</dt><dd>'+b(r.deployer)+'</dd><dt>User</dt><dd>'+b(r.user)+'</dd></dl>'+
+   '<div class="chain"><h3>Trust</h3>'+checks(r).map(function(c){
+      return '<div class="chk"><span class="'+(c[1]?'ok':'miss')+'">'+(c[1]?'✓':'○')+'</span><span><b>'+c[0]+'</b> · '+c[2]+'</span></div>';
+   }).join("")+'<div class="fine">Shows what the record declares. Checking the declarations against the running agent is the trust step itself.</div></div>';
+}
+document.getElementById("f").addEventListener("input", renderCard);
+document.getElementById("f").addEventListener("change", renderCard);
+
+// ---- register
+var EXAMPLE = {ex:true,name:"Example booking agent",type:{AutonomyLevel:"DeliberativeAgent",FunctionalRole:"TaskAgent",Embodiment:"PureSoftwareAgent",InteractionStyle:"HumanInTheLoopAgent",OperationalScope:"SingleTaskAgent",InterfaceModality:"TextAgent",InteractionParadigm:"TransactionalAgent"},caps:["Planning","Memory"],
+  protocol:"MCP",loctype:"URL",loc:"https://agents.example.org/booking",mandate:"Searches and books rail tickets for the user",authority:"Spend up to a set limit per booking",policy:"Example Org agent use policy v1",developer:"Example Labs",deployer:"Example Org",user:"Account holder"};
+var REG = [EXAMPLE];
+try{ var s = localStorage.getItem("esl-agent-trust-register"); if(s){ REG = JSON.parse(s); } }catch(e){}
+function save(){ try{ localStorage.setItem("esl-agent-trust-register", JSON.stringify(REG)); }catch(e){} }
+
+function renderReg(){
+  var head =
+   '<thead><tr class="g">'+
+   '<th colspan="2" style="background:var(--violet)">Identity</th><th colspan="2" style="background:var(--teal)">Interface</th>'+
+   '<th colspan="3" style="background:var(--fuchsia)">Mandate</th><th colspan="3" style="background:var(--bronze)">Parties</th><th style="background:var(--navy);color:var(--gold)">Trust</th><th style="background:var(--muted)"></th></tr>'+
+   '<tr><th>Agent name</th><th>Agent type<small>AIAO classes</small></th><th>Protocol</th><th>Where it operates<small>URL · DID · other</small></th>'+
+   '<th>Mandate / functions<small>what does it do?</small></th><th>Authority</th><th>Policy</th>'+
+   '<th>Developer<small>writes the agent</small></th><th>Deployer<small>runs the agent</small></th><th>User<small>authorises use per mandate, under policy</small></th>'+
+   '<th>Declared<small>identity · mandate · policy</small></th><th></th></tr></thead>';
+  var body = REG.map(function(r,i){
+    var t = typeChips(r).map(function(c){return '<span class="t" style="border-color:'+COLOR[c]+'">'+c+'</span>';}).join("");
+    var ck = checks(r).slice(0,3).map(function(c){return '<span class="'+(c[1]?'ok':'miss')+'" style="color:'+(c[1]?'var(--teal)':'var(--crimson)')+'">'+(c[1]?'✓':'○')+' '+c[0]+'</span>';}).join("<br>");
+    return '<tr'+(r.ex?' class="ex"':'')+'><td><strong>'+esc(r.name)+'</strong>'+(r.ex?'<br><small class="ui">example</small>':'')+'</td><td>'+t+'</td><td>'+esc(r.protocol)+'</td><td><span class="mono" style="font-size:12px">'+esc(r.loctype)+'</span> '+esc(r.loc)+'</td>'+
+      '<td>'+esc(r.mandate)+'</td><td>'+esc(r.authority)+'</td><td>'+esc(r.policy)+'</td><td>'+esc(r.developer)+'</td><td>'+esc(r.deployer)+'</td><td>'+esc(r.user)+'</td>'+
+      '<td class="trustc ui" style="font-size:12.5px">'+ck+'</td><td class="acts"><button data-edit="'+i+'">Edit</button><button data-del="'+i+'">Delete</button></td></tr>';
+  }).join("");
+  document.getElementById("reg").innerHTML = head + '<tbody>'+(body || '<tr><td colspan="12" class="note">No records yet.</td></tr>')+'</tbody>';
+}
+document.getElementById("reg").addEventListener("click", function(e){
+  var t = e.target;
+  if(t.getAttribute("data-del")!=null){ REG.splice(+t.getAttribute("data-del"),1); save(); renderReg(); }
+  if(t.getAttribute("data-edit")!=null){ var i=+t.getAttribute("data-edit"); fillForm(REG[i]); REG.splice(i,1); save(); renderReg(); location.hash="record"; }
+});
+function fillForm(r){
+  TEXT.forEach(function(k){ document.getElementById(k).value = r[k]||""; });
+  document.getElementById("loctype").value = r.loctype||"URL";
+  DIMS.forEach(function(d){ document.getElementById("d-"+d.id).value = (r.type&&r.type[d.id])||""; });
+  document.querySelectorAll("#caps input").forEach(function(i){ i.checked = (r.caps||[]).indexOf(i.value)>=0; });
+  renderCard();
+}
+document.getElementById("add").addEventListener("click", function(){
+  var r = readForm(), m = document.getElementById("addmsg");
+  if(!r.name){ m.textContent = "Give the agent a name first."; return; }
+  REG.push(r); save(); renderReg(); m.textContent = "Added to the register."; setTimeout(function(){m.textContent="";},2200);
+});
+document.getElementById("clear").addEventListener("click", function(){ document.getElementById("f").reset(); renderCard(); });
+
+// ---- exports
+var COLS = ["name","agentType","protocol","locationType","location","mandate","authority","policy","developer","deployer","user"];
+function flat(r){ return {name:r.name,agentType:typeChips(r).join("; "),protocol:r.protocol,locationType:r.loctype,location:r.loc,mandate:r.mandate,authority:r.authority,policy:r.policy,developer:r.developer,deployer:r.deployer,user:r.user}; }
+function csv(){ var q=function(v){v=String(v==null?"":v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
+  return [COLS.join(",")].concat(REG.map(function(r){var f=flat(r);return COLS.map(function(k){return q(f[k]);}).join(",");})).join("\n"); }
+function json(){ return JSON.stringify({schema:"ESL agent trust record (working draft)",aiao:"https://purl.org/aiao# (proposed)",records:REG.map(function(r){
+  return {name:r.name,aiaoType:r.type,capabilities:r.caps,protocol:r.protocol,operatesAt:{type:r.loctype,value:r.loc},mandate:r.mandate,authority:r.authority,policy:r.policy,developer:r.developer,deployer:r.deployer,user:r.user,example:!!r.ex};})},null,2); }
+function lit(s){ return '"'+String(s||"").replace(/\\/g,"\\\\").replace(/"/g,'\\"').replace(/\n/g,"\\n")+'"'; }
+function ttl(){
+  var L=["# ESL agent trust records (working draft). © Copyright 2026 Epistemic Systems Lab",
+  "@prefix aiao: <https://purl.org/aiao#> .","@prefix trust: <https://purl.org/aiao/trust#> .","@prefix ex: <https://example.org/agent/> .","@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .",""];
+  REG.forEach(function(r,i){
+    var t = DIMS.filter(function(d){return r.type&&r.type[d.id];}).map(function(d){return "aiao:"+r.type[d.id];});
+    L.push("ex:agent"+(i+1)+" a "+(t.length?t.join(", "):"aiao:Agent")+" ;");
+    L.push("    rdfs:label "+lit(r.name)+" ;");
+    (r.caps||[]).forEach(function(c){ L.push("    aiao:hasCapability aiao:"+c+" ;"); });
+    [["protocol","protocol"],["mandate","mandate"],["authority","authority"],["policy","policy"],["developer","developer"],["deployer","deployer"],["authorisedBy","user"]].forEach(function(p){ if(r[p[1]]) L.push("    trust:"+p[0]+" "+lit(r[p[1]])+" ;"); });
+    L.push("    trust:operatesAt "+lit((r.loctype||"")+": "+(r.loc||""))+" .",""); });
+  return L.join("\n");
+}
+document.querySelectorAll("[data-copy]").forEach(function(b){
+  b.addEventListener("click", function(){
+    var k=b.getAttribute("data-copy"), txt = k==="csv"?csv():k==="json"?json():ttl(), out=document.getElementById("out"), m=document.getElementById("copymsg");
+    out.hidden=false; out.textContent=txt;
+    function done(s){ m.textContent=s; setTimeout(function(){m.textContent="";},2400); }
+    try{ navigator.clipboard.writeText(txt).then(function(){done("Copied "+k.toUpperCase());},function(){done("Shown below: select and copy");}); }catch(e){ done("Shown below: select and copy"); }
+  });
+});
+
+// ---- routing
+var VIEWS=["model","record","register"];
+function route(){ var h=(location.hash||"").replace("#",""); if(VIEWS.indexOf(h)<0) h="model";
+  VIEWS.forEach(function(v){document.getElementById("v-"+v).classList.toggle("on",v===h);});
+  document.querySelectorAll("#tabs a").forEach(function(a){a.classList.toggle("on",a.getAttribute("data-v")===h);}); }
+window.addEventListener("hashchange", route);
+renderCard(); renderReg(); route();
+})();
+</script>
+</body>
+</html>

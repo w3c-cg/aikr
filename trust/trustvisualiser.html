@@ -21,7 +21,7 @@ var respecConfig = {
   }],
   otherLinks: [{
     key: "Contributors",
-    data: [{ value: "Your name (reviewers and evaluators who comment are listed here)" }]
+    data: [{ value: "Larry Lewis, W3C Agent Trust Protocol CG (review of the trust record model)" }, { value: "Yanfeng Liu (reviewer, audit and accountability)" }, { value: "Your name (reviewers and evaluators who comment are listed here)" }]
   }],
   postProcess: [function () {
     var sotd = document.getElementById("sotd");
@@ -74,6 +74,7 @@ var respecConfig = {
 <section id="sotd">
 <p><strong>DRAFT.</strong> This is a draft for discussion in the AI Knowledge Representation Community Group. It has not been adopted by the group. The fields, views and vocabulary alignment described here are open for comment, and the reference visualiser [[TRUST-RECORD-VIS]] is offered for testing. After review, the group will decide whether to publish a revised version as a Community Group Report.</p>
 <p>To enter comments, suggestions, sections or evaluation results for this visualiser specification, <a href="https://github.com/w3c-cg/aikr/issues/new?title=%5Btrustvisualiser%5D%20">open an issue</a> or <a href="https://github.com/w3c-cg/aikr/edit/main/trust/trustvisualiser.html">PR</a>. Posts to the group's mailing list, <a href="mailto:public-aikr@w3.org?subject=%5Btrustvisualiser%5D">public-aikr@w3.org</a>, should carry <code>[trustvisualiser]</code> in the subject.</p>
+<p>Implementation reports, test results and reruns are discussed separately from the model: <a href="https://github.com/w3c-cg/aikr/issues/new?title=%5Btrustvisualiser-impl%5D%20">open an issue</a> with <code>[trustvisualiser-impl]</code> at the start of the title. Each report is listed in <a href="#implementation-reports">Implementation reports</a>.</p>
 </section>
 
 <section id="scope">
@@ -90,11 +91,11 @@ var respecConfig = {
 
 <section id="data-model">
 <h2>Data model</h2>
-<p>A trust record describes one agent with ten declared fields in four groups, followed by a trust assertion over three of them. Fields marked <em>proposed</em> have draft descriptions open for review.</p>
+<p>A trust record describes one agent with twelve declared fields in four groups, followed by a trust assertion over three of them. Fields marked <em>proposed</em> have draft descriptions open for review.</p>
 <table class="data">
 <thead><tr><th>Group</th><th>Field</th><th>Description</th></tr></thead>
 <tbody>
-<tr><td>Identity</td><td>Agent name</td><td>The name the agent is known by.</td></tr>
+<tr><td>Identity</td><td>Agent name or identifier</td><td>The name, DID or other identifier the agent is known by.</td></tr>
 <tr><td>Identity</td><td>Agent type</td><td>One class per AIAO dimension, plus cognitive capabilities.</td></tr>
 <tr><td>Interface</td><td>Protocol (proposed)</td><td>How it talks to other agents and services, e.g. MCP, A2A, an HTTP API.</td></tr>
 <tr><td>Interface</td><td>Where it lives and operates</td><td>URL, DID address or other.</td></tr>
@@ -104,6 +105,8 @@ var respecConfig = {
 <tr><td>Parties</td><td>Developer</td><td>Writes the agent.</td></tr>
 <tr><td>Parties</td><td>Deployer</td><td>Runs the agent.</td></tr>
 <tr><td>Parties</td><td>User</td><td>Authorises use as per the mandate, under the policy.</td></tr>
+<tr><td>Parties</td><td>Owner (proposed)</td><td>Who owns the agent.</td></tr>
+<tr><td>Parties</td><td>Funder (proposed)</td><td>Who paid for the agent.</td></tr>
 </tbody>
 </table>
 <p>The trust assertion states that the agent's identity, mandate and policy hold:</p>
@@ -150,11 +153,27 @@ var respecConfig = {
 <p class="issue">The visualiser's type picker uses AIAO v1.1 (eight dimensions). AIAO version 2.3 describes six dimensions and models functional roles as roles an agent plays. The two need to be brought into line.</p>
 </section>
 
+<section id="implementation-reports" class="informative">
+<h2>Implementation reports</h2>
+<p>Implementations of this specification, and test results that relate to it, are listed here. Each entry links to its evidence and carries one of three status levels:</p>
+<dl>
+<dt>Documented</dt><dd>Described by the contributor; not run.</dd>
+<dt>Run by the contributor</dt><dd>Run by the contributor, with the results and the exact version published.</dd>
+<dt>Independently rerun</dt><dd>Rerun by someone other than the contributor, with the results published.</dd>
+</dl>
+<table class="data">
+<thead><tr><th>Implementation</th><th>Contributor</th><th>Scope</th><th>Status</th><th>Evidence</th></tr></thead>
+<tbody>
+<tr><td colspan="5"><em>No reports yet.</em></td></tr>
+</tbody>
+</table>
+</section>
+
 <section id="evaluation" class="informative">
 <h2>Questions for evaluation</h2>
 <p>Comments are especially welcome on these points:</p>
 <ol>
-<li>Are the ten fields enough to describe an agent you build, run or rely on? Which are missing or redundant?</li>
+<li>Are the twelve fields enough to describe an agent you build, run or rely on? Which are missing or redundant?</li>
 <li>Should the descriptions of Protocol, Authority and Policy be adopted as drafted?</li>
 <li>Should Developer be added to KRT, or recorded outside it?</li>
 <li>Should "Where it lives and operates" accept several values, such as a URL and a DID together?</li>
@@ -164,6 +183,20 @@ var respecConfig = {
 <li>Does the visualiser work with a keyboard and a screen reader?</li>
 </ol>
 <p>Example records for real agents are especially useful for testing. The chair will collect the comments, revise this draft and the visualiser, and bring a revised version to the group for a decision on publication.</p>
+</section>
+
+<section id="contributions" class="appendix informative">
+<h2>Contributions</h2>
+<p>The following contributions have been made to this draft and to the visualiser. Further contributions are invited; see the status section for how to send them.</p>
+<table class="data">
+<thead><tr><th>Contributor</th><th>Contribution</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>Larry Lewis (W3C Agent Trust Protocol CG)</td><td>Review of the trust record model: separate declared, verified, permitted and observed states; declared functions from granted authority; identifiers from service endpoints; test the role mappings against deployments</td><td>Partly implemented: "declared, not verified" labels and an "unknown" verification state in the visualiser. Other points open for discussion as issues</td></tr>
+<tr><td>Yanfeng Liu (Nanjing University, V19)</td><td>Reviewer for audit and accountability; reproducible examples for evidence freshness, human approval and revocation</td><td>Listed as reviewer; examples offered</td></tr>
+<tr><td>Francesco Marinoni Moretto</td><td>Commerce identity rows: which HTTPS origin publishes the keys a verifier relies on, with pinned sources</td><td>Offered; to be confirmed</td></tr>
+<tr><td>Kenne Ives (AgentAvow)</td><td>did:web example and signed tool-definition test vectors; pinning the key from a source independent of the issuer</td><td>Offered; not yet run</td></tr>
+</tbody>
+</table>
 </section>
 
 </body>

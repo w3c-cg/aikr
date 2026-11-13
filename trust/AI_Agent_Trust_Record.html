@@ -122,7 +122,7 @@ a{color:var(--violet)}
   <svg class="rings" width="320" height="320" viewBox="0 0 320 320" aria-hidden="true"><g fill="none" stroke="#E3B23C" stroke-width="2"><circle cx="160" cy="160" r="150"/><circle cx="160" cy="160" r="120"/><circle cx="160" cy="160" r="90"/><circle cx="160" cy="160" r="60"/><circle cx="160" cy="160" r="30"/></g></svg>
   <div class="kicker">Epistemic Systems Lab · Working draft</div>
   <h1>A representation of AI agent trust</h1>
-  <div class="sub">One record per agent: who it is, where it acts, what it may do, who wrote it, who runs it, who authorised it. Agent type is described with the AIAO dimensions.</div>
+  <div class="sub">One record per agent: who it is, where it acts, what it may do, who wrote it, who runs it, who authorised it, who owns and funds it. Agent type is described with the AIAO dimensions.</div>
   <div class="links"><a href="https://w3c-cg.github.io/aikr/ontologies/Agent_Ontologies_Explorer.html#aiao">AIAO in the Agent Ontologies Explorer</a><a href="https://w3c-cg.github.io/aikr/ontologies/Agent_Ontologies_Explorer.html">Agent Ontologies Explorer (AIAO, AgentO, MBAD)</a><a href="https://w3c-cg.github.io/aikr/ontologies/Agent_Ontologies_Explorer.html#crosswalk">Crosswalk to KR for Trust</a><button type="button" id="music" class="music" aria-pressed="false">▶ Soundtrack on</button></div>
 </header>
 <div class="weave" aria-hidden="true"></div>
@@ -169,7 +169,7 @@ a{color:var(--violet)}
   <div class="bgrid">
     <form id="f" autocomplete="off">
       <fieldset><legend style="color:var(--violet)">Identity</legend>
-        <label for="name">Agent name</label><input type="text" id="name">
+        <label for="name">Agent name or identifier <small>a name, DID or other identifier</small></label><input type="text" id="name">
         <label>Agent type <small>one class per AIAO dimension; leave blank if not known</small></label>
         <div class="dimsel" id="dimsel"></div>
         <label>Cognitive capabilities <small>properties, tick any</small></label>
@@ -193,6 +193,10 @@ a{color:var(--violet)}
           <div><label for="deployer">Deployer <small>runs the agent</small></label><input type="text" id="deployer"></div>
         </div>
         <label for="user">User <small>authorises the use as per the mandate under the policy</small></label><input type="text" id="user">
+        <div class="row2">
+          <div><label for="owner">Owner <small>who owns the agent</small></label><input type="text" id="owner"></div>
+          <div><label for="funder">Funder <small>who paid for the agent</small></label><input type="text" id="funder"></div>
+        </div>
       </fieldset>
       <div class="bar"><button type="button" class="gold" id="add">Add to register</button><button type="button" id="clear">Clear form</button><span class="toast" id="addmsg"></span></div>
     </form>
@@ -214,7 +218,8 @@ a{color:var(--violet)}
 </section>
 </main>
 
-<footer>© Copyright 2026 Epistemic Systems Lab · Editor: Paola Di Maio · Agent types follow AIAO v1.1 (eight dimensions). Working draft for the W3C AI KR Community Group trust work. · <a href="https://w3c-cg.github.io/aikr/ontologies/Agent_Ontologies_Explorer.html">Agent Ontologies Explorer</a><br>Soundtrack: Tarantella Napoletana by Luigi Ricci (1852), violin melody and piano accompaniment from the <a href="https://imslp.org/wiki/Tarantella_Napoletana_(Ricci,_Luigi)">violin and piano arrangement by Werner J.E. De Bleser</a>, licensed <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>. Violin and piano samples from VS Chamber Orchestra Community Edition (<a href="https://github.com/sgossner/VSCO-2-CE">VSCO 2 CE</a>, CC0). This in-page rendition is shared under CC BY-NC-SA 4.0.</footer>
+<section class="contrib" aria-labelledby="contrib-h" style="box-sizing:border-box;width:auto;max-width:1100px;margin:36px auto 0;padding:0 24px"><div class="kicker" style="color:var(--violet)">Acknowledgements</div><h2 id="contrib-h" style="margin:4px 0 8px">Contributions</h2><p>Contributions to the visualiser and its <a href="https://w3c-cg.github.io/aikr/trust/trustvisualiser.html">draft specification</a>. More are invited: open an issue or pull request in the <a href="https://github.com/w3c-cg/aikr/tree/main/trust">w3c-cg/aikr trust folder</a>, or post to public-aikr@w3.org with [trustvisualiser] in the subject.</p><table style="width:100%;min-width:0;max-width:100%;table-layout:fixed;border-collapse:collapse;font-size:14px;background:#fff"><thead><tr style="background:var(--navy);color:var(--gold);text-align:left"><th style="padding:8px;width:22%;color:#E3B23C;background:#0F1B33">Contributor</th><th style="padding:8px;width:46%;color:#E3B23C;background:#0F1B33">Contribution</th><th style="padding:8px;width:32%;color:#E3B23C;background:#0F1B33">Status</th></tr></thead><tbody><tr><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Larry Lewis (W3C Agent Trust Protocol CG)</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Review of the trust record model: separate declared, verified, permitted and observed states; declared functions from granted authority; identifiers from service endpoints; test the role mappings against deployments</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Partly implemented: "declared, not verified" labels and an "unknown" verification state in the visualiser. Other points open for discussion as issues</td></tr><tr><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Yanfeng Liu (Nanjing University, V19)</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Reviewer for audit and accountability; reproducible examples for evidence freshness, human approval and revocation</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Listed as reviewer; examples offered</td></tr><tr><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Francesco Marinoni Moretto</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Commerce identity rows: which HTTPS origin publishes the keys a verifier relies on, with pinned sources</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Offered; to be confirmed</td></tr><tr><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Kenne Ives (AgentAvow)</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">did:web example and signed tool-definition test vectors; pinning the key from a source independent of the issuer</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Offered; not yet run</td></tr></tbody></table></section>
+<footer>© Copyright 2026 Epistemic Systems Lab · Editor: Paola Di Maio · Agent types follow AIAO v1.1 (eight dimensions). Working draft for the W3C AI KR Community Group trust work. · <a href="https://w3c-cg.github.io/aikr/ontologies/Agent_Ontologies_Explorer.html">Agent Ontologies Explorer</a><br>Revisions: the "declared, not verified" labels and the "unknown" verification state follow a review of the trust record model by Larry Lewis (W3C Agent Trust Protocol Community Group), November 2026.<br>Soundtrack: Tarantella Napoletana by Luigi Ricci (1852), violin melody and piano accompaniment from the <a href="https://imslp.org/wiki/Tarantella_Napoletana_(Ricci,_Luigi)">violin and piano arrangement by Werner J.E. De Bleser</a>, licensed <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>. Violin and piano samples from VS Chamber Orchestra Community Edition (<a href="https://github.com/sgossner/VSCO-2-CE">VSCO 2 CE</a>, CC0). This in-page rendition is shared under CC BY-NC-SA 4.0.</footer>
 
 <script>
 (function(){
@@ -235,10 +240,10 @@ function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return
 
 // ---- schema view
 var GROUPS = [
- {k:"Identity",c:"var(--violet)",f:[["Agent name","The name the agent is known by."],["Agent type","Its classification in AIAO: one class per dimension, plus cognitive capabilities.",true]]},
+ {k:"Identity",c:"var(--violet)",f:[["Agent name or identifier","The name, DID or other identifier the agent is known by."],["Agent type","Its classification in AIAO: one class per dimension, plus cognitive capabilities.",true]]},
  {k:"Interface",c:"var(--teal)",f:[["Protocol","<em>How it talks to other agents and services, e.g. MCP, A2A, an HTTP API.</em>"],["Where does it live and operate?","URL? DID address? Other?"]]},
  {k:"Mandate",c:"var(--fuchsia)",f:[["Mandate / functions","What does it do?"],["Authority","<em>Who granted it the power to act, and within which limits.</em>"],["Policy","<em>The rules it operates under, e.g. a published usage or data policy.</em>"]]},
- {k:"Parties",c:"var(--bronze)",f:[["Developer","Writes the agent."],["Deployer","Who runs the agent."],["User","Authorises the use as per the mandate under the policy."]]},
+ {k:"Parties",c:"var(--bronze)",f:[["Developer","Writes the agent."],["Deployer","Who runs the agent."],["User","Authorises the use as per the mandate under the policy."],["Owner","<em>Who owns the agent.</em>"],["Funder","<em>Who paid for the agent.</em>"]]},
  {k:"Trust",trust:true,f:[["Trust","Ensures the agent identity, that it operates the declared mandate, under the declared policy."],["Identity","Name and location resolve to the agent."],["Mandate","Its actions stay inside the declared functions and authority."],["Policy","It runs under the declared policy."]]}
 ];
 document.getElementById("schema").innerHTML = GROUPS.map(function(g){
@@ -257,7 +262,7 @@ dimsel.innerHTML = DIMS.map(function(d){
 }).join("");
 document.getElementById("caps").innerHTML = CAPS.map(function(c){return '<label><input type="checkbox" value="'+c+'"> '+c+'</label>';}).join("");
 
-var TEXT = ["name","protocol","loc","mandate","authority","policy","developer","deployer","user"];
+var TEXT = ["name","protocol","loc","mandate","authority","policy","developer","deployer","user","owner","funder"];
 function readForm(){
   var r = {};
   TEXT.forEach(function(k){ r[k] = document.getElementById(k).value.trim(); });
@@ -286,17 +291,17 @@ function renderCard(){
    '<div class="types">'+(t.length? t.map(function(c){return '<span style="border-color:'+COLOR[c]+'">'+c+'</span>';}).join("") : '<span class="blank" style="border:0;background:none">no AIAO type selected</span>')+'</div></div>'+
    '<dl><dt>Protocol</dt><dd>'+b(r.protocol)+'</dd><dt>Operates at</dt><dd>'+(r.loc? '<span class="mono" style="font-size:13px">'+esc(r.loctype)+'</span> '+esc(r.loc) : b(""))+'</dd>'+
    '<dt>Mandate</dt><dd>'+b(r.mandate)+'</dd><dt>Authority</dt><dd>'+b(r.authority)+'</dd><dt>Policy</dt><dd>'+b(r.policy)+'</dd>'+
-   '<dt>Developer</dt><dd>'+b(r.developer)+'</dd><dt>Deployer</dt><dd>'+b(r.deployer)+'</dd><dt>User</dt><dd>'+b(r.user)+'</dd></dl>'+
-   '<div class="chain"><h3>Trust</h3>'+checks(r).map(function(c){
-      return '<div class="chk"><span class="'+(c[1]?'ok':'miss')+'">'+(c[1]?'✓':'○')+'</span><span><b>'+c[0]+'</b> · '+c[2]+'</span></div>';
-   }).join("")+'<div class="fine">Shows what the record declares. Checking the declarations against the running agent is the trust step itself.</div></div>';
+   '<dt>Developer</dt><dd>'+b(r.developer)+'</dd><dt>Deployer</dt><dd>'+b(r.deployer)+'</dd><dt>User</dt><dd>'+b(r.user)+'</dd><dt>Owner</dt><dd>'+b(r.owner)+'</dd><dt>Funder</dt><dd>'+b(r.funder)+'</dd></dl>'+
+   '<div class="chain"><h3>Declared, not verified</h3>'+checks(r).map(function(c){
+      return '<div class="chk"><span class="'+(c[1]?'ok':'miss')+'" style="color:#E3B23C">'+(c[1]?'●':'○')+'</span><span><b>'+c[0]+'</b> · '+(c[1]?c[2]:'not declared')+' · <i>verification: unknown</i></span></div>';
+   }).join("")+'<div class="fine">A filled dot means the field has been filled in. It does not mean the declaration has been verified. Verification is unknown until evidence is checked against the running agent; unknown is not the same as a failed check.</div></div>';
 }
 document.getElementById("f").addEventListener("input", renderCard);
 document.getElementById("f").addEventListener("change", renderCard);
 
 // ---- register
 var EXAMPLE = {ex:true,name:"Example booking agent",type:{AutonomyLevel:"DeliberativeAgent",FunctionalRole:"TaskAgent",Embodiment:"PureSoftwareAgent",InteractionStyle:"HumanInTheLoopAgent",OperationalScope:"SingleTaskAgent",InterfaceModality:"TextAgent",InteractionParadigm:"TransactionalAgent"},caps:["Planning","Memory"],
-  protocol:"MCP",loctype:"URL",loc:"https://agents.example.org/booking",mandate:"Searches and books rail tickets for the user",authority:"Spend up to a set limit per booking",policy:"Example Org agent use policy v1",developer:"Example Labs",deployer:"Example Org",user:"Account holder"};
+  protocol:"MCP",loctype:"URL",loc:"https://agents.example.org/booking",mandate:"Searches and books rail tickets for the user",authority:"Spend up to a set limit per booking",policy:"Example Org agent use policy v1",developer:"Example Labs",deployer:"Example Org",user:"Account holder",owner:"Example Org",funder:"Example Org"};
 var REG = [EXAMPLE];
 try{ var s = localStorage.getItem("esl-agent-trust-register"); if(s){ REG = JSON.parse(s); } }catch(e){}
 function save(){ try{ localStorage.setItem("esl-agent-trust-register", JSON.stringify(REG)); }catch(e){} }
@@ -305,16 +310,16 @@ function renderReg(){
   var head =
    '<thead><tr class="g">'+
    '<th colspan="2" style="background:var(--violet)">Identity</th><th colspan="2" style="background:var(--teal)">Interface</th>'+
-   '<th colspan="3" style="background:var(--fuchsia)">Mandate</th><th colspan="3" style="background:var(--bronze)">Parties</th><th style="background:var(--navy);color:var(--gold)">Trust</th><th style="background:var(--muted)"></th></tr>'+
-   '<tr><th>Agent name</th><th>Agent type<small>AIAO classes</small></th><th>Protocol</th><th>Where it operates<small>URL · DID · other</small></th>'+
+   '<th colspan="3" style="background:var(--fuchsia)">Mandate</th><th colspan="5" style="background:var(--bronze)">Parties</th><th style="background:var(--navy);color:var(--gold)">Declared</th><th style="background:var(--muted)"></th></tr>'+
+   '<tr><th>Agent name<small>or identifier</small></th><th>Agent type<small>AIAO classes</small></th><th>Protocol</th><th>Where it operates<small>URL · DID · other</small></th>'+
    '<th>Mandate / functions<small>what does it do?</small></th><th>Authority</th><th>Policy</th>'+
-   '<th>Developer<small>writes the agent</small></th><th>Deployer<small>runs the agent</small></th><th>User<small>authorises use per mandate, under policy</small></th>'+
-   '<th>Declared<small>identity · mandate · policy</small></th><th></th></tr></thead>';
+   '<th>Developer<small>writes the agent</small></th><th>Deployer<small>runs the agent</small></th><th>User<small>authorises use per mandate, under policy</small></th><th>Owner</th><th>Funder<small>who paid for it</small></th>'+
+   '<th>Declared<small>filled in, not verified</small></th><th></th></tr></thead>';
   var body = REG.map(function(r,i){
     var t = typeChips(r).map(function(c){return '<span class="t" style="border-color:'+COLOR[c]+'">'+c+'</span>';}).join("");
-    var ck = checks(r).slice(0,3).map(function(c){return '<span class="'+(c[1]?'ok':'miss')+'" style="color:'+(c[1]?'var(--teal)':'var(--crimson)')+'">'+(c[1]?'✓':'○')+' '+c[0]+'</span>';}).join("<br>");
+    var ck = checks(r).slice(0,3).map(function(c){return '<span class="'+(c[1]?'ok':'miss')+'" style="color:var(--ink-2,#555)">'+(c[1]?'●':'○')+' '+c[0]+(c[1]?' declared':' not declared')+'</span>';}).join("<br>");
     return '<tr'+(r.ex?' class="ex"':'')+'><td><strong>'+esc(r.name)+'</strong>'+(r.ex?'<br><small class="ui">example</small>':'')+'</td><td>'+t+'</td><td>'+esc(r.protocol)+'</td><td><span class="mono" style="font-size:12px">'+esc(r.loctype)+'</span> '+esc(r.loc)+'</td>'+
-      '<td>'+esc(r.mandate)+'</td><td>'+esc(r.authority)+'</td><td>'+esc(r.policy)+'</td><td>'+esc(r.developer)+'</td><td>'+esc(r.deployer)+'</td><td>'+esc(r.user)+'</td>'+
+      '<td>'+esc(r.mandate)+'</td><td>'+esc(r.authority)+'</td><td>'+esc(r.policy)+'</td><td>'+esc(r.developer)+'</td><td>'+esc(r.deployer)+'</td><td>'+esc(r.user)+'</td><td>'+esc(r.owner)+'</td><td>'+esc(r.funder)+'</td>'+
       '<td class="trustc ui" style="font-size:12.5px">'+ck+'</td><td class="acts"><button data-edit="'+i+'">Edit</button><button data-del="'+i+'">Delete</button></td></tr>';
   }).join("");
   document.getElementById("reg").innerHTML = head + '<tbody>'+(body || '<tr><td colspan="12" class="note">No records yet.</td></tr>')+'</tbody>';
@@ -339,12 +344,12 @@ document.getElementById("add").addEventListener("click", function(){
 document.getElementById("clear").addEventListener("click", function(){ document.getElementById("f").reset(); renderCard(); });
 
 // ---- exports
-var COLS = ["name","agentType","protocol","locationType","location","mandate","authority","policy","developer","deployer","user"];
-function flat(r){ return {name:r.name,agentType:typeChips(r).join("; "),protocol:r.protocol,locationType:r.loctype,location:r.loc,mandate:r.mandate,authority:r.authority,policy:r.policy,developer:r.developer,deployer:r.deployer,user:r.user}; }
+var COLS = ["name","agentType","protocol","locationType","location","mandate","authority","policy","developer","deployer","user","owner","funder"];
+function flat(r){ return {name:r.name,agentType:typeChips(r).join("; "),protocol:r.protocol,locationType:r.loctype,location:r.loc,mandate:r.mandate,authority:r.authority,policy:r.policy,developer:r.developer,deployer:r.deployer,user:r.user,owner:r.owner,funder:r.funder}; }
 function csv(){ var q=function(v){v=String(v==null?"":v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
   return [COLS.join(",")].concat(REG.map(function(r){var f=flat(r);return COLS.map(function(k){return q(f[k]);}).join(",");})).join("\n"); }
 function json(){ return JSON.stringify({schema:"ESL agent trust record (working draft)",aiao:"https://purl.org/aiao# (proposed)",records:REG.map(function(r){
-  return {name:r.name,aiaoType:r.type,capabilities:r.caps,protocol:r.protocol,operatesAt:{type:r.loctype,value:r.loc},mandate:r.mandate,authority:r.authority,policy:r.policy,developer:r.developer,deployer:r.deployer,user:r.user,example:!!r.ex};})},null,2); }
+  return {name:r.name,aiaoType:r.type,capabilities:r.caps,protocol:r.protocol,operatesAt:{type:r.loctype,value:r.loc},mandate:r.mandate,authority:r.authority,policy:r.policy,developer:r.developer,deployer:r.deployer,user:r.user,owner:r.owner,funder:r.funder,example:!!r.ex};})},null,2); }
 function lit(s){ return '"'+String(s||"").replace(/\\/g,"\\\\").replace(/"/g,'\\"').replace(/\n/g,"\\n")+'"'; }
 function ttl(){
   var L=["# ESL agent trust records (working draft). © Copyright 2026 Epistemic Systems Lab",
@@ -354,7 +359,7 @@ function ttl(){
     L.push("ex:agent"+(i+1)+" a "+(t.length?t.join(", "):"aiao:Agent")+" ;");
     L.push("    rdfs:label "+lit(r.name)+" ;");
     (r.caps||[]).forEach(function(c){ L.push("    aiao:hasCapability aiao:"+c+" ;"); });
-    [["protocol","protocol"],["mandate","mandate"],["authority","authority"],["policy","policy"],["developer","developer"],["deployer","deployer"],["authorisedBy","user"]].forEach(function(p){ if(r[p[1]]) L.push("    trust:"+p[0]+" "+lit(r[p[1]])+" ;"); });
+    [["protocol","protocol"],["mandate","mandate"],["authority","authority"],["policy","policy"],["developer","developer"],["deployer","deployer"],["authorisedBy","user"],["owner","owner"],["fundedBy","funder"]].forEach(function(p){ if(r[p[1]]) L.push("    trust:"+p[0]+" "+lit(r[p[1]])+" ;"); });
     L.push("    trust:operatesAt "+lit((r.loctype||"")+": "+(r.loc||""))+" .",""); });
   return L.join("\n");
 }

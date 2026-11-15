@@ -17,7 +17,7 @@ This report examines how the agentic trust layer is represented across the group
 
 ## Status of this document
 
-This is a draft Community Group Report, proposed to the AI KR Community Group for publication as a Draft Community Group Report. It is published to record the work done so far on the trust layer in the Community Group and the opening of the [Trust KR Task Force](https://github.com/w3c-cg/aikr/blob/main/trust/trust-kr-taskforce.md). It is built from the technical note [trust/kroftrust.md](https://github.com/w3c-cg/aikr/blob/main/trust/kroftrust.md). The open consultation on that note began in August 2026 and remains open; a closing date will be announced on the list.
+This is a draft Community Group Report, proposed to the AI KR Community Group for publication as a Draft Community Group Report. It is published to record the work done so far on the trust layer in the Community Group and the opening of the [Trust KR Task Force](https://github.com/w3c-cg/aikr/blob/main/trust/trust-kr-taskforce.md). It is built from the technical note [trust/kroftrust.md](https://github.com/w3c-cg/aikr/blob/main/trust/kroftrust.md). The open consultation on that note began in August 2026 and closes on 1 December 2026.
 
 Feedback is welcome as [issues on the GitHub repository](https://github.com/w3c-cg/aikr/issues), with a note to <public-aikr@w3.org>. Contributions are made by pull request against the `trust/` folder, or by posting to the list.
 

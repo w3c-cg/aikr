@@ -24,6 +24,9 @@ var respecConfig = {
     data: [{ value: "Larry Lewis (W3C Agent Trust Protocol CG)" }, { value: "Yanfeng Liu (Nanjing University, V19)" }, { value: "Francesco Marinoni Moretto" }, { value: "Kenne Ives (AgentAvow)" }, { value: "Details and further contributions: see Contributions", href: "#contributions" }]
   }],
   postProcess: [function () {
+    var toc = document.getElementById("toc"), abs = document.getElementById("abstract");
+    if (toc && abs && abs.parentNode) { abs.parentNode.insertBefore(toc, abs); }
+  }, function () {
     var sotd = document.getElementById("sotd");
     if (!sotd) return;
     var walker = document.createTreeWalker(sotd, NodeFilter.SHOW_TEXT);
@@ -133,8 +136,24 @@ var respecConfig = {
 <li>Turtle, typing each agent with its AIAO classes and linking capabilities with <code>aiao:hasCapability</code>.</li>
 </ul>
 <p>Records SHOULD be kept in the viewer's browser only, with nothing sent to a server.</p>
-<p>A conforming visualiser MUST be usable with a keyboard and a screen reader, and SHOULD meet [[WCAG21]] level AA. The reference implementation provides: a skip link; labelled form fields and buttons; a text description of the diagram; register headers marked for screen readers; status messages announced when a record is added or data is copied; focus moved to the heading of each view; and options for larger text and high contrast.</p>
 <p>Each view SHOULD link to the Agent Ontologies Explorer [[AGENT-ONTO-EXPLORER]], so readers can look up an AIAO class from a record.</p>
+</section>
+
+<section id="accessibility">
+<h2>Accessibility of the visualisation</h2>
+<p>A conforming visualiser MUST be usable with a keyboard and a screen reader, and SHOULD meet [[WCAG21]] level AA.</p>
+<p>The reference implementation provides:</p>
+<ul>
+<li>a "Skip to content" link as the first item reached with the keyboard;</li>
+<li>labels on every form field and button, including the Edit and Delete buttons of each register row;</li>
+<li>a text description of the parties diagram;</li>
+<li>register column and row headers marked for screen readers, and a scrollable register that can be moved with the keyboard;</li>
+<li>short status messages that screen readers read out, such as "Added to the register" or "Copied CSV";</li>
+<li>focus moved to the heading of each view when the view changes, and a visible focus outline;</li>
+<li>Larger text and High contrast options, remembered in the viewer's browser;</li>
+<li>colours that meet the WCAG AA contrast ratio, and no animation when the system "reduce motion" setting is on.</li>
+</ul>
+<p>Barriers found by users are reported as issues tagged <code>[trustvisualiser]</code>. Automated checks find only some barriers; testing with people who use screen readers or magnification is planned.</p>
 </section>
 
 <section id="alignment">

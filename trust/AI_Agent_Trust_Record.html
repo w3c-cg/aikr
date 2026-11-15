@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
 <style>
 :root{--navy:#0E2440;--gold:#E3B23C;--stone:#F1F0EC;--paper:#FBFAF7;--ink:#1B1A22;--muted:#5D5A66;--rule:#D8D4CC;
---loom:#1B1530;--violet:#4B2A7B;--orchid:#A04FB3;--peri:#6F82C9;--fuchsia:#B5175A;--crimson:#9E1B32;--teal:#1F7A7A;--gilt:#B8901F;--bronze:#8C6A3F}
+--loom:#1B1530;--violet:#4B2A7B;--orchid:#A04FB3;--peri:#6F82C9;--fuchsia:#B5175A;--crimson:#9E1B32;--teal:#1A6B6B;--gilt:#B8901F;--bronze:#7A5A33}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--stone);color:var(--ink)}
 body{font-family:'Newsreader',Georgia,serif;font-size:17px;line-height:1.5}
@@ -86,7 +86,7 @@ button.gold:hover{background:var(--navy);color:var(--gold);border-color:var(--na
 .card dl{margin:0;padding:6px 20px 14px;display:grid;grid-template-columns:8.5em 1fr;gap:6px 12px;border-top:1px solid var(--rule)}
 .card dt{font-family:'Archivo',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding-top:3px}
 .card dd{margin:0;font-size:15.5px;word-break:break-word}
-.card .blank{color:#B3ADA2;font-style:italic}
+.card .blank{color:#6B665E;font-style:italic}
 .chain{background:var(--navy);color:#F3E2B3;padding:14px 20px 16px}
 .chain h3{color:var(--gold);font-size:18px;margin-bottom:8px}
 .chk{display:grid;grid-template-columns:22px 1fr;gap:6px;font-size:15px;margin:5px 0}
@@ -111,36 +111,47 @@ header.banner .links{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px;fo
 header.banner .links a{color:#E3B23C;text-decoration:none;border-bottom:1px solid rgba(227,178,60,.5)}
 header.banner .links a:hover{border-bottom-color:#E3B23C}
 header.banner .links .music{font:inherit;font-size:14px;color:#0F1B33;background:#E3B23C;border:0;border-radius:3px;padding:3px 12px;cursor:pointer}
-header.banner .links .music:focus-visible{outline:2px solid #fff;outline-offset:2px}
+header.banner .links .music:focus-visible{outline:3px solid #1B1A22;outline-offset:2px}
+header.banner :focus-visible{outline:3px solid #fff}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:absolute;left:8px;top:-60px;z-index:100;background:#E3B23C;color:#0F1B33;padding:10px 16px;font-family:Archivo,sans-serif;font-weight:700;text-decoration:none}
+.skip:focus{top:8px}
+.a11ybar{display:flex;gap:8px;margin-left:auto;align-items:center}
+.a11ybar button{font-family:Archivo,sans-serif;font-size:13px;font-weight:600;background:var(--paper);color:var(--ink);border:2px solid var(--ink);border-radius:3px;padding:4px 10px;cursor:pointer}
+.a11ybar button[aria-pressed="true"]{background:var(--ink);color:#fff}
+body.lg{font-size:21px}body.lg nav.tabs a{font-size:17px}body.lg label{font-size:19px!important}body.lg label small{font-size:15px!important}body.lg legend{font-size:14px!important}body.lg .note,body.lg footer{font-size:16px!important}body.lg .card dt{font-size:14px!important}body.lg .card dd{font-size:19px!important}body.lg table{font-size:17px!important}
+body.hc{--muted:#1B1A22;--rule:#1B1A22;--stone:#FFFFFF;--paper:#FFFFFF;--ink:#000000;--violet:#3A1F66;--teal:#0E4F4F;--bronze:#5A3F1F;--fuchsia:#8A0F44}
+body.hc,body.hc main{background:#fff;color:#000}body.hc .blank{color:#333}body.hc a{text-decoration:underline}body.hc input,body.hc select,body.hc textarea{border:2px solid #000!important}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 footer a{color:inherit}
 footer{border-top:1px solid var(--rule);padding:18px 24px 30px;font-family:'Archivo',sans-serif;font-size:12.5px;color:var(--muted);max-width:1280px;margin:0 auto}
 a{color:var(--violet)}
 </style>
 </head>
 <body>
-<p class="aikr-trust-backlink" style="font:13px/1.4 system-ui,sans-serif;margin:8px 16px;padding:6px 10px;border-left:3px solid #1a3a6b;background:#f4f6fa;color:#222">Part of the AI KR CG trust work. Main document: <a href="https://github.com/w3c-cg/aikr/blob/main/trust/kroftrust.md">The Knowledge Representation of the Trust Layer</a>. Display specification: <a href="https://w3c-cg.github.io/aikr/trust/trustvisualiser.html">Agent Trust Record Visualisation</a>.</p>
+<a class="skip" href="#main">Skip to content</a>
 <header class="banner">
   <svg class="rings" width="320" height="320" viewBox="0 0 320 320" aria-hidden="true"><g fill="none" stroke="#E3B23C" stroke-width="2"><circle cx="160" cy="160" r="150"/><circle cx="160" cy="160" r="120"/><circle cx="160" cy="160" r="90"/><circle cx="160" cy="160" r="60"/><circle cx="160" cy="160" r="30"/></g></svg>
-  <div class="kicker">Epistemic Systems Lab · Working draft</div>
   <h1>A representation of AI agent trust</h1>
   <div class="sub">One record per agent: who it is, where it acts, what it may do, who wrote it, who runs it, who authorised it, who owns and funds it. Agent type is described with the AIAO dimensions.</div>
   <div class="links"><a href="https://w3c-cg.github.io/aikr/ontologies/Agent_Ontologies_Explorer.html#aiao">AIAO in the Agent Ontologies Explorer</a><a href="https://w3c-cg.github.io/aikr/ontologies/Agent_Ontologies_Explorer.html">Agent Ontologies Explorer (AIAO, AgentO, MBAD)</a><a href="https://w3c-cg.github.io/aikr/ontologies/Agent_Ontologies_Explorer.html#crosswalk">Crosswalk to KR for Trust</a><button type="button" id="music" class="music" aria-pressed="false">▶ Soundtrack on</button></div>
 </header>
 <div class="weave" aria-hidden="true"></div>
-<nav class="tabs" id="tabs">
+<nav class="tabs" id="tabs" aria-label="Views">
   <a href="#model" data-v="model">Model</a>
   <a href="#record" data-v="record">Write a record</a>
   <a href="#register" data-v="register">Register</a>
+  <div class="a11ybar" role="group" aria-label="Display options"><button type="button" id="a11y-lg" aria-pressed="false">Larger text</button><button type="button" id="a11y-hc" aria-pressed="false">High contrast</button></div>
 </nav>
 
-<main>
-<section class="view" id="v-model">
+<main id="main" tabindex="-1">
+<section class="view" id="v-model" aria-labelledby="h-model">
   <div class="kicker" style="color:var(--violet)">Schema</div>
-  <h2>Fields, grouped</h2>
-  <p class="lede">Eleven fields in five groups. Agent type takes one value per <a href="https://w3c-cg.github.io/aikr/ontologies/Agent_Ontologies_Explorer.html#aiao">AIAO</a> dimension, with cognitive capabilities listed as properties.</p>
+  <h2 id="h-model" tabindex="-1">Fields, grouped</h2>
+  <p class="lede">Thirteen fields in four groups, followed by what the record declares. Agent type takes one value per <a href="https://w3c-cg.github.io/aikr/ontologies/Agent_Ontologies_Explorer.html#aiao">AIAO</a> dimension, with cognitive capabilities listed as properties.</p>
   <div class="schema" id="schema"></div>
   <div class="flow">
-    <svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Parties around the agent">
+    <svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="flow-t flow-d"><title id="flow-t">Parties around the agent</title><desc id="flow-d">The developer builds the agent and the deployer operates it. The user authorises its use per mandate, under policy. Trust checks the agent's identity, mandate and policy.</desc>
       <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1B1A22"/></marker></defs>
       <g font-family="Archivo,sans-serif" font-size="13">
         <rect x="30" y="40" width="170" height="64" fill="#fff" stroke="#8C6A3F" stroke-width="2"/><text x="115" y="67" text-anchor="middle" font-weight="700">Developer</text><text x="115" y="87" text-anchor="middle" fill="#5D5A66">writes the agent</text>
@@ -165,7 +176,7 @@ a{color:var(--violet)}
 
 <section class="view" id="v-record">
   <div class="kicker" style="color:var(--violet)">Builder</div>
-  <h2>Write a record</h2>
+  <h2 id="h-record" tabindex="-1">Write a record</h2>
   <p class="lede">Fill in the form; the card on the right updates as you type. Add it to the register when done.</p>
   <div class="bgrid">
     <form id="f" autocomplete="off">
@@ -179,7 +190,7 @@ a{color:var(--violet)}
       <fieldset><legend style="color:var(--teal)">Interface</legend>
         <label for="protocol">Protocol <small>e.g. MCP, A2A, HTTP API</small></label><input type="text" id="protocol">
         <label>Where does it live and operate?</label>
-        <div class="row3"><select id="loctype"><option>URL</option><option>DID</option><option>Other</option></select><input type="text" id="loc" placeholder="https://… or did:…"></div>
+        <div class="row3"><select id="loctype" aria-label="Location type"><option>URL</option><option>DID</option><option>Other</option></select><input type="text" id="loc" placeholder="https://… or did:…"></div>
         <label for="keypub">Key publisher <small>who publishes the key set a verifier trusts</small></label><select id="keypub"><option value=""></option><option>Agent's own origin</option><option>Issuer or network chosen by the verifier</option><option>Other</option></select>
       </fieldset>
       <fieldset><legend style="color:var(--fuchsia)">Mandate</legend>
@@ -200,28 +211,35 @@ a{color:var(--violet)}
           <div><label for="funder">Funder <small>who paid for the agent</small></label><input type="text" id="funder"></div>
         </div>
       </fieldset>
-      <div class="bar"><button type="button" class="gold" id="add">Add to register</button><button type="button" id="clear">Clear form</button><span class="toast" id="addmsg"></span></div>
+      <div class="bar"><button type="button" class="gold" id="add">Add to register</button><button type="button" id="clear">Clear form</button><span class="toast" id="addmsg" role="status" aria-live="polite"></span></div>
     </form>
-    <aside class="card" id="card"></aside>
+    <aside class="card" id="card" aria-label="Preview of the record"></aside>
   </div>
 </section>
 
 <section class="view" id="v-register">
   <div class="kicker" style="color:var(--violet)">Register</div>
-  <h2>Agent trust register</h2>
+  <h2 id="h-register" tabindex="-1">Agent trust register</h2>
   <p class="lede">The first row is an invented example to show the shape of a record. Delete it when adding your own.</p>
-  <div class="tablewrap"><table id="reg"></table></div>
+  <div class="tablewrap" role="region" aria-labelledby="h-register" tabindex="0"><table id="reg"></table></div>
   <div class="bar" style="margin-top:12px">
     <button class="gold" data-copy="csv">Copy CSV</button><button class="gold" data-copy="json">Copy JSON</button><button class="gold" data-copy="ttl">Copy Turtle</button>
-    <span class="toast" id="copymsg"></span>
+    <span class="toast" id="copymsg" role="status" aria-live="polite"></span>
   </div>
-  <pre class="code" id="out" hidden></pre>
+  <pre class="code" id="out" hidden tabindex="0" aria-label="Exported data"></pre>
   <p class="note" style="margin-top:10px">The register is kept in this browser only. Copy the CSV or JSON to keep it elsewhere.</p>
 </section>
 </main>
 
-<section class="contrib" aria-labelledby="contrib-h" style="box-sizing:border-box;width:auto;max-width:1100px;margin:36px auto 0;padding:0 24px"><div class="kicker" style="color:var(--violet)">Acknowledgements</div><h2 id="contrib-h" style="margin:4px 0 8px">Contributions</h2><p>Contributions to the visualiser and its <a href="https://w3c-cg.github.io/aikr/trust/trustvisualiser.html">draft specification</a>. More are invited: open an issue or pull request in the <a href="https://github.com/w3c-cg/aikr/tree/main/trust">w3c-cg/aikr trust folder</a>, or post to public-aikr@w3.org with [trustvisualiser] in the subject.</p><table style="width:100%;min-width:0;max-width:100%;table-layout:fixed;border-collapse:collapse;font-size:14px;background:#fff"><thead><tr style="background:var(--navy);color:var(--gold);text-align:left"><th style="padding:8px;width:22%;color:#E3B23C;background:#0F1B33">Contributor</th><th style="padding:8px;width:46%;color:#E3B23C;background:#0F1B33">Contribution</th><th style="padding:8px;width:32%;color:#E3B23C;background:#0F1B33">Status</th></tr></thead><tbody><tr><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Larry Lewis (W3C Agent Trust Protocol CG)</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Review of the trust record model: separate declared, verified, permitted and observed states; declared functions from granted authority; identifiers from service endpoints; test the role mappings against deployments</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Partly implemented: "declared, not verified" labels and an "unknown" verification state in the visualiser. Other points open for discussion as issues</td></tr><tr><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Yanfeng Liu (Nanjing University, V19)</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Reviewer for audit and accountability; reproducible examples for evidence freshness, human approval and revocation</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Listed as reviewer; examples offered</td></tr><tr><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Francesco Marinoni Moretto</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Commerce identity rows with pinned sources; who publishes the key set a verifier trusts (agent's own origin, or an issuer or network the verifier chose)</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Contributed: rows confirmed with corrections; key-publisher column proposed and added to the visualiser and draft as a proposed field; draft alignment issue between UCP and Web Bot Auth confirmed and reported to UCP (<a href="https://github.com/Universal-Commerce-Protocol/ucp/issues/1080">issue 1080</a>)</td></tr><tr><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Kenne Ives (AgentAvow)</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">did:web example and signed tool-definition test vectors; pinning the key from a source independent of the issuer</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Offered; not yet run</td></tr></tbody></table></section>
-<footer>© Copyright 2026 Epistemic Systems Lab · Editor: Paola Di Maio · Agent types follow AIAO v1.1 (eight dimensions). Working draft for the W3C AI KR Community Group trust work. · <a href="https://w3c-cg.github.io/aikr/ontologies/Agent_Ontologies_Explorer.html">Agent Ontologies Explorer</a><br>Revisions: the "declared, not verified" labels and the "unknown" verification state follow a review of the trust record model by Larry Lewis (W3C Agent Trust Protocol Community Group), November 2026.<br>Soundtrack: Tarantella Napoletana by Luigi Ricci (1852), violin melody and piano accompaniment from the <a href="https://imslp.org/wiki/Tarantella_Napoletana_(Ricci,_Luigi)">violin and piano arrangement by Werner J.E. De Bleser</a>, licensed <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>. Violin and piano samples from VS Chamber Orchestra Community Edition (<a href="https://github.com/sgossner/VSCO-2-CE">VSCO 2 CE</a>, CC0). This in-page rendition is shared under CC BY-NC-SA 4.0.</footer>
+<section class="contrib" aria-labelledby="contrib-h" style="box-sizing:border-box;width:auto;max-width:1100px;margin:36px auto 0;padding:0 24px"><div class="kicker" style="color:var(--violet)">Acknowledgements</div><h2 id="contrib-h" style="margin:4px 0 8px">Contributions</h2><p>Contributions to the visualiser and its <a href="https://w3c-cg.github.io/aikr/trust/trustvisualiser.html">draft specification</a>. More are invited: open an issue or pull request in the <a href="https://github.com/w3c-cg/aikr/tree/main/trust">w3c-cg/aikr trust folder</a>, or post to public-aikr@w3.org with [trustvisualiser] in the subject.</p><table style="width:100%;min-width:0;max-width:100%;table-layout:fixed;border-collapse:collapse;font-size:14px;background:#fff"><thead><tr style="background:var(--navy);color:var(--gold);text-align:left"><th scope="col" style="padding:8px;width:22%;color:#E3B23C;background:#0F1B33">Contributor</th><th scope="col" style="padding:8px;width:46%;color:#E3B23C;background:#0F1B33">Contribution</th><th scope="col" style="padding:8px;width:32%;color:#E3B23C;background:#0F1B33">Status</th></tr></thead><tbody><tr><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Larry Lewis (W3C Agent Trust Protocol CG)</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Review of the trust record model: separate declared, verified, permitted and observed states; declared functions from granted authority; identifiers from service endpoints; test the role mappings against deployments</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Partly implemented: "declared, not verified" labels and an "unknown" verification state in the visualiser. Other points open for discussion as issues</td></tr><tr><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Yanfeng Liu (Nanjing University, V19)</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Reviewer for audit and accountability; reproducible examples for evidence freshness, human approval and revocation</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Listed as reviewer; examples offered</td></tr><tr><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Francesco Marinoni Moretto</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Commerce identity rows with pinned sources; who publishes the key set a verifier trusts (agent's own origin, or an issuer or network the verifier chose)</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Contributed: rows confirmed with corrections; key-publisher column proposed and added to the visualiser and draft as a proposed field; draft alignment issue between UCP and Web Bot Auth confirmed and reported to UCP (<a href="https://github.com/Universal-Commerce-Protocol/ucp/issues/1080">issue 1080</a>)</td></tr><tr><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Kenne Ives (AgentAvow)</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">did:web example and signed tool-definition test vectors; pinning the key from a source independent of the issuer</td><td style="padding:8px;border-top:1px solid #ddd;vertical-align:top">Offered; not yet run</td></tr></tbody></table></section>
+<footer aria-labelledby="about-h">
+<h2 id="about-h" style="font-family:'Archivo',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin:0 0 6px;color:var(--ink)">About this visualiser</h2>
+<p style="margin:0 0 8px">Designed by Paola Di Maio, chair of the W3C AI Knowledge Representation Community Group, and implemented by the Epistemic Systems Lab. Several people have contributed to it; their contributions are listed under <a href="#contrib-h">Contributions</a>. The visualiser follows the <a href="https://w3c-cg.github.io/aikr/trust/trustvisualiser.html">draft specification</a> in the <a href="https://github.com/w3c-cg/aikr/tree/main/trust">trust folder</a> of the w3c-cg/aikr repository. Agent types follow AIAO v1.1 (eight dimensions). See also the <a href="https://w3c-cg.github.io/aikr/ontologies/Agent_Ontologies_Explorer.html">Agent Ontologies Explorer</a>.</p>
+<p style="margin:0 0 8px"><strong>Accessibility.</strong> The page can be used with a keyboard and a screen reader. It has a "Skip to content" link, labelled form fields and buttons, a text description of the diagram, register headers marked for screen readers, and short status messages that screen readers read out, such as "Added to the register" or "Copied CSV". The Larger text and High contrast buttons next to the tabs change the display, and the page follows the "reduce motion" system setting. Please report any barrier as an issue in the <a href="https://github.com/w3c-cg/aikr/issues/new?title=%5Btrustvisualiser%5D%20accessibility%3A%20">w3c-cg/aikr repository</a>.</p>
+<p style="margin:0 0 8px"><strong>Revisions.</strong> The "declared, not verified" labels and the "unknown" verification state follow a review of the trust record model by Larry Lewis (W3C Agent Trust Protocol Community Group), November 2026. The Key publisher field follows a proposal by Francesco Marinoni Moretto.</p>
+<p style="margin:0 0 8px"><strong>Soundtrack.</strong> Tarantella Napoletana by Luigi Ricci (1852), violin melody and piano accompaniment from the <a href="https://imslp.org/wiki/Tarantella_Napoletana_(Ricci,_Luigi)">violin and piano arrangement by Werner J.E. De Bleser</a>, licensed <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>. Violin and piano samples from VS Chamber Orchestra Community Edition (<a href="https://github.com/sgossner/VSCO-2-CE">VSCO 2 CE</a>, CC0). This in-page rendition is shared under CC BY-NC-SA 4.0.</p>
+<p style="margin:0">© Copyright 2026 Epistemic Systems Lab</p>
+</footer>
 
 <script>
 (function(){
@@ -476,6 +494,33 @@ var Tarantella = (function(){
     return Tarantella.load(oc).then(function(){ var g=oc.createGain(); g.gain.value=0.9; var c=oc.createDynamicsCompressor(); g.connect(c); c.connect(oc.destination);
       Tarantella.setup(oc,g); Tarantella.EV.forEach(function(ev){ Tarantella.play(oc,g,ev,0.1+ev.t*E); }); return oc.startRendering(); });
   };
+})();
+</script>
+<script>
+/* Accessibility enhancements */
+(function(){
+  function fixTable(){
+    var t=document.getElementById("reg"); if(!t) return;
+    if(!t.querySelector("caption")){ var c=document.createElement("caption"); c.className="sr-only"; c.textContent="Agent trust register: one row per agent, columns grouped as Identity, Interface, Mandate, Parties and Declared."; t.insertBefore(c,t.firstChild); }
+    t.querySelectorAll("thead tr.g th").forEach(function(th){ th.setAttribute("scope","colgroup"); if(!th.textContent.trim()) th.innerHTML='<span class="sr-only">Actions</span>'; });
+    t.querySelectorAll("thead tr:not(.g) th").forEach(function(th){ th.setAttribute("scope","col"); if(!th.textContent.trim()) th.innerHTML='<span class="sr-only">Actions</span>'; });
+    t.querySelectorAll("tbody tr").forEach(function(tr){
+      var nm=(tr.querySelector("td strong")||{}).textContent||"record";
+      var e=tr.querySelector("[data-edit]"), d=tr.querySelector("[data-del]");
+      if(e) e.setAttribute("aria-label","Edit "+nm); if(d) d.setAttribute("aria-label","Delete "+nm);
+      var first=tr.querySelector("td"); if(first && first.tagName==="TD"){ var th=document.createElement("th"); th.setAttribute("scope","row"); th.innerHTML=first.innerHTML; th.style.cssText="text-align:left;font-weight:inherit"; tr.replaceChild(th,first); }
+    });
+  }
+  var reg=document.getElementById("reg");
+  if(reg){ var obs=new MutationObserver(function(){ obs.disconnect(); fixTable(); obs.observe(reg,{childList:true}); }); fixTable(); obs.observe(reg,{childList:true}); }
+  function current(){ var h=(location.hash||"#model").slice(1); document.querySelectorAll("#tabs a").forEach(function(a){ if(a.getAttribute("data-v")===h) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); }); return h; }
+  current();
+  window.addEventListener("hashchange",function(){ var h=current(); var hd=document.getElementById("h-"+h); if(hd) hd.focus(); });
+  function toggle(id,cls,key){ var b=document.getElementById(id); if(!b) return;
+    function set(on){ document.body.classList.toggle(cls,on); b.setAttribute("aria-pressed",on?"true":"false"); try{ localStorage.setItem(key,on?"1":"0"); }catch(e){} }
+    var on=false; try{ on=localStorage.getItem(key)==="1"; }catch(e){} set(on);
+    b.addEventListener("click",function(){ set(b.getAttribute("aria-pressed")!=="true"); }); }
+  toggle("a11y-lg","lg","esl-trust-a11y-lg"); toggle("a11y-hc","hc","esl-trust-a11y-hc");
 })();
 </script>
 </body>

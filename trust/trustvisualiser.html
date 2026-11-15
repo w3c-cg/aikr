@@ -91,7 +91,7 @@ var respecConfig = {
 
 <section id="data-model">
 <h2>Data model</h2>
-<p>A trust record describes one agent with twelve declared fields in four groups, followed by a trust assertion over three of them. Fields marked <em>proposed</em> have draft descriptions open for review.</p>
+<p>A trust record describes one agent with thirteen declared fields in four groups, followed by a trust assertion over three of them. Fields marked <em>proposed</em> have draft descriptions open for review.</p>
 <table class="data">
 <thead><tr><th>Group</th><th>Field</th><th>Description</th></tr></thead>
 <tbody>
@@ -99,6 +99,7 @@ var respecConfig = {
 <tr><td>Identity</td><td>Agent type</td><td>One class per AIAO dimension, plus cognitive capabilities.</td></tr>
 <tr><td>Interface</td><td>Protocol (proposed)</td><td>How it talks to other agents and services, e.g. MCP, A2A, an HTTP API.</td></tr>
 <tr><td>Interface</td><td>Where it lives and operates</td><td>URL, DID address or other.</td></tr>
+<tr><td>Interface</td><td>Key publisher (proposed)</td><td>Who publishes the key set a verifier trusts: the agent's own origin, or an issuer or network the verifier has chosen.</td></tr>
 <tr><td>Mandate</td><td>Mandate / functions</td><td>What the agent does.</td></tr>
 <tr><td>Mandate</td><td>Authority (proposed)</td><td>Who granted it the power to act, and within which limits.</td></tr>
 <tr><td>Mandate</td><td>Policy (proposed)</td><td>The rules it operates under, e.g. a published usage or data policy.</td></tr>
@@ -173,7 +174,7 @@ var respecConfig = {
 <h2>Questions for evaluation</h2>
 <p>Comments are especially welcome on these points:</p>
 <ol>
-<li>Are the twelve fields enough to describe an agent you build, run or rely on? Which are missing or redundant?</li>
+<li>Are the thirteen fields enough to describe an agent you build, run or rely on? Which are missing or redundant?</li>
 <li>Should the descriptions of Protocol, Authority and Policy be adopted as drafted?</li>
 <li>Should Developer be added to KRT, or recorded outside it?</li>
 <li>Should "Where it lives and operates" accept several values, such as a URL and a DID together?</li>
@@ -193,7 +194,7 @@ var respecConfig = {
 <tbody>
 <tr><td>Larry Lewis (W3C Agent Trust Protocol CG)</td><td>Review of the trust record model: separate declared, verified, permitted and observed states; declared functions from granted authority; identifiers from service endpoints; test the role mappings against deployments</td><td>Partly implemented: "declared, not verified" labels and an "unknown" verification state in the visualiser. Other points open for discussion as issues</td></tr>
 <tr><td>Yanfeng Liu (Nanjing University, V19)</td><td>Reviewer for audit and accountability; reproducible examples for evidence freshness, human approval and revocation</td><td>Listed as reviewer; examples offered</td></tr>
-<tr><td>Francesco Marinoni Moretto</td><td>Commerce identity rows: which HTTPS origin publishes the keys a verifier relies on, with pinned sources</td><td>Offered; to be confirmed</td></tr>
+<tr><td>Francesco Marinoni Moretto</td><td>Commerce identity rows with pinned sources; who publishes the key set a verifier trusts (agent's own origin, or an issuer or network the verifier chose)</td><td>Contributed: rows confirmed with corrections; key-publisher column proposed and added as a proposed field; draft alignment issue between UCP and Web Bot Auth confirmed and reported to UCP (<a href="https://github.com/Universal-Commerce-Protocol/ucp/issues/1080">issue 1080</a>)</td></tr>
 <tr><td>Kenne Ives (AgentAvow)</td><td>did:web example and signed tool-definition test vectors; pinning the key from a source independent of the issuer</td><td>Offered; not yet run</td></tr>
 </tbody>
 </table>

@@ -7,7 +7,9 @@
 
 # AI KR CG call on trust work, 17 November 2026
 
-## Agenda
+## Agenda  (tentative, we squeeze in what we can and/or reconvene if needed)
+
+### 0. Quick round of introductions, assigning a scribe or asking google meet to auotranscribe
 
 ### 1. Trust visualiser
 

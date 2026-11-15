@@ -12,7 +12,7 @@ Produce a human-readable representation of the dimensions of trust for AI agents
 
 - Name and define the dimensions of trust, starting from the work already in this folder: the technical note, the KRT ontology, the trust record and visualiser, the use cases, the test material and the notes on trust anchors.
 - Present each dimension in plain language, readable without a technical background, and trace it to the machine-readable terms in KRT.
-- Connect and align with other W3C Community Groups and organisations working on agent trust, to harmonise trust schemas.
+- Connect and align with other W3C Community Groups and organisations working on agent, identity, protocols and trust, to harmonise schemas.
 - Feed the result into the Community Group report on the trust layer ([draft](https://w3c-cg.github.io/aikr/trust/kroftrust.html)).
 
 ## Process

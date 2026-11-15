@@ -1,5 +1,7 @@
 # DNS and DID Trust for Agents
 
+*Part of the AI KR CG trust work. Main document: [The Knowledge Representation of the Trust Layer](kroftrust.md). Trust record visualiser: [AI Agent Trust Record](https://w3c-cg.github.io/aikr/trust/AI_Agent_Trust_Record.html).*
+
 Oct 31, 2026 · Draft for comment to be incorporated in the AI KR CG report
 
 ## Summary

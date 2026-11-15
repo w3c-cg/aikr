@@ -1,5 +1,7 @@
 # Authority Continuity: a Formal Model and Proposed Cases
 
+*Part of the AI KR CG trust work. Main document: [The Knowledge Representation of the Trust Layer](kroftrust.md). Trust record visualiser: [AI Agent Trust Record](https://w3c-cg.github.io/aikr/trust/AI_Agent_Trust_Record.html).*
+
 *Contribution to group D (authority continuity). Proposed; open for
 review by the AI KR CG. Case numbering is left to the editors.*
 

@@ -9,6 +9,8 @@ FEEDBACK BY OPENING AN ISSUE HERE AND PINGING THE AI KR CG Mailing list
 
 *W3C AI Knowledge Representation Community Group*
 
+Related documents in the trust folder, including the [AI Agent Trust Record visualiser](https://w3c-cg.github.io/aikr/trust/AI_Agent_Trust_Record.html), are listed at the [end of this note](#related-documents-in-this-folder).
+
 ---
 
 ## Executive Summary
@@ -351,3 +353,39 @@ The author attributes the result to verification being purely local, requiring n
 | 36 | Abadi, Consistency Tradeoffs in Modern Distributed Database System Design: CAP is Only Part of the Story | IEEE Computer 45(2), 2012. Sets out PACELC: the latency-consistency trade-off in normal operation, alongside CAP's availability-consistency trade-off under partition. | <https://doi.org/10.1109/MC.2012.33> |
 | 37 | Dean and Barroso, The Tail at Scale | Communications of the ACM 56(2), 2013. Shows how per-component tail latency comes to dominate as the number of components a request touches grows. | <https://doi.org/10.1145/2408776.2408794> |
 | 38 | Everyday AI, deployment evidence on resolution dependency | Consultation response of 27 September 2026. A census of hosts listed in one x402 agent-payment discovery registry, reporting manifest paths, signatures and declared freshness. | <https://github.com/w3c-cg/aikr/issues/12> |
+
+---
+
+## Related documents in this folder
+
+All documents below belong to the AI KR CG trust work and point back to this note.
+
+**Draft Community Group Report**
+- [Knowledge Representation of the Trust Layer](https://w3c-cg.github.io/aikr/trust/kroftrust.html): this note with all the trust work below, consultation responses and open issues, in ReSpec ([source](kroftrust.html))
+
+**Trust KR task force**
+- [Trust KR Task Force](trust-kr-taskforce.md): draft mission statement and invited co-leads
+
+**Trust record**
+- [AI Agent Trust Record](https://w3c-cg.github.io/aikr/trust/AI_Agent_Trust_Record.html): the trust record visualiser, one record per agent ([source](AI_Agent_Trust_Record.html))
+- [Agent Trust Record Visualisation](https://w3c-cg.github.io/aikr/trust/trustvisualiser.html): draft specification for how a trust record is displayed, written and exported ([source](trustvisualiser.html))
+
+**Models and test material**
+- [KR for Trust ontology (KRT), skeleton v0.1](https://w3c-cg.github.io/aikr/trust/krt.html): classes, properties and validation rules for recording trust decisions ([krt.ttl](krt.ttl), [krt-shapes.ttl](krt-shapes.ttl), [krt-example.ttl](krt-example.ttl))
+- [Comparison semantics](comparison-semantics.md): full text of §4.1
+- [Key and evidence states, expected results v0](key-evidence-states-v0/README.md): runnable test cases with three-valued results, and an [illustrated guide](https://w3c-cg.github.io/aikr/trust/key-evidence-states.html)
+- [Authority continuity: a formal model and proposed cases](authority-continuity-cases.md): contribution to group D
+
+**Trust anchors and identity**
+- [DNS and DID trust for agents](DNS_and_DIDTrustforAgents.md): the two lines of agent trust work and where they depend on each other
+- [Root KSK rollover, W3C trust groups and AI KR](ksk.md)
+- [What the agentic web actually rests on](https://w3c-cg.github.io/aikr/trust/dns-dependency-agent-identity-note.html): technical note on DNS anchoring and the ARIA public surface
+
+**Vocabulary and orientation**
+- [Knowledge representation for trust: vocabulary, use cases and working draft](https://w3c-cg.github.io/aikr/trust/trust-layer-thread-summary.html): glossary, use cases and the state of the trust thread
+- [Agent trust and identity: vocabulary crosswalk across W3C Community Groups](https://w3c-cg.github.io/aikr/trust/Crosswalk.html)
+- [Agent Protocol Primer](https://w3c-cg.github.io/aikr/trust/Agent_Protocol_Primer.html): newcomer's guide to the vocabulary of the AI Agent Protocol CG list
+- [ARIA terminology disambiguation](https://w3c-cg.github.io/aikr/trust/aria.html) and the [plain-language explainer on agent identity and authorization](ariaexplainer.md)
+
+**Pointers to other groups**
+- [Agent Conformance reporting format v0.1](agent-conformance-reporting-v0.1.md): link to the Agent Conformance and Benchmarking CG deliverable

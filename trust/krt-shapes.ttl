@@ -1,3 +1,5 @@
+# Part of the AI KR CG trust work. Main document: https://github.com/w3c-cg/aikr/blob/main/trust/kroftrust.md
+# Trust record visualiser: https://w3c-cg.github.io/aikr/trust/AI_Agent_Trust_Record.html
 # KR for Trust Ontology (KRT), validation shapes v0.1, DRAFT
 # Each shape expresses one design rule derived from case work.
 # R11 added 17 September 2026 after discussion on public-aikr.

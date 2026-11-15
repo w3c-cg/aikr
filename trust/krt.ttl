@@ -1,3 +1,5 @@
+# Part of the AI KR CG trust work. Main document: https://github.com/w3c-cg/aikr/blob/main/trust/kroftrust.md
+# Trust record visualiser: https://w3c-cg.github.io/aikr/trust/AI_Agent_Trust_Record.html
 # KR for Trust Ontology (KRT), skeleton v0.1, DRAFT
 # W3C AI Knowledge Representation Community Group, trust work item
 # Derived from case work by the Epistemic Systems Lab (analysis of documented

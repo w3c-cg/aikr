@@ -1,0 +1,48 @@
+# Trust KR Task Force
+
+*Draft mission statement, proposed to the W3C AI Knowledge Representation Community Group for discussion on public-aikr. Nothing here has been agreed by the group.*
+
+*Part of the AI KR CG trust work. Main document: [The Knowledge Representation of the Trust Layer](kroftrust.md). Trust record visualiser: [AI Agent Trust Record](https://w3c-cg.github.io/aikr/trust/AI_Agent_Trust_Record.html).*
+
+## Mission
+
+Produce a human-readable representation of the dimensions of trust for AI agents, so that a person relying on an agent, an auditor or a regulator can see what a trust judgement rests on and which parts of it nobody has checked.
+
+## Goal
+
+- Name and define the dimensions of trust, starting from the work already in this folder: the technical note, the KRT ontology, the trust record and visualiser, the use cases, the test material and the notes on trust anchors.
+- Present each dimension in plain language, readable without a technical background, and trace it to the machine-readable terms in KRT.
+- Feed the result into the Community Group report on the trust layer ([draft](https://w3c-cg.github.io/aikr/trust/kroftrust.html)).
+
+## Process
+
+- Each work item has one or more co-leads from among the contributors. A co-lead curates the issues and files for that item in this folder.
+- Work happens in the open, through issues and pull requests on [w3c-cg/aikr](https://github.com/w3c-cg/aikr) and posts to public-aikr@w3.org with `[trust-kr]` in the subject.
+- Contributors are AI KR CG participants with their GitHub and W3C accounts linked, so the IPR check passes.
+- Decisions are taken by consensus on the list, and the chair merges after a review period.
+
+## Communication
+
+About once a quarter, the task force sends a short note to the AI KR CG list: what was done, what is open, and which decisions the CG needs to take.
+
+## Invited co-leads
+
+Everyone below has contributed to the trust work and is invited to co-lead. To take up a work item, reply on the list or write to the chair to agree its scope.
+
+| Contributor | Contribution to the trust work |
+| --- | --- |
+| Isaac Mao | Integrity and availability axis, and evidence resolution (§3.1 of the note, PR #7) |
+| Amey Parle | Comparison semantics (§4.1 and `comparison-semantics.md`, PR #11) |
+| Ankur Chrungoo | Typed integrity and staleness attributes (issue #8) and resolution dependency as a PACELC position (§3.2, PR #14) |
+| Kenne Ives | Key and evidence states (PR #25), evidence resolution (issue #10), tracker of open items (issue #16), test vectors for the trust record |
+| Nicholas Templeman | Proposal for the trust-state vocabulary and fixture table (public-aikr) |
+| Michael Blake | Review of the key and evidence states, deployment evidence from agent-payment discovery (issue #12), fixes to the DNS and DID note (issue #26) |
+| Nicola Gallo | Authority continuity: formal model and proposed cases (PR #22) |
+| Evgenii Arsentev | Pointer to the Agent Conformance reporting format (PR #13) |
+| Andreas Ehstand | Oversight records in KRT (PR #15, open) |
+| Sean (LexLint) | Corrections to KRT (issue #19) and review of the oversight records |
+| Lars Kroehl | Correction to Annex B on did:moltrust resolution (issue #9) |
+| Yanfeng Liu | Answers to the six questions of the note (issue #5), review of the trust record for audit and accountability |
+| Larry Lewis | Review of the trust record model |
+| Francesco Marinoni Moretto | Commerce identity rows and the Key publisher field of the trust record (issue #28) |
+| bigblackcoder (GitHub) | Review of the DNS and DID note (issue #27) and the ATP demonstration package (issue #29) |

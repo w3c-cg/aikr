@@ -1,5 +1,7 @@
 # Agent identity and authorization — a plain-language explainer
 
+*Part of the AI KR CG trust work. Main document: [The Knowledge Representation of the Trust Layer](kroftrust.md). Trust record visualiser: [AI Agent Trust Record](https://w3c-cg.github.io/aikr/trust/AI_Agent_Trust_Record.html).*
+
 *A reference note for anyone following this thread without a security background. It explains the problem, decodes the jargon, and summarizes the two proposals under discussion (ARIA, and Bacon/Siwei's admission-invariant idea).*
 
 *Thread: https://lists.w3.org/Archives/Public/public-agent-identity/2026Jul/thread.html*

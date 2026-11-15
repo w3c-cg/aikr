@@ -1,5 +1,7 @@
 # Root KSK rollover, W3C trust groups and AI KR
 
+*Part of the AI KR CG trust work. Main document: [The Knowledge Representation of the Trust Layer](kroftrust.md). Trust record visualiser: [AI Agent Trust Record](https://w3c-cg.github.io/aikr/trust/AI_Agent_Trust_Record.html).*
+
 ## Rollover on 11 October
 
 On 11 October the DNS root switches to a new key-signing key, KSK-2024 (key tag 38696), replacing KSK-2017 (key tag 20326). It is only the second root KSK change. The key anchors the DNSSEC chain of trust, and a validating resolver that does not trust the new key could leave its users unable to reach sites under any top-level domain.

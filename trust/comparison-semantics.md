@@ -1,5 +1,7 @@
 # Comparison semantics
 
+*Part of the AI KR CG trust work. Main document: [The Knowledge Representation of the Trust Layer](kroftrust.md). Trust record visualiser: [AI Agent Trust Record](https://w3c-cg.github.io/aikr/trust/AI_Agent_Trust_Record.html).*
+
 *Full text of §4.1 of [kroftrust.md](kroftrust.md), which carries the short version. Arising from the discussion on public-aikr and public-agent-identity, and issue #10.*
 
 ## The property

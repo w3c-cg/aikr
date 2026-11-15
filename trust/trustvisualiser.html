@@ -133,6 +133,7 @@ var respecConfig = {
 <li>Turtle, typing each agent with its AIAO classes and linking capabilities with <code>aiao:hasCapability</code>.</li>
 </ul>
 <p>Records SHOULD be kept in the viewer's browser only, with nothing sent to a server.</p>
+<p>A conforming visualiser MUST be usable with a keyboard and a screen reader, and SHOULD meet [[WCAG21]] level AA. The reference implementation provides: a skip link; labelled form fields and buttons; a text description of the diagram; register headers marked for screen readers; status messages announced when a record is added or data is copied; focus moved to the heading of each view; and options for larger text and high contrast.</p>
 <p>Each view SHOULD link to the Agent Ontologies Explorer [[AGENT-ONTO-EXPLORER]], so readers can look up an AIAO class from a record.</p>
 </section>
 
@@ -181,7 +182,7 @@ var respecConfig = {
 <li>Which AIAO version should the type picker follow: v1.1 (eight dimensions) or v2.3 (six dimensions, roles)?</li>
 <li>Do the three views make a record easy to read for someone outside the group? Try writing a record for an agent you know and report what was unclear.</li>
 <li>Are CSV, JSON and Turtle the right exports, and is the Turtle output usable with KRT?</li>
-<li>Does the visualiser work with a keyboard and a screen reader?</li>
+<li>Does the visualiser work for you with a keyboard, a screen reader, larger text or high contrast? Please report any barrier as an issue.</li>
 </ol>
 <p>Example records for real agents are especially useful for testing. The chair will collect the comments, revise this draft and the visualiser, and bring a revised version to the group for a decision on publication.</p>
 </section>

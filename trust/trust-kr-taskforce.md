@@ -47,3 +47,14 @@ Everyone below has contributed to the trust work and is invited to co-lead. To t
 | Larry Lewis | Review of the trust record model |
 | Francesco Marinoni Moretto | Commerce identity rows and the Key publisher field of the trust record (issue #28) |
 | bigblackcoder (GitHub) | Review of the DNS and DID note (issue #27) and the ATP demonstration package (issue #29) |
+
+## Handover notes
+
+Open items passed to the task force when it starts work.
+
+- **ATP demonstration package ([issue #29](https://github.com/w3c-cg/aikr/issues/29)).** A 22-scenario assessment harness for the trust record, published for independent rerun. All 22 scenarios passed when run by the contributor. List it in the Implementation reports table of the [visualiser specification](https://w3c-cg.github.io/aikr/trust/trustvisualiser.html), with status "Run by the contributor", and change the status to "Independently rerun" once someone else reruns it.
+- **Key and evidence states ([PR #25](https://github.com/w3c-cg/aikr/pull/25)).** The contributor reports that all eleven cases and eleven mutation controls match `expected.json`. Consider citing the result in the report and inviting runs in other languages.
+- **Contributor names.** Confirm whether the GitHub account bigblackcoder (issues #27 and #29) belongs to Larry Lewis, and if so merge the two entries in the co-lead table and in the report.
+- **Corrections to the technical note.** Annex B on did:moltrust resolution ([issue #9](https://github.com/w3c-cg/aikr/issues/9)); source pool numbers 17 to 19 used twice.
+- **Pending contributions.** English summary of the Agent Community answers ([issue #5](https://github.com/w3c-cg/aikr/issues/5)); oversight records in KRT ([PR #15](https://github.com/w3c-cg/aikr/pull/15)); comments on KRT ([#19](https://github.com/w3c-cg/aikr/issues/19)), the DNS and DID note ([#26](https://github.com/w3c-cg/aikr/issues/26), [#27](https://github.com/w3c-cg/aikr/issues/27)) and the trust record ([#28](https://github.com/w3c-cg/aikr/issues/28)).
+- **Housekeeping.** `aria2.html` duplicates `aria.html`; the visualiser page has no link back to the technical note.

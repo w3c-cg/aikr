@@ -3,13 +3,24 @@ DRAFT TECHNICAL NOTE
 
 OPEN CONSULTATION STARTS 2 AUGUST 26
 
-CONSULTATION TO CLOSE:  TBA
+CONSULTATION TO CLOSE:  1 DEC 26
 
 FEEDBACK BY OPENING AN ISSUE HERE AND PINGING THE AI KR CG Mailing list 
 
 *W3C AI Knowledge Representation Community Group*
 
 Related documents in the trust folder, including the [AI Agent Trust Record visualiser](https://w3c-cg.github.io/aikr/trust/AI_Agent_Trust_Record.html), are listed at the [end of this note](#related-documents-in-this-folder).
+
+## Abstract
+
+This report examines how the agentic trust layer is represented across the groups working on agent identity. It argues that one engineering property goes unmodelled in their published texts: resolution dependency, meaning where an agent's identity document is fetched from at the moment a counterparty needs to verify a claim. The report sets out the concern as a technical note addressed to those groups, with questions for each to answer publicly, and surveys related work outside W3C. It records the knowledge-representation requirements that follow: resolution and anchoring as distinct modelled properties, integrity separated from location, and comparison semantics for artefacts produced independently. Companion contributions in the group's repository extend the work with an ontology skeleton, runnable test cases and a formal model of authority continuity.
+
+## Status of this document
+
+This is a draft Community Group Report, proposed to the AI KR Community Group for publication as a Draft Community Group Report. It is published to record the work done so far on the trust layer in the Community Group and the opening of the [Trust KR Task Force](https://github.com/w3c-cg/aikr/blob/main/trust/trust-kr-taskforce.md). It is built from the technical note [trust/kroftrust.md](https://github.com/w3c-cg/aikr/blob/main/trust/kroftrust.md). The open consultation on that note began in August 2026 and remains open; a closing date will be announced on the list.
+
+Feedback is welcome as [issues on the GitHub repository](https://github.com/w3c-cg/aikr/issues), with a note to <public-aikr@w3.org>. Contributions are made by pull request against the `trust/` folder, or by posting to the list.
+
 
 ---
 
@@ -219,6 +230,134 @@ The artifact that would carry the disclosure may already exist. DIF's machine-re
 
 ---
 
+<div id="trust-work" class="section">
+
+## Trust KR work in the Community Group
+
+The technical note started a wider body of work in the [`trust/` folder](https://github.com/w3c-cg/aikr/tree/main/trust) of the group's repository. This section covers all of it: models, test material, notes on trust anchors, vocabulary aids and the trust record. Each document is kept as a separate file so it can be revised on its own schedule, and each links back to the technical note.
+
+<div id="trust-record" class="section">
+
+### Trust record and visualiser
+
+The [AI Agent Trust Record](https://w3c-cg.github.io/aikr/trust/AI_Agent_Trust_Record.html) is a working visualiser that keeps one record per agent: who it is, where it acts, what it may do, who wrote it, who runs it, who authorised it, and who owns and funds it. Agent type is described with the dimensions of the Agentic AI Ontology (AIAO). Visitors can read the model, write a record and add it to a register. A Key publisher field in the Interface group records who publishes the key set a verifier trusts: the agent's own origin, or an issuer or network the verifier has chosen. It appears in the record card, the register and the exports. The visualiser can be used with a keyboard and a screen reader: it has a skip link, labelled form fields and buttons, a text description of the diagram, announced status messages, and options for larger text and high contrast.
+
+The draft specification [Agent Trust Record Visualisation](https://w3c-cg.github.io/aikr/trust/trustvisualiser.html) sets out how a trust record is displayed, written and exported, with record terms aligned to [KRT](https://w3c-cg.github.io/aikr/trust/krt.html). Its data model now lists Key publisher as a proposed field, following Francesco Marinoni Moretto's rows on the agent identity mechanisms of commerce protocols (issue \#28). Verification of the claims in a record is left to KRT and to this report. The specification requires a conforming visualiser to be usable with a keyboard and a screen reader, and recommends WCAG 2.1 level AA. Comments on the model carry `[trustvisualiser]` in the subject, and implementation reports carry `[trustvisualiser-impl]`.
+
+> **[Issue \#28](https://github.com/w3c-cg/aikr/issues/28):** Proposes a column for who publishes the key set the verifier trusts, with rows for the agent identity mechanisms that commerce protocols specify.
+
+> **[Issue \#29](https://github.com/w3c-cg/aikr/issues/29):** Implementation evidence: the ATP demonstration package with its 22 scenarios, published for an independent rerun.
+
+</div>
+
+<div id="krt" class="section">
+
+### KR for Trust ontology (KRT)
+
+The [KRT skeleton v0.1](https://w3c-cg.github.io/aikr/trust/krt.html) records a trust decision: a relying party's judgement about one proposition, for one action, at one time. A record names who presented a claim and through which channel, on whose authority, with what evidence, for an action of what reversibility, enforced where, with an outcome of yes, no or unknown and a stated policy for unknown. A relying party, an auditor or a regulator can then see which part of a decision rested on something nobody checked. The skeleton was derived from case work on documented incidents involving AI agents, read against the contributions to the trust thread. It comes with SHACL shapes and a worked example (`krt.ttl`, `krt-shapes.ttl`, `krt-example.ttl`). The typed attributes `stalenessBound` and `integrityMode` were added after Ankur Chrungoo's proposal in issue \#8.
+
+> **[Issue \#19](https://github.com/w3c-cg/aikr/issues/19):** Range of krt:issuingPrincipal and krt:controllingPrincipal, glossary synonyms against EU AI Act definitions, and who answers for an action in an accountability record.
+
+A pull request from Andreas Ehstand ([\#15](https://github.com/w3c-cg/aikr/pull/15)) proposes oversight records in property group G: a way to record what a human overseer did (observed, checked, decided or released), with an amended rule R4 and a new rule R12. It is open, waiting on the IPR check and a reply to review.
+
+</div>
+
+<div id="comparison-work" class="section">
+
+### Comparison semantics
+
+The [full text](https://github.com/w3c-cg/aikr/blob/main/trust/comparison-semantics.md) behind §4.1, contributed by Amey Parle, covers the attestation analysis, the conformance vectors and the boundary between what was declared and what was executed.
+
+</div>
+
+<div id="key-evidence" class="section">
+
+### Key and evidence states
+
+Kenne Ives contributed [a runnable test set](https://github.com/w3c-cg/aikr/tree/main/trust/key-evidence-states-v0) for the key and evidence states proposed by Nicholas Templeman on public-aikr: an old key inside and outside its validity interval, a stale lookup, a successor key without lineage, a revoked key, an unavailable source and related states. Results are three-valued (pass, fail, could-not-determine), and a check that could not be completed is never counted as pass or fail. After review by Michael Blake, whether the source publishes all lineage became a policy setting, so case C05 reads fail with that assumption and case C11 reads could-not-determine without it. An [illustrated guide](https://w3c-cg.github.io/aikr/trust/key-evidence-states.html) explains the cases for readers new to the topic.
+
+</div>
+
+<div id="authority-continuity" class="section">
+
+### Authority continuity
+
+Nicola Gallo contributed [a formal model](https://github.com/w3c-cg/aikr/blob/main/trust/authority-continuity-cases.md) for the scope variant of C9, in which each step in a chain of agents may carry the same authority as the step before or less, and any widening needs its own explicit authorisation. It proposes four cases for group D: two mandates combined into one unauthorised effect, a successor that does not exist when the step is emitted, authority that depends on a future fact (open), and authority mixing across concurrent executions. The contributor states his interest as editor of the PIC specifications. The group recorded the contribution as proposed; it has not adopted PIC, and case numbers are still to be assigned.
+
+</div>
+
+<div id="trust-anchors" class="section">
+
+### Trust anchors: DNS and DIDs
+
+[DNS and DID trust for agents](https://github.com/w3c-cg/aikr/blob/main/trust/DNS_and_DIDTrustforAgents.md) follows the two lines of agent trust work. DNS-anchored trust starts from the DNS root key and the registries below it; DID-anchored trust starts from keys the agent's controller holds and publishes in a DID document. The DID methods now used for agents fetch their documents over HTTPS from a domain, so they already depend on DNS and the WebPKI, usually without DNSSEC. The note closes with questions for comment.
+
+> **[Issue \#26](https://github.com/w3c-cg/aikr/issues/26):** Two source fixes, and a proposed record for checks of a key-to-domain binding.
+
+> **[Issue \#27](https://github.com/w3c-cg/aikr/issues/27):** Asks to compare DNS and DID functions separately, trace ATP's inherited dependencies and separate lifecycle mechanisms.
+
+[Root KSK rollover, W3C trust groups and AI KR](https://github.com/w3c-cg/aikr/blob/main/trust/ksk.md) records the change of the DNS root key-signing key in October 2026, the related discussion in the Credentials Community Group on rooting DIDs in DNSSEC, and what the rollover means for AI KR and for the open and agentic web, with a section on TPAC 2026.
+
+[What the agentic web actually rests on](https://w3c-cg.github.io/aikr/trust/dns-dependency-agent-identity-note.html) compares DNS anchoring as claimed with DNS anchoring as deployed. Open agent identity schemes bind an agent to a domain name, and almost none verify control of that name through authenticated DNS. The note records findings from the ARIA public verification surface and sets them against the wider set of DNS-anchored proposals.
+
+</div>
+
+<div id="vocabulary" class="section">
+
+### Vocabulary and orientation
+
+[Knowledge representation for trust: vocabulary, use cases and working draft](https://w3c-cg.github.io/aikr/trust/trust-layer-thread-summary.html) holds the shared glossary, a catalogue of use cases drawn from agent incidents, a trace and coverage view, and the state of the trust thread with its work plan. Each use case card records what went wrong in trust terms, the proposed fix, who proposed it and what remains.
+
+[Agent trust and identity: vocabulary crosswalk across W3C Community Groups](https://w3c-cg.github.io/aikr/trust/Crosswalk.html) compares the terminology of the groups working on agent identity, trust and interoperability, the standards each reuses, and where their scopes overlap or leave gaps.
+
+The [Agent Protocol Primer](https://w3c-cg.github.io/aikr/trust/Agent_Protocol_Primer.html) is a newcomer's guide to the vocabulary on the list of the AI Agent Protocol Community Group, with every definition drawn from list messages or the specifications they cite.
+
+The [ARIA terminology disambiguation](https://w3c-cg.github.io/aikr/trust/aria.html) note separates WAI-ARIA from the unrelated Agent Registry for Identity and Authorization protocol, so the two are not conflated in indexing and search. A [plain-language explainer](https://github.com/w3c-cg/aikr/blob/main/trust/ariaexplainer.md) introduces agent identity and authorization for readers without a security background.
+
+</div>
+
+<div id="other-groups" class="section">
+
+### Pointers to other groups
+
+Evgenii Arsentev contributed a [pointer](https://github.com/w3c-cg/aikr/blob/main/trust/agent-conformance-reporting-v0.1.md) to version 0.1 of the reporting format of the W3C Agent Conformance and Benchmarking Community Group. No text is copied; the copy in that group's list archive is the reference version. Its section 12 links the comparison semantics text.
+
+</div>
+
+</div>
+
+<div id="responses" class="section">
+
+## Consultation responses and open issues
+
+Responses to the technical note and comments on the companion documents have been filed as issues in the repository. They are listed here with their state, so readers can see what this draft has and has not yet taken into account. Kenne Ives keeps a tracker of open items on trust evidence in issue [\#16](https://github.com/w3c-cg/aikr/issues/16).
+
+| Issue                                            | From                             | Subject                                                                                             | State in this draft                                                                                                            |
+|--------------------------------------------------|----------------------------------|-----------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| [\#5](https://github.com/w3c-cg/aikr/issues/5)   | Agent Community (Liuyanfeng1234) | Answers to the six questions in §5, posted in Chinese                                               | Waiting on an English summary, requested in October                                                                            |
+| [\#8](https://github.com/w3c-cg/aikr/issues/8)   | Ankur Chrungoo                   | PACELC framing and typed integrity and staleness attributes                                         | Taken in: attributes added to KRT, PACELC section added as §3.2. Open: `stalenessBound` should also cover superseded artefacts |
+| [\#9](https://github.com/w3c-cg/aikr/issues/9)   | Lars Kroehl (MolTrust)           | Annex B: did:moltrust has a registered resolution method                                            | Correction pending; flagged in Annex B                                                                                         |
+| [\#10](https://github.com/w3c-cg/aikr/issues/10) | Kenne Ives                       | Resolution dependency governs the evidence a trust decision reads, as well as the identity document | Partly taken in through §4.1; remainder proposed for a consolidated section on verifying trust evidence                        |
+| [\#12](https://github.com/w3c-cg/aikr/issues/12) | Everyday AI                      | Deployment evidence for the questions in §5 from agent-payment discovery                            | Cited in §3.2; no decision yet on citing it elsewhere as dated evidence                                                        |
+| [\#19](https://github.com/w3c-cg/aikr/issues/19) | Sean (LexLint)                   | KRT: range of the two principal properties, and glossary synonyms against EU AI Act definitions     | Open                                                                                                                           |
+| [\#26](https://github.com/w3c-cg/aikr/issues/26) | Michael Blake                    | DNS and DID note: two source fixes and a note on question 4                                         | Open                                                                                                                           |
+| [\#27](https://github.com/w3c-cg/aikr/issues/27) | bigblackcoder                    | DNS and DID note: ATP dependencies, lifecycle and coordination                                      | Open                                                                                                                           |
+| [\#28](https://github.com/w3c-cg/aikr/issues/28) | Francesco Marinoni Moretto       | Trust record: who publishes the key set the verifier trusts, for commerce identity mechanisms       | Taken in: Key publisher added as a proposed field in the visualiser and the draft specification                                |
+| [\#29](https://github.com/w3c-cg/aikr/issues/29) | bigblackcoder                    | Trust record: ATP demonstration, 22-scenario harness for independent rerun                          | Open; independent rerun pending                                                                                                |
+| [\#15](https://github.com/w3c-cg/aikr/pull/15)   | Andreas Ehstand                  | Oversight records in KRT                                                                            | Pull request open                                                                                                              |
+
+</div>
+
+<div id="taskforce" class="section">
+
+## Trust KR task force (proposed)
+
+A task force is proposed to take this work forward. Its mission is to produce a human-readable representation of the dimensions of trust for AI agents, so that a person relying on an agent, an auditor or a regulator can see what a trust judgement rests on and which parts of it nobody has checked. Each dimension is to be described in plain language and traced to the machine-readable terms in [KRT](https://w3c-cg.github.io/aikr/trust/krt.html). The task force will also connect and align with other W3C Community Groups and organisations working on agent trust, to harmonise trust schemas. Everyone who has contributed to the trust work is invited to co-lead a work item. The task force reports to the Community Group about once a quarter. The [draft mission statement](https://github.com/w3c-cg/aikr/blob/main/trust/trust-kr-taskforce.md) lists the process and the invited co-leads.
+
+</div>
+
+---
+
 ## Annex A — Note on Base L2
 
 Base is an Ethereum layer-two network built by Coinbase on Optimism's OP Stack, live on mainnet since August 2023. It is an optimistic rollup: transactions execute off Ethereum, compressed batch data is posted back to mainnet, and each batch is treated as valid unless challenged within a defined dispute window. Since the Dencun upgrade, batches can be posted as EIP-4844 blobs, which cut costs substantially. Fault proofs went live in 2024, moving the chain to OP Stack stage 1 and enabling exits that do not depend on Coinbase. Settlement finality is inherited from Ethereum.
@@ -240,6 +379,8 @@ None of this argues against ledger anchoring. It argues that a specification nam
 ---
 
 ## Annex B — Note on "Trust Without Trusting" (Kroehl, 2026)
+
+> **[Issue #9](https://github.com/w3c-cg/aikr/issues/9):** The author of the paper reports that did:moltrust is registered in the W3C DID Extensions registry, with a method specification that states its read operation over an operator-hosted HTTPS registry. The last paragraphs of this note are to be corrected.
 
 Lars Kersten Kroehl, MolTrust / CryptoKRI GmbH, Zurich. Preprint dated 14 June 2026, arXiv 2605.06738, continuing an earlier deployment paper by the same author. The work is unaffiliated with any W3C community group named in this note; it is cited here because it is the most candid published account of what a deployed agent trust layer built on W3C primitives actually depends on.
 
@@ -353,6 +494,24 @@ The author attributes the result to verification being purely local, requiring n
 | 36 | Abadi, Consistency Tradeoffs in Modern Distributed Database System Design: CAP is Only Part of the Story | IEEE Computer 45(2), 2012. Sets out PACELC: the latency-consistency trade-off in normal operation, alongside CAP's availability-consistency trade-off under partition. | <https://doi.org/10.1109/MC.2012.33> |
 | 37 | Dean and Barroso, The Tail at Scale | Communications of the ACM 56(2), 2013. Shows how per-component tail latency comes to dominate as the number of components a request touches grows. | <https://doi.org/10.1145/2408776.2408794> |
 | 38 | Everyday AI, deployment evidence on resolution dependency | Consultation response of 27 September 2026. A census of hosts listed in one x402 agent-payment discovery registry, reporting manifest paths, signatures and declared freshness. | <https://github.com/w3c-cg/aikr/issues/12> |
+
+---
+
+## Contributions
+
+The editor thanks everyone who has contributed text, test material, review and discussion on public-aikr and in the repository.
+
+| Contributor                | Contribution                                                                                                                        | Pull request                                                                                   |
+|----------------------------|-------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|
+| Isaac Mao                  | Integrity and availability axis, and evidence resolution, in the KR model (§3.1)                                                    | [\#7](https://github.com/w3c-cg/aikr/pull/7)                                                   |
+| Amey Parle                 | Comparison semantics (§4.1) and its full text                                                                                       | [\#11](https://github.com/w3c-cg/aikr/pull/11)                                                 |
+| Kenne Ives                 | Key and evidence states, expected results v0                                                                                        | [\#25](https://github.com/w3c-cg/aikr/pull/25)                                                 |
+| Nicholas Templeman         | Proposal for the trust-state vocabulary and fixture table that the key and evidence states set implements                           | public-aikr, October 2026                                                                      |
+| Michael Blake              | Review of case C05, leading to lineage completeness becoming a policy setting                                                       | [\#25](https://github.com/w3c-cg/aikr/pull/25)                                                 |
+| Nicola Gallo               | Authority continuity: a formal model and proposed cases                                                                             | [\#22](https://github.com/w3c-cg/aikr/pull/22)                                                 |
+| Ankur Chrungoo             | Typed integrity and staleness attributes (adopted in KRT) and resolution dependency as a PACELC position (§3.2)                     | [\#8](https://github.com/w3c-cg/aikr/issues/8), [\#14](https://github.com/w3c-cg/aikr/pull/14) |
+| Francesco Marinoni Moretto | Commerce identity rows with pinned sources, and the Key publisher field proposed for the trust record (Trust record and visualiser) | [\#28](https://github.com/w3c-cg/aikr/issues/28)                                               |
+| Evgenii Arsentev           | Pointer to the Agent Conformance reporting format v0.1                                                                              | [\#13](https://github.com/w3c-cg/aikr/pull/13)                                                 |
 
 ---
 

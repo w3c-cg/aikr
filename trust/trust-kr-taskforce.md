@@ -1,6 +1,7 @@
 # Trust KR Task Force
 
-*Draft mission statement, proposed to the W3C AI Knowledge Representation Community Group. To be discussed and agreed by CG participants on public-aikr.*
+*Draft mission statement, proposed to the W3C AI Knowledge Representation Community Group in November 2026. Proposed start date effective asap.
+To be discussed and agreed by CG participants on public-aikr.*
 
 *Part of the AI KR CG trust work. Main document: [The Knowledge Representation of the Trust Layer](kroftrust.md). Trust record visualiser: [AI Agent Trust Record](https://w3c-cg.github.io/aikr/trust/AI_Agent_Trust_Record.html).*
 

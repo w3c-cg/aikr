@@ -1,6 +1,6 @@
 # Trust KR Task Force
 
-*Draft mission statement, proposed to the W3C AI Knowledge Representation Community Group for discussion on public-aikr. Nothing here has been agreed by the group.*
+*Draft mission statement, proposed to the W3C AI Knowledge Representation Community Group. To be discussed and agreed by CG participants on public-aikr.*
 
 *Part of the AI KR CG trust work. Main document: [The Knowledge Representation of the Trust Layer](kroftrust.md). Trust record visualiser: [AI Agent Trust Record](https://w3c-cg.github.io/aikr/trust/AI_Agent_Trust_Record.html).*
 
@@ -12,6 +12,7 @@ Produce a human-readable representation of the dimensions of trust for AI agents
 
 - Name and define the dimensions of trust, starting from the work already in this folder: the technical note, the KRT ontology, the trust record and visualiser, the use cases, the test material and the notes on trust anchors.
 - Present each dimension in plain language, readable without a technical background, and trace it to the machine-readable terms in KRT.
+- Connect and align with other W3C Community Groups and organisations working on agent trust, to harmonise trust schemas.
 - Feed the result into the Community Group report on the trust layer ([draft](https://w3c-cg.github.io/aikr/trust/kroftrust.html)).
 
 ## Process

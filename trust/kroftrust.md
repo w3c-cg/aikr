@@ -79,6 +79,25 @@ The append-only, content-hash record model noted in Part I (the one that borrows
 
 Two consequences for the knowledge-representation model. First, the resolvable-artifact set is wider than the identity document: the *evidence a trust decision rested on* — what the agent took to be the case when it acted, distinct from who the agent is — is itself an artifact with a resolution dependency, and one that content-addressing can free of location for integrity. A representation that models identity resolution but not evidence resolution describes who acted without describing on what basis. Second, each modelled artifact needs two attributes, not one: its resolution/anchoring **location**, and whether its **integrity** is content-addressed or location-bound. Term-level crosswalks that record the first and omit the second will, again, align cleanly and interoperate poorly — a content-addressed "proof record" and a registry-authoritative one bearing the same label make incomparable security promises.
 
+### 3.2 Resolution dependency as a PACELC position
+
+The Executive Summary distinguishes resolution arrangements by three properties: who can make an agent disappear, latency at the ninety-ninth percentile, and failure mode under network partition or governance dispute. Two of these, latency and partition behaviour, are already well characterised in the distributed-systems literature. They are the two halves of PACELC [36]: under a partition (P), a system chooses between availability (A) and consistency (C); else (E), in normal operation, it trades latency (L) against consistency (C). For a verification path, consistency means that verification reflects the current state at the resolution source, including any revocation.
+
+Where a verification path sits on these trade-offs is set mainly by its coupling, which the draft KRT trust ontology already records as `coupling` ([krt.html](krt.html)).
+
+| | Coupled: resolved during each verification | Decoupled: verified from conveyed or cached material |
+| --- | --- | --- |
+| PACELC position | PC/EC (PA if `onUnknown` proceeds) | PA/EL |
+| Normal operation | A lookup at every hop | No lookup at verification time |
+| Under partition | Outcome unknown; the relying party's `onUnknown` policy applies | Verification continues until cached material exceeds the staleness bound |
+| What it gives up | Availability and latency | Freshness, within the staleness bound |
+
+Because a decoupled path continues to verify when the resolution source is slow or unreachable, it has to state how stale the material it relies on may be. That is the staleness bound (KRT `stalenessBound`): the longest interval during which a revoked artifact can still pass verification. The same interval applies to a superseded one; after a key rotation, for example, the previous artifact still passes verification until the cached copy is refreshed. A coupled path can end up worse off than a decoupled one. If its `onUnknown` policy is to proceed when the resolution source cannot be reached, verification is skipped altogether, for as long as the source remains unreachable. Deployment measurements submitted to this consultation report that, of the 1,239 manifest bodies that could be parsed from one x402 agent-payment discovery registry (snapshot of 27 September 2026), none stated a validity window or expiry at the top level [38]. Where the publisher declares no bound, the verifier has to set one in its own policy.
+
+The first property, who can make an agent disappear, does not belong on either PACELC axis. A partition is a failure; withdrawal by the party that governs a path is a decision. The effect of a withdrawal is the loss of availability described in §3.1, but the question of who can cause it concerns governance, which KRT records as `governedBy`. Choosing PA does not remove that authority; a verifier holding a cached copy only delays the effect of a withdrawal, by at most the staleness bound where that bound is enforced.
+
+**Call-chain depth (§5, question 3).** In a coupled call chain every hop repeats the lookup, so the probability that at least one lookup is slow grows with chain length; the argument in [37], made for requests that fan out across many servers, applies equally to sequential hops. If lookups at different hops are independent and each exceeds its own ninety-ninth-percentile latency (p99) with probability 0.01, the probability for a chain of *d* hops is 1 − 0.99<sup><i>d</i></sup>: about 4.9% at five hops and 9.6% at ten, against 1% for a single hop. A per-hop p99 therefore does not bound end-to-end tail latency. Latency budgets can be compared across proposals only when each is stated end to end at a given chain depth, with the coupling of each hop declared, because decoupled hops perform no lookup.
+
 ### 4. The knowledge-representation dimension
 
 Each charter in this cluster functions as a formal representation of a system that has yet to be built. Representations of this kind are judged on what they commit their implementers to. Where a charter names identity, delegation, capability description and conformance, it commits to modelling those. Where it leaves resolution dependency unstated, implementers are free to choose substrates with incompatible operational characteristics while remaining conformant to the same document.
@@ -324,3 +343,11 @@ The author attributes the result to verification being purely local, requiring n
 | 33 | Hu and Rong, Inter-Agent Trust Models | Comparative study of A2A, AP2 and ERC-8004 across six trust models, evaluated on security, privacy, latency, cost and Sybil resistance. | <https://arxiv.org/pdf/2511.03434> |
 | 34 | Agent identity landscape survey (2026) | Reviews roughly 80 sources across IETF, OpenID Foundation, W3C, NIST and regulatory corpora on non-human and workload identity for agents. | <https://arxiv.org/html/2604.23280v1> |
 | 35 | Biscuit authorization token specification | Eclipse Foundation token format with Ed25519 chaining and Datalog policy, used as the cryptographic primitive in Annex C. | <https://www.biscuitsec.org/> |
+
+### References for §3.2
+
+| # | Resource | One-line description | URL |
+| --- | --- | --- | --- |
+| 36 | Abadi, Consistency Tradeoffs in Modern Distributed Database System Design: CAP is Only Part of the Story | IEEE Computer 45(2), 2012. Sets out PACELC: the latency-consistency trade-off in normal operation, alongside CAP's availability-consistency trade-off under partition. | <https://doi.org/10.1109/MC.2012.33> |
+| 37 | Dean and Barroso, The Tail at Scale | Communications of the ACM 56(2), 2013. Shows how per-component tail latency comes to dominate as the number of components a request touches grows. | <https://doi.org/10.1145/2408776.2408794> |
+| 38 | Everyday AI, deployment evidence on resolution dependency | Consultation response of 27 September 2026. A census of hosts listed in one x402 agent-payment discovery registry, reporting manifest paths, signatures and declared freshness. | <https://github.com/w3c-cg/aikr/issues/12> |

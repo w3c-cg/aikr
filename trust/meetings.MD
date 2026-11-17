@@ -9,7 +9,8 @@
 
 ## Agenda  (tentative, we squeeze in what we can and/or reconvene if needed)
 
-### 0. Quick round of introductions, assigning a scribe or asking google meet to auotranscribe
+### 0. Quick round of introductions, assigning a scribe or asking google meet to autotranscribe
+       If participants have something say *about the meeting, agenda, what they want to prioritize can say so when they introduce themselves
 
 ### 1. Trust visualiser
 

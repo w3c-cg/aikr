@@ -1,1 +1,382 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentic Trust Initiative Explorer — W3C AIKR CG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --loom: #1b1f3a;        /* loom ink / navy ground */
+    --gilt: #c9a227;        /* gilt */
+    --bronze: #8a6a2f;      /* carved bronze */
+    --violet: #5b2a86;      /* royal violet */
+    --orchid: #b565a7;
+    --peri: #8c9ee8;        /* periwinkle */
+    --teal: #1f7a7a;        /* thread teal */
+    --crimson: #a3253b;     /* cross crimson */
+    --stone: #ecebe7;       /* warm stone page */
+    --paper: #f8f7f4;
+    --ink: #1c1b19;
+    --muted: #5d5a54;
+    --rule: #cfccc4;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--stone); color: var(--ink);
+    font-family: "Archivo", system-ui, sans-serif; font-size: 15px; line-height: 1.5;
+  }
+  a { color: var(--violet); }
+  a:hover { color: var(--crimson); }
+
+  /* banner */
+  header.banner { background: var(--loom); color: var(--gilt); padding: 28px 0 0; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+  .kicker { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #d9c98f; }
+  header h1 {
+    font-family: "Newsreader", Georgia, serif; font-weight: 600;
+    font-size: clamp(30px, 4.4vw, 48px); line-height: 1.05; margin: 6px 0 10px;
+  }
+  header p.lede { color: #e8e2cc; max-width: 760px; margin: 0 0 22px; font-family: "Newsreader", serif; font-size: 18px; }
+  .weave {
+    height: 14px;
+    background:
+      repeating-linear-gradient(90deg, var(--gilt) 0 14px, var(--violet) 14px 28px, var(--orchid) 28px 42px, var(--teal) 42px 56px),
+      var(--loom);
+    -webkit-mask: repeating-linear-gradient(0deg, #000 0 7px, rgba(0,0,0,.45) 7px 14px);
+            mask: repeating-linear-gradient(0deg, #000 0 7px, rgba(0,0,0,.45) 7px 14px);
+  }
+
+  .meta { font-size: 13px; color: var(--muted); padding: 14px 0 6px; border-bottom: 1px solid var(--rule); }
+  .meta a { font-weight: 600; }
+
+  /* controls */
+  .controls { display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: flex-end; padding: 18px 0 8px; }
+  .controls .group-label { display: block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    font: inherit; font-size: 13px; border: 1px solid var(--rule); background: var(--paper);
+    padding: 4px 11px; border-radius: 2px; cursor: pointer; color: var(--ink);
+  }
+  .chip[aria-pressed="true"] { background: var(--loom); color: var(--gilt); border-color: var(--loom); }
+  .chip:focus-visible, input:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+  input[type="search"] {
+    font: inherit; padding: 6px 10px; border: 1px solid var(--rule); background: var(--paper);
+    width: 260px; border-radius: 2px;
+  }
+  .count { font-size: 13px; color: var(--muted); margin-left: auto; }
+
+  /* layers */
+  section.layer { padding: 18px 0 6px; border-top: 2px solid var(--ink); margin-top: 18px; }
+  section.layer:first-of-type { border-top-width: 3px; }
+  .layer h2 { font-family: "Newsreader", serif; font-weight: 600; margin: 0; font-size: 26px; }
+  .layer .layer-note { color: var(--muted); font-style: italic; font-family: "Newsreader", serif; font-size: 16px; margin: 2px 0 14px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0 26px; }
+
+  article.card { border-top: 1px solid var(--rule); padding: 14px 0 18px; }
+  article.card.wide { grid-column: span 2; }
+  @media (max-width: 700px) { article.card.wide { grid-column: auto; } }
+  .card .org { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--bronze); }
+  .card h3 { font-family: "Newsreader", serif; font-size: 20px; line-height: 1.2; margin: 3px 0 6px; font-weight: 600; }
+  .card h3 a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--gilt); }
+  .card h3 a:hover { color: var(--violet); }
+  .card p { margin: 0 0 8px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 5px; margin: 6px 0 8px; }
+  .tag { font-size: 11.5px; padding: 1px 7px; border-radius: 2px; border: 1px solid currentColor; }
+  .tag.open-yes { color: var(--teal); }
+  .tag.open-member { color: var(--bronze); }
+  .tag.open-partly { color: var(--crimson); }
+  .tag.proto { color: var(--violet); background: #f1eaf7; }
+  .tag.status { color: var(--muted); }
+  details { font-size: 14px; }
+  details summary { cursor: pointer; color: var(--violet); font-weight: 500; }
+  details dl { margin: 6px 0 0; display: grid; grid-template-columns: max-content 1fr; gap: 3px 12px; }
+  details dt { color: var(--muted); font-size: 12.5px; }
+  details dd { margin: 0; }
+  .res a { display: inline-block; margin-right: 10px; }
+
+  /* protocols */
+  section.protocols { background: var(--paper); border: 1px solid var(--rule); padding: 20px 24px; margin: 30px 0 10px; }
+  section.protocols h2 { font-family: "Newsreader", serif; margin: 0 0 4px; font-size: 26px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; margin-top: 10px; }
+  th, td { text-align: left; vertical-align: top; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--rule); }
+  th { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+
+  footer { border-top: 3px solid var(--ink); margin-top: 36px; padding: 16px 0 40px; font-size: 13px; color: var(--muted); }
+  .empty { padding: 30px 0; color: var(--muted); font-style: italic; }
+</style>
+</head>
+<body>
+
+<header class="banner">
+  <div class="wrap">
+    <div class="kicker">W3C AI Knowledge Representation Community Group · Trust</div>
+    <h1>Agentic Trust Initiative Explorer</h1>
+    <p class="lede">Groups and projects working on identity, authority and accountability for AI agents, with who runs each one, what it covers, and whether you can join.</p>
+  </div>
+  <div class="weave" aria-hidden="true"></div>
+</header>
+
+<main class="wrap">
+  <div class="meta">
+    Checked against each initiative's own pages on 17 November 2026. Something missing or out of date?
+    Open an issue or a pull request on the
+    <a href="https://github.com/w3c-cg/aikr/blob/main/trust/trustinitiativeexplorer.html">source file</a>
+    (<a href="https://github.com/w3c-cg/aikr/issues/new?title=%5Btrustexplorer%5D%20">new issue</a>),
+    or post to <a href="mailto:public-aikr@w3.org">public-aikr@w3.org</a>.
+    Related: <a href="https://github.com/w3c-cg/aikr/blob/main/trust/kroftrust.md">KR for Trust note (kroftrust.md)</a> ·
+    <a href="https://github.com/w3c-cg/aikr/blob/main/trust/trustvisualiser.html">AI Agent Trust Record visualiser spec</a> ·
+    <a href="https://github.com/w3c-cg/aikr/tree/main/trust">trust/ folder</a>
+  </div>
+
+  <div class="controls" role="search">
+    <div>
+      <label class="group-label" for="q">Search</label>
+      <input type="search" id="q" placeholder="ARIA, DID, delegation, KYA…">
+    </div>
+    <div>
+      <span class="group-label">Body</span>
+      <div class="chips" id="f-body"></div>
+    </div>
+    <div>
+      <span class="group-label">Open to join</span>
+      <div class="chips" id="f-open"></div>
+    </div>
+    <div>
+      <span class="group-label">Has a protocol or spec in progress</span>
+      <div class="chips" id="f-proto"></div>
+    </div>
+    <div class="count" id="count" aria-live="polite"></div>
+  </div>
+
+  <div id="layers"></div>
+
+  <section class="protocols" id="protocols">
+    <h2>Trust protocols and specifications in the works</h2>
+    <p style="margin:0;color:var(--muted)">Beyond ATP and ARIA, these initiatives are drafting a protocol, specification or manifest format rather than guidance alone.</p>
+    <table>
+      <thead><tr><th>Protocol or spec</th><th>Where</th><th>What it specifies</th></tr></thead>
+      <tbody id="proto-rows"></tbody>
+    </table>
+  </section>
+
+  <footer>
+    Compiled for the W3C AIKR CG Trust KR task force. Descriptions paraphrase each initiative's own pages; notes on overlaps draw on the AIKR agent-trust vocabulary crosswalk (July 2026).
+    Corrections and additions: <a href="https://github.com/w3c-cg/aikr/blob/main/trust/trustinitiativeexplorer.html">source file on GitHub</a>.
+    Community Group work is not a W3C Standard and is not on the W3C Standards Track.
+  </footer>
+</main>
+
+<script>
+const W3C_JOIN = "Free; no W3C membership needed. Join with a W3C account; CG contributor licence terms apply.";
+
+const LAYERS = [
+  { id: "identity", title: "Identity and authorization", note: "Who the agent is, who stands behind it, and what it may do." },
+  { id: "declaration", title: "Declaration and policy", note: "Agents and web resources stating their identity, constraints and rules to each other." },
+  { id: "evidence", title: "Evidence, accountability and redress", note: "Records of what an agent did, who answers for it, and what happens in a dispute." },
+  { id: "discovery", title: "Discovery and communication", note: "Finding agents and exchanging meaning, with identity binding along the way." },
+  { id: "guidance", title: "Frameworks, guidance and alignment", note: "Threat models, practice guides and crosswalks across the groups above." }
+];
+
+const DATA = [
+  { name: "Agent Identity Registry Protocol CG (Agent-ARIA)", org: "W3C Community Group · spec proposed by TrustLayer Foundation A.C.", body: "W3C CG", layer: "identity", wide: true,
+    scope: "Verifiable AI agent identity linked to the controlling organisation, with authorization scope and trust negotiation. ARIA (Agent Registry for Identity and Authorization) defines L0–L3 trust levels, an Agent Trust Policy, a revocation ledger and post-quantum signatures (ML-DSA, FIPS 204).",
+    url: "https://www.w3.org/community/agent-identity/", open: "Yes", join: W3C_JOIN, status: "Current CG; live registry and published spec",
+    notes: "Overlaps the ATP CG on DID-anchored trust negotiation (AIKR crosswalk, July 2026). Mailing list public-agent-identity.",
+    proto: "ARIA", resources: [["ARIA spec", "https://aria.bar/spec"], ["ARIA registry", "https://registry.aria.bar"]] },
+  { name: "Agent Trust Protocol (ATP) CG", org: "W3C Community Group · chair Larry Lewis", body: "W3C CG", layer: "identity",
+    scope: "Agent identity, trust scoring and privacy-preserving interaction (pairwise DIDs, selective disclosure, zero-knowledge proofs). Fills the security and privacy modules left open by the AI Agent Protocol CG.",
+    url: "https://www.w3.org/community/atp/", open: "Yes", join: W3C_JOIN, status: "Current CG",
+    notes: "Contributed the ATP demonstration package to AIKR (w3c-cg/aikr issues #27, #29).",
+    proto: "ATP", resources: [["AIKR issue #27", "https://github.com/w3c-cg/aikr/issues/27"], ["AIKR issue #29", "https://github.com/w3c-cg/aikr/issues/29"]] },
+  { name: "AI Agent Protocol CG", org: "W3C Community Group", body: "W3C CG", layer: "identity",
+    scope: "Open protocols for agents to discover, identify and collaborate: inter-agent communication, agent identity models, security.",
+    url: "https://www.w3.org/community/agentprotocol/", open: "Yes", join: W3C_JOIN, status: "Current CG (proposed May 2025)",
+    notes: "Umbrella group; the ATP CG formed at its chairs' invitation.", proto: null, resources: [] },
+  { name: "Trusted AI Agents Working Group (TAAWG)", org: "Decentralized Identity Foundation (DIF)", body: "Other", layer: "identity", wide: true,
+    scope: "An interoperable stack for trustworthy, privacy-preserving agents: identity, authority, governance, delegation chains and object capabilities. Hosts the KYA-OS task force and the MCP-I contribution from Vouched.",
+    url: "https://identity.foundation/working-groups/trusted-agents", open: "Membership (free tier)",
+    join: "Full participation needs Contributor (free for startups, small organisations, academics, non-profits, freelancers and sole founders) or Associate (paid) membership. A free Feedback-only tier for individuals covers mailing lists and review comments, not meetings.",
+    status: "Active; chairs Andor Kesselman, Nicola Gallo, Dmitri Zagidulin",
+    notes: "DIF policy bans agentic AI contributions to working group products.",
+    proto: "KYA-OS / MCP-I", resources: [["KYA-OS announcement", "https://blog.identity.foundation/kya-os/"], ["Joining DIF", "https://identity.foundation/join/"]] },
+  { name: "AI Identity Management CG (AIIM)", org: "OpenID Foundation", body: "Other", layer: "identity",
+    scope: "Where identity standards need to change for AI agents: use cases, the whitepaper Identity Management for Agentic AI (Oct 2025), a threat modelling subgroup, a response to NIST (Mar 2026). Protocol development is out of scope and goes to OIDF working groups.",
+    url: "https://openid.net/cg/artificial-intelligence-identity-management-community-group/", open: "Yes",
+    join: "Open to the public, organisations and individuals; sign the Participation Agreement (DocuSign). Weekly calls.",
+    status: "Active", notes: "Named coordination partner of the Agent Identity Registry Protocol CG.", proto: null,
+    resources: [["Whitepaper", "https://openid.net/new-whitepaper-tackles-ai-agent-identity-challenges/"], ["NIST response", "https://openid.net/oidf-responds-to-nist-on-ai-agent-security/"]] },
+  { name: "WIMSE Working Group", org: "IETF", body: "Other", layer: "identity",
+    scope: "Workload identity across multi-system environments, now the main IETF home for agent identity drafts, extending SPIFFE-style identifiers and OAuth delegation to agents.",
+    url: "https://ietf-wg-wimse.github.io/", open: "Yes", join: "Subscribe to wimse@ietf.org; drafts and issues on GitHub (ietf-wg-wimse).",
+    status: "Chartered March 2024; active", notes: "Cited in AIKR's w3c/webai-roadmap issue #53.",
+    proto: "WIMSE agent drafts", resources: [["draft-ietf-wimse-aims", "https://datatracker.ietf.org/doc/html/draft-ietf-wimse-aims"], ["draft-ni-wimse-ai-agent-identity", "https://www.ietf.org/archive/id/draft-ni-wimse-ai-agent-identity-03.html"]] },
+  { name: "Workstream 4 / Open Delegation & Identity Standard (ODIS)", org: "Coalition for Secure AI (CoSAI), OASIS Open Project", body: "Other", layer: "identity",
+    scope: "Agentic Identity and Access Management framework (March 2026). ODIS specifies the principal an agent represents, its delegated authority and the agent instance taking an action, extending OAuth 2.0, OpenID Connect, SPIFFE and SCIM.",
+    url: "https://github.com/cosai-oasis/ws4-odis/", open: "Yes",
+    join: "Technical participation free; individual contributors sign a CLA and join the WS4 mailing list. Sponsorship with a board seat via join@oasis-open.org.",
+    status: "Active", notes: "Enterprise IAM angle.", proto: "ODIS",
+    resources: [["ODIS announcement", "https://www.coalitionforsecureai.org/?p=1675"], ["Agentic IAM framework (PDF)", "https://www.coalitionforsecureai.org/wp-content/uploads/2026/04/agentic-identity-and-access-control.pdf"]] },
+  { name: "High Assurance Profile for W3C VCDM 2.0 CG", org: "W3C Community Group", body: "W3C CG", layer: "identity",
+    scope: "A verifiable evidence layer that agents, industrial AI and robots can trust, profiling the Verifiable Credentials Data Model 2.0.",
+    url: "https://www.w3.org/community/vc-haip/", open: "Yes", join: W3C_JOIN, status: "Current CG",
+    notes: "Adjacent: credential assurance.", proto: null, resources: [] },
+
+  { name: "Agent Declaration and Assurance CG (ADACG)", org: "W3C Community Group", body: "W3C CG", layer: "declaration",
+    scope: "Verifiable ways for agents to declare identity, owner, capabilities and constraints, checked by external systems at runtime.",
+    url: "https://www.w3.org/community/adacg/", open: "Yes", join: W3C_JOIN, status: "Current CG",
+    notes: "Declaration-based rather than registry-based; overlaps ARIA's Agent Trust Policy on authorization.", proto: "Open KYA Manifest", resources: [] },
+  { name: "Introduction Layer CG", org: "W3C Community Group", body: "W3C CG", layer: "declaration",
+    scope: "A machine-readable way for web resources to declare their identity, purpose, constraints and responsible party to AI agents.",
+    url: "https://www.w3.org/community/intro-layer/", open: "Yes", join: W3C_JOIN, status: "Current CG",
+    notes: "The counterpart of ADACG: here the resource declares itself to the agent.", proto: null, resources: [] },
+  { name: "Agent-to-Web Framework (A2WF) CG", org: "W3C Community Group", body: "W3C CG", layer: "declaration",
+    scope: "Machine-readable governance policies that website operators publish for agent actions such as filling forms, booking and buying.",
+    url: "https://www.w3.org/community/a2wf/", open: "Yes", join: W3C_JOIN, status: "Current CG",
+    notes: "Site-side authorization policy.", proto: null, resources: [] },
+  { name: "AI & Human Trust Working Group (AIM WG)", org: "Trust over IP Foundation (LF Decentralized Trust)", body: "Other", layer: "declaration",
+    scope: "Applying ToIP components, chiefly the Trust Spanning Protocol, to human trust in AI and to human–AI interactions; white papers, recommendations, possibly specifications.",
+    url: "https://lf-toip.atlassian.net/wiki/spaces/HOME/pages/22982892", open: "Membership (free tier)",
+    join: "ToIP membership required and charter signed; Contributor membership is free to anyone.",
+    status: "Chartered WG since mid-2025; weekly Thursday calls 16:00 UTC; chair Wenjing Chu",
+    notes: "Sister to the joint ToIP/DIF Decentralized Trust Graph WG (proof of personhood).", proto: "Trust Spanning Protocol (TSP) for AI",
+    resources: [["Three new WGs announcement", "https://www.lfdecentralizedtrust.org/blog/toip-and-dif-announce-three-new-working-groups-for-trust-in-the-age-of-ai"]] },
+
+  { name: "Agentic Integrity Verification Specification (AIVS) CG", org: "W3C Community Group", body: "W3C CG", layer: "evidence",
+    scope: "Portable formats for cryptographic proof of agent sessions, so third parties can verify what an agent did and whether the record was altered.",
+    url: "https://www.w3.org/community/aivs/", open: "Yes", join: W3C_JOIN, status: "Current CG",
+    notes: "Audit and evidence side of trust.", proto: "AIVS session proofs", resources: [] },
+  { name: "AI Judgement Event CG (AIJE)", org: "W3C Community Group", body: "W3C CG", layer: "evidence",
+    scope: "Recording, transferring and verifying responsibility for AI-mediated decisions with cryptographic receipts.",
+    url: "https://www.w3.org/community/aije/", open: "Yes", join: W3C_JOIN, status: "Current CG",
+    notes: "Accountability; related to AIVS.", proto: null, resources: [] },
+  { name: "Agentic Arbitration Protocol CG", org: "W3C Community Group", body: "W3C CG", layer: "evidence",
+    scope: "Machine-readable dispute resolution formats (JSON-LD) so agents can file, defend and resolve conflicts.",
+    url: "https://www.w3.org/community/agentic-arbitration/", open: "Yes", join: W3C_JOIN, status: "Current CG",
+    notes: "Redress once trust has failed.", proto: "Agentic Arbitration Protocol", resources: [] },
+
+  { name: "DAWN (Discovery of Agents With Names) WG", org: "IETF", body: "Other", layer: "discovery",
+    scope: "Initial discovery of AI agents and resources: type, reachability, protocol, services. Draft charters put identity management of agents out of scope; coordinates with WIMSE.",
+    url: "https://datatracker.ietf.org/doc/charter-ietf-dawn/", open: "Yes", join: "Subscribe to dawn@ietf.org; Zulip chat room.",
+    status: "Charter approved 22 Oct 2026; WG active", notes: "Discovery only, though trust negotiation depends on it.", proto: null, resources: [] },
+  { name: "Semantic Agent Communication CG", org: "W3C Community Group", body: "W3C CG", layer: "discovery",
+    scope: "Ontologies and schemas for agent-to-agent communication, including identity binding, capability disclosure and delegation chains.",
+    url: "https://www.w3.org/community/s-agent-comm/", open: "Yes", join: W3C_JOIN, status: "Current CG",
+    notes: "Delegation chains overlap ARIA policy and ADACG declarations (AIKR crosswalk).", proto: null, resources: [] },
+  { name: "AI Agent Memory Interoperability CG", org: "W3C Community Group", body: "W3C CG", layer: "discovery",
+    scope: "A vendor-portable protocol for agent memory, with identity binding and sharing contracts with revocation.",
+    url: "https://www.w3.org/community/ai-agent-memory-interop/", open: "Yes", join: W3C_JOIN, status: "Current CG (proposed May 2026)",
+    notes: "Adjacent: reuses identity-binding primitives for memory.", proto: null, resources: [] },
+
+  { name: "AIKR CG trust layer (KR for Trust)", org: "W3C AI Knowledge Representation CG", body: "W3C CG", layer: "guidance", wide: true,
+    scope: "The trust-layer note kroftrust.md, the AI Agent Trust Record visualiser and its spec, and a Trust KR task force aligning trust schemas across the groups on this page.",
+    url: "https://www.w3.org/community/aikr/", open: "Yes", join: "Free; no W3C membership needed. Issues and pull requests on the w3c-cg/aikr trust/ folder, or posts to public-aikr.",
+    status: "Consultation on kroftrust.md closes 1 Dec 2026; Draft CG Report planned soon after",
+    notes: "Works as a crosswalk across the other groups, not as a competing vocabulary.", proto: null,
+    resources: [["kroftrust.md", "https://github.com/w3c-cg/aikr/blob/main/trust/kroftrust.md"], ["Trust visualiser spec", "https://github.com/w3c-cg/aikr/blob/main/trust/trustvisualiser.html"], ["trust/ folder", "https://github.com/w3c-cg/aikr/tree/main/trust"]] },
+  { name: "Software and AI Agent Identity and Authorization project", org: "NIST National Cybersecurity Center of Excellence (NCCoE)", body: "Other", layer: "guidance",
+    scope: "Applying identity and authorization standards to software and AI agents; iterative outputs towards an SP 1800 practice guide, with a first use case in the DevSecOps project.",
+    url: "https://pages.nist.gov/nccoe-ai-identity/", open: "Partly", join: "Comment submissions through the project hub; other participation routes are not stated there.",
+    status: "Being set up; the Feb 2026 concept paper drew more than 600 responses", notes: "Government guidance, not a standards body.", proto: null,
+    resources: [["Concept paper", "https://csrc.nist.gov/pubs/other/2026/02/05/accelerating-the-adoption-of-software-and-ai-agent/ipd"]] },
+  { name: "Agentic Security Initiative (ASI)", org: "OWASP GenAI Security Project", body: "Other", layer: "guidance",
+    scope: "Threats and mitigations for agentic systems: the Top 10 for Agentic Applications, with identity and privilege abuse among the top risks, and the State of Agentic AI Security and Governance report.",
+    url: "https://genai.owasp.org/initiatives/agentic-security-initiative/", open: "Yes", join: "Join link on the initiative page; open Tuesday working-group meeting. The page does not say whether participation is free.",
+    status: "Active", notes: "Security guidance, adjacent to trust protocols.", proto: null, resources: [] }
+];
+
+const PROTOCOLS = [
+  ["ARIA (Agent Registry for Identity and Authorization)", "W3C Agent Identity Registry Protocol CG", "Registry-based agent credentials, L0–L3 trust levels, Agent Trust Policy, revocation ledger."],
+  ["ATP (Agent Trust Protocol)", "W3C ATP CG", "Agent identity, trust scoring and privacy-preserving interaction."],
+  ["ODIS (Open Delegation & Identity Standard)", "CoSAI / OASIS", "Principal, delegated authority and acting agent instance, on top of OAuth 2.0, OIDC, SPIFFE and SCIM."],
+  ["KYA-OS and MCP-I", "DIF Trusted AI Agents WG", "Know Your Agent framework across agentic protocols; delegation, proofs, session lifecycle and cryptographic identity for MCP."],
+  ["Open KYA Manifest", "W3C ADACG", "An agent's declaration of identity, owner, capabilities and constraints, verifiable at runtime."],
+  ["WIMSE agent identity drafts", "IETF WIMSE WG", "Workload identifiers and credentials extended to AI agents (draft-ietf-wimse-aims, draft-ni-wimse-ai-agent-identity)."],
+  ["Trust Spanning Protocol applied to AI", "ToIP AI & Human Trust WG", "TSP used to strengthen trust in human–AI interactions."],
+  ["AIVS session proofs", "W3C AIVS CG", "Portable cryptographic proof of what an agent did in a session."],
+  ["Agentic Arbitration Protocol", "W3C Agentic Arbitration Protocol CG", "JSON-LD formats for filing and resolving disputes between agents."]
+];
+
+const state = { q: "", body: "All", open: "All", proto: "All" };
+
+function chips(id, key, values) {
+  const el = document.getElementById(id);
+  values.forEach(v => {
+    const b = document.createElement("button");
+    b.className = "chip"; b.type = "button"; b.textContent = v;
+    b.setAttribute("aria-pressed", v === state[key] ? "true" : "false");
+    b.addEventListener("click", () => {
+      state[key] = v;
+      el.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c === b ? "true" : "false"));
+      render();
+    });
+    el.appendChild(b);
+  });
+}
+
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+
+function openClass(o) { return o === "Yes" ? "open-yes" : o === "Partly" ? "open-partly" : "open-member"; }
+
+function matches(d) {
+  if (state.body !== "All" && d.body !== state.body) return false;
+  if (state.open !== "All" && d.open !== state.open) return false;
+  if (state.proto === "Yes" && !d.proto) return false;
+  if (state.proto === "No" && d.proto) return false;
+  if (state.q) {
+    const hay = [d.name, d.org, d.scope, d.notes, d.proto || "", d.status].join(" ").toLowerCase();
+    if (!hay.includes(state.q.toLowerCase())) return false;
+  }
+  return true;
+}
+
+function card(d) {
+  const res = d.resources.length
+    ? `<dt>Resources</dt><dd class="res">${d.resources.map(([t, u]) => `<a href="${esc(u)}">${esc(t)}</a>`).join("")}</dd>` : "";
+  return `<article class="card${d.wide ? " wide" : ""}">
+    <div class="org">${esc(d.org)}</div>
+    <h3><a href="${esc(d.url)}">${esc(d.name)}</a></h3>
+    <div class="tags">
+      <span class="tag ${openClass(d.open)}">Open to join: ${esc(d.open)}</span>
+      ${d.proto ? `<span class="tag proto">${esc(d.proto)}</span>` : ""}
+      <span class="tag status">${esc(d.status)}</span>
+    </div>
+    <p>${esc(d.scope)}</p>
+    <details>
+      <summary>Joining, notes and links</summary>
+      <dl>
+        <dt>How to join</dt><dd>${esc(d.join)}</dd>
+        <dt>Notes</dt><dd>${esc(d.notes)}</dd>
+        <dt>Home</dt><dd><a href="${esc(d.url)}">${esc(d.url)}</a></dd>
+        ${res}
+      </dl>
+    </details>
+  </article>`;
+}
+
+function render() {
+  const host = document.getElementById("layers");
+  const shown = DATA.filter(matches);
+  document.getElementById("count").textContent = `${shown.length} of ${DATA.length} initiatives`;
+  if (!shown.length) { host.innerHTML = `<p class="empty">Nothing matches these filters.</p>`; return; }
+  host.innerHTML = LAYERS.map(L => {
+    const items = shown.filter(d => d.layer === L.id);
+    if (!items.length) return "";
+    return `<section class="layer"><h2>${esc(L.title)}</h2><p class="layer-note">${esc(L.note)}</p>
+      <div class="grid">${items.map(card).join("")}</div></section>`;
+  }).join("");
+}
+
+chips("f-body", "body", ["All", "W3C CG", "Other"]);
+chips("f-open", "open", ["All", "Yes", "Membership (free tier)", "Partly"]);
+chips("f-proto", "proto", ["All", "Yes", "No"]);
+document.getElementById("q").addEventListener("input", e => { state.q = e.target.value.trim(); render(); });
+document.getElementById("proto-rows").innerHTML = PROTOCOLS.map(([p, w, s]) =>
+  `<tr><td><strong>${esc(p)}</strong></td><td>${esc(w)}</td><td>${esc(s)}</td></tr>`).join("");
+render();
+</script>
+</body>
+</html>

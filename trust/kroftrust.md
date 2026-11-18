@@ -11,6 +11,12 @@ FEEDBACK BY OPENING AN ISSUE HERE AND PINGING THE AI KR CG Mailing list
 
 Related documents in the trust folder, including the [AI Agent Trust Record visualiser](https://w3c-cg.github.io/aikr/trust/AI_Agent_Trust_Record.html), are listed at the [end of this note](#related-documents-in-this-folder).
 
+## Scope
+
+Knowledge representation for trust (KRT) in  AI is a very big topic, it can include AI systems, machine learning models, large language models and AI agents. This note addresses one part of that scope, the agentic layer, where agents act for a principal and verify one another's identity and authority at runtime. This is because there has been a surge of initiatives around AI agents, and there is a lack of shared semantics around them that makes it very challenging to process. Everything that follows in this note applies to that layer.
+
+Trust layers not specific to agentic AI are also of interest to the Community Group. That work is still to be done; it will be collected in [Trust in AI (non-agentic)](trustinai%28non_agentic%29.md), which is open for contributions.
+
 ## Abstract
 
 This report examines how the agentic trust layer is represented across the groups working on agent identity. It argues that one engineering property goes unmodelled in their published texts: resolution dependency, meaning where an agent's identity document is fetched from at the moment a counterparty needs to verify a claim. The report sets out the concern as a technical note addressed to those groups, with questions for each to answer publicly, and surveys related work outside W3C. It records the knowledge-representation requirements that follow: resolution and anchoring as distinct modelled properties, integrity separated from location, and comparison semantics for artefacts produced independently. Companion contributions in the group's repository extend the work with an ontology skeleton, runnable test cases and a formal model of authority continuity.

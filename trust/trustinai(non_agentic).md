@@ -1,6 +1,6 @@
 # Trust in AI (non-agentic)
 
-*Work to be done. Open for contributions from AI KR CG participants. Nothing here has been agreed by the group.*
+*Work to be done. Open for contributions from AI KR CG participants. Open for Consultation
 
 *Part of the AI KR CG trust work. Main document: [The Knowledge Representation of the Trust Layer](kroftrust.md). Task force: [Trust KR Task Force](trust-kr-taskforce.md).*
 

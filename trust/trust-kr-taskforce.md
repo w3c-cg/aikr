@@ -7,13 +7,14 @@ To be discussed and agreed by CG participants on public-aikr.*
 
 ## Mission
 
-Produce a human-readable representation of the dimensions of trust for AI agents, so that a person relying on an agent, an auditor or a regulator can see what a trust judgement rests on and which parts of it nobody has checked.
+Produce a human-readable representation of the dimensions of trust in AI systems, covering AI in general, machine learning models, large language models and AI agents, so that a person relying on such a system, an auditor or a regulator can see what a trust judgement rests on and which parts of it nobody has checked.
 
 ## Goal
 
 - Name and define the dimensions of trust, starting from the work already in this folder: the technical note, the KRT ontology, the trust record and visualiser, the use cases, the test material and the notes on trust anchors.
+- Cover each kind of system in scope: AI in general, machine learning models, large language models and AI agents. Most of the material in this folder was written for agents; mark which dimensions carry over to the other kinds of system and add the ones they need.
 - Present each dimension in plain language, readable without a technical background, and trace it to the machine-readable terms in KRT.
-- Connect and align with other W3C Community Groups and organisations working on agent, identity, protocols and trust, to harmonise schemas.
+- Connect and align with other W3C Community Groups and organisations working on AI, machine learning, large language models, agents, identity, protocols and trust, to harmonise schemas.
 - Feed the result into the Community Group report on the trust layer ([draft](https://w3c-cg.github.io/aikr/trust/kroftrust.html)).
 
 ## Process

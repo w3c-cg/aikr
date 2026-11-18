@@ -94,6 +94,18 @@ button.gold:hover{background:var(--navy);color:var(--gold);border-color:var(--na
 .ok{color:#8FD0C6}.miss{color:#F0A0A8}
 .chain .fine{font-size:13px;color:#C9BE9C;margin-top:8px;font-style:italic}
 
+/* mappings */
+table.mptable{min-width:0}
+.mptable td{font-size:15px}
+.mptable td a{font-family:'Archivo',sans-serif;font-weight:600;font-size:13.5px}
+.mpg{font-family:'Archivo',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.mpf{font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px}
+.mpn{color:var(--muted);font-size:13.5px}
+.mpnone{color:var(--crimson);font-style:italic}
+.mpgrid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:22px;border-top:2px solid var(--ink);padding-top:12px}
+@media(max-width:800px){.mpgrid{grid-template-columns:1fr}}
+.mpgrid p{margin:0 0 8px;font-size:15.5px}
+body.lg .mptable td{font-size:18px!important}
 /* table */
 .tablewrap{overflow-x:auto;background:var(--paper);border-top:2px solid var(--ink)}
 table{border-collapse:collapse;min-width:1200px;width:100%;font-size:14.5px}
@@ -141,6 +153,7 @@ a{color:var(--violet)}
   <a href="#model" data-v="model">Model</a>
   <a href="#record" data-v="record">Write a record</a>
   <a href="#register" data-v="register">Register</a>
+  <a href="#mappings" data-v="mappings">Mappings</a>
   <div class="a11ybar" role="group" aria-label="Display options"><button type="button" id="a11y-lg" aria-pressed="false">Larger text</button><button type="button" id="a11y-hc" aria-pressed="false">High contrast</button></div>
 </nav>
 
@@ -228,6 +241,43 @@ a{color:var(--violet)}
   </div>
   <pre class="code" id="out" hidden tabindex="0" aria-label="Exported data"></pre>
   <p class="note" style="margin-top:10px">The register is kept in this browser only. Copy the CSV or JSON to keep it elsewhere.</p>
+</section>
+<section class="view" id="v-mappings" aria-labelledby="h-mappings">
+  <div class="kicker" style="color:var(--violet)">Protocols</div>
+  <h2 id="h-mappings" tabindex="-1">Mappings</h2>
+  <p class="lede">Which agent identity and trust specifications have an element matching each field of the trust record. A first reading of the specifications listed in the <a href="https://w3c-cg.github.io/aikr/trust/trustinitiativeexplorer.html">Agent Trust Protocols and Specifications Explorer</a>, checked 18 November 2026. Each project owner is invited to confirm or correct their row.</p>
+  <div class="tablewrap"><table class="mptable">
+    <thead><tr><th style="width:10%">Group</th><th style="width:16%">Trust record field</th><th>Specifications with a matching element</th></tr></thead>
+    <tbody>
+      <tr><td class="mpg" style="border-left:4px solid var(--violet)">Identity</td><td class="mpf">Name or identifier</td><td><a href="https://aria.bar/spec">ARIA</a> <span class="mpn">(did:aria)</span>, <a href="https://w3c-cg.github.io/atp/specs/">ATP</a> <span class="mpn">(did:atp)</span>, <a href="https://github.com/agent-network-protocol/AgentNetworkProtocol">ANP</a> <span class="mpn">(did:wba)</span>, <a href="https://modelcontextprotocol-identity.io">MCP-I</a>, <a href="https://github.com/abisheakp197/nti-spec">NTI-1</a>, <a href="https://datatracker.ietf.org/doc/draft-pidlisnyi-aps/">APS</a>, <a href="https://github.com/cosai-oasis/ws4-odis">ODIS</a> <span class="mpn">(agent package and runtime instance)</span>, <a href="https://datatracker.ietf.org/doc/draft-ietf-wimse-aims/">WIMSE</a></td></tr>
+      <tr><td class="mpg" style="border-left:4px solid var(--violet)">Identity</td><td class="mpf">Agent type</td><td><span class="mpnone">None of the specifications read</span>. No specification types the agent by role, capability or embodiment; this is where AIAO adds to them.</td></tr>
+      <tr><td class="mpg" style="border-left:4px solid var(--teal)">Interface</td><td class="mpf">Protocol</td><td>Implicit only: <a href="https://modelcontextprotocol-identity.io">MCP-I</a> and the <a href="https://datatracker.ietf.org/doc/html/draft-xu-mcp-agent-did-framework">China Mobile MCP draft</a> bind to MCP; <a href="https://github.com/Universal-Commerce-Protocol/ucp">UCP</a> is itself the protocol.</td></tr>
+      <tr><td class="mpg" style="border-left:4px solid var(--teal)">Interface</td><td class="mpf">Where it lives</td><td><a href="https://aria.bar/spec">ARIA</a> <span class="mpn">(DNS pointer to the Agent Identity Document)</span>, <a href="https://w3c-cg.github.io/atp/specs/did-atp/">ATP</a> <span class="mpn">(did:atp builds on did:wba: DNS and HTTPS resolution)</span>, <a href="https://github.com/agent-network-protocol/AgentNetworkProtocol">ANP</a> <span class="mpn">(web-based DID)</span>, <a href="https://datatracker.ietf.org/doc/draft-ietf-webbotauth-httpsig-protocol/">Web Bot Auth</a> <span class="mpn">(key directory URL)</span></td></tr>
+      <tr><td class="mpg" style="border-left:4px solid var(--teal)">Interface</td><td class="mpf">Key publisher</td><td>Agent's own origin: <a href="https://datatracker.ietf.org/doc/draft-ietf-webbotauth-httpsig-protocol/">Web Bot Auth</a>, <a href="https://github.com/Universal-Commerce-Protocol/ucp">UCP</a>, <a href="https://frmoretto.github.io/agentic-standards-map/entries/pap.html">PAP</a>, <a href="https://frmoretto.github.io/agentic-standards-map/entries/pact.html">PACT</a>. Issuer or network chosen by the verifier: <a href="https://frmoretto.github.io/agentic-standards-map/entries/kyapay.html">KYAPay</a>, <a href="https://frmoretto.github.io/agentic-standards-map/entries/visa-tap.html">Visa TAP</a>, <a href="https://frmoretto.github.io/agentic-standards-map/entries/x402.html">x402</a>. Registry or domain: <a href="https://aria.bar/spec">ARIA</a>.</td></tr>
+      <tr><td class="mpg" style="border-left:4px solid var(--fuchsia)">Mandate</td><td class="mpf">Mandate / functions</td><td><a href="https://www.ietf.org/archive/id/draft-kroehl-agentic-trust-aae-02.html">AAE</a> <span class="mpn">(MANDATE block)</span>, <a href="https://github.com/stafordtituss/amep/blob/main/spec/amep-v0.2.md">AMEP</a> <span class="mpn">(the delegated mandate)</span>, <a href="https://datatracker.ietf.org/doc/draft-li-rttp-iqa-addressing/">RTTP</a> <span class="mpn">(names the intended action)</span>, <a href="https://aria.bar/spec">ARIA</a> <span class="mpn">(scopes)</span></td></tr>
+      <tr><td class="mpg" style="border-left:4px solid var(--fuchsia)">Mandate</td><td class="mpf">Authority</td><td><a href="https://github.com/cosai-oasis/ws4-odis">ODIS</a> <span class="mpn">(delegated authority)</span>, <a href="https://modelcontextprotocol-identity.io">MCP-I</a> <span class="mpn">(delegation)</span>, <a href="https://datatracker.ietf.org/doc/draft-pidlisnyi-aps/">APS</a> <span class="mpn">(authority narrowed at each hop)</span>, <a href="https://github.com/abisheakp197/nti-spec">NTI-1</a> <span class="mpn">(capabilities)</span>, <a href="https://openid.net/wg/authzen/">AuthZEN</a> <span class="mpn">(authorization decisions)</span>, <a href="https://w3c-cg.github.io/atp/specs/did-atp/">ATP</a> <span class="mpn">(mandates, in draft)</span></td></tr>
+      <tr><td class="mpg" style="border-left:4px solid var(--fuchsia)">Mandate</td><td class="mpf">Policy</td><td><a href="https://www.ietf.org/archive/id/draft-kroehl-agentic-trust-aae-02.html">AAE</a> <span class="mpn">(CONSTRAINTS block)</span>, <a href="https://github.com/abisheakp197/nti-spec">NTI-1</a> <span class="mpn">(caveats: expiry, value, path limits)</span>, <a href="https://aria.bar/spec">ARIA</a> <span class="mpn">(ARIA AP admission)</span>, <a href="https://openid.net/wg/authzen/">AuthZEN</a> <span class="mpn">(decision)</span></td></tr>
+      <tr><td class="mpg" style="border-left:4px solid var(--bronze)">Parties</td><td class="mpf">Developer</td><td><span class="mpnone">None of the specifications read</span>.</td></tr>
+      <tr><td class="mpg" style="border-left:4px solid var(--bronze)">Parties</td><td class="mpf">Deployer</td><td><a href="https://aria.bar/spec">ARIA</a> <span class="mpn">(organisation that answers for the agent)</span>, <a href="https://github.com/cosai-oasis/ws4-odis">ODIS</a> <span class="mpn">(principal)</span></td></tr>
+      <tr><td class="mpg" style="border-left:4px solid var(--bronze)">Parties</td><td class="mpf">User</td><td><a href="https://github.com/cosai-oasis/ws4-odis">ODIS</a> <span class="mpn">(delegated user identity)</span>, <a href="https://github.com/stafordtituss/amep/blob/main/spec/amep-v0.2.md">AMEP</a> <span class="mpn">(the person who delegated)</span>, <a href="https://github.com/abisheakp197/nti-spec">NTI-1</a> <span class="mpn">(principal-bound identity)</span></td></tr>
+      <tr><td class="mpg" style="border-left:4px solid var(--bronze)">Parties</td><td class="mpf">Owner, Funder</td><td><span class="mpnone">None of the specifications read</span>.</td></tr>
+      <tr><td class="mpg" style="border-left:4px solid var(--navy)">Trust</td><td class="mpf">Trust assertion</td><td><a href="https://www.ietf.org/archive/id/draft-kroehl-agentic-trust-aae-02.html">AAE</a> <span class="mpn">(VALIDITY block)</span>, <a href="https://w3c-cg.github.io/atp/specs/atp-trust/">ATP</a> <span class="mpn">(trust scoring and credentials, early draft)</span>, <a href="https://github.com/stafordtituss/amep/blob/main/spec/amep-v0.2.md">AMEP</a> <span class="mpn">(each check returns preserved, violated or unresolved)</span>, <a href="https://datatracker.ietf.org/doc/draft-li-rttp-iqa-addressing/">IQA</a> <span class="mpn">(whether attestation standing holds)</span>, <a href="https://aria.bar/spec">ARIA</a> <span class="mpn">(revocation status)</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="mpgrid">
+    <div><h3>Closest matches</h3>
+      <p><a href="https://aria.bar/spec">ARIA</a> touches the most fields: identifier, location, keys, scope, admission, accountable organisation and validity.</p>
+      <p><a href="https://www.ietf.org/archive/id/draft-kroehl-agentic-trust-aae-02.html">AAE</a> mirrors the Mandate group: its MANDATE, CONSTRAINTS and VALIDITY blocks line up with Mandate, Policy and the trust assertion.</p>
+      <p><a href="https://github.com/cosai-oasis/ws4-odis">ODIS</a> asks who the agent acts for, what authority it was given and which instance is acting, matching User, Authority and Identity.</p>
+      <p><a href="https://github.com/stafordtituss/amep/blob/main/spec/amep-v0.2.md">AMEP</a> tests whether an agent stayed within its mandate, the question the trust assertion asks, and adds a third outcome, unresolved, for missing evidence.</p></div>
+    <div><h3>Where the record goes further</h3>
+      <p>Agent type, Developer, Owner and Funder appear in none of the specifications read. These fields carry the AIKR and AIAO contribution.</p>
+      <h3 style="margin-top:14px">Where the specifications go further</h3>
+      <p>Delegation chains (<a href="https://github.com/stafordtituss/amep/blob/main/spec/amep-v0.2.md">AMEP</a>, <a href="https://github.com/cosai-oasis/ws4-odis">ODIS</a>, <a href="https://datatracker.ietf.org/doc/draft-pidlisnyi-aps/">APS</a>), revocation and validity windows (<a href="https://aria.bar/spec">ARIA</a>, <a href="https://www.ietf.org/archive/id/draft-kroehl-agentic-trust-aae-02.html">AAE</a>), and evidence of what an agent did (<a href="https://github.com/stafordtituss/amep/blob/main/spec/amep-v0.2.md">AMEP</a>, <a href="https://datatracker.ietf.org/doc/draft-pidlisnyi-aps/">APS</a>, <a href="https://github.com/abisheakp197/nti-spec">NTI-1</a>). Candidate additions to the record: a delegation chain and a lifecycle field.</p></div>
+  </div>
+
+  <p class="note" style="margin-top:16px">This is an editorial reading. Rows for ODIS, MCP-I and the AuthZEN agent drafts rest on summaries of the specifications, not their full text. Project owners can submit a mapping profile for their protocol (field map with spec section references, an example record from their use case, and evidence level) as a pull request or issue on <a href="https://github.com/w3c-cg/aikr/tree/main/trust">w3c-cg/aikr/trust</a>, or by posting to public-aikr@w3.org with [trustvisualiser] in the subject.</p>
 </section>
 </main>
 
@@ -394,7 +444,7 @@ document.querySelectorAll("[data-copy]").forEach(function(b){
 });
 
 // ---- routing
-var VIEWS=["model","record","register"];
+var VIEWS=["model","record","register","mappings"];
 function route(){ var h=(location.hash||"").replace("#",""); if(VIEWS.indexOf(h)<0) h="model";
   VIEWS.forEach(function(v){document.getElementById("v-"+v).classList.toggle("on",v===h);});
   document.querySelectorAll("#tabs a").forEach(function(a){a.classList.toggle("on",a.getAttribute("data-v")===h);}); }

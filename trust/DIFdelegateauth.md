@@ -10,6 +10,21 @@ For cross-referencing (all drafts):
 - Case library of cross-protocol use cases: https://github.com/w3c-cg/aikr/blob/main/trust/trustusecases.md
 - Trust KR task force, listing everyone who has contributed: https://github.com/w3c-cg/aikr/blob/main/trust/trust-kr-taskforce.md
 
+## Contents
+
+- [Overlap in brief (comments invited)](#overlap-in-brief-comments-invited)
+- [What the report is](#what-the-report-is)
+- [Specifications evaluated](#specifications-evaluated)
+- [Criteria](#criteria)
+- [Merged scorecard, as published](#merged-scorecard-as-published)
+- [Main findings](#main-findings)
+- [Relevance to the trust work](#relevance-to-the-trust-work)
+- [Mapping to the AIKR trust work](#mapping-to-the-aikr-trust-work)
+  - [DIF criteria](#dif-criteria)
+  - [DIF findings, recommendations and future-work gaps](#dif-findings-recommendations-and-future-work-gaps)
+  - [AIKR work with no counterpart in the DIF report](#aikr-work-with-no-counterpart-in-the-dif-report)
+- [Suggested actions for the task force](#suggested-actions-for-the-task-force)
+
 ## Overlap in brief (comments invited)
 
 The two bodies of work overlap in part and cover different ground. The DIF report evaluates delegation and authorization specifications (OAuth, AAuth, zCaps, UCANs, KYA-OS, Cedar, AuthZEN, dSD-JWT). The AI KR CG explorer covers agent trust and identity protocols such as ARIA and did:atp. AuthZEN is the only specification in both.
@@ -27,7 +42,16 @@ DIF work that goes further: confused-deputy resistance, proof of possession, and
 
 The overlap is enough for an exchange in both directions: AI KR input on the DIF future-work gaps on revocation and policy exchange, and the DIF criteria to fill the AI KR gaps. The detailed mapping follows below.
 
-**Comments are invited** from the Trust KR task force, the DIF report's editors and contributors, and the ARIA and ATP groups. Is the mapping right? Is anything missing or misread? Please open an issue on [w3c-cg/aikr](https://github.com/w3c-cg/aikr/issues) with "DIF note" in the title, or post to public-aikr@w3.org with [trust-dif] in the subject line.
+**People in both.** Members of the AI KR CG, and of other W3C groups the AI KR CG shares its trust work with, take part in the DIF work on delegated authority:
+
+- Nicola Gallo, an AI KR CG participant, co-chairs the DIF Trusted AI Agents Working Group, the group listed as producing the delegated authority reports. Sources: [AI KR CG participants](https://www.w3.org/groups/cg/aikr/participants/); [DIF Trusted AI Agents WG](https://identity.foundation/working-groups/trusted-agents.html); [LF Decentralized Trust announcement naming the chairs](https://www.lfdecentralizedtrust.org/blog/toip-and-dif-announce-three-new-working-groups-for-trust-in-the-age-of-ai).
+- Victor Lu, an AI KR CG and ATP CG participant, is an author of the companion Governance of Delegated Authority report. Sources: [AI KR CG participants](https://www.w3.org/groups/cg/aikr/participants/); [ATP CG participants](https://www.w3.org/groups/cg/atp/participants/); [Governance of Delegated Authority report](https://identity.foundation/governance-of-delegated-authority-report/).
+
+Alan Karp (SitePassword) is linked to both through Victor Lu: he contributed to the evaluation draft, contributed to the companion threat model, and edits the Governance of Delegated Authority report that Victor Lu co-authors. DIF describes his access management use cases as a key conceptual foundation for the Trusted AI Agents WG approach. He does not appear in the AI KR, ATP or ARIA CG participant lists. Sources: [evaluation draft](https://identity.foundation/delegated-authority-evaluations/); [Governance of Delegated Authority report](https://identity.foundation/governance-of-delegated-authority-report/); [threat model](https://identity.foundation/delegated-authority-threat-model/); [DIF blog, Authorising Autonomous Agents at Scale](https://blog.identity.foundation/building-ai-trust-at-scale-4/).
+
+None of the editors or named contributors of the evaluation draft itself appears in the AI KR CG participant list ([editors and contributors](https://identity.foundation/delegated-authority-evaluations/)). The comparison covers named authors and chairs only, since the DIF working group's membership is not public, and it matches names, not confirmed identities.
+
+**Comments are invited** from the Trust KR task force, the DIF report's editors and contributors (Alan Karp's view on the case library would be especially welcome, given his access management use cases), and the ARIA and ATP groups. Is the mapping right? Is anything missing or misread? Please open an issue on [w3c-cg/aikr](https://github.com/w3c-cg/aikr/issues) with "DIF note" in the title, or post to public-aikr@w3.org with [trust-dif] in the subject line.
 
 Status: working note for the Trust KR task force, open for comments. Prepared 20 November 2026.
 

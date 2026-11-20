@@ -1,6 +1,6 @@
 # Note on the DIF Delegated Authority Evaluations
 
-This note maps the DIF Delegated Authority Evaluations draft of 17 November 2026 to the ongoing AI KR CG trust work, led by the knowledge representation of trust note ([kroftrust.md](https://github.com/w3c-cg/aikr/blob/main/trust/kroftrust.md)), and to the AI KR CG landscape crosswalks, including the Agent Trust Protocols and Specifications Explorer and the cross-protocol use cases.
+This note maps the [DIF Delegated Authority Evaluations draft](https://identity.foundation/delegated-authority-evaluations/) of 17 November 2026 (v1.0-rc1, Decentralized Identity Foundation, Trusted AI Agents Working Group) to the ongoing AI KR CG trust work, led by the knowledge representation of trust note ([kroftrust.md](https://github.com/w3c-cg/aikr/blob/main/trust/kroftrust.md)), and to the AI KR CG landscape crosswalks, including the Agent Trust Protocols and Specifications Explorer and the cross-protocol use cases.
 
 For cross-referencing (all drafts):
 - Draft report on the knowledge representation of trust: https://w3c-cg.github.io/aikr/trust/kroftrust.html

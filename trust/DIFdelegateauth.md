@@ -1,5 +1,34 @@
 # Note on the DIF Delegated Authority Evaluations
 
+This note maps the DIF Delegated Authority Evaluations draft of 17 November 2026 to the ongoing AI KR CG trust work, led by the knowledge representation of trust note ([kroftrust.md](https://github.com/w3c-cg/aikr/blob/main/trust/kroftrust.md)), and to the AI KR CG landscape crosswalks, including the Agent Trust Protocols and Specifications Explorer and the cross-protocol use cases.
+
+For cross-referencing (all drafts):
+- Draft report on the knowledge representation of trust: https://w3c-cg.github.io/aikr/trust/kroftrust.html
+- Agent Trust Protocols and Specifications Explorer, mapping ARIA, did:atp and other agent trust and identity specifications by coverage and maturity: https://w3c-cg.github.io/aikr/trust/trustinitiativeexplorer.html
+- W3C AI KR Trust Record visualiser, with its Mappings tab showing which protocol fields match each part of the record: https://w3c-cg.github.io/aikr/trust/AI_Agent_Trust_Record.html#mappings
+- W3C AI KR Trust Record checker: [link to be added]
+- Case library of cross-protocol use cases: https://github.com/w3c-cg/aikr/blob/main/trust/trustusecases.md
+- Trust KR task force, listing everyone who has contributed: https://github.com/w3c-cg/aikr/blob/main/trust/trust-kr-taskforce.md
+
+## Overlap in brief (comments invited)
+
+The two bodies of work overlap in part and cover different ground. The DIF report evaluates delegation and authorization specifications (OAuth, AAuth, zCaps, UCANs, KYA-OS, Cedar, AuthZEN, dSD-JWT). The AI KR CG explorer covers agent trust and identity protocols such as ARIA and did:atp. AuthZEN is the only specification in both.
+
+Shared ground:
+- Attenuated delegation (DIF criterion 1) corresponds to the AI KR authority-continuity model, where scope may narrow but not widen without explicit authorisation.
+- Accountability of the agent as distinct from its operator (criterion 2) corresponds to the W3C AI KR Trust Record parties: author, operator, authoriser, owner and funder.
+- DIF's advice to reject caveats the verifier cannot evaluate corresponds to the AI KR `onUnknown` relying-party policy.
+- DIF's fail-closed revocation checks with a freshness verdict correspond to the AI KR three-valued evidence results (pass, fail, could-not-determine) and `stalenessBound`.
+- DIF's four-layer delegation stack (identity, certificate chain, policy and caveats, signed presentation) maps onto four of the Trust Record field groups.
+
+AI KR work that goes further: DIF finds revocation online-only in every surveyed mechanism, with no defined semantics under network partition. The AI KR resolution-dependency terms (`coupling`, `stalenessBound`, `onUnknown`) offer a way to state how a verifier behaves in that case. The evidence scale for specifications and the DNS/DID anchoring work have no counterpart in the DIF report.
+
+DIF work that goes further: confused-deputy resistance, proof of possession, and limits on re-delegation and chain depth, none yet treated in the AI KR trust work. Delegation-chain privacy is open on both sides.
+
+The overlap is enough for an exchange in both directions: AI KR input on the DIF future-work gaps on revocation and policy exchange, and the DIF criteria to fill the AI KR gaps. The detailed mapping follows below.
+
+**Comments are invited** from the Trust KR task force, the DIF report's editors and contributors, and the ARIA and ATP groups. Is the mapping right? Is anything missing or misread? Please open an issue on [w3c-cg/aikr](https://github.com/w3c-cg/aikr/issues) with "DIF note" in the title, or post to public-aikr@w3.org with [trust-dif] in the subject line.
+
 Status: working note for the Trust KR task force, open for comments. Prepared 20 November 2026.
 
 Report: [Delegated Authority Evaluations](https://identity.foundation/delegated-authority-evaluations/), Decentralized Identity Foundation (DIF). Editors: Dmitri Zagidulin (Interop Alliance) and Juan Caballero (learningProof UG). Status given on the page: Working Group Consensus Draft, v1.0-rc1, 17 November 2026, pending DIF Steering Committee approval. Verdicts may change before the report is approved.
@@ -58,9 +87,9 @@ Gaps listed for future work, in the order the report gives: a standard policy an
 
 ## Relevance to the trust work
 
-**Proposed mapping of the DIF criteria to the AI Agent Trust Record field groups** (for discussion, not from the report):
+**Proposed mapping of the DIF criteria to the W3C AI KR Trust Record field groups** (for discussion, not from the report):
 
-| DIF criterion | Trust Record field group |
+| DIF criterion | W3C AI KR Trust Record field group |
 |---|---|
 | 1 Attenuated delegation | Mandate and authority |
 | 2 Accountability (agent vs operator) | Parties |
@@ -87,14 +116,14 @@ Gaps listed for future work, in the order the report gives: a standard policy an
 
 ## Mapping to the AIKR trust work
 
-Proposed for discussion. The AIKR side is taken from the draft report on the knowledge representation of trust ([kroftrust.html](https://w3c-cg.github.io/aikr/trust/kroftrust.html)), the AI Agent Trust Record, the explorer and trustusecases.md. Status: **aligned** (both cover it), **AIKR adds** (AIKR covers ground the DIF report does not score), **gap** (the DIF report raises it, the AIKR trust work does not yet treat it).
+Proposed for discussion. The AIKR side is taken from the draft report on the knowledge representation of trust ([kroftrust.html](https://w3c-cg.github.io/aikr/trust/kroftrust.html)), the W3C AI KR Trust Record, the explorer and trustusecases.md. Status: **aligned** (both cover it), **AIKR adds** (AIKR covers ground the DIF report does not score), **gap** (the DIF report raises it, the AIKR trust work does not yet treat it).
 
 ### DIF criteria
 
 | DIF criterion | AIKR artefact and terms | Status |
 |---|---|---|
-| 1 Attenuated delegation | Authority-continuity model: scope may narrow but not widen without explicit authorisation, with four proposed cases. Trust Record: Mandate and authority. UC-01. | Aligned. The DIF per-hop attenuation invariant could be added to the authority-continuity cases. |
-| 2 Accountability (agent vs operator) | Trust Record parties: author, operator, authoriser, owner, funder. KRT `krt:issuingPrincipal`, `krt:controllingPrincipal`. Explorer finding that few specifications separate developer, deployer, owner and funder. UC-09. | Aligned; AIKR adds owner and funder roles. Principal ranges in KRT still open (issue #19). |
+| 1 Attenuated delegation | Authority-continuity model: scope may narrow but not widen without explicit authorisation, with four proposed cases. W3C AI KR Trust Record: Mandate and authority. UC-01. | Aligned. The DIF per-hop attenuation invariant could be added to the authority-continuity cases. |
+| 2 Accountability (agent vs operator) | W3C AI KR Trust Record parties: author, operator, authoriser, owner, funder. KRT `krt:issuingPrincipal`, `krt:controllingPrincipal`. Explorer finding that few specifications separate developer, deployer, owner and funder. UC-09. | Aligned; AIKR adds owner and funder roles. Principal ranges in KRT still open (issue #19). |
 | 3 Confused-deputy resistance | No dedicated treatment. Closest: the trust decision's authority and enforcement-location dimensions. | Gap. |
 | 4 Representability of policies | Relying-party `onUnknown` policy; verifier-set staleness bounds where publishers declare none; oversight records (observed, checked, decided, released), PR #15. | Partly aligned. DIF's advisory tier (recorded, not enforced) may correspond to the "observed" oversight record; to be checked. |
 | 5 Chainability | Per-hop verification in delegation chains, with compounding latency and the chain-depth formula 1 − 0.99^d. | AIKR adds: the availability cost of verifying a chain, which the DIF scorecard does not measure. |
@@ -110,11 +139,11 @@ Proposed for discussion. The AIKR side is taken from the draft report on the kno
 | Use fail-closed revocation checks with a freshness verdict | Three-valued evidence results (pass, fail, could-not-determine) across the key and evidence state cases; `onUnknown`; `stalenessBound`. | Aligned. AIKR's "could-not-determine" state makes the freshness verdict explicit. |
 | Reject caveats the verifier cannot evaluate | `onUnknown` relying-party policy. | Aligned. |
 | Cross-organizational policy exchange with agreed semantics (gap 5) | Comparison semantics: term-level crosswalks fail behaviourally; canonical-form version and declared semantics; vocabulary crosswalk. | AIKR adds: evidence that agreed terms are not enough without declared comparison semantics. |
-| Agent-vs-operator semantics across multi-hop delegation (gap 3) | Trust Record parties; KRT principal properties (issue #19). | Aligned, open on both sides. |
+| Agent-vs-operator semantics across multi-hop delegation (gap 3) | W3C AI KR Trust Record parties; KRT principal properties (issue #19). | Aligned, open on both sides. |
 | Standard caveat vocabulary: time windows, re-delegation and depth limits (gap 1) | Authority-continuity model covers narrowing; no vocabulary for re-delegation or depth limits. | Gap. |
 | Delegation-chain privacy left as future work | Not treated. UC-05 covers pairwise identifiers, not chain privacy. | Gap on both sides. |
 | Ephemeral or pairwise identifiers per delegation | UC-05; did:atp pairwise identifiers in the explorer. | Aligned. |
-| Four-layer stack: identity, certificate chain, policy and caveats, signed presentation | Trust Record field groups: Identity; Mandate and authority; Policy; Interface and keys. | Aligned. The Trust Record also carries Parties, Lifecycle and Evidence as their own groups. |
+| Four-layer stack: identity, certificate chain, policy and caveats, signed presentation | W3C AI KR Trust Record field groups: Identity; Mandate and authority; Policy; Interface and keys. | Aligned. The W3C AI KR Trust Record also carries Parties, Lifecycle and Evidence as their own groups. |
 
 ### AIKR work with no counterpart in the DIF report
 
@@ -127,7 +156,7 @@ Proposed for discussion. The AIKR side is taken from the draft report on the kno
 
 1. Add the report to the explorer's corollary initiatives, with its status and date, and update the DIF entry in the trust note's landscape section.
 2. Consider adding the DIF criteria as a view in the explorer, using the mappings above once agreed.
-3. Close the gaps on the AIKR side: add confused-deputy resistance and proof of possession to the trust decision or the Trust Record, and add re-delegation and depth limits to the authority-continuity cases.
+3. Close the gaps on the AIKR side: add confused-deputy resistance and proof of possession to the trust decision or the W3C AI KR Trust Record, and add re-delegation and depth limits to the authority-continuity cases.
 4. Offer the AIKR resolution-dependency terms (`stalenessBound`, `onUnknown`, `coupling`) and comparison semantics to DIF as input on its future-work gaps on revocation under partition and cross-organizational policy exchange.
 5. Invite the report's editors to comment on the mapping and on trustusecases.md.
 6. Invite the ARIA and ATP groups to self-assess against the seven DIF criteria, so their entries can be read next to the published scorecard.

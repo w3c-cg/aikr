@@ -49,6 +49,7 @@ Everyone below has contributed to the trust work and is invited to co-lead. To t
 | Larry Lewis | Review of the trust record model |
 | Francesco Marinoni Moretto | Commerce identity rows and the Key publisher field of the trust record (issue #28) |
 | bigblackcoder (GitHub) | Review of the DNS and DID note (issue #27) and the ATP demonstration package (issue #29) |
+| Prasanna Bableshwar | Hiring use case (UC-09) in `trustusecases.md`, from the ARIA CG hiring thread and the v0.2 Registry Write-up |
 
 ## Handover notes
 

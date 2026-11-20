@@ -146,11 +146,11 @@ Source: Adolfo Grego Micha, 19 Nov 2026 (as above).
 
 ## UC-09 Hiring agent acting for an organisation
 
-Source: ARIA CG hiring use case thread, "Introduction and a hiring use case for the registry", public-agent-identity, Oct–Nov 2026, with contributions from Prasanna Bableshwar, Xinghua (Steven) Zhao, Yanfeng Liu, Raphael La Touche and Dick Brooks. The working text is the v0.2 Registry Write-up, linked in Adolfo's post of 19 Nov. This draft has not been checked against that document.
+Source: ARIA CG hiring use case thread, "Introduction and a hiring use case for the registry", public-agent-identity, Oct–Nov 2026, with contributions from Prasanna Bableshwar, Xinghua (Steven) Zhao, Yanfeng Liu, Raphael La Touche and Dick Brooks. The working text is the v0.2 Registry Write-up, linked in Adolfo's post of 19 Nov. This entry was completed on 19 Nov 2026 against the use case as presented to the Agent Identity Registry Protocol CG on 17 Nov 2026.
 
-- **Scenario**: an agent takes part in a hiring process for an organisation. Later, someone needs to know which operator and accountable organisation stood behind it, and whether its credential was in force when it acted.
-- **Expected decision**: answer "what was in force at the time of the action", not only "what is in force now".
-- **Evidence to record**: operator and accountable organisation, the credential at the time of the action, and the revocation state with its evaluation time. The thread proposes five revocation states: recorded, not recorded, query failed, cross-federation unsynchronised, undetermined. It also asks for a timestamp and evidence pointer on each value, and for revocation events to be signed and append-only.
+- **Scenario**: four agents work on one candidate in a hiring process for an organisation: a sourcing agent, a screening agent, a scheduling agent and a background check agent. A named person closes the hiring decision at the end. Later, someone needs to know which operator and accountable organisation stood behind each agent, whether its credential was in force when it acted, and who closed the decision.
+- **Expected decision**: answer "what was in force at the time of the action", not only "what is in force now", and establish who was authorised to close the decision and did close it.
+- **Evidence to record**: operator and accountable organisation, the credential at the time of the action, and the revocation state with its evaluation time. The decision chain is recorded as separate propositions: referral issued, receipt at the destination, acknowledgement by a named role, acceptance, and closure by an authorised person; a record that supports one of them does not support the others. The thread proposes five revocation states: recorded, not recorded, query failed, cross-federation unsynchronised, undetermined. It also asks for a timestamp and evidence pointer on each value, and for revocation events to be signed and append-only.
 - **Field groups**: Parties, Lifecycle, Evidence.
 
 | Protocol | What the protocol does | Left to the application | Evidence level |

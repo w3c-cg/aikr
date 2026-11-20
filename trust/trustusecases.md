@@ -1,4 +1,4 @@
-# Cross-protocol use cases for agent trust (tentative draft)
+# Cross-protocol use cases for agent trust /trust layer case library (tentative draft)
 
 Status: tentative draft for discussion by the Trust KR task force. Not a CG Report, and no consensus is implied. New use cases are invited: see [How to contribute](#how-to-contribute).
 

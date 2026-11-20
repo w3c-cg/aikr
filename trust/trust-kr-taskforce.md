@@ -3,7 +3,7 @@
 *Draft mission statement, proposed to the W3C AI Knowledge Representation Community Group in November 2026. Proposed start date effective asap.
 To be discussed and agreed by CG participants on public-aikr.*
 
-*Part of the AI KR CG trust work. Main document: [The Knowledge Representation of the Trust Layer](kroftrust.md). Trust record visualiser: [AI Agent Trust Record](https://w3c-cg.github.io/aikr/trust/AI_Agent_Trust_Record.html).*
+*Part of the AI KR CG trust work. Main document: [The Knowledge Representation of the Trust Layer](kroftrust.md). Trust record visualiser: [W3C AI KR Trust Record](https://w3c-cg.github.io/aikr/trust/AI_Agent_Trust_Record.html). Case library: [trustusecases.md](trustusecases.md). Mapping to the DIF delegated authority work: [DIFdelegateauth.md](DIFdelegateauth.md).*
 
 ## Mission
 
@@ -28,6 +28,10 @@ Produce a human-readable representation of the dimensions of trust in AI systems
 
 About once a quarter, the task force sends a short note to the AI KR CG list: what was done, what is open, and which decisions the CG needs to take.
 
+## Coordination
+
+Larry Lewis volunteered to co-lead and coordinate the task force at the AI KR CG group call of 17 November 2026, and agreed to work with the contributors who had already expressed interest. Draft minutes of the call, for approval: [Google Doc](https://docs.google.com/document/d/1I6VeIVD3EPbw-q5jgQtlfDU3bYRDgBXLJ7yP1MV4uAQ/edit?usp=sharing), circulated on [public-aikr on 18 November 2026](https://lists.w3.org/Archives/Public/public-aikr/2026Nov/0050.html).
+
 ## Invited co-leads
 
 Everyone below has contributed to the trust work and is invited to co-lead. To take up a work item, reply on the list or write to the chair to agree its scope.
@@ -40,15 +44,32 @@ Everyone below has contributed to the trust work and is invited to co-lead. To t
 | Kenne Ives | Key and evidence states (PR #25), evidence resolution (issue #10), tracker of open items (issue #16), test vectors for the trust record |
 | Nicholas Templeman | Proposal for the trust-state vocabulary and fixture table (public-aikr) |
 | Michael Blake | Review of the key and evidence states, deployment evidence from agent-payment discovery (issue #12), fixes to the DNS and DID note (issue #26) |
-| Nicola Gallo | Authority continuity: formal model and proposed cases (PR #22) |
+| Nicola Gallo | Authority continuity: formal model and proposed cases (PR #22). Also co-chairs the DIF Trusted AI Agents Working Group (see [related contributions elsewhere](#related-contributions-elsewhere)) |
 | Evgenii Arsentev | Pointer to the Agent Conformance reporting format (PR #13) |
 | Andreas Ehstand | Oversight records in KRT (PR #15, open) |
 | Sean (LexLint) | Corrections to KRT (issue #19) and review of the oversight records |
 | Lars Kroehl | Correction to Annex B on did:moltrust resolution (issue #9) |
 | Yanfeng Liu | Answers to the six questions of the note (issue #5), review of the trust record for audit and accountability |
-| Larry Lewis | Review of the trust record model |
+| Larry Lewis | Co-lead and coordinator of the task force (volunteered at the AI KR CG call of 17 November 2026, see [coordination](#coordination)); review of the trust record model |
 | Francesco Marinoni Moretto | Commerce identity rows and the Key publisher field of the trust record (issue #28) |
 | bigblackcoder (GitHub) | Review of the DNS and DID note (issue #27) and the ATP demonstration package (issue #29) |
+
+## Related contributions elsewhere
+
+AI KR CG participants who are making related trust contributions in other groups, proposed for inclusion in the task force by extension. Inclusion is pending their agreement; each is invited to reply on the list or write to the chair to agree scope. Names are matched against public participant lists and author credits, not confirmed identities.
+
+| Name | Related contribution | Possible area in the task force | Source |
+| --- | --- | --- | --- |
+| Nicola Gallo (already listed above) | Co-chair, DIF Trusted AI Agents Working Group, the group producing the delegated authority reports and the evaluation draft | Alignment with DIF on delegated authority and authorization | [DIF Trusted AI Agents WG](https://identity.foundation/working-groups/trusted-agents.html); [LF Decentralized Trust announcement](https://www.lfdecentralizedtrust.org/blog/toip-and-dif-announce-three-new-working-groups-for-trust-in-the-age-of-ai) |
+| Victor Lu | Author, DIF Governance of Delegated Authority report; also an ATP CG participant | Governance of delegated authority, oversight records | [Governance of Delegated Authority report](https://identity.foundation/governance-of-delegated-authority-report/); [AI KR CG participants](https://www.w3.org/groups/cg/aikr/participants/) |
+
+### Contributors in related W3C trust groups, invited by extension
+
+| Name | Related contribution | Possible area in the task force | Source |
+| --- | --- | --- | --- |
+| Alan Karp | Contributor, DIF Delegated Authority Evaluations draft and threat model; editor, DIF Governance of Delegated Authority report; active on the W3C AI Agent Protocol CG and Credentials CG lists | Delegated authority, access management use cases, review of [trustusecases.md](trustusecases.md) | [Evaluation draft](https://identity.foundation/delegated-authority-evaluations/); [Governance report](https://identity.foundation/governance-of-delegated-authority-report/) |
+
+Mapping of the DIF work to the AI KR trust work: [DIFdelegateauth.md](DIFdelegateauth.md)
 
 ## Handover notes
 
@@ -60,3 +81,14 @@ Open items passed to the task force when it starts work.
 - **Corrections to the technical note.** Annex B on did:moltrust resolution ([issue #9](https://github.com/w3c-cg/aikr/issues/9)); source pool numbers 17 to 19 used twice.
 - **Pending contributions.** English summary of the Agent Community answers ([issue #5](https://github.com/w3c-cg/aikr/issues/5)); oversight records in KRT ([PR #15](https://github.com/w3c-cg/aikr/pull/15)); comments on KRT ([#19](https://github.com/w3c-cg/aikr/issues/19)), the DNS and DID note ([#26](https://github.com/w3c-cg/aikr/issues/26), [#27](https://github.com/w3c-cg/aikr/issues/27)) and the trust record ([#28](https://github.com/w3c-cg/aikr/issues/28)).
 - **Housekeeping.** `aria2.html` duplicates `aria.html`; the visualiser page has no link back to the technical note.
+
+### Open items from the DIF Delegated Authority Evaluations note
+
+Proposed in [DIFdelegateauth.md](DIFdelegateauth.md), which maps the [DIF Delegated Authority Evaluations draft](https://identity.foundation/delegated-authority-evaluations/) (17 November 2026) to the AI KR trust work. Open for co-leads to take up.
+
+- [ ] Add the DIF report to the explorer's corollary initiatives, with its status and date, and update the DIF entry in the landscape section of the trust note.
+- [ ] Consider adding the DIF criteria as a view in the explorer, using the mappings in the note once agreed.
+- [ ] Close the gaps on the AI KR side: add confused-deputy resistance and proof of possession to the trust decision or the W3C AI KR Trust Record, and add re-delegation and depth limits to the authority-continuity cases.
+- [ ] Offer the AI KR resolution-dependency terms (`stalenessBound`, `onUnknown`, `coupling`) and comparison semantics to DIF as input on its future-work gaps on revocation under partition and cross-organizational policy exchange.
+- [ ] Invite the DIF report's editors and contributors to comment on the mapping and on [trustusecases.md](trustusecases.md).
+- [ ] Invite the ARIA and ATP groups to self-assess against the seven DIF criteria, so their entries can be read next to the published DIF scorecard.

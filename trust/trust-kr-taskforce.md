@@ -52,7 +52,7 @@ Everyone below has contributed to the trust work and is invited to co-lead. To t
 | Yanfeng Liu | Answers to the six questions of the note (issue #5), review of the trust record for audit and accountability |
 | Larry Lewis | Co-lead and coordinator of the task force (volunteered at the AI KR CG call of 17 November 2026, see [coordination](#coordination)); review of the trust record model |
 | Francesco Marinoni Moretto | Commerce identity rows and the Key publisher field of the trust record (issue #28) |
-| bigblackcoder (GitHub) | Review of the DNS and DID note (issue #27) and the ATP demonstration package (issue #29) |
+| bigblackcoder same as Larry Lewis of ATP (GitHub) | Review of the DNS and DID note (issue #27) and the ATP demonstration package (issue #29) |
 
 ## Related contributions elsewhere
 

@@ -185,4 +185,24 @@ Proposed for discussion. The AIKR side is taken from the draft report on the kno
 5. Invite the report's editors to comment on the mapping and on trustusecases.md.
 6. Invite the ARIA and ATP groups to self-assess against the seven DIF criteria, so their entries can be read next to the published scorecard.
 
+## Comments received
+
+### From an implementation of a gateway conformance harness (21 November 2026)
+
+Contributed by Xinghua Zhao, from work on a conformance harness and an A2A gateway adapter. Offered as implementation evidence, not as a verdict on the note; take what is useful and discard the rest.
+
+1. **Criterion 1 (attenuation) needs a runtime record, not only a model.** The authority-continuity model says scope may narrow but not widen. In the gateway the useful artefact turned out to be a per-request decision record: which scope was claimed, which scope was effective, and on what basis. When the caller declares no scope, the basis is recorded as `transport-peer` rather than silently granting. Suggestion: add "effective scope basis must be recorded per request" to the attenuation cases.
+
+2. **Criterion 3 (confused deputy) is content-mediated as well as policy-mediated.** The adapter had to reject inline instruction-override, role spoofing, tool spoofing and opaque encodings before forwarding, because a deputy can be confused by the payload while holding a valid mandate. The scorecard reads criterion 3 as a policy property; a content-level row would make that gap visible. This one concerns the DIF scorecard rather than the mapping, and has been sent to the report's editors as well.
+
+3. **Revocation under partition: a three-valued verdict is enough to start.** DIF lists "no defined semantics under network partition" as future-work gap 4. The minimum usable form is pass / fail / could-not-determine, plus a bound on how old the last successful check may be. The harness exposes exactly that (state and clause in the error data, 403 on any disabled or unknown state), and it is testable from outside without reading the code.
+
+4. **"Locally verifiable" can hide a resolution dependency.** Criterion 6 scores Yes for mechanisms that still fetch identity documents over DNS and the WebPKI at verification time. Suggest one column, "what must be reachable at verification time". This also concerns the DIF scorecard and has been sent to the editors.
+
+5. **Evidence scale: the level exists; what is missing is the record.** Correction accepted — the explorer already carries independently reproduced as its third level. The narrower suggestion is that each claim at that level record *who* executed the run, *at which commit or artefact hash*, and *from which vantage point*, since our first external run was valuable only because the hash matched and the commit was pinned.
+
+6. **On the four-layer stack:** composition looks like the near-term work. One addition from practice: the policy-and-caveats layer needs a vocabulary before it needs a format. The harness encodes delegation limits as enumerated caveat names from a closed set, because free-text caveats are unevaluable by the relying party — the same point DIF makes about rejecting caveats the verifier cannot evaluate.
+
+Reproduction link for the implementation: <https://github.com/zhaoxinghua09-cell/uibc-core>
+
 Comments: open an issue on [w3c-cg/aikr](https://github.com/w3c-cg/aikr/issues) with the file name in the title.

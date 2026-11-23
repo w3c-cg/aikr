@@ -69,7 +69,7 @@ python3 check.py --json out.json  # machine-readable results
 python3 check.py --selftest       # three checks on the set itself
 ```
 
-No dependencies beyond the Python standard library, no network, no credentials. `--selftest` verifies three things:
+No dependencies beyond the Python standard library, no network, no credentials. `SHA256SUMS` carries a digest for every file in this directory except itself, so a reader can check that what they run is what was reviewed. `--selftest` verifies three things:
 
 1. `expected.json` matches the checker on all twelve cases;
 2. a deliberately permissive checker — content ignored, unknown folded into pass, staleness ignored — is caught on eight of the twelve (`D03, D05, D06, D07, D08, D10, D11, D12`);

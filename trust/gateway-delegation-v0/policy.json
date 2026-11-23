@@ -1,0 +1,16 @@
+{
+  "schema": "aikr-gateway-delegation-policy/0",
+  "evaluatedAt": "2026-11-23T00:00:00Z",
+  "revocationFreshnessBoundSeconds": 86400,
+  "notes": {
+    "scopeCompleteness": "The granted scope list in each mandate is treated as exhaustive for that agent and grant.",
+    "undeclaredScope": "A request that declares no scope is not evidence of a narrower grant; result is could-not-determine, never pass.",
+    "opaqueContent": "Content the gateway cannot inspect is could-not-determine, never pass.",
+    "decisionMap": "pass gives allow; fail gives refuse; could-not-determine gives hold."
+  },
+  "decisionMap": {
+    "pass": "allow",
+    "fail": "refuse",
+    "could-not-determine": "hold"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "D03",
+  "about": "No scope declared: caller claims nothing, gateway infers a transport-peer basis.",
+  "mandate": {
+    "subject": "agent:gw-agent",
+    "grantedScope": [
+      "tool:search",
+      "tool:summarise"
+    ],
+    "issuedAt": "2026-11-01T00:00:00Z",
+    "expiresAt": "2026-12-01T00:00:00Z",
+    "signature": "ok"
+  },
+  "request": {
+    "agentId": "agent:gw-agent",
+    "declaredScope": [],
+    "transportPeer": "agent:gw-agent",
+    "payload": {
+      "text": "summarise the attached note"
+    }
+  },
+  "revocation": {
+    "status": "none",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "evidence": {
+    "pointer": "reachable",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "why": "An undeclared claim is not evidence of a narrower grant. Recording the basis is not the same as establishing the scope, so the result is could-not-determine, not pass."
+}

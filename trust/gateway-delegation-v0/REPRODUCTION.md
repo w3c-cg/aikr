@@ -63,16 +63,24 @@ if any expectation is missed.
 
 ## Cross-machine check
 
-**Status: pending for this revision.** The 15-case version of this package was
-run on a second machine (Ubuntu 22.04, CPython 3.12.11) in a clean directory
-cloned over the public network with no credentials, and matched (`7/7/1`, four
-`[OK]` lines). The 18-case revision has so far been run only on the Windows
-machine above; the Linux re-run is recorded here once it has actually been
-executed, not before. Until that line is replaced, treat the cross-machine claim
-as **not established for this revision**. If your run differs, the useful report
-is the row that differs and your interpreter version — that is the kind of
-disagreement this set exists to surface.
+Run on a second machine and network path: Ubuntu, CPython 3.12.11, in a clean
+directory cloned over the public network with no credentials
+(`git clone -q --branch gateway-delegation-v0 --single-branch
+https://github.com/zhaoxinghua09-cell/aikr.git`), at commit `7900005`.
 
+```
+python3 check.py            -> 18 rows, exit 0
+  18 cases: could-not-determine 8, fail 9, pass 1
+python3 check.py --selftest -> six [OK] lines, exit 0
+sha256sum -c SHA256SUMS     -> 25 files, 0 mismatches
+```
+
+Output and exit codes matched the Windows run on every row, including D16–D18.
+The first Linux attempt failed at `sha256sum -c` only because `SHA256SUMS` had
+backslash paths from the Windows build; the manifest now uses `/` separators and
+the check passes on both. If your run differs, the useful report is the row that
+differs and your interpreter version — that is the kind of disagreement this set
+exists to surface.
 ## Integrity
 
 `SHA256SUMS` carries a digest for every file here except itself, so what you run

@@ -34,9 +34,9 @@ pass by handling one shape per class.
 | I9 signer key binding | 4 | equal, other key, only one fingerprint declared, neither declared |
 | I10 lineage | 5 | no citation, resolved, unresolved, empty chain, null citation |
 | I11 receipt on refusal | 6 | allow (not applicable), bound receipt, no receipt, receipt for another policy, for another case, for another decision |
-| I1–I11 combinations | 11 | two defects in one request (to pin the published check order, that fail outranks both kinds of hold, and that a record that cannot be resolved outranks a check we could not run), plus one positive row in which two benign variations coincide |
+| I1–I11 combinations | 11 | two defects in one request (to pin the published check order, that fail outranks every kind of hold, that a record that cannot be resolved outranks a declaration never made, and that a declaration never made outranks a check we could not run), plus one positive row in which two benign variations coincide |
 
-Distribution: **pass 32 · record-unresolved 18 · check-incomplete 7 · fail 47**. The set is
+Distribution: **pass 32 · record-unresolved 18 · absent 2 · check-incomplete 5 · fail 47**. The set is
 weighted toward defects on purpose — a set that mostly returns pass would not tell
 implementations apart — but that weighting is only defensible if each class can also
 pass, which is why every class above carries at least one passing row. The counts are

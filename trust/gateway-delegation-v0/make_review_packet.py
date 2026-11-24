@@ -53,14 +53,16 @@ out.append("Generated from the files in this directory. Nothing here is fetched 
            "checker at build time.\n")
 out.append("## Observed distribution\n")
 out.append("- rows: %d (%d curated + %d vectors)\n" % (len(rows), len(cases), len(vectors)))
-out.append("- pass %d · record-unresolved %d · check-incomplete %d · fail %d\n" % (
-    tally.get("pass", 0), tally.get("record-unresolved", 0),
+out.append("- pass %d · record-unresolved %d · absent %d · check-incomplete %d · fail %d\n" % (
+    tally.get("pass", 0), tally.get("record-unresolved", 0), tally.get("absent", 0),
     tally.get("check-incomplete", 0), tally.get("fail", 0)))
 out.append("- distinct codes: %d\n" % len(codes))
-out.append("- holds by side: record-unresolved %d · check-incomplete %d — the row "
-           "also carries `unknown.record` and `unknown.checker`, so a consumer that "
-           "reads only the verdict still knows which side it is on\n" % (
-               tally.get("record-unresolved", 0), tally.get("check-incomplete", 0)))
+out.append("- holds by side: record-unresolved %d · absent %d · check-incomplete %d — the "
+           "row also carries `unknown.record`, `unknown.absent` and `unknown.checker`, so a "
+           "consumer that reads only the verdict still knows which side it is on, and one "
+           "that reads the split knows the remedy\n" % (
+               tally.get("record-unresolved", 0), tally.get("absent", 0),
+               tally.get("check-incomplete", 0)))
 out.append("\n".join(vectors_table) + "\n")
 out.append("## Curated cases\n")
 out.append("\n".join(table) + "\n")

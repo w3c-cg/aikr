@@ -106,7 +106,7 @@
     },
     {
       "id": "D03",
-      "result": "check-incomplete",
+      "result": "absent",
       "decision": "hold",
       "code": "NO_DECLARED_SCOPE",
       "checks": [

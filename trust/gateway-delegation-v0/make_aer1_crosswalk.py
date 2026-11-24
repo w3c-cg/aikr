@@ -62,13 +62,14 @@ FORWARD = {
     "verification failed": ("fail", "a committed value does not match: a finding, not a gap"),
     "rejected: unresolvable record": ("record-unresolved", "the record or what it points at cannot be resolved"),
     "not checked": ("check-incomplete", "an anchor is present but was not evaluated"),
-    "absent": ("(no equivalent)", "the member is missing altogether; this package has no absent state"),
+    "absent": ("absent", "nothing was declared for a check that needs a declaration; the remedy sits with the caller"),
 }
 
 BACKWARD = {
     "pass": "verified",
     "fail": "verification failed",
     "record-unresolved": "rejected: unresolvable record",
+    "absent": "absent",
     "check-incomplete": "not checked",
 }
 
@@ -82,7 +83,7 @@ lines.append(
 lines.append(
     "AER-1 is `draft-zambo-aer1`, kit 1.5.7; its index reports %d vectors and %d "
     "checks over %d files. This package is the 18 curated cases in `expected.json` "
-    "plus 102 vectors.\n" % (index.get("vector_count", 0), index.get("check_count", 0),
+    "plus 104 vectors.\n" % (index.get("vector_count", 0), index.get("check_count", 0),
                              len(index.get("files", []))))
 
 lines.append("## Direction 1 — AER-1 outcomes read with this decision map\n")
@@ -106,40 +107,43 @@ counts = {}
 for r in rows:
     counts[r["result"]] = counts.get(r["result"], 0) + 1
 lines.append("Across the 18 cases: " + ", ".join(
-    "%s %d" % (k, counts[k]) for k in ("pass", "fail", "record-unresolved", "check-incomplete")
+    "%s %d" % (k, counts[k]) for k in ("pass", "fail", "record-unresolved", "absent", "check-incomplete")
     if k in counts) + ". Every row lands in an AER-1 bucket; no row needed a sixth.\n")
 
-lines.append("## The one asymmetry\n")
+lines.append("## The fifth state, and why this package carries it now\n")
 absent_names = [v["name"] for v in vectors if v.get("expected_anchor_outcome") == "absent"]
 lines.append(
-    "AER-1 carries a fifth state this package does not have. In AER-1, `absent` "
-    "means the receipt carries no anchor member at all, and the draft's own note "
-    "says that state *must not collapse into an evaluated outcome*. Its vectors "
-    "`%s` are that state; `%s` is `not checked` (an anchor is present, the "
-    "verifier did not evaluate it), and the draft keeps the two apart because a "
-    "verifier that never attempted resolution must not look like one that "
-    "attempted and failed.\n" % (
+    "AER-1 carries five states, and its `absent` means the receipt carries no "
+    "member of the kind the check needs at all; the draft's own note says that "
+    "state *must not collapse into an evaluated outcome*. Its vectors `%s` are "
+    "that state; `%s` is `not checked` (a member is present, the verifier did not "
+    "evaluate it), and the draft keeps them apart because a verifier that never "
+    "attempted resolution must not look like one that attempted and failed.\n" % (
         ", ".join(absent_names), next((v["name"] for v in vectors
                                        if v.get("expected_anchor_outcome") == "not checked"),
                                       "anchor-not-checked")))
 lines.append(
-    "This package has no absent state, and that is the honest finding of the "
-    "crosswalk: case D03 (no scope declared) is the closest thing to it, and this "
-    "package reports D03 as `check-incomplete` with code `NO_DECLARED_SCOPE` — an "
-    "evaluated outcome. By AER-1's rule, \"nothing was supplied\" and \"something "
-    "was supplied and could not be checked\" are different reports, and a consumer "
-    "reading only the verdict cannot tell D03 from D08. That is the same class of "
-    "defect AER-1 exists to keep out, one level down from where it was fixed here.\n")
+    "This package reported D03 (no scope declared) as `check-incomplete` with code "
+    "`NO_DECLARED_SCOPE`, which is an evaluated outcome, and the first version of "
+    "this crosswalk recorded that as the one row the two vocabularies read "
+    "differently. The disagreement was resolved on the argument, not on "
+    "preference: in D03 every other check passes, and attenuation could not run "
+    "only because there was nothing to attenuate against, so the next step for a "
+    "reader is to go and get a declaration rather than to rerun a check that "
+    "completed correctly. The remedy sits with the caller, and the outcome now "
+    "does too: the package carries `absent` as a fourth non-pass state, decision "
+    "`hold`, exactly as AER-1's fifth. D03 reports `absent` and both directions "
+    "of the crosswalk are exact.\n")
 lines.append(
-    "Two ways to close it, and the choice is a policy choice, not a fact: keep "
-    "D03 where it is and state that `NO_DECLARED_SCOPE` means \"nothing was "
-    "declared\", or add a fourth reporting state (`absent`) whose decision is "
-    "`hold` as well. This package does not adopt either unilaterally: adopting a "
-    "fourth state in a vocabulary that other implementations already read would "
-    "change their inputs as well as ours, so the proposal belongs to the group "
-    "that maintains the vocabulary, not to this package. It is recorded here so "
-    "that a reviewer can say which one they would choose, which is the point of "
-    "publishing the two rows side by side.\n")
+    "The cost is real and is stated rather than hidden: a downstream reader of "
+    "this package's results now has four non-pass words to handle instead of "
+    "three, and an implementation that read the old three must add a branch. That "
+    "is why the state is adopted here, where the package's authors own the "
+    "vocabulary, while any wider adoption remains the decision of the group that "
+    "maintains it. The boundary case is drawn at what the record asserts: a "
+    "record that commits to a form it does not deliver is a `fail`, because a "
+    "committed value that does not match is a finding; a record that commits to "
+    "nothing is `absent`, because there is no finding to make.\n")
 
 lines.append("## What this crosswalk does not establish\n")
 lines.append(

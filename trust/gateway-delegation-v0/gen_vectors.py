@@ -42,11 +42,12 @@ def base():
 V = []
 
 # A hold states its side. The mapping is by code and is written here, next to
-# the expectations, so the vector set says which of the two kinds each row must
-# produce rather than leaving the checker to decide what "not determined" means.
+# the expectations, so the vector set says which kind each row must produce
+# rather than leaving the checker to decide what "not determined" means.
 RECORD_CODES = {"REVOCATION_UNKNOWN", "STALE_REVOCATION", "SOURCE_UNREACHABLE",
                 "REVOCATION_NOT_YET_EFFECTIVE", "POINTER_UNREACHABLE", "LINEAGE_UNRESOLVED"}
-CHECKER_CODES = {"WINDOW_UNPARSABLE", "NO_DECLARED_SCOPE", "OPAQUE_CONTENT", "SIGNER_KEY_UNSPECIFIED"}
+ABSENT_CODES = {"NO_DECLARED_SCOPE"}
+CHECKER_CODES = {"WINDOW_UNPARSABLE", "OPAQUE_CONTENT", "SIGNER_KEY_UNSPECIFIED"}
 
 
 def stated(result, code):
@@ -54,6 +55,8 @@ def stated(result, code):
         return result
     if code in RECORD_CODES:
         return "record-unresolved"
+    if code in ABSENT_CODES:
+        return "absent"
     if code in CHECKER_CODES:
         return "check-incomplete"
     raise SystemExit("unclassified hold code in expectations: %r" % code)

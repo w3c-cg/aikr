@@ -6,7 +6,7 @@
 
 A delegated-authority evaluation can be read two ways. The first is about the mandate: who issued it, what scope it names, whether it chains to a pinned anchor. The second is about the moment of use: what the gateway actually admits when a request arrives, and on what basis. This set covers the second. Each case fixes the inputs, states the check that decides it, and gives the result a checker is expected to reach, so implementations can compare behaviour against the same inputs rather than against prose.
 
-Results are three-valued at the decision layer and split at the reporting layer. **pass**, **fail**, and a hold that names its side: **record-unresolved** when the record, or what it points at, cannot be resolved (missing, unreachable, stale, not yet effective, or a citation that does not walk), and **check-incomplete** when the check itself could not be completed on the inputs supplied (unparsable window, no declared scope, opaque content, no key binding). Nothing is ever folded into pass or into fail. The decision follows the result: pass gives **allow**, fail gives **refuse**, and both kinds of hold give **hold**.
+Results are three-valued at the decision layer and split at the reporting layer. **pass**, **fail**, and three states that name why the answer is neither: **record-unresolved** when the record, or what it points at, cannot be resolved (missing, unreachable, stale, not yet effective, or a citation that does not walk); **absent** when the record carries no declaration a check needs, so there was nothing to compare against (no declared scope); and **check-incomplete** when the check itself could not be completed on the inputs supplied (unparsable window, opaque content, no key binding). The three are kept apart because the next step differs: obtain the record, obtain the declaration, or rerun the check. Nothing is ever folded into pass or into fail. The decision follows the result: pass gives **allow**, fail gives **refuse**, and all three non-pass states give **hold**.
 
 ## Origin
 
@@ -26,7 +26,7 @@ Every case is evaluated at a pinned instant, 2026-11-23T00:00:00Z. The revocatio
 |---|---|---|---|---|---|---|
 | D01 | Positive control: mandate valid, declared scope inside the grant, revocation fresh, pointer reachable. | All seven | pass | allow | — | — |
 | D02 | Attenuation under delegation: declared scope adds `tool:billing`, which the grant does not name. | Attenuation | fail | refuse | `SCOPE_WIDENED` | D01 |
-| D03 | No scope declared: the caller claims nothing, the gateway records a transport-peer basis. | Attenuation | check-incomplete | hold | `NO_DECLARED_SCOPE` | D01 |
+| D03 | No scope declared: the caller claims nothing, the gateway records a transport-peer basis. | Attenuation | absent | hold | `NO_DECLARED_SCOPE` | D01 |
 | D04 | Subject mismatch: a different agent presents the mandate of `agent:gw-agent`. | Subject | fail | refuse | `SUBJECT_MISMATCH` | D01 |
 | D05 | Expired mandate: the grant ended on 2026-11-20, before the evaluation instant. | Window | fail | refuse | `MANDATE_EXPIRED` | D01 |
 | D06 | Confused deputy by content: a valid mandate carries an inline instruction in the payload. | Content | fail | refuse | `CONTENT_OVERRIDE` | D01 |
@@ -43,7 +43,7 @@ Every case is evaluated at a pinned instant, 2026-11-23T00:00:00Z. The revocatio
 | D17 | Mandate signed by a key that is not the subject's key: the grant is attributable to someone else. | Signer key binding | fail | refuse | `SIGNER_KEY_NOT_BOUND` | D01 |
 | D18 | Mandate cites a predecessor by digest that does not resolve in the chain supplied with the case. | Lineage | record-unresolved | hold | `LINEAGE_UNRESOLVED` | D15 |
 
-Nine fails, eight holds (six `record-unresolved`, two `check-incomplete`), one pass. The asymmetry is deliberate: most real requests are not clean, and a set that mostly returns pass would not tell implementations apart.
+Nine fails, eight holds (six `record-unresolved`, one `absent`, one `check-incomplete`), one pass. The asymmetry is deliberate: most real requests are not clean, and a set that mostly returns pass would not tell implementations apart.
 
 Two files exist so the table can be checked without reading prose:
 `REPRODUCTION.md` (commands, interpreter, exit codes, observed output, the
@@ -105,7 +105,7 @@ its defect rows (I1 2/8 pass, I2 9/16, I3 1/6, I4 5/12, I5 4/8, I6 4/16,
 I7 1/8, I8 1/4, I9 1/4, I10 2/5, I11 1/6, combinations 1/11), so a checker that
 holds or refuses a whole class without discriminating is visible rather than
 flattered. `VECTORS.md` documents the grid and the distribution (pass 32 ·
-record-unresolved 18 · check-incomplete 7 · fail 47).
+record-unresolved 18 · absent 2 · check-incomplete 5 · fail 47).
 
 `check.mjs` is a second implementation, in JavaScript, written against the same
 published check order and code table. `crosscheck.py` runs both over the curated
@@ -128,7 +128,7 @@ The reference checker runs these checks in order and records each one's result:
 1. **subject** — the request's agent is the mandate's subject (`SUBJECT_MISMATCH`).
 2. **window** — the evaluation instant is inside the mandate's validity window (`MANDATE_EXPIRED`, `MANDATE_NOT_YET_VALID`, `WINDOW_UNPARSABLE`).
 3. **signature** — the mandate is signed and was verified at issue time (`MANDATE_UNSIGNED`). This set does not test signature algorithms; the field is a stand-in for a verification result reached elsewhere, and is stated as such rather than implied.
-4. **attenuation** — every declared scope item is inside the grant (`SCOPE_WIDENED`, `NO_DECLARED_SCOPE`).
+4. **attenuation** — every declared scope item is inside the grant (`SCOPE_WIDENED`). A request that declares nothing yields `absent` with code `NO_DECLARED_SCOPE`, never a pass on the ground that nothing was claimed.
 5. **content** — the payload is inspected before forwarding (`CONTENT_OVERRIDE`, `ROLE_SPOOF`, `OPAQUE_CONTENT`).
 6. **revocation** — status is known, current within the bound, effective at the evaluation instant, and not revoked (`REVOKED`, `SOURCE_UNREACHABLE`, `STALE_REVOCATION`, `REVOCATION_UNKNOWN`, `REVOCATION_NOT_YET_EFFECTIVE`). A record whose own `effectiveFrom` is later than the evaluation instant is record-unresolved, not a refusal: the gateway cannot decide on an effect that has not begun.
 7. **evidence pointer** — what the record points at is reachable at verification time (`POINTER_UNREACHABLE`).
@@ -136,7 +136,7 @@ The reference checker runs these checks in order and records each one's result:
 9. **lineage** — a cited predecessor resolves inside the chain supplied with the case (`LINEAGE_UNRESOLVED`). A citation that exists but cannot be walked is an unknown.
 10. **receipt on refusal** — when the result is a refusal, the case must carry a receipt binding the decision, the case id and the policy digest (`RECEIPT_MISSING_ON_REFUSE`). A refusal nobody can attribute to a policy afterwards is itself a defect; the primary failing code stays first so the reason for the refusal is not buried.
 
-Any fail gives fail. Otherwise any record-unresolved gives record-unresolved; a check-incomplete is reported only when nothing on the record side is unresolved. Only if all ten pass is the result pass. The row also carries a split listing (`unknown.record` and `unknown.checker`), so a consumer that reads only the result still learns which side it is on, and one that reads the split learns why. A hold is not a refusal, and a refusal is not a finding of malice: the decision map is in `policy.json` so a reader can see which policy this set was evaluated under.
+Any fail gives fail. Otherwise any record-unresolved gives record-unresolved; otherwise any absent gives absent, since a declaration the record never made is a fact about the record and not about the checker; a check-incomplete is reported only when nothing on the record side is unresolved and nothing is absent. Only if all ten pass is the result pass. The row also carries a split listing (`unknown.record`, `unknown.absent` and `unknown.checker`), so a consumer that reads only the result still learns which side it is on, and one that reads the split learns why. A hold is not a refusal, and a refusal is not a finding of malice: the decision map is in `policy.json` so a reader can see which policy this set was evaluated under.
 
 ## How to run
 
@@ -162,7 +162,7 @@ No dependencies beyond the Python standard library, no network, no credentials. 
 5. removing a refusal's receipt makes the receipt check fail, and adding a bound receipt clears it (D16), so the receipt requirement is not decorative;
 6. adding the cited digest to D18's chain clears its unresolved verdict, so an empty-but-present citation cannot pass as a walked chain;
 7. the policy digest is recomputed from `policy.json` itself and must match the stored value, so a receipt cannot bind to a policy that nobody can reproduce;
-8. a hold names its side: a record-only case gives `record-unresolved`, a checker-only case gives `check-incomplete`, and a case with one of each reports both in `unknown.record` and `unknown.checker` while the result row stays on `record-unresolved`;
+8. a hold names its side: a record-only case gives `record-unresolved`, a checker-only case gives `check-incomplete`, an undeclared-scope case gives `absent`, and a case with all three reports each in `unknown.record`, `unknown.absent` and `unknown.checker` while the result row stays on `record-unresolved`;
 9. all 104 vectors match the outcomes they state, with the distribution printed — a vector set that only restates the checker's output would pass this item vacuously, which is why the expectations live in the vector files and not in `expected.json`.
 
 ## Boundaries

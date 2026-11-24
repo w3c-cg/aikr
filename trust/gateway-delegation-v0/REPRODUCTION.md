@@ -30,7 +30,7 @@ python policy_digest.py --check  # digest recomputed from policy.json, exit 0
 Observed on the run above:
 
 ```
-122 cases: check-incomplete 9, fail 56, pass 33, record-unresolved 24
+122 cases: absent 3, check-incomplete 6, fail 56, pass 33, record-unresolved 24
 
 [OK] expected.json matches the checker on 18 cases
 [OK] a permissive checker (content ignored, unknown folded into pass) is caught on 13 cases:
@@ -41,9 +41,10 @@ Observed on the run above:
 [OK] lineage test: D18 with the cited digest added to the chain no longer holds as unresolved
 [OK] policy digest: recomputed from policy.json, matches the stored value
 [OK] split test: record-only -> record-unresolved, checker-only -> check-incomplete,
-     mixed -> record-unresolved with POINTER_UNREACHABLE/WINDOW_UNPARSABLE
+     absent-only -> absent, mixed -> record-unresolved with
+     POINTER_UNREACHABLE/NO_DECLARED_SCOPE/WINDOW_UNPARSABLE
 [OK] vector set: 104 rows match their stated expectations (0 mismatches)
-      distribution: pass 32 / record-unresolved 18 / check-incomplete 7 / fail 47
+      distribution: pass 32 / record-unresolved 18 / absent 2 / check-incomplete 5 / fail 47
 
 rows compared: 122 (curated 18 + vectors 104)
 disagreements: 0
@@ -77,8 +78,9 @@ if any expectation is missed.
    from the file would fail here.
 8. **A hold names its side** — three cases built from D01 in memory: record-only
    (unreachable evidence pointer) gives `record-unresolved`; checker-only
-   (unparsable mandate window) gives `check-incomplete`; one of each gives
-   `record-unresolved` *and* fills both `unknown.record` and `unknown.checker`.
+   (unparsable mandate window) gives `check-incomplete`; undeclared-scope-only
+   gives `absent`; all three together give `record-unresolved` *and* fill
+   `unknown.record`, `unknown.absent` and `unknown.checker`.
    If the split is folded back into one bucket, this item fails.
 9. **The vector set matches what it states** — 104 vectors carry their own
    `expect` block, written with the vector rather than derived from a run. If any

@@ -34,7 +34,7 @@
   "about": "Declared scope is empty.",
   "why": "Claiming nothing is not evidence of a narrow grant.",
   "expect": {
-    "result": "check-incomplete",
+    "result": "absent",
     "code": "NO_DECLARED_SCOPE"
   }
 }

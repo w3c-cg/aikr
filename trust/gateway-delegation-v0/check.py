@@ -21,16 +21,21 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PASS, FAIL = "pass", "fail"
-# Two kinds of "not determined", kept apart because the remedy differs:
+# Three kinds of "not determined", kept apart because the remedy differs. The
+# remedy is the whole point: a downstream reader who only sees the result word
+# must be able to tell "go and get the record" from "go and get a declaration"
+# from "rerun the check".
 RECORD = "record-unresolved"   # the record, or what it points at, cannot be resolved
+ABSENT = "absent"              # nothing was declared, so there was nothing to check against
 CHECKER = "check-incomplete"   # the check itself could not be completed
 # Any hold that is about the record rather than about the checker's own inputs.
 RECORD_CODES = {
     "REVOCATION_UNKNOWN", "STALE_REVOCATION", "SOURCE_UNREACHABLE",
     "REVOCATION_NOT_YET_EFFECTIVE", "POINTER_UNREACHABLE", "LINEAGE_UNRESOLVED",
 }
+ABSENT_CODES = {"NO_DECLARED_SCOPE"}
 CHECKER_CODES = {
-    "WINDOW_UNPARSABLE", "NO_DECLARED_SCOPE", "OPAQUE_CONTENT", "SIGNER_KEY_UNSPECIFIED",
+    "WINDOW_UNPARSABLE", "OPAQUE_CONTENT", "SIGNER_KEY_UNSPECIFIED",
 }
 
 
@@ -97,7 +102,9 @@ def check_case(case, policy):
     declared = request.get("declaredScope") or []
     granted = mandate.get("grantedScope") or []
     if not declared:
-        checks.append(("attenuation", CHECKER, "NO_DECLARED_SCOPE"))
+        # There is nothing to compare the grant against. The remedy is not a
+        # rerun of this check: it is a declaration from the caller.
+        checks.append(("attenuation", ABSENT, "NO_DECLARED_SCOPE"))
     else:
         outside = [item for item in declared if item not in granted]
         if outside:
@@ -189,6 +196,11 @@ def check_case(case, policy):
         # A record that cannot be resolved outranks a check we could not run:
         # the first is a statement about the record, the second about us.
         result = RECORD
+    elif ABSENT in results:
+        # Nothing was declared outranks a check we could not run too, and for the
+        # same reason: the missing declaration is a fact about the record, and
+        # the remedy sits with whoever holds it.
+        result = ABSENT
     elif CHECKER in results:
         result = CHECKER
     else:
@@ -238,6 +250,7 @@ def run(cases, policy, checker=check_case):
             "code": code,
             "unknown": {
                 "record": [item[2] for item in checks if item[1] == RECORD],
+                "absent": [item[2] for item in checks if item[1] == ABSENT],
                 "checker": [item[2] for item in checks if item[1] == CHECKER],
             },
             "checks": [{"check": name, "result": res, "code": c} for name, res, c in checks],
@@ -371,8 +384,8 @@ def selftest():
     if not ok:
         failures += 1
 
-    # A hold must say which side it is on, and a row with one of each must report
-    # both rather than folding them into one bucket.
+    # A hold must say which side it is on, and a row with more than one must
+    # report all of them rather than folding them into one bucket.
     base_case = next((c for c in cases if c.get("id") == "D01"), None)
     if base_case is None:
         print("[FAIL] split test: D01 not found")
@@ -382,21 +395,26 @@ def selftest():
         rec_only["evidence"] = {"pointer": "unreachable", "checkedAt": "2026-11-22T23:00:00Z"}
         chk_only = json.loads(json.dumps(base_case))
         chk_only["mandate"]["issuedAt"] = "not-a-date"
+        abs_only = json.loads(json.dumps(base_case))
+        abs_only["request"]["declaredScope"] = []
         mixed = json.loads(json.dumps(base_case))
         mixed["evidence"] = {"pointer": "unreachable", "checkedAt": "2026-11-22T23:00:00Z"}
         mixed["mandate"]["issuedAt"] = "not-a-date"
+        mixed["request"]["declaredScope"] = []
         r_rec = check_case(rec_only, policy)[0]
         r_chk = check_case(chk_only, policy)[0]
+        r_abs = check_case(abs_only, policy)[0]
         r_mix, _, mix_checks = check_case(mixed, policy)
         groups = {
             "record": [c[2] for c in mix_checks if c[1] == RECORD],
+            "absent": [c[2] for c in mix_checks if c[1] == ABSENT],
             "checker": [c[2] for c in mix_checks if c[1] == CHECKER],
         }
-        ok = (r_rec == RECORD and r_chk == CHECKER and r_mix == RECORD
-              and groups["record"] and groups["checker"])
-        print("[%s] split test: record-only -> %s, checker-only -> %s, mixed -> %s with %s" % (
-            "OK" if ok else "FAIL", r_rec, r_chk, r_mix,
-            "/".join(groups["record"] + groups["checker"])))
+        ok = (r_rec == RECORD and r_chk == CHECKER and r_abs == ABSENT and r_mix == RECORD
+              and groups["record"] and groups["absent"] and groups["checker"])
+        print("[%s] split test: record-only -> %s, checker-only -> %s, absent-only -> %s, mixed -> %s with %s" % (
+            "OK" if ok else "FAIL", r_rec, r_chk, r_abs, r_mix,
+            "/".join(groups["record"] + groups["absent"] + groups["checker"])))
         if not ok:
             failures += 1
 
@@ -413,9 +431,10 @@ def selftest():
     if vbad:
         print("      mismatches: %s" % ", ".join(vbad))
         failures += 1
-    print("      distribution: pass %d / record-unresolved %d / check-incomplete %d / fail %d" % (
+    print("      distribution: pass %d / record-unresolved %d / absent %d / check-incomplete %d / fail %d" % (
         sum(1 for v in vrows if v["result"] == "pass"),
         sum(1 for v in vrows if v["result"] == RECORD),
+        sum(1 for v in vrows if v["result"] == ABSENT),
         sum(1 for v in vrows if v["result"] == CHECKER),
         sum(1 for v in vrows if v["result"] == "fail")))
     return 1 if failures else 0

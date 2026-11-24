@@ -36,7 +36,7 @@ match = re.search(r"caught on \d+ cases: ([\d, A-Z]+)", out.stdout)
 disagree = [s.strip() for s in match.group(1).split(",")] if match else []
 
 SEGS = [("pass", "#1a7f37"), ("record-unresolved", "#9a6700"),
-        ("check-incomplete", "#0969da"), ("fail", "#b42318")]
+        ("absent", "#8250df"), ("check-incomplete", "#0969da"), ("fail", "#b42318")]
 
 total = len(rows)
 seg_html = "".join(
@@ -69,11 +69,12 @@ claims = [
     ("Policy digest is reproducible",
      "the digest is recomputed from <code>policy.json</code> itself and must equal the stored value."),
     ("A hold names its side",
-     "record-only gives record-unresolved, checker-only gives check-incomplete, and one of each "
-     "reports both in <code>unknown.record</code> and <code>unknown.checker</code> while the verdict "
-     "stays on record-unresolved."),
+     "record-only gives record-unresolved, checker-only gives check-incomplete, undeclared-scope-only "
+     "gives absent, and all three together report each in <code>unknown.record</code>, "
+     "<code>unknown.absent</code> and <code>unknown.checker</code> while the verdict stays on "
+     "record-unresolved."),
     ("Vector set matches what it states",
-     "102 vectors carry their own <code>expect</code> block; any disagreement fails the run."),
+     "%d vectors carry their own <code>expect</code> block; any disagreement fails the run." % len(vectors)),
 ]
 claims_html = "".join("<li><strong>%s</strong> — %s</li>" % (t, b) for t, b in claims)
 
@@ -106,18 +107,18 @@ td.d{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
 .claims li{margin:6px 0}
 </style></head><body><div class="wrap">
 <h1>Gateway delegation v0 — evidence board</h1>
-<p class="sub">@@TOTAL@@ rows — 18 curated cases and 102 vectors, one decision each, at <code>@@EVAL@@</code>. Revocation freshness bound: <strong>24 h</strong>. Two implementations (Python and JavaScript) agree on all @@TOTAL@@ rows and on which side every hold is on.</p>
+<p class="sub">@@TOTAL@@ rows — 18 curated cases and @@VN@@ vectors, one decision each, at <code>@@EVAL@@</code>. Revocation freshness bound: <strong>24 h</strong>. Two implementations (Python and JavaScript) agree on all @@TOTAL@@ rows and on which side every hold is on.</p>
 
 <div class="card">
   <h2>Verdict distribution</h2>
   <div class="bar">@@SEGS@@</div>
-  <div class="foot">pass @@P@@ · record-unresolved @@R@@ · check-incomplete @@C@@ · fail @@F@@ ｜ allow @@P@@ / hold @@HOLD@@ / refuse @@F@@ ｜ @@CODES@@ distinct codes</div>
-  <div class="foot">A hold carries its side: <code>record-unresolved</code> when the record or what it points at cannot be resolved, <code>check-incomplete</code> when the check could not be completed on the inputs supplied. A record that cannot be resolved outranks a check we could not run; both give hold.</div>
+  <div class="foot">pass @@P@@ · record-unresolved @@R@@ · absent @@A@@ · check-incomplete @@C@@ · fail @@F@@ ｜ allow @@P@@ / hold @@HOLD@@ / refuse @@F@@ ｜ @@CODES@@ distinct codes</div>
+  <div class="foot">A non-pass outcome carries its side: <code>record-unresolved</code> when the record or what it points at cannot be resolved, <code>absent</code> when the record carries no declaration a check needs, <code>check-incomplete</code> when the check could not be completed on the inputs supplied. A record that cannot be resolved outranks a declaration never made, which in turn outranks a check we could not run; all three give hold.</div>
   <div id="selfcheck"></div>
 </div>
 
 <div class="card"><h2>Vector set</h2>
-  <div class="foot">vectors 102 ｜ pass @@VP@@ / record-unresolved @@VR@@ / check-incomplete @@VC@@ / fail @@VF@@ ｜ classes covered I1–I11</div>
+  <div class="foot">vectors @@VN@@ ｜ pass @@VP@@ / record-unresolved @@VR@@ / absent @@VA@@ / check-incomplete @@VC@@ / fail @@VF@@ ｜ classes covered I1–I11</div>
   <div class="foot">Each vector states the outcome it must produce; the selftest compares that statement to the checker, and <code>crosscheck.py</code> compares the Python result to the JavaScript one row by row, verdict and hold group both.</div>
 </div>
 
@@ -154,7 +155,7 @@ td.d{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
   }
   document.getElementById('selfcheck').innerHTML = bad
     ? '<span class="bad">self-check failed: ' + msg.join('; ') + '</span>'
-    : '<span class="ok">self-check passed: ' + rendered + ' rows, four segment counts, header total and the ' + p.disagree.length + '-case disagreement list all re-computed from the embedded JSON.</span>';
+    : '<span class="ok">self-check passed: ' + rendered + ' rows, five segment counts, header total and the ' + p.disagree.length + '-case disagreement list all re-computed from the embedded JSON.</span>';
 })();
 </script>
 </body></html>
@@ -162,14 +163,18 @@ td.d{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
 
 FILL = {
     "@@TOTAL@@": str(total), "@@EVAL@@": policy["evaluatedAt"], "@@SEGS@@": seg_html,
+    "@@VN@@": str(len(vectors)),
     "@@P@@": str(tally.get("pass", 0)),
     "@@R@@": str(tally.get("record-unresolved", 0)),
+    "@@A@@": str(tally.get("absent", 0)),
     "@@C@@": str(tally.get("check-incomplete", 0)),
     "@@F@@": str(tally.get("fail", 0)),
-    "@@HOLD@@": str(tally.get("record-unresolved", 0) + tally.get("check-incomplete", 0)),
+    "@@HOLD@@": str(tally.get("record-unresolved", 0) + tally.get("absent", 0)
+                     + tally.get("check-incomplete", 0)),
     "@@CODES@@": str(codes),
     "@@VP@@": str(vtally.get("pass", 0)),
     "@@VR@@": str(vtally.get("record-unresolved", 0)),
+    "@@VA@@": str(vtally.get("absent", 0)),
     "@@VC@@": str(vtally.get("check-incomplete", 0)),
     "@@VF@@": str(vtally.get("fail", 0)),
     "@@ROWS@@": table_rows, "@@CLAIMS@@": claims_html, "@@PAYLOAD@@": payload,

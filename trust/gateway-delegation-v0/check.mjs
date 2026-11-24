@@ -17,6 +17,7 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const PASS = "pass";
 const FAIL = "fail";
 const RECORD = "record-unresolved";   // the record, or what it points at, cannot be resolved
+const ABSENT = "absent";              // nothing was declared, so there was nothing to check against
 const CHECKER = "check-incomplete";  // the check itself could not be completed
 
 function readJSON(p) {
@@ -64,7 +65,7 @@ function checkCase(c, policy) {
 
   const declared = request.declaredScope || [];
   const granted = mandate.grantedScope || [];
-  if (!declared.length) add("attenuation", CHECKER, "NO_DECLARED_SCOPE");
+  if (!declared.length) add("attenuation", ABSENT, "NO_DECLARED_SCOPE");
   else if (declared.some((s) => !granted.includes(s))) add("attenuation", FAIL, "SCOPE_WIDENED");
   else add("attenuation", PASS);
 
@@ -130,6 +131,7 @@ function checkCase(c, policy) {
   let result = PASS;
   if (results.includes(FAIL)) result = FAIL;
   else if (results.includes(RECORD)) result = RECORD;      // a record we cannot resolve outranks a check we cannot run
+  else if (results.includes(ABSENT)) result = ABSENT;       // so does a declaration the record never made
   else if (results.includes(CHECKER)) result = CHECKER;
   const first = checks.find((x) => x.code);
   return {
@@ -139,6 +141,7 @@ function checkCase(c, policy) {
     code: first ? first.code : "",
     unknown: {
       record: checks.filter((x) => x.result === RECORD).map((x) => x.code),
+      absent: checks.filter((x) => x.result === ABSENT).map((x) => x.code),
       checker: checks.filter((x) => x.result === CHECKER).map((x) => x.code),
     },
   };

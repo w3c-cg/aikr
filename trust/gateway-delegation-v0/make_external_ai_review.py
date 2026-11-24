@@ -97,6 +97,19 @@ readers briefed in opposite directions, given only the material, did not find th
 packet self-contradictory, and that the objections they did raise were specific
 enough to act on. The dispositions above say which ones were acted on and which
 were not, and why.
+
+## Addendum, 2026-11-24 — the vocabulary gained a fourth non-pass state
+
+Both reviews above were run when the package reported three non-pass outcomes.
+On the argument of an external reviewer holding the interop corpus this package
+is crosswalked against, D03 (`NO_DECLARED_SCOPE`) moved out of `check-incomplete`
+into a fourth state, `absent`: nothing was declared, so there was nothing to
+compare against, and the next step for a reader is to obtain a declaration rather
+than to rerun a check that completed correctly. `AER1-CROSSWALK.md` now reads
+exactly in both directions. Quoted material above is left as the reviewers wrote
+it, including the places where C3 misread the package (D10 as a mixed row, D16 as
+a hold); a quote edited to match a later version of the code would no longer be
+evidence of what the reviewer actually saw.
 """
 
 out = PREAMBLE + c3 + MID + c4 + TAIL

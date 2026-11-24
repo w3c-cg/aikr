@@ -33,7 +33,7 @@
   "about": "Declared scope field is absent.",
   "why": "An absent declaration is the same unknown as an empty one.",
   "expect": {
-    "result": "check-incomplete",
+    "result": "absent",
     "code": "NO_DECLARED_SCOPE"
   }
 }

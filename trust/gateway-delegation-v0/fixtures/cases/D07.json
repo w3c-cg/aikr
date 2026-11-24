@@ -39,6 +39,6 @@
   "receipt": {
     "decision": "refuse",
     "caseId": "D07",
-    "policyDigest": "sha256:3bc9aba593992d8628e332e6f29898beb150958aa83b13f2e379abe6286e0c6d"
+    "policyDigest": "sha256:e94bf7b1822302f8e565d8594911d52a45b52796a16fe3984ce76a53bd046744"
   }
 }

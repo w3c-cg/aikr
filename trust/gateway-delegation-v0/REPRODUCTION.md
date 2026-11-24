@@ -71,24 +71,28 @@ if any expectation is missed.
 
 ## Cross-machine check
 
-Run on a second machine and network path: Ubuntu, CPython 3.12.11, in a clean
-directory cloned over the public network with no credentials
+Run on a second machine and network path: Ubuntu, CPython 3.12.11, Node 22.23.4,
+in a clean directory cloned over the public network with no credentials
 (`git clone -q --branch gateway-delegation-v0 --single-branch
-https://github.com/zhaoxinghua09-cell/aikr.git`), at commit `7900005`.
+https://github.com/zhaoxinghua09-cell/aikr.git`), at commit `80b495e`.
 
 ```
-python3 check.py            -> 18 rows, exit 0
-  18 cases: could-not-determine 8, fail 9, pass 1
-python3 check.py --selftest -> six [OK] lines, exit 0
-sha256sum -c SHA256SUMS     -> 25 files, 0 mismatches
+python3 check.py            -> 120 rows, exit 0
+  120 cases: could-not-determine 33, fail 56, pass 31
+python3 check.py --selftest -> seven [OK] lines, exit 0
+  [OK] vector set: 102 rows match their stated expectations (0 mismatches)
+python3 crosscheck.py       -> rows compared: 120, disagreements: 0, exit 0
+sha256sum -c SHA256SUMS     -> 131 files, 0 mismatches
 ```
 
-Output and exit codes matched the Windows run on every row, including D16–D18.
-The first Linux attempt failed at `sha256sum -c` only because `SHA256SUMS` had
-backslash paths from the Windows build; the manifest now uses `/` separators and
-the check passes on both. If your run differs, the useful report is the row that
-differs and your interpreter version — that is the kind of disagreement this set
-exists to surface.
+Every row matched the Windows run, and both implementations agreed on all 120
+rows on a third platform-independent pair of interpreters (CPython here, Node
+there). An earlier Linux attempt on the 18-case revision failed at
+`sha256sum -c` only because the manifest carried Windows backslash paths; it now
+uses `/` and passes on both. That is recorded rather than quietly fixed. If your
+run differs, the useful report is the row that differs and your interpreter
+version — that is the kind of disagreement this set exists to surface.
+
 ## Integrity
 
 `SHA256SUMS` carries a digest for every file here except itself, so what you run

@@ -90,15 +90,17 @@ if any expectation is missed.
 Run on a second machine and network path: Ubuntu, CPython 3.12.11, Node 22.23.4,
 in a clean directory cloned over the public network with no credentials
 (`git clone -q --branch gateway-delegation-v0 --single-branch
-https://github.com/zhaoxinghua09-cell/aikr.git`), at commit `80b495e`.
+https://github.com/zhaoxinghua09-cell/aikr.git`), at commit `8d9dc45`.
 
 ```
 python3 check.py            -> 122 rows, exit 0
   122 cases: check-incomplete 9, fail 56, pass 33, record-unresolved 24
-python3 check.py --selftest -> seven [OK] lines, exit 0
+python3 check.py --selftest -> nine [OK] lines, exit 0
+  [OK] policy digest: recomputed from policy.json, matches the stored value
+  [OK] split test: record-only -> record-unresolved, checker-only -> check-incomplete, ...
   [OK] vector set: 104 rows match their stated expectations (0 mismatches)
 python3 crosscheck.py       -> rows compared: 122, disagreements: 0, exit 0
-sha256sum -c SHA256SUMS     -> 131 files, 0 mismatches
+sha256sum -c SHA256SUMS     -> 143 files, 0 mismatches
 ```
 
 Every row matched the Windows run, and both implementations agreed on all 122

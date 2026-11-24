@@ -51,4 +51,4 @@ for row in disagree:
     print("  %s  python=%s/%s  javascript=%s/%s" % (row[0], row[1][0], row[1][1], row[2][0], row[2][1]))
 if disagree:
     sys.exit(1)
-print("two implementations, same verdict on every row")
+print("two implementations, same verdict and same hold group on every row")

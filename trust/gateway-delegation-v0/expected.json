@@ -528,6 +528,138 @@
         }
       ],
       "about": "Verification-time reachability: the record points at evidence that cannot be reached."
+    },
+    {
+      "id": "D13",
+      "result": "could-not-determine",
+      "decision": "hold",
+      "code": "STALE_REVOCATION",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "could-not-determine",
+          "code": "STALE_REVOCATION"
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        }
+      ],
+      "about": "Revocation evidence just outside the freshness bound: 25 hours old at the evaluation instant, one hour past the 24-hour bound."
+    },
+    {
+      "id": "D14",
+      "result": "could-not-determine",
+      "decision": "hold",
+      "code": "REVOCATION_NOT_YET_EFFECTIVE",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "could-not-determine",
+          "code": "REVOCATION_NOT_YET_EFFECTIVE"
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        }
+      ],
+      "about": "Revocation recorded but effective in the future: the record exists at the evaluation instant, its effect does not."
+    },
+    {
+      "id": "D15",
+      "result": "fail",
+      "decision": "refuse",
+      "code": "MANDATE_UNSIGNED",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "fail",
+          "code": "MANDATE_UNSIGNED"
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        }
+      ],
+      "about": "Mandate with no signature field at all: not a bad signature, an absent one."
     }
   ]
 }

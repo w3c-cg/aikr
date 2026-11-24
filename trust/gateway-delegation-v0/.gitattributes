@@ -1,0 +1,6 @@
+# Keep this package byte-identical across checkouts: LF everywhere, UTF-8, no BOM.
+* text=auto eol=lf
+*.json text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.html text eol=lf

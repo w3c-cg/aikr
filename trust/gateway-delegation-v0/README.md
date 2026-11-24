@@ -36,8 +36,17 @@ Every case is evaluated at a pinned instant, 2026-11-23T00:00:00Z. The revocatio
 | D10 | Revocation source unreachable at evaluation time. | Revocation | could-not-determine | hold | `SOURCE_UNREACHABLE` | D01 |
 | D11 | Stale revocation check: last successful lookup on 2026-11-20, beyond the 24 hour bound. | Revocation | could-not-determine | hold | `STALE_REVOCATION` | D09 |
 | D12 | Verification-time reachability: the record points at evidence that cannot be reached. | Evidence pointer | could-not-determine | hold | `POINTER_UNREACHABLE` | D01 |
+| D13 | Bound edge: the revocation check is 25 hours old at the evaluation instant, one hour outside the 24 hour bound. | Revocation | could-not-determine | hold | `STALE_REVOCATION` | D11 |
+| D14 | Revocation recorded with `effectiveFrom` in the future: the record exists, its effect does not. | Revocation | could-not-determine | hold | `REVOCATION_NOT_YET_EFFECTIVE` | D09 |
+| D15 | Mandate with no `signature` field at all — absent, not merely wrong. | Signature | fail | refuse | `MANDATE_UNSIGNED` | D01 |
 
-Six fails, five could-not-determine, one pass. The asymmetry is deliberate: most real requests are not clean, and a set that mostly returns pass would not tell implementations apart.
+Seven fails, seven could-not-determine, one pass. The asymmetry is deliberate: most real requests are not clean, and a set that mostly returns pass would not tell implementations apart.
+
+Two files exist so the table can be checked without reading prose:
+`REPRODUCTION.md` (commands, interpreter, exit codes, observed output, the
+second-machine run and the integrity check) and `EVIDENCE-BOARD.html`
+(a single offline page whose row count and tallies are re-computed from
+`expected.json` when opened, and which says so if they disagree).
 
 ### Why D08 is a hold and not a refusal
 
@@ -56,7 +65,7 @@ The reference checker runs these checks in order and records each one's result:
 3. **signature** — the mandate is signed and was verified at issue time (`MANDATE_UNSIGNED`). This set does not test signature algorithms; the field is a stand-in for a verification result reached elsewhere, and is stated as such rather than implied.
 4. **attenuation** — every declared scope item is inside the grant (`SCOPE_WIDENED`, `NO_DECLARED_SCOPE`).
 5. **content** — the payload is inspected before forwarding (`CONTENT_OVERRIDE`, `ROLE_SPOOF`, `OPAQUE_CONTENT`).
-6. **revocation** — status is known, current within the bound, and not revoked (`REVOKED`, `SOURCE_UNREACHABLE`, `STALE_REVOCATION`, `REVOCATION_UNKNOWN`).
+6. **revocation** — status is known, current within the bound, effective at the evaluation instant, and not revoked (`REVOKED`, `SOURCE_UNREACHABLE`, `STALE_REVOCATION`, `REVOCATION_UNKNOWN`, `REVOCATION_NOT_YET_EFFECTIVE`). A record whose own `effectiveFrom` is later than the evaluation instant is could-not-determine, not a refusal: the gateway cannot decide on an effect that has not begun.
 7. **evidence pointer** — what the record points at is reachable at verification time (`POINTER_UNREACHABLE`).
 
 Any fail gives fail. Otherwise any could-not-determine gives could-not-determine. Only if all seven pass is the result pass. A hold is not a refusal, and a refusal is not a finding of malice: the decision map is in `policy.json` so a reader can see which policy this set was evaluated under.
@@ -69,15 +78,16 @@ python3 check.py --json out.json  # machine-readable results
 python3 check.py --selftest       # three checks on the set itself
 ```
 
-No dependencies beyond the Python standard library, no network, no credentials. `SHA256SUMS` carries a digest for every file in this directory except itself, so a reader can check that what they run is what was reviewed. `--selftest` verifies three things:
+No dependencies beyond the Python standard library, no network, no credentials. `SHA256SUMS` carries a digest for every file in this directory except itself, so a reader can check that what they run is what was reviewed. `--selftest` verifies four things:
 
-1. `expected.json` matches the checker on all twelve cases;
-2. a deliberately permissive checker — content ignored, unknown folded into pass, staleness ignored — is caught on eight of the twelve (`D03, D05, D06, D07, D08, D10, D11, D12`);
-3. changing one fixture moves its result (D02 with an in-grant scope collapses to pass), which shows the table is computed from the fixtures rather than asserted.
+1. `expected.json` matches the checker on all fifteen cases;
+2. a deliberately permissive checker — content ignored, unknown folded into pass, staleness ignored — is caught on eleven of the fifteen (`D03, D05, D06, D07, D08, D10, D11, D12, D13, D14, D15`);
+3. changing one fixture moves its result (D02 with an in-grant scope collapses to pass), which shows the table is computed from the fixtures rather than asserted;
+4. widening the revocation bound from 24 to 25 hours changes D13 from `could-not-determine` to `pass`, so a silently loosened bound is visible rather than absorbed.
 
 ## Boundaries
 
-This set is twelve synthetic cases, not a certification and not a conformance suite for any product. It says nothing about cryptographic correctness, network identity, or the truth of any statement a record points at. It does not test performance, concurrency, or multi-hop chains; a chain case would need a separate set. The mandate signature field stands in for a verification result so that the runtime checks can be tested in isolation.
+This set is fifteen synthetic cases, not a certification and not a conformance suite for any product. It says nothing about cryptographic correctness, network identity, or the truth of any statement a record points at. It does not test performance, concurrency, or multi-hop chains; a chain case would need a separate set. The mandate signature field stands in for a verification result so that the runtime checks can be tested in isolation.
 
 Where a policy has a choice, `policy.json` records the choice made here. A different policy may legitimately decide D08 differently; the check result would still be could-not-determine, and the decision would differ.
 

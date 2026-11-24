@@ -1,0 +1,34 @@
+{
+  "id": "D14",
+  "about": "Revocation recorded but effective in the future: the record exists at the evaluation instant, its effect does not.",
+  "mandate": {
+    "subject": "agent:gw-agent",
+    "grantedScope": [
+      "tool:search",
+      "tool:summarise"
+    ],
+    "issuedAt": "2026-11-01T00:00:00Z",
+    "expiresAt": "2026-12-01T00:00:00Z",
+    "signature": "ok"
+  },
+  "request": {
+    "agentId": "agent:gw-agent",
+    "declaredScope": [
+      "tool:search"
+    ],
+    "transportPeer": "agent:gw-agent",
+    "payload": {
+      "text": "summarise the attached note"
+    }
+  },
+  "revocation": {
+    "status": "revoked",
+    "effectiveFrom": "2026-11-24T00:00:00Z",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "evidence": {
+    "pointer": "reachable",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "why": "Evaluated at 2026-11-23T00:00:00Z. The status says revoked, the record's own effectiveFrom says the effect starts one day later. A checker that reads only `status` refuses here; the correct reading is that the gateway cannot decide on the strength of a record whose effect has not begun, so could-not-determine (hold) with a distinct code rather than a plain REVOKED. Paired control: D11 has a revocation effective in the past, which must still refuse."
+}

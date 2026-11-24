@@ -118,7 +118,14 @@ def check_case(case, policy):
         else:
             checks.append(("revocation", PASS, ""))
     elif status == "revoked":
-        checks.append(("revocation", FAIL, "REVOKED"))
+        try:
+            effective = parse_time(revocation["effectiveFrom"])
+        except (KeyError, ValueError, TypeError):
+            effective = None
+        if effective is not None and now < effective:
+            checks.append(("revocation", UNKNOWN, "REVOCATION_NOT_YET_EFFECTIVE"))
+        else:
+            checks.append(("revocation", FAIL, "REVOKED"))
     elif status == "unreachable":
         checks.append(("revocation", UNKNOWN, "SOURCE_UNREACHABLE"))
     else:
@@ -231,6 +238,22 @@ def selftest():
             "OK" if ok else "FAIL", result))
         if not ok:
             failures += 1
+    # A policy change must move the result too. D13 sits one hour outside the
+    # 24-hour revocation bound; widening the bound to 25 hours makes it pass,
+    # so a silently loosened bound is visible instead of being absorbed.
+    widened = json.loads(json.dumps(policy))
+    widened["revocationFreshnessBoundSeconds"] = 90000
+    flipped = []
+    for case in cases:
+        ref = next(r for r in rows if r["id"] == case["id"])
+        result, _, _ = check_case(case, widened)
+        if result != ref["result"]:
+            flipped.append(case["id"])
+    ok = "D13" in flipped
+    print("[%s] bound test: 24h -> 25h changes %d case(s) (%s)" % (
+        "OK" if ok else "FAIL", len(flipped), ", ".join(flipped) or "none"))
+    if not ok:
+        failures += 1
     return 1 if failures else 0
 
 

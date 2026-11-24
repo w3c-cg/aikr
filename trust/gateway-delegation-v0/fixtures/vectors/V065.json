@@ -1,0 +1,46 @@
+{
+  "mandate": {
+    "subject": "agent:gw-agent",
+    "grantedScope": [
+      "tool:search",
+      "tool:summarise"
+    ],
+    "issuedAt": "2026-11-01T00:00:00Z",
+    "expiresAt": "2026-12-01T00:00:00Z",
+    "signature": "ok",
+    "subjectKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325",
+    "signatureKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325"
+  },
+  "request": {
+    "agentId": "agent:gw-agent",
+    "declaredScope": [
+      "tool:search"
+    ],
+    "transportPeer": "agent:gw-agent",
+    "payload": {
+      "text": "summarise the attached note"
+    }
+  },
+  "revocation": {
+    "status": "none",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "evidence": {
+    "pointer": "reachable",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "lineage": {
+    "predecessor": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "chain": []
+  },
+  "id": "V065",
+  "invariant": [
+    "I10"
+  ],
+  "about": "Chain supplied but empty.",
+  "why": "An empty chain resolves nothing.",
+  "expect": {
+    "result": "could-not-determine",
+    "code": "LINEAGE_UNRESOLVED"
+  }
+}

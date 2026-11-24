@@ -1,0 +1,40 @@
+{
+  "mandate": {
+    "subject": "agent:gw-agent",
+    "grantedScope": [
+      "tool:search",
+      "tool:summarise"
+    ],
+    "issuedAt": "2026-11-01T00:00:00Z",
+    "expiresAt": "2026-12-01T00:00:00Z",
+    "signature": "ok"
+  },
+  "request": {
+    "agentId": "agent:gw-agent",
+    "declaredScope": [
+      "tool:search"
+    ],
+    "transportPeer": "agent:gw-agent",
+    "payload": {
+      "text": "summarise the attached note"
+    }
+  },
+  "revocation": {
+    "status": "none",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "evidence": {
+    "pointer": "reachable",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "id": "V061",
+  "invariant": [
+    "I9"
+  ],
+  "about": "Neither fingerprint is declared.",
+  "why": "Nothing ties the signature to the subject: an unknown.",
+  "expect": {
+    "result": "could-not-determine",
+    "code": "SIGNER_KEY_UNSPECIFIED"
+  }
+}

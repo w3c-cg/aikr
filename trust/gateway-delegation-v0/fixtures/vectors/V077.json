@@ -1,0 +1,43 @@
+{
+  "mandate": {
+    "subject": "agent:gw-agent",
+    "grantedScope": [
+      "tool:search",
+      "tool:summarise"
+    ],
+    "issuedAt": "2026-11-01T00:00:00Z",
+    "expiresAt": "2026-12-01T00:00:00Z",
+    "signature": "ok",
+    "subjectKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325",
+    "signatureKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325"
+  },
+  "request": {
+    "agentId": "agent:gw-agent",
+    "declaredScope": [
+      "tool:billing"
+    ],
+    "transportPeer": "agent:gw-agent",
+    "payload": {
+      "text": "x",
+      "claimedRole": "owner"
+    }
+  },
+  "revocation": {
+    "status": "none",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "evidence": {
+    "pointer": "reachable",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "id": "V077",
+  "invariant": [
+    "I1-I11"
+  ],
+  "about": "Combination: attenuation and content.",
+  "why": "Two defects in one request: the first coded check names the code, and fail outranks could-not-determine in the verdict even when the first code is an unknown.",
+  "expect": {
+    "result": "fail",
+    "code": "SCOPE_WIDENED"
+  }
+}

@@ -181,6 +181,16 @@ def check_case(case, policy):
     return result, (codes[0] if codes else ""), checks
 
 
+def load_vectors():
+    """The generated vector set. Each vector states the outcome it must produce."""
+    vectors = []
+    pattern = os.path.join(HERE, "fixtures", "vectors", "*.json")
+    for path in sorted(glob.glob(pattern)):
+        with open(path, encoding="utf-8") as handle:
+            vectors.append(json.load(handle))
+    return vectors
+
+
 def permissive_check(case, policy):
     """The defect the set is meant to catch: policy checked, content ignored,
     unknown folded into pass. Used only by --selftest."""
@@ -327,6 +337,23 @@ def selftest():
             "OK" if ok else "FAIL", lineage_case["id"]))
         if not ok:
             failures += 1
+    # The vector set is not generated from the checker: each row states the
+    # outcome it must produce, and a disagreement fails here.
+    vectors = load_vectors()
+    vrows = run(vectors, policy)
+    by_v = {v["id"]: v for v in vectors}
+    vbad = [r["id"] for r in vrows
+            if by_v[r["id"]]["expect"]["result"] != r["result"]
+            or by_v[r["id"]]["expect"]["code"] != r["code"]]
+    print("[%s] vector set: %d rows match their stated expectations (%d mismatches)" % (
+        "OK" if not vbad else "FAIL", len(vectors), len(vbad)))
+    if vbad:
+        print("      mismatches: %s" % ", ".join(vbad))
+        failures += 1
+    print("      distribution: pass %d / could-not-determine %d / fail %d" % (
+        sum(1 for v in vrows if v["result"] == "pass"),
+        sum(1 for v in vrows if v["result"] == "could-not-determine"),
+        sum(1 for v in vrows if v["result"] == "fail")))
     return 1 if failures else 0
 
 
@@ -334,10 +361,16 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--json", default=None, help="write results here")
     parser.add_argument("--selftest", action="store_true")
+    parser.add_argument("--vectors", action="store_true", help="run the generated vector set")
     args = parser.parse_args()
     if args.selftest:
         return selftest()
     policy, cases = load_inputs()
+    vectors = load_vectors()
+    if args.vectors:
+        cases = vectors
+    else:
+        cases = cases + vectors
     rows = run(cases, policy)
     print_table(rows)
     if args.json:

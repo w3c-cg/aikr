@@ -27,13 +27,18 @@ td.d{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
 .claims li{margin:6px 0}
 </style></head><body><div class="wrap">
 <h1>Gateway delegation v0 — evidence board</h1>
-<p class="sub">18 pinned cases, one decision per case, at <code>2026-11-23T00:00:00Z</code>. Revocation freshness bound: <strong>24 h</strong>.</p>
+<p class="sub">18 curated cases and 102 generated vectors, one decision each, at <code>2026-11-23T00:00:00Z</code>. Revocation freshness bound: <strong>24 h</strong>. Two implementations (Python and JavaScript) agree on all 120 rows.</p>
 
 <div class="card">
   <h2>Verdict distribution</h2>
   <div class="bar"><div class="seg" style="width:5.56%;background:#1a7f37" title="pass: 1 (5.6%)"><span>1</span></div><div class="seg" style="width:44.44%;background:#9a6700" title="could-not-determine: 8 (44.4%)"><span>8</span></div><div class="seg" style="width:50.00%;background:#b42318" title="fail: 9 (50.0%)"><span>9</span></div></div>
   <div class="foot">pass 1 · could-not-determine 8 · fail 9 ｜ allow 1 / hold 8 / refuse 9 ｜ 15 distinct codes</div>
   <div id="selfcheck"></div>
+</div>
+
+<div class="card"><h2>Vector set</h2>
+  <div class="foot">vectors 102 ｜ pass 30 / could-not-determine 25 / fail 47 ｜ classes covered I1–I11</div>
+  <div class="foot">Each vector states the outcome it must produce; the selftest compares that statement to the checker, and <code>crosscheck.py</code> compares the Python result to the JavaScript one row by row.</div>
 </div>
 
 <div class="card"><h2>Cases</h2>

@@ -1,0 +1,42 @@
+{
+  "mandate": {
+    "subject": "agent:gw-agent",
+    "grantedScope": [
+      "tool:search",
+      "tool:summarise"
+    ],
+    "issuedAt": "2026-11-01T00:00:00Z",
+    "expiresAt": "2026-11-02T00:00:00Z",
+    "signature": "bad",
+    "subjectKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325",
+    "signatureKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325"
+  },
+  "request": {
+    "agentId": "agent:gw-agent",
+    "declaredScope": [
+      "tool:search"
+    ],
+    "transportPeer": "agent:gw-agent",
+    "payload": {
+      "text": "summarise the attached note"
+    }
+  },
+  "revocation": {
+    "status": "none",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "evidence": {
+    "pointer": "reachable",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "id": "V075",
+  "invariant": [
+    "I1-I11"
+  ],
+  "about": "Combination: window and signature.",
+  "why": "Two defects in one request: the first coded check names the code, and fail outranks could-not-determine in the verdict even when the first code is an unknown.",
+  "expect": {
+    "result": "fail",
+    "code": "MANDATE_EXPIRED"
+  }
+}

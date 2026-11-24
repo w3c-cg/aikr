@@ -80,6 +80,27 @@ The payload is not inspected, so nothing is known about it. A policy is free to 
 
 An undeclared scope is not evidence of a narrower grant. Recording the basis as `transport-peer` is the fix to comment 1, but recording a basis is not the same as establishing a scope. The row exists so that a gateway which treats "no declared scope" as "full granted scope" is caught.
 
+## The vector set, and a second implementation
+
+The eighteen cases above are the ones with names and prose. Alongside them sits a
+vector set of **102 generated rows** in `fixtures/vectors/`, one file per vector,
+each stating the outcome it must produce:
+
+    "expect": { "result": "could-not-determine", "code": "LINEAGE_UNRESOLVED" }
+
+Those expectations were written with the vectors, not produced by running the
+checker, so a checker that drifts fails the selftest instead of redefining the
+answer. `VECTORS.md` documents the grid and the distribution (pass 30 ·
+could-not-determine 25 · fail 47).
+
+`check.mjs` is a second implementation, in JavaScript, kept independent of
+`check.py`: same inputs, same published check order, same three-valued outcome.
+`crosscheck.py` runs both over the curated cases and the vectors and compares
+every row; on the current tree that is 120 rows with zero disagreements. Two
+implementations that agree are still not a proof, but one implementation alone
+cannot tell you whether a verdict is a property of the case or an artefact of
+its code.
+
 ## Checks and how results combine
 
 The reference checker runs these checks in order and records each one's result:
@@ -100,23 +121,27 @@ Any fail gives fail. Otherwise any could-not-determine gives could-not-determine
 ## How to run
 
 ```
-python3 check.py                  # the table above
+python3 check.py                  # curated cases plus vectors, 120 rows
+python3 check.py --vectors        # the vector table alone
 python3 check.py --json out.json  # machine-readable results
-python3 check.py --selftest       # six checks on the set itself
+python3 check.py --selftest       # seven checks on the set itself
+node check.mjs                    # the same rows, second implementation
+python3 crosscheck.py             # both implementations, row by row
 ```
 
 No dependencies beyond the Python standard library, no network, no credentials. `SHA256SUMS` carries a digest for every file in this directory except itself, so a reader can check that what they run is what was reviewed. `--selftest` verifies six things:
 
-1. `expected.json` matches the checker on all eighteen cases;
+1. `expected.json` matches the checker on all eighteen curated cases;
 2. a deliberately permissive checker — content ignored, unknown folded into pass, staleness ignored, signer key and lineage unread — is caught on thirteen of the eighteen (`D03, D05, D06, D07, D08, D10, D11, D12, D13, D14, D15, D17, D18`);
 3. changing one fixture moves its result (D02 with an in-grant scope collapses to pass), which shows the table is computed from the fixtures rather than asserted;
 4. widening the revocation bound from 24 to 25 hours changes D13 from `could-not-determine` to `pass`, so a silently loosened bound is visible rather than absorbed;
 5. removing a refusal's receipt makes the receipt check fail, and adding a bound receipt clears it (D16), so the receipt requirement is not decorative;
-6. adding the cited digest to D18's chain clears its unresolved verdict, so an empty-but-present citation cannot pass as a walked chain.
+6. adding the cited digest to D18's chain clears its unresolved verdict, so an empty-but-present citation cannot pass as a walked chain;
+7. all 102 vectors match the outcomes they state, with the distribution printed — a vector set that only restates the checker's output would pass this item vacuously, which is why the expectations live in the vector files and not in `expected.json`.
 
 ## Boundaries
 
-This set is eighteen synthetic cases, not a certification and not a conformance suite for any product. It says nothing about cryptographic correctness, network identity, or the truth of any statement a record points at. It does not test performance, concurrency, or multi-hop chains; a chain case would need a separate set. The mandate signature field stands in for a verification result so that the runtime checks can be tested in isolation.
+This set is eighteen curated cases plus 102 vectors, all synthetic, not a certification and not a conformance suite for any product. It says nothing about cryptographic correctness, network identity, or the truth of any statement a record points at. It does not test performance, concurrency, or multi-hop chains; a chain case would need a separate set. The mandate signature field stands in for a verification result so that the runtime checks can be tested in isolation.
 
 Where a policy has a choice, `policy.json` records the choice made here. A different policy may legitimately decide D08 differently; the check result would still be could-not-determine, and the decision would differ.
 

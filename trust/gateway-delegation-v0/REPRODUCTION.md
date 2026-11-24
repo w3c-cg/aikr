@@ -92,9 +92,22 @@ if any expectation is missed.
 Run on a second machine and network path: Ubuntu, CPython 3.12.11, Node 22.23.4,
 in a clean directory cloned over the public network with no credentials
 (`git clone -q --branch gateway-delegation-v0 --single-branch
-https://github.com/zhaoxinghua09-cell/aikr.git`), at commit `8d9dc45`.
+https://github.com/zhaoxinghua09-cell/aikr.git`), at commit `8d9dc45` and again at
+`6fb9a91` after the fourth state was added. The `6fb9a91` figures are the current
+ones; the `8d9dc45` figures are kept below because they are what that commit printed.
 
 ```
+# at 6fb9a91
+python3 check.py            -> 122 rows, exit 0
+  122 cases: absent 3, check-incomplete 6, fail 56, pass 33, record-unresolved 24
+python3 check.py --selftest -> nine [OK] lines plus the distribution line, exit 0
+     [OK] split test: record-only -> record-unresolved, checker-only -> check-incomplete,
+          absent-only -> absent, mixed -> record-unresolved with
+          POINTER_UNREACHABLE/NO_DECLARED_SCOPE/WINDOW_UNPARSABLE
+python3 crosscheck.py       -> rows compared: 122, disagreements: 0, exit 0
+sha256sum -c SHA256SUMS     -> 144 files, all OK
+
+# at 8d9dc45, for comparison
 python3 check.py            -> 122 rows, exit 0
   122 cases: check-incomplete 9, fail 56, pass 33, record-unresolved 24
 python3 check.py --selftest -> nine [OK] lines, exit 0

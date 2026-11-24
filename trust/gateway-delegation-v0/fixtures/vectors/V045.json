@@ -35,7 +35,7 @@
   "about": "No revocation, but checkedAt is absent.",
   "why": "A status without a check time cannot be aged.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "record-unresolved",
     "code": "REVOCATION_UNKNOWN"
   }
 }

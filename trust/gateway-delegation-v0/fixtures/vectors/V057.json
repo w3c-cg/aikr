@@ -36,7 +36,7 @@
   "about": "Pointer value outside the known set.",
   "why": "Only a recorded reachability result counts.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "record-unresolved",
     "code": "POINTER_UNREACHABLE"
   }
 }

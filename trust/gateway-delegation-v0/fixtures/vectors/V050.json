@@ -37,7 +37,7 @@
   "about": "Revocation effective one second after the instant.",
   "why": "One second of future is still the future.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "record-unresolved",
     "code": "REVOCATION_NOT_YET_EFFECTIVE"
   }
 }

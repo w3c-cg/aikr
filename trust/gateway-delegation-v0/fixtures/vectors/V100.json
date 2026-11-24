@@ -37,7 +37,7 @@
   "about": "Revoked with an effect in the future and a stale check.",
   "why": "The effect-time branch is decided before freshness matters.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "record-unresolved",
     "code": "REVOCATION_NOT_YET_EFFECTIVE"
   }
 }

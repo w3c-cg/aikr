@@ -35,7 +35,7 @@
   "about": "Pointer field absent.",
   "why": "An absent pointer is not a reachable one.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "record-unresolved",
     "code": "POINTER_UNREACHABLE"
   }
 }

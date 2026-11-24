@@ -36,7 +36,7 @@
   "about": "Payload is opaque.",
   "why": "Content that cannot be inspected is an unknown.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "check-incomplete",
     "code": "OPAQUE_CONTENT"
   }
 }

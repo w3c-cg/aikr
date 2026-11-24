@@ -36,7 +36,7 @@
   "about": "Unreachable source with a future check time.",
   "why": "Reachability is reported, not inferred from the clock.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "record-unresolved",
     "code": "SOURCE_UNREACHABLE"
   }
 }

@@ -40,7 +40,7 @@
   "about": "Chain supplied but empty.",
   "why": "An empty chain resolves nothing.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "record-unresolved",
     "code": "LINEAGE_UNRESOLVED"
   }
 }

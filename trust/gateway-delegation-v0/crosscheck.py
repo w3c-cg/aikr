@@ -42,6 +42,8 @@ disagree = []
 for a, b in zip(rows_py, rows_js):
     if (a["result"], a["code"]) != (b["result"], b["code"]):
         disagree.append((a["id"], (a["result"], a["code"]), (b["result"], b["code"])))
+    elif a.get("unknown") != b.get("unknown"):
+        disagree.append((a["id"], str(a.get("unknown")), str(b.get("unknown"))))
 
 print("rows compared: %d (curated %d + vectors %d)" % (len(rows_py), len(cases), len(vectors)))
 print("disagreements: %d" % len(disagree))

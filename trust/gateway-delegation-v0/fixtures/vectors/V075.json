@@ -34,7 +34,7 @@
     "I1-I11"
   ],
   "about": "Combination: window and signature.",
-  "why": "Two defects in one request: the first coded check names the code, and fail outranks could-not-determine in the verdict even when the first code is an unknown.",
+  "why": "Two defects in one request: the first coded check names the code, and fail outranks both kinds of hold, and a record that cannot be resolved outranks a check we could not run.",
   "expect": {
     "result": "fail",
     "code": "MANDATE_EXPIRED"

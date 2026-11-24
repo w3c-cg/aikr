@@ -4,11 +4,13 @@ Generated from the files in this directory. Nothing here is fetched from the net
 
 ## Observed distribution
 
-- rows: 120 (18 curated + 102 vectors)
+- rows: 122 (18 curated + 104 vectors)
 
-- pass 31 · could-not-determine 33 · fail 56
+- pass 33 · record-unresolved 24 · check-incomplete 9 · fail 56
 
 - distinct codes: 19
+
+- holds by side: record-unresolved 24 · check-incomplete 9 — the row also carries `unknown.record` and `unknown.checker`, so a consumer that reads only the verdict still knows which side it is on
 
 | Class | Vectors |
 |---|---|
@@ -18,7 +20,7 @@ Generated from the files in this directory. Nothing here is fetched from the net
 | I4 | 12 |
 | I5 | 8 |
 | I6 | 16 |
-| I7 | 7 |
+| I7 | 8 |
 | I8 | 4 |
 | I9 | 4 |
 | I10 | 5 |
@@ -30,22 +32,22 @@ Generated from the files in this directory. Nothing here is fetched from the net
 |---|---|---|---|---|
 | D01 | pass | allow | — | Positive control: mandate valid, declared scope inside the grant, revocation fresh, pointer reachable. |
 | D02 | fail | refuse | SCOPE_WIDENED | Attenuation under delegation: declared scope adds a tool outside the grant. |
-| D03 | could-not-determine | hold | NO_DECLARED_SCOPE | No scope declared: caller claims nothing, gateway infers a transport-peer basis. |
+| D03 | check-incomplete | hold | NO_DECLARED_SCOPE | No scope declared: caller claims nothing, gateway infers a transport-peer basis. |
 | D04 | fail | refuse | SUBJECT_MISMATCH | Subject mismatch: a different agent presents the mandate of gw-agent. |
 | D05 | fail | refuse | MANDATE_EXPIRED | Expired mandate: the grant ended before the evaluation instant. |
 | D06 | fail | refuse | CONTENT_OVERRIDE | Confused deputy by content: a valid mandate carries inline instructions in the payload. |
 | D07 | fail | refuse | ROLE_SPOOF | Role spoofing in content: the payload asserts an authority the caller does not hold. |
-| D08 | could-not-determine | hold | OPAQUE_CONTENT | Opaque content: the gateway cannot inspect the payload it is asked to forward. |
+| D08 | check-incomplete | hold | OPAQUE_CONTENT | Opaque content: the gateway cannot inspect the payload it is asked to forward. |
 | D09 | fail | refuse | REVOKED | Revoked before the evaluation instant. |
-| D10 | could-not-determine | hold | SOURCE_UNREACHABLE | Revocation source unreachable at evaluation time. |
-| D11 | could-not-determine | hold | STALE_REVOCATION | Stale revocation check: last successful lookup is older than the 24 hour bound. |
-| D12 | could-not-determine | hold | POINTER_UNREACHABLE | Verification-time reachability: the record points at evidence that cannot be reached. |
-| D13 | could-not-determine | hold | STALE_REVOCATION | Revocation evidence just outside the freshness bound: 25 hours old at the evaluation instant, one hour past the 24-hour bound. |
-| D14 | could-not-determine | hold | REVOCATION_NOT_YET_EFFECTIVE | Revocation recorded but effective in the future: the record exists at the evaluation instant, its effect does not. |
+| D10 | record-unresolved | hold | SOURCE_UNREACHABLE | Revocation source unreachable at evaluation time. |
+| D11 | record-unresolved | hold | STALE_REVOCATION | Stale revocation check: last successful lookup is older than the 24 hour bound. |
+| D12 | record-unresolved | hold | POINTER_UNREACHABLE | Verification-time reachability: the record points at evidence that cannot be reached. |
+| D13 | record-unresolved | hold | STALE_REVOCATION | Revocation evidence just outside the freshness bound: 25 hours old at the evaluation instant, one hour past the 24-hour bound. |
+| D14 | record-unresolved | hold | REVOCATION_NOT_YET_EFFECTIVE | Revocation recorded but effective in the future: the record exists at the evaluation instant, its effect does not. |
 | D15 | fail | refuse | MANDATE_UNSIGNED | Mandate with no signature field at all: not a bad signature, an absent one. |
 | D16 | fail | refuse | REVOKED | Revoked mandate, and the refusal was issued without a receipt: the decision cannot be accounted for afterwards. |
 | D17 | fail | refuse | SIGNER_KEY_NOT_BOUND | Mandate signed by a key that is not the subject's key: the grant is attributable to someone else. |
-| D18 | could-not-determine | hold | LINEAGE_UNRESOLVED | Mandate cites a predecessor by digest that does not resolve in the chain supplied with the case. |
+| D18 | record-unresolved | hold | LINEAGE_UNRESOLVED | Mandate cites a predecessor by digest that does not resolve in the chain supplied with the case. |
 
 ## Decision map and policy choices
 
@@ -56,9 +58,10 @@ Generated from the files in this directory. Nothing here is fetched from the net
   "decisionMap": {
     "pass": "allow",
     "fail": "refuse",
-    "could-not-determine": "hold"
+    "record-unresolved": "hold",
+    "check-incomplete": "hold"
   },
-  "policyDigest": "sha256:60515a0f4e5da5be71b715f3716afdb1cdbe6786a2b2c8bcaa889b458e57ed60"
+  "policyDigest": "sha256:3bc9aba593992d8628e332e6f29898beb150958aa83b13f2e379abe6286e0c6d"
 }
 ```
 
@@ -80,16 +83,18 @@ when you run the thing yourself, and say where they do not.
 | Claim | How to falsify it |
 |---|---|
 | The checker reproduces `expected.json` on the 18 curated cases | Edit one fixture's inputs, run `python check.py --selftest`; if the expectation still passes, the table is asserted rather than computed |
-| All 102 vectors match the outcomes they state | Change one vector's `expect` block to something wrong and run `--selftest`; it must fail. If it passes for any vector, expectations were filled in from a run |
+| All 104 vectors match the outcomes they state | Change one vector's `expect` block to something wrong and run `--selftest`; it must fail. If it passes for any vector, expectations were filled in from a run |
 | A permissive checker is caught | Read `permissive_check` in `check.py`, satisfy yourself it is genuinely weaker, then run `--selftest` and count the disagreeing rows yourself |
 | The 24 h revocation bound cannot be widened silently | Change `revocationFreshnessBoundSeconds` to 90000 and run `--selftest`; D13 must flip and the selftest must fail |
 | Two implementations agree | Delete or edit `check.mjs` and run `python crosscheck.py`; it must fail, not report agreement |
 | `SHA256SUMS` covers what you run | Alter one byte of one file, run `sha256sum -c SHA256SUMS`, and see it fail |
-| The board does not lie | Open `EVIDENCE-BOARD.html` offline; then change a row count in `expected.json`, rebuild with `python _build_board.py` (if present) or hand-edit the payload, and confirm the page turns red |
+| The board does not lie | Open `EVIDENCE-BOARD.html` offline; then change any result in `expected.json`, rebuild with `python make_board.py`, and confirm the page's own self-check prints red rather than green. The payload is regenerated from the checker at build time, so a hand-edited payload is the wrong way to test this |
+| A hold is reported on the side it belongs to | Take D12 (record side) and D03 (checker side) from `python check.py --json` and confirm `unknown.record` / `unknown.checker` are non-empty on the right one; then build the mixed case in `--selftest` step 8 and confirm both groups fill while the verdict stays `record-unresolved` |
+| The policy digest can be regenerated by a third party | Run `python policy_digest.py --check`; it recomputes from `policy.json`'s own bytes and exits 1 on drift, so a receipt cannot bind to a digest nobody can reproduce |
 
 ## Questions worth putting to the package
 
-1. Does `could-not-determine` ever get folded into `pass` anywhere in the code?
+1. Does a hold (`record-unresolved` or `check-incomplete`) ever get folded into `pass` anywhere in the code, and does the split ever collapse back into one bucket at the reporting layer?
 2. When two defects are present, is the reported first code the earlier check in
    the published order, and is that order stated anywhere a reader can see?
 3. Is any check implemented twice with slightly different semantics between
@@ -98,6 +103,10 @@ when you run the thing yourself, and say where they do not.
 4. Does any vector's `about` text describe a different situation from its inputs?
 5. Does `policy.json` state a choice wherever the outcome is a policy choice
    rather than a finding (D08 is the obvious one)?
+6. Is the split the right split? Six codes sit on the record side and four on
+   the checker side; a reviewer who maps them onto another vocabulary — AER-1,
+   or a decision map of their own — should say which code lands in the wrong
+   bucket, and that disagreement is itself the useful output.
 
 ## What this package does not claim, and where a reviewer should stop
 
@@ -106,7 +115,7 @@ when you run the thing yourself, and say where they do not.
 - No network identity, no multi-hop delegate chains, no concurrency, no
   performance.
 - No conformance to any product, no endorsement by any organisation.
-- Passing 120 rows is a floor, not a certificate.
+- Passing 122 rows is a floor, not a certificate.
 
 If a reviewer finds a claim stronger than the evidence above, that finding is
 more useful than any confirmation.
@@ -121,11 +130,11 @@ more useful than any confirmation.
 
 A delegated-authority evaluation can be read two ways. The first is about the mandate: who issued it, what scope it names, whether it chains to a pinned anchor. The second is about the moment of use: what the gateway actually admits when a request arrives, and on what basis. This set covers the second. Each case fixes the inputs, states the check that decides it, and gives the result a checker is expected to reach, so implementations can compare behaviour against the same inputs rather than against prose.
 
-Results are three-valued: **pass**, **fail** and **could-not-determine**. A check that could not be completed is never folded into pass, and never into fail. The decision follows the result: pass gives **allow**, fail gives **refuse**, could-not-determine gives **hold**.
+Results are three-valued at the decision layer and split at the reporting layer. **pass**, **fail**, and a hold that names its side: **record-unresolved** when the record, or what it points at, cannot be resolved (missing, unreachable, stale, not yet effective, or a citation that does not walk), and **check-incomplete** when the check itself could not be completed on the inputs supplied (unparsable window, no declared scope, opaque content, no key binding). Nothing is ever folded into pass or into fail. The decision follows the result: pass gives **allow**, fail gives **refuse**, and both kinds of hold give **hold**.
 
 ## Origin
 
-On 20 November 2026 the AI KR CG chair opened `DIFdelegateauth.md` for comments and asked participants to put their comments in the note. Six comments were added in #35, all drawn from implementation work on a gateway and an A2A adapter. Three of them name gaps that this set tries to make testable:
+On 20 November 2026 the AI KR CG chair opened `DIFdelegateauth.md` for comments and asked participants to put their comments in the note. Six comments were added in #35 (https://github.com/w3c-cg/aikr/issues/35), all drawn from implementation work on a gateway and an A2A adapter. Three of them name gaps that this set tries to make testable:
 
 - comment 1: the attenuation criterion needs a per-request record of which scope was claimed, which was effective, and on what basis;
 - comment 2: the confused-deputy criterion is content-mediated as well as policy-mediated — a deputy can be misled by the payload while holding a perfectly valid mandate;
@@ -141,30 +150,38 @@ Every case is evaluated at a pinned instant, 2026-11-23T00:00:00Z. The revocatio
 |---|---|---|---|---|---|---|
 | D01 | Positive control: mandate valid, declared scope inside the grant, revocation fresh, pointer reachable. | All seven | pass | allow | — | — |
 | D02 | Attenuation under delegation: declared scope adds `tool:billing`, which the grant does not name. | Attenuation | fail | refuse | `SCOPE_WIDENED` | D01 |
-| D03 | No scope declared: the caller claims nothing, the gateway records a transport-peer basis. | Attenuation | could-not-determine | hold | `NO_DECLARED_SCOPE` | D01 |
+| D03 | No scope declared: the caller claims nothing, the gateway records a transport-peer basis. | Attenuation | check-incomplete | hold | `NO_DECLARED_SCOPE` | D01 |
 | D04 | Subject mismatch: a different agent presents the mandate of `agent:gw-agent`. | Subject | fail | refuse | `SUBJECT_MISMATCH` | D01 |
 | D05 | Expired mandate: the grant ended on 2026-11-20, before the evaluation instant. | Window | fail | refuse | `MANDATE_EXPIRED` | D01 |
 | D06 | Confused deputy by content: a valid mandate carries an inline instruction in the payload. | Content | fail | refuse | `CONTENT_OVERRIDE` | D01 |
 | D07 | Role spoofing in content: the payload asserts `claimedRole: owner`. | Content | fail | refuse | `ROLE_SPOOF` | D06 |
-| D08 | Opaque content: the gateway cannot inspect the payload it is asked to forward. | Content | could-not-determine | hold | `OPAQUE_CONTENT` | D01 |
+| D08 | Opaque content: the gateway cannot inspect the payload it is asked to forward. | Content | check-incomplete | hold | `OPAQUE_CONTENT` | D01 |
 | D09 | Revoked before the evaluation instant (effective 2026-11-01). | Revocation | fail | refuse | `REVOKED` | D11 |
-| D10 | Revocation source unreachable at evaluation time. | Revocation | could-not-determine | hold | `SOURCE_UNREACHABLE` | D01 |
-| D11 | Stale revocation check: last successful lookup on 2026-11-20, beyond the 24 hour bound. | Revocation | could-not-determine | hold | `STALE_REVOCATION` | D09 |
-| D12 | Verification-time reachability: the record points at evidence that cannot be reached. | Evidence pointer | could-not-determine | hold | `POINTER_UNREACHABLE` | D01 |
-| D13 | Bound edge: the revocation check is 25 hours old at the evaluation instant, one hour outside the 24 hour bound. | Revocation | could-not-determine | hold | `STALE_REVOCATION` | D11 |
-| D14 | Revocation recorded with `effectiveFrom` in the future: the record exists, its effect does not. | Revocation | could-not-determine | hold | `REVOCATION_NOT_YET_EFFECTIVE` | D09 |
+| D10 | Revocation source unreachable at evaluation time. | Revocation | record-unresolved | hold | `SOURCE_UNREACHABLE` | D01 |
+| D11 | Stale revocation check: last successful lookup on 2026-11-20, beyond the 24 hour bound. | Revocation | record-unresolved | hold | `STALE_REVOCATION` | D09 |
+| D12 | Verification-time reachability: the record points at evidence that cannot be reached. | Evidence pointer | record-unresolved | hold | `POINTER_UNREACHABLE` | D01 |
+| D13 | Bound edge: the revocation check is 25 hours old at the evaluation instant, one hour outside the 24 hour bound. | Revocation | record-unresolved | hold | `STALE_REVOCATION` | D11 |
+| D14 | Revocation recorded with `effectiveFrom` in the future: the record exists, its effect does not. | Revocation | record-unresolved | hold | `REVOCATION_NOT_YET_EFFECTIVE` | D09 |
 | D15 | Mandate with no `signature` field at all — absent, not merely wrong. | Signature | fail | refuse | `MANDATE_UNSIGNED` | D01 |
 | D16 | Revoked mandate whose refusal carries no receipt: the decision cannot be accounted for afterwards. | Receipt on refusal | fail | refuse | `REVOKED` (+ `RECEIPT_MISSING_ON_REFUSE`) | D09 |
 | D17 | Mandate signed by a key that is not the subject's key: the grant is attributable to someone else. | Signer key binding | fail | refuse | `SIGNER_KEY_NOT_BOUND` | D01 |
-| D18 | Mandate cites a predecessor by digest that does not resolve in the chain supplied with the case. | Lineage | could-not-determine | hold | `LINEAGE_UNRESOLVED` | D15 |
+| D18 | Mandate cites a predecessor by digest that does not resolve in the chain supplied with the case. | Lineage | record-unresolved | hold | `LINEAGE_UNRESOLVED` | D15 |
 
-Nine fails, eight could-not-determine, one pass. The asymmetry is deliberate: most real requests are not clean, and a set that mostly returns pass would not tell implementations apart.
+Nine fails, eight holds (six `record-unresolved`, two `check-incomplete`), one pass. The asymmetry is deliberate: most real requests are not clean, and a set that mostly returns pass would not tell implementations apart.
 
 Two files exist so the table can be checked without reading prose:
 `REPRODUCTION.md` (commands, interpreter, exit codes, observed output, the
 second-machine run and the integrity check) and `EVIDENCE-BOARD.html`
 (a single offline page whose row count and tallies are re-computed from
-`expected.json` when opened, and which says so if they disagree).
+the embedded payload when opened, and which says so if they disagree; rebuild
+with `make_board.py`).
+
+`AER1-CROSSWALK.md` reads AER-1's five anchor outcomes with this decision map
+and this package's rows with AER-1's five outcomes, side by side, and records
+the one state AER-1 has that this package does not (`absent`). It is generated
+by `make_aer1_crosswalk.py`, which fetches AER-1's published vector file and
+checks it against the digest in AER-1's own corpus index; the third-party bytes
+are fetched, not vendored.
 
 
 ### Invariant coverage
@@ -198,23 +215,35 @@ An undeclared scope is not evidence of a narrower grant. Recording the basis as 
 ## The vector set, and a second implementation
 
 The eighteen cases above are the ones with names and prose. Alongside them sits a
-vector set of **102 generated rows** in `fixtures/vectors/`, one file per vector,
+vector set of **104 generated rows** in `fixtures/vectors/`, one file per vector,
 each stating the outcome it must produce:
 
-    "expect": { "result": "could-not-determine", "code": "LINEAGE_UNRESOLVED" }
+    "expect": { "result": "record-unresolved", "code": "LINEAGE_UNRESOLVED" }
 
 Those expectations were written with the vectors, not produced by running the
 checker, so a checker that drifts fails the selftest instead of redefining the
-answer. `VECTORS.md` documents the grid and the distribution (pass 30 ·
-could-not-determine 25 · fail 47).
+answer. That claim is checkable by reading `gen_vectors.py`: every vector's
+`expect` is a literal argument to `add()`, and no line in that file calls the
+checker. Every invariant class carries at least one passing vector as well as
+its defect rows (I1 2/8 pass, I2 9/16, I3 1/6, I4 5/12, I5 4/8, I6 4/16,
+I7 1/8, I8 1/4, I9 1/4, I10 2/5, I11 1/6, combinations 1/11), so a checker that
+holds or refuses a whole class without discriminating is visible rather than
+flattered. `VECTORS.md` documents the grid and the distribution (pass 32 ·
+record-unresolved 18 · check-incomplete 7 · fail 47).
 
-`check.mjs` is a second implementation, in JavaScript, kept independent of
-`check.py`: same inputs, same published check order, same three-valued outcome.
-`crosscheck.py` runs both over the curated cases and the vectors and compares
-every row; on the current tree that is 120 rows with zero disagreements. Two
-implementations that agree are still not a proof, but one implementation alone
-cannot tell you whether a verdict is a property of the case or an artefact of
-its code.
+`check.mjs` is a second implementation, in JavaScript, written against the same
+published check order and code table. `crosscheck.py` runs both over the curated
+cases and the vectors and compares every row — verdict, first code, and which
+side each hold is on; on the current tree that is 122 rows with zero
+disagreements. **What that does and does not buy:** it rules out transcription
+error, per-language date and string handling, and any single-implementation
+artefact; it does **not** rule out a misreading shared by both, because both
+were written by the same hand. The two ways this package limits that risk are
+different in kind: the permissive-checker differential (a deliberately weaker
+reader must disagree on 13 of 18 cases) and the vector expectations being
+literals rather than outputs. Anything past that needs a third party to derive
+expectations independently, which is what a review is for, and the honest
+statement is that no such independent derivation exists yet.
 
 ## Checks and how results combine
 
@@ -225,40 +254,48 @@ The reference checker runs these checks in order and records each one's result:
 3. **signature** — the mandate is signed and was verified at issue time (`MANDATE_UNSIGNED`). This set does not test signature algorithms; the field is a stand-in for a verification result reached elsewhere, and is stated as such rather than implied.
 4. **attenuation** — every declared scope item is inside the grant (`SCOPE_WIDENED`, `NO_DECLARED_SCOPE`).
 5. **content** — the payload is inspected before forwarding (`CONTENT_OVERRIDE`, `ROLE_SPOOF`, `OPAQUE_CONTENT`).
-6. **revocation** — status is known, current within the bound, effective at the evaluation instant, and not revoked (`REVOKED`, `SOURCE_UNREACHABLE`, `STALE_REVOCATION`, `REVOCATION_UNKNOWN`, `REVOCATION_NOT_YET_EFFECTIVE`). A record whose own `effectiveFrom` is later than the evaluation instant is could-not-determine, not a refusal: the gateway cannot decide on an effect that has not begun.
+6. **revocation** — status is known, current within the bound, effective at the evaluation instant, and not revoked (`REVOKED`, `SOURCE_UNREACHABLE`, `STALE_REVOCATION`, `REVOCATION_UNKNOWN`, `REVOCATION_NOT_YET_EFFECTIVE`). A record whose own `effectiveFrom` is later than the evaluation instant is record-unresolved, not a refusal: the gateway cannot decide on an effect that has not begun.
 7. **evidence pointer** — what the record points at is reachable at verification time (`POINTER_UNREACHABLE`).
 8. **signer key binding** — the key that signed the mandate is the key bound to the subject (`SIGNER_KEY_NOT_BOUND`, `SIGNER_KEY_UNSPECIFIED`). A mandate that declares no fingerprint at all is an unknown, not a pass: nothing ties the signature to the subject.
 9. **lineage** — a cited predecessor resolves inside the chain supplied with the case (`LINEAGE_UNRESOLVED`). A citation that exists but cannot be walked is an unknown.
 10. **receipt on refusal** — when the result is a refusal, the case must carry a receipt binding the decision, the case id and the policy digest (`RECEIPT_MISSING_ON_REFUSE`). A refusal nobody can attribute to a policy afterwards is itself a defect; the primary failing code stays first so the reason for the refusal is not buried.
 
-Any fail gives fail. Otherwise any could-not-determine gives could-not-determine. Only if all ten pass is the result pass. A hold is not a refusal, and a refusal is not a finding of malice: the decision map is in `policy.json` so a reader can see which policy this set was evaluated under.
+Any fail gives fail. Otherwise any record-unresolved gives record-unresolved; a check-incomplete is reported only when nothing on the record side is unresolved. Only if all ten pass is the result pass. The row also carries a split listing (`unknown.record` and `unknown.checker`), so a consumer that reads only the result still learns which side it is on, and one that reads the split learns why. A hold is not a refusal, and a refusal is not a finding of malice: the decision map is in `policy.json` so a reader can see which policy this set was evaluated under.
 
 ## How to run
 
 ```
-python3 check.py                  # curated cases plus vectors, 120 rows
+python3 check.py                  # curated cases plus vectors, 122 rows
 python3 check.py --vectors        # the vector table alone
 python3 check.py --json out.json  # machine-readable results
-python3 check.py --selftest       # seven checks on the set itself
+python3 check.py --selftest       # nine checks on the set itself
 node check.mjs                    # the same rows, second implementation
 python3 crosscheck.py             # both implementations, row by row
+python3 policy_digest.py --check  # the digest the receipts bind to
+python3 make_board.py             # rebuild the board from the checker's results
+python3 make_review_packet.py     # rebuild the packet this was reviewed on
+python3 make_aer1_crosswalk.py    # refetch AER-1's vectors and rebuild the crosswalk
 ```
 
-No dependencies beyond the Python standard library, no network, no credentials. `SHA256SUMS` carries a digest for every file in this directory except itself, so a reader can check that what they run is what was reviewed. `--selftest` verifies six things:
+No dependencies beyond the Python standard library, no network, no credentials. `SHA256SUMS` carries a digest for every file in this directory except itself, so a reader can check that what they run is what was reviewed. `--selftest` verifies nine things:
 
 1. `expected.json` matches the checker on all eighteen curated cases;
 2. a deliberately permissive checker — content ignored, unknown folded into pass, staleness ignored, signer key and lineage unread — is caught on thirteen of the eighteen (`D03, D05, D06, D07, D08, D10, D11, D12, D13, D14, D15, D17, D18`);
 3. changing one fixture moves its result (D02 with an in-grant scope collapses to pass), which shows the table is computed from the fixtures rather than asserted;
-4. widening the revocation bound from 24 to 25 hours changes D13 from `could-not-determine` to `pass`, so a silently loosened bound is visible rather than absorbed;
+4. widening the revocation bound from 24 to 25 hours changes D13 from `record-unresolved` to `pass`, so a silently loosened bound is visible rather than absorbed;
 5. removing a refusal's receipt makes the receipt check fail, and adding a bound receipt clears it (D16), so the receipt requirement is not decorative;
 6. adding the cited digest to D18's chain clears its unresolved verdict, so an empty-but-present citation cannot pass as a walked chain;
-7. all 102 vectors match the outcomes they state, with the distribution printed — a vector set that only restates the checker's output would pass this item vacuously, which is why the expectations live in the vector files and not in `expected.json`.
+7. the policy digest is recomputed from `policy.json` itself and must match the stored value, so a receipt cannot bind to a policy that nobody can reproduce;
+8. a hold names its side: a record-only case gives `record-unresolved`, a checker-only case gives `check-incomplete`, and a case with one of each reports both in `unknown.record` and `unknown.checker` while the result row stays on `record-unresolved`;
+9. all 104 vectors match the outcomes they state, with the distribution printed — a vector set that only restates the checker's output would pass this item vacuously, which is why the expectations live in the vector files and not in `expected.json`.
 
 ## Boundaries
 
-This set is eighteen curated cases plus 102 vectors, all synthetic, not a certification and not a conformance suite for any product. It says nothing about cryptographic correctness, network identity, or the truth of any statement a record points at. It does not test performance, concurrency, or multi-hop chains; a chain case would need a separate set. The mandate signature field stands in for a verification result so that the runtime checks can be tested in isolation.
+This set is eighteen curated cases plus 104 vectors, all synthetic, not a certification and not a conformance suite for any product. It says nothing about cryptographic correctness, network identity, or the truth of any statement a record points at. It does not test performance, concurrency, or multi-hop chains; a chain case would need a separate set. The mandate signature field stands in for a verification result so that the runtime checks can be tested in isolation.
 
-Where a policy has a choice, `policy.json` records the choice made here. A different policy may legitimately decide D08 differently; the check result would still be could-not-determine, and the decision would differ.
+Where a policy has a choice, `policy.json` records the choice made here, including the D08 choice and the argument for it (`notes.opaqueContentIsAPolicyChoice`). A different policy may legitimately decide D08 differently; the check result would still be check-incomplete, and the decision would differ.
+
+`EXTERNAL-AI-REVIEW.md` records the external review this revision was put through before publication: the two briefs, the two raw replies, and what was changed because of them, including the one finding that was declined and why. It is not an endorsement and does not establish that the claims are true; it establishes that two readers briefed in opposite directions could not find the packet self-contradictory from the text alone.
 
 ## Implementation context
 
@@ -272,11 +309,11 @@ Corrections are welcome as an issue on this repository with the file name in the
 
 # The vector set
 
-102 machine-readable vectors, generated from the grid below and kept in
+104 machine-readable vectors, generated from the grid below and kept in
 `fixtures/vectors/`. Each vector states the outcome it must produce:
 
 ```json
-"expect": { "result": "could-not-determine", "code": "LINEAGE_UNRESOLVED" }
+"expect": { "result": "record-unresolved", "code": "LINEAGE_UNRESOLVED" }
 ```
 
 The expectations were **not** produced by running `check.py`. They were written
@@ -301,23 +338,27 @@ pass by handling one shape per class.
 | I4 attenuation | 12 | subset, equal, one and two extras, empty grant, empty declaration, absent declaration, duplicates, case variation |
 | I5 content mediation | 8 | clean, instruction, role claim, opaque, opaque plus instruction, absent payload, empty carriers |
 | I6 revocation freshness | 16 | fresh, at the bound, one second past, 25 hours, revoked, unreachable, unknown status, absent status, absent check time, future check time |
-| I7 revocation effect timing | 7 | effect in the future (1 s, 1 h, distant), effective now, effective past, unparsable effect, effect at issue time |
+| I7 revocation effect timing | 8 | effect in the future (1 s, 1 h, distant), effective now, effective past, unparsable effect, effect at issue time, and one positive row: source queried inside the bound, nothing revoked |
 | I8 evidence pointer | 4 | reachable, unreachable, absent, value outside the known set |
 | I9 signer key binding | 4 | equal, other key, only one fingerprint declared, neither declared |
 | I10 lineage | 5 | no citation, resolved, unresolved, empty chain, null citation |
 | I11 receipt on refusal | 6 | allow (not applicable), bound receipt, no receipt, receipt for another policy, for another case, for another decision |
-| I1–I11 combinations | 10 | two defects in one request, to pin the published check order and that fail outranks could-not-determine |
+| I1–I11 combinations | 11 | two defects in one request (to pin the published check order, that fail outranks both kinds of hold, and that a record that cannot be resolved outranks a check we could not run), plus one positive row in which two benign variations coincide |
 
-Distribution: **pass 30 · could-not-determine 25 · fail 47**. The asymmetry is
-deliberate — a set that mostly returns pass would not tell implementations apart.
+Distribution: **pass 32 · record-unresolved 18 · check-incomplete 7 · fail 47**. The set is
+weighted toward defects on purpose — a set that mostly returns pass would not tell
+implementations apart — but that weighting is only defensible if each class can also
+pass, which is why every class above carries at least one passing row. The counts are
+printed, not asserted: `python check.py --vectors` derives them, and
+`make_review_packet.py` puts them in the packet.
 
 ## Running them
 
 ```
 python check.py --vectors          # the vector table alone
-python check.py                    # curated cases plus vectors, 120 rows
+python check.py                    # curated cases plus vectors, 122 rows
 python check.py --selftest         # includes "vector set matches its stated expectations"
-node check.mjs                     # the same 120 rows from the JavaScript implementation
+node check.mjs                     # the same 122 rows from the JavaScript implementation
 python crosscheck.py               # both implementations, row by row; exit 1 on any disagreement
 ```
 
@@ -325,5 +366,5 @@ python crosscheck.py               # both implementations, row by row; exit 1 on
 
 A vector fixes inputs and an expected verdict under this policy. It says nothing
 about cryptographic correctness, network identity, or the truth of any record.
-An implementation can pass all 102 and still be wrong about something this set
+An implementation can pass all 104 and still be wrong about something this set
 does not describe; the set is a floor, not a certificate.

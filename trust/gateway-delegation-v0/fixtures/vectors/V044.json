@@ -35,7 +35,7 @@
   "about": "Status field absent.",
   "why": "An absent status is an unknown.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "record-unresolved",
     "code": "REVOCATION_UNKNOWN"
   }
 }

@@ -4,17 +4,21 @@
   "revocationFreshnessBoundSeconds": 86400,
   "notes": {
     "scopeCompleteness": "The granted scope list in each mandate is treated as exhaustive for that agent and grant.",
-    "undeclaredScope": "A request that declares no scope is not evidence of a narrower grant; result is could-not-determine, never pass.",
-    "opaqueContent": "Content the gateway cannot inspect is could-not-determine, never pass.",
-    "decisionMap": "pass gives allow; fail gives refuse; could-not-determine gives hold.",
-    "signerKeyBinding": "The key that signed the mandate must be the key bound to the subject. A different key makes the mandate attributable to someone else: fail, SIGNER_KEY_NOT_BOUND. A mandate that declares neither fingerprint is could-not-determine, never pass.",
-    "lineage": "A mandate that cites a predecessor must cite a digest that resolves inside the chain supplied with the case. An unresolvable citation is could-not-determine, LINEAGE_UNRESOLVED.",
-    "receiptOnRefuse": "Every refusal must carry a receipt that binds the decision, the case id and the policy digest. A refusal without one is an unaccountable refusal: fail, RECEIPT_MISSING_ON_REFUSE."
+    "undeclaredScope": "A request that declares no scope is not evidence of a narrower grant; result is check-incomplete, never pass.",
+    "opaqueContent": "Content the gateway cannot inspect leaves the check incomplete, never pass.",
+    "opaqueContentIsAPolicyChoice": "The check result for opaque content is check-incomplete under any policy; only the decision is a choice. This policy maps check-incomplete to hold, on the argument that an uninspected payload is a gap in evidence rather than a defect in the request, and that refusing would let a caller evade review by sending a payload shaped to be opaque. A deployment that owns the payload pipeline may map check-incomplete to refuse instead, and the case would still report check-incomplete; the row the checker produces is the finding, the decision is the deployer's. D08 is the row where that choice is visible.",
+    "twoKindsOfHold": "A row that is not determined says which side it is on: record-unresolved when the record, or what it points at, cannot be resolved (missing, unreachable, stale, not yet effective, or a citation that does not walk); check-incomplete when the check itself could not be completed on the inputs supplied (unparsable window, no declared scope, opaque content, no key binding). Both give hold, so the decision is unchanged; the reported outcome separates them, because the remedy differs.",
+    "decisionMap": "pass gives allow; fail gives refuse; record-unresolved gives hold; check-incomplete gives hold.",
+    "signerKeyBinding": "The key that signed the mandate must be the key bound to the subject. A different key makes the mandate attributable to someone else: fail, SIGNER_KEY_NOT_BOUND. A mandate that declares neither fingerprint leaves the binding check incomplete, never pass.",
+    "lineage": "A mandate that cites a predecessor must cite a digest that resolves inside the chain supplied with the case. An unresolvable citation is record-unresolved, LINEAGE_UNRESOLVED.",
+    "receiptOnRefuse": "Every refusal must carry a receipt that binds the decision, the case id and the policy digest. A refusal without one is an unaccountable refusal: fail, RECEIPT_MISSING_ON_REFUSE.",
+    "howTheDigestIsComputed": "sha256 over policy.json as written, with an empty string in place of the top-level digest value. Recompute with python policy_digest.py --check; the self-test fails when this drifts."
   },
   "decisionMap": {
     "pass": "allow",
     "fail": "refuse",
-    "could-not-determine": "hold"
+    "record-unresolved": "hold",
+    "check-incomplete": "hold"
   },
-  "policyDigest": "sha256:60515a0f4e5da5be71b715f3716afdb1cdbe6786a2b2c8bcaa889b458e57ed60"
+  "policyDigest": "sha256:3bc9aba593992d8628e332e6f29898beb150958aa83b13f2e379abe6286e0c6d"
 }

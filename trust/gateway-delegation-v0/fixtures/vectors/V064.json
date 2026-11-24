@@ -42,7 +42,7 @@
   "about": "Cited predecessor absent from the chain.",
   "why": "A citation that cannot be walked is an unknown.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "record-unresolved",
     "code": "LINEAGE_UNRESOLVED"
   }
 }

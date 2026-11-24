@@ -36,7 +36,7 @@
   "about": "Status value outside the known set.",
   "why": "An unknown status is an unknown, never a pass.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "record-unresolved",
     "code": "REVOCATION_UNKNOWN"
   }
 }

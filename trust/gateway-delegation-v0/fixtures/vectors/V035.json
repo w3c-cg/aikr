@@ -37,7 +37,7 @@
   "about": "Payload is opaque and also carries an instruction.",
   "why": "Opaque wins: nothing can be asserted about uninspected content.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "check-incomplete",
     "code": "OPAQUE_CONTENT"
   }
 }

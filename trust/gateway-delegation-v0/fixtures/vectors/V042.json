@@ -36,7 +36,7 @@
   "about": "Revocation source unreachable.",
   "why": "An unreachable source is an unknown.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "record-unresolved",
     "code": "SOURCE_UNREACHABLE"
   }
 }

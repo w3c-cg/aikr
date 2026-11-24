@@ -36,7 +36,7 @@
   "about": "Pointer unreachable.",
   "why": "Evidence that cannot be reached cannot be relied on.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "record-unresolved",
     "code": "POINTER_UNREACHABLE"
   }
 }

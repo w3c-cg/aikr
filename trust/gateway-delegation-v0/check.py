@@ -20,7 +20,19 @@ import os
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-PASS, FAIL, UNKNOWN = "pass", "fail", "could-not-determine"
+PASS, FAIL = "pass", "fail"
+# Two kinds of "not determined", kept apart because the remedy differs:
+RECORD = "record-unresolved"   # the record, or what it points at, cannot be resolved
+CHECKER = "check-incomplete"   # the check itself could not be completed
+# Any hold that is about the record rather than about the checker's own inputs.
+RECORD_CODES = {
+    "REVOCATION_UNKNOWN", "STALE_REVOCATION", "SOURCE_UNREACHABLE",
+    "REVOCATION_NOT_YET_EFFECTIVE", "POINTER_UNREACHABLE", "LINEAGE_UNRESOLVED",
+}
+CHECKER_CODES = {
+    "WINDOW_UNPARSABLE", "NO_DECLARED_SCOPE", "OPAQUE_CONTENT", "SIGNER_KEY_UNSPECIFIED",
+}
+
 
 
 def parse_time(value):
@@ -66,7 +78,7 @@ def check_case(case, policy):
         issued = parse_time(mandate["issuedAt"])
         expires = parse_time(mandate["expiresAt"])
     except (KeyError, ValueError, TypeError):
-        checks.append(("window", UNKNOWN, "WINDOW_UNPARSABLE"))
+        checks.append(("window", CHECKER, "WINDOW_UNPARSABLE"))
     else:
         if now < issued:
             checks.append(("window", FAIL, "MANDATE_NOT_YET_VALID"))
@@ -85,7 +97,7 @@ def check_case(case, policy):
     declared = request.get("declaredScope") or []
     granted = mandate.get("grantedScope") or []
     if not declared:
-        checks.append(("attenuation", UNKNOWN, "NO_DECLARED_SCOPE"))
+        checks.append(("attenuation", CHECKER, "NO_DECLARED_SCOPE"))
     else:
         outside = [item for item in declared if item not in granted]
         if outside:
@@ -95,7 +107,7 @@ def check_case(case, policy):
 
     # 5. content mediation: the payload is inspected before forwarding
     if payload.get("opaque"):
-        checks.append(("content", UNKNOWN, "OPAQUE_CONTENT"))
+        checks.append(("content", CHECKER, "OPAQUE_CONTENT"))
     elif payload.get("instructions"):
         checks.append(("content", FAIL, "CONTENT_OVERRIDE"))
     elif payload.get("claimedRole"):
@@ -112,9 +124,9 @@ def check_case(case, policy):
         checked = None
     if status == "none":
         if checked is None:
-            checks.append(("revocation", UNKNOWN, "REVOCATION_UNKNOWN"))
+            checks.append(("revocation", RECORD, "REVOCATION_UNKNOWN"))
         elif (now - checked).total_seconds() > bound:
-            checks.append(("revocation", UNKNOWN, "STALE_REVOCATION"))
+            checks.append(("revocation", RECORD, "STALE_REVOCATION"))
         else:
             checks.append(("revocation", PASS, ""))
     elif status == "revoked":
@@ -123,20 +135,20 @@ def check_case(case, policy):
         except (KeyError, ValueError, TypeError):
             effective = None
         if effective is not None and now < effective:
-            checks.append(("revocation", UNKNOWN, "REVOCATION_NOT_YET_EFFECTIVE"))
+            checks.append(("revocation", RECORD, "REVOCATION_NOT_YET_EFFECTIVE"))
         else:
             checks.append(("revocation", FAIL, "REVOKED"))
     elif status == "unreachable":
-        checks.append(("revocation", UNKNOWN, "SOURCE_UNREACHABLE"))
+        checks.append(("revocation", RECORD, "SOURCE_UNREACHABLE"))
     else:
-        checks.append(("revocation", UNKNOWN, "REVOCATION_UNKNOWN"))
+        checks.append(("revocation", RECORD, "REVOCATION_UNKNOWN"))
 
     # 7. what the record points at must be reachable at verification time
     evidence = case.get("evidence") or {}
     if evidence.get("pointer") == "reachable":
         checks.append(("evidence", PASS, ""))
     else:
-        checks.append(("evidence", UNKNOWN, "POINTER_UNREACHABLE"))
+        checks.append(("evidence", RECORD, "POINTER_UNREACHABLE"))
 
     results = [item[1] for item in checks]
 
@@ -144,7 +156,7 @@ def check_case(case, policy):
     subject_fp = mandate.get("subjectKeyFingerprint")
     signer_fp = mandate.get("signatureKeyFingerprint")
     if not subject_fp and not signer_fp:
-        checks.append(("signer-binding", UNKNOWN, "SIGNER_KEY_UNSPECIFIED"))
+        checks.append(("signer-binding", CHECKER, "SIGNER_KEY_UNSPECIFIED"))
     elif subject_fp and signer_fp and subject_fp == signer_fp:
         checks.append(("signer-binding", PASS, ""))
     else:
@@ -158,7 +170,7 @@ def check_case(case, policy):
         if predecessor in chain:
             checks.append(("lineage", PASS, ""))
         else:
-            checks.append(("lineage", UNKNOWN, "LINEAGE_UNRESOLVED"))
+            checks.append(("lineage", RECORD, "LINEAGE_UNRESOLVED"))
 
     # 10. a refusal must be receipted: the receipt binds decision, case and policy
     if FAIL in [item[1] for item in checks]:
@@ -173,8 +185,12 @@ def check_case(case, policy):
     results = [item[1] for item in checks]
     if FAIL in results:
         result = FAIL
-    elif UNKNOWN in results:
-        result = UNKNOWN
+    elif RECORD in results:
+        # A record that cannot be resolved outranks a check we could not run:
+        # the first is a statement about the record, the second about us.
+        result = RECORD
+    elif CHECKER in results:
+        result = CHECKER
     else:
         result = PASS
     codes = [item[2] for item in checks if item[2]]
@@ -220,6 +236,10 @@ def run(cases, policy, checker=check_case):
             "result": result,
             "decision": policy["decisionMap"][result],
             "code": code,
+            "unknown": {
+                "record": [item[2] for item in checks if item[1] == RECORD],
+                "checker": [item[2] for item in checks if item[1] == CHECKER],
+            },
             "checks": [{"check": name, "result": res, "code": c} for name, res, c in checks],
             "about": case.get("about", ""),
         })
@@ -332,11 +352,54 @@ def selftest():
     else:
         resolved = json.loads(json.dumps(lineage_case))
         resolved["lineage"]["chain"] = list(resolved["lineage"].get("chain") or []) + [resolved["lineage"]["predecessor"]]
-        ok = check_case(resolved, policy)[0] != UNKNOWN
+        ok = check_case(resolved, policy)[0] != RECORD
         print("[%s] lineage test: %s with the cited digest added to the chain no longer holds as unresolved" % (
             "OK" if ok else "FAIL", lineage_case["id"]))
         if not ok:
             failures += 1
+    # The digest the receipts bind to must be recomputable from policy.json itself.
+    try:
+        import policy_digest
+        with open(os.path.join(HERE, "policy.json"), encoding="utf-8") as digest_handle:
+            digest_text = digest_handle.read()
+        ok = policy_digest.digest_of_text(digest_text) == policy["policyDigest"]
+    except Exception as exc:  # noqa: BLE001 - any import/read failure is a failure
+        ok = False
+        print("      digest check error: %s" % exc)
+    print("[%s] policy digest: recomputed from policy.json, %s" % (
+        "OK" if ok else "FAIL", "matches the stored value" if ok else "DRIFTS from the stored value"))
+    if not ok:
+        failures += 1
+
+    # A hold must say which side it is on, and a row with one of each must report
+    # both rather than folding them into one bucket.
+    base_case = next((c for c in cases if c.get("id") == "D01"), None)
+    if base_case is None:
+        print("[FAIL] split test: D01 not found")
+        failures += 1
+    else:
+        rec_only = json.loads(json.dumps(base_case))
+        rec_only["evidence"] = {"pointer": "unreachable", "checkedAt": "2026-11-22T23:00:00Z"}
+        chk_only = json.loads(json.dumps(base_case))
+        chk_only["mandate"]["issuedAt"] = "not-a-date"
+        mixed = json.loads(json.dumps(base_case))
+        mixed["evidence"] = {"pointer": "unreachable", "checkedAt": "2026-11-22T23:00:00Z"}
+        mixed["mandate"]["issuedAt"] = "not-a-date"
+        r_rec = check_case(rec_only, policy)[0]
+        r_chk = check_case(chk_only, policy)[0]
+        r_mix, _, mix_checks = check_case(mixed, policy)
+        groups = {
+            "record": [c[2] for c in mix_checks if c[1] == RECORD],
+            "checker": [c[2] for c in mix_checks if c[1] == CHECKER],
+        }
+        ok = (r_rec == RECORD and r_chk == CHECKER and r_mix == RECORD
+              and groups["record"] and groups["checker"])
+        print("[%s] split test: record-only -> %s, checker-only -> %s, mixed -> %s with %s" % (
+            "OK" if ok else "FAIL", r_rec, r_chk, r_mix,
+            "/".join(groups["record"] + groups["checker"])))
+        if not ok:
+            failures += 1
+
     # The vector set is not generated from the checker: each row states the
     # outcome it must produce, and a disagreement fails here.
     vectors = load_vectors()
@@ -350,9 +413,10 @@ def selftest():
     if vbad:
         print("      mismatches: %s" % ", ".join(vbad))
         failures += 1
-    print("      distribution: pass %d / could-not-determine %d / fail %d" % (
+    print("      distribution: pass %d / record-unresolved %d / check-incomplete %d / fail %d" % (
         sum(1 for v in vrows if v["result"] == "pass"),
-        sum(1 for v in vrows if v["result"] == "could-not-determine"),
+        sum(1 for v in vrows if v["result"] == RECORD),
+        sum(1 for v in vrows if v["result"] == CHECKER),
         sum(1 for v in vrows if v["result"] == "fail")))
     return 1 if failures else 0
 

@@ -42,7 +42,7 @@
   "about": "Cited predecessor is null.",
   "why": "A null citation is not a resolvable one.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "record-unresolved",
     "code": "LINEAGE_UNRESOLVED"
   }
 }

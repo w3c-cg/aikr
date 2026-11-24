@@ -34,7 +34,7 @@
   "about": "Neither fingerprint is declared.",
   "why": "Nothing ties the signature to the subject: an unknown.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "check-incomplete",
     "code": "SIGNER_KEY_UNSPECIFIED"
   }
 }

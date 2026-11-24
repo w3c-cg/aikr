@@ -106,7 +106,7 @@
     },
     {
       "id": "D03",
-      "result": "could-not-determine",
+      "result": "check-incomplete",
       "decision": "hold",
       "code": "NO_DECLARED_SCOPE",
       "checks": [
@@ -127,7 +127,7 @@
         },
         {
           "check": "attenuation",
-          "result": "could-not-determine",
+          "result": "check-incomplete",
           "code": "NO_DECLARED_SCOPE"
         },
         {
@@ -371,7 +371,7 @@
     },
     {
       "id": "D08",
-      "result": "could-not-determine",
+      "result": "check-incomplete",
       "decision": "hold",
       "code": "OPAQUE_CONTENT",
       "checks": [
@@ -397,7 +397,7 @@
         },
         {
           "check": "content",
-          "result": "could-not-determine",
+          "result": "check-incomplete",
           "code": "OPAQUE_CONTENT"
         },
         {
@@ -474,7 +474,7 @@
     },
     {
       "id": "D10",
-      "result": "could-not-determine",
+      "result": "record-unresolved",
       "decision": "hold",
       "code": "SOURCE_UNREACHABLE",
       "checks": [
@@ -505,7 +505,7 @@
         },
         {
           "check": "revocation",
-          "result": "could-not-determine",
+          "result": "record-unresolved",
           "code": "SOURCE_UNREACHABLE"
         },
         {
@@ -523,7 +523,7 @@
     },
     {
       "id": "D11",
-      "result": "could-not-determine",
+      "result": "record-unresolved",
       "decision": "hold",
       "code": "STALE_REVOCATION",
       "checks": [
@@ -554,7 +554,7 @@
         },
         {
           "check": "revocation",
-          "result": "could-not-determine",
+          "result": "record-unresolved",
           "code": "STALE_REVOCATION"
         },
         {
@@ -572,7 +572,7 @@
     },
     {
       "id": "D12",
-      "result": "could-not-determine",
+      "result": "record-unresolved",
       "decision": "hold",
       "code": "POINTER_UNREACHABLE",
       "checks": [
@@ -608,7 +608,7 @@
         },
         {
           "check": "evidence",
-          "result": "could-not-determine",
+          "result": "record-unresolved",
           "code": "POINTER_UNREACHABLE"
         },
         {
@@ -621,7 +621,7 @@
     },
     {
       "id": "D13",
-      "result": "could-not-determine",
+      "result": "record-unresolved",
       "decision": "hold",
       "code": "STALE_REVOCATION",
       "checks": [
@@ -652,7 +652,7 @@
         },
         {
           "check": "revocation",
-          "result": "could-not-determine",
+          "result": "record-unresolved",
           "code": "STALE_REVOCATION"
         },
         {
@@ -670,7 +670,7 @@
     },
     {
       "id": "D14",
-      "result": "could-not-determine",
+      "result": "record-unresolved",
       "decision": "hold",
       "code": "REVOCATION_NOT_YET_EFFECTIVE",
       "checks": [
@@ -701,7 +701,7 @@
         },
         {
           "check": "revocation",
-          "result": "could-not-determine",
+          "result": "record-unresolved",
           "code": "REVOCATION_NOT_YET_EFFECTIVE"
         },
         {
@@ -881,7 +881,7 @@
     },
     {
       "id": "D18",
-      "result": "could-not-determine",
+      "result": "record-unresolved",
       "decision": "hold",
       "code": "LINEAGE_UNRESOLVED",
       "checks": [
@@ -927,7 +927,7 @@
         },
         {
           "check": "lineage",
-          "result": "could-not-determine",
+          "result": "record-unresolved",
           "code": "LINEAGE_UNRESOLVED"
         }
       ],

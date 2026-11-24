@@ -37,7 +37,7 @@
   "about": "Revocation effective one hour after the instant.",
   "why": "A record whose effect has not begun is a hold, not a refusal.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "record-unresolved",
     "code": "REVOCATION_NOT_YET_EFFECTIVE"
   }
 }

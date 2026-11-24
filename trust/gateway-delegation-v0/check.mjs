@@ -16,7 +16,8 @@ import { fileURLToPath } from "node:url";
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const PASS = "pass";
 const FAIL = "fail";
-const UNKNOWN = "could-not-determine";
+const RECORD = "record-unresolved";   // the record, or what it points at, cannot be resolved
+const CHECKER = "check-incomplete";  // the check itself could not be completed
 
 function readJSON(p) {
   return JSON.parse(fs.readFileSync(p, "utf8"));
@@ -55,7 +56,7 @@ function checkCase(c, policy) {
     else if (now >= expires) add("window", FAIL, "MANDATE_EXPIRED");
     else add("window", PASS);
   } catch (e) {
-    add("window", UNKNOWN, "WINDOW_UNPARSABLE");
+    add("window", CHECKER, "WINDOW_UNPARSABLE");
   }
 
   if (mandate.signature === "ok") add("signature", PASS);
@@ -63,11 +64,11 @@ function checkCase(c, policy) {
 
   const declared = request.declaredScope || [];
   const granted = mandate.grantedScope || [];
-  if (!declared.length) add("attenuation", UNKNOWN, "NO_DECLARED_SCOPE");
+  if (!declared.length) add("attenuation", CHECKER, "NO_DECLARED_SCOPE");
   else if (declared.some((s) => !granted.includes(s))) add("attenuation", FAIL, "SCOPE_WIDENED");
   else add("attenuation", PASS);
 
-  if (payload.opaque) add("content", UNKNOWN, "OPAQUE_CONTENT");
+  if (payload.opaque) add("content", CHECKER, "OPAQUE_CONTENT");
   else if (payload.instructions) add("content", FAIL, "CONTENT_OVERRIDE");
   else if (payload.claimedRole) add("content", FAIL, "ROLE_SPOOF");
   else add("content", PASS);
@@ -81,8 +82,8 @@ function checkCase(c, policy) {
     checked = null;
   }
   if (status === "none") {
-    if (checked === null) add("revocation", UNKNOWN, "REVOCATION_UNKNOWN");
-    else if (now - checked > bound) add("revocation", UNKNOWN, "STALE_REVOCATION");
+    if (checked === null) add("revocation", RECORD, "REVOCATION_UNKNOWN");
+    else if (now - checked > bound) add("revocation", RECORD, "STALE_REVOCATION");
     else add("revocation", PASS);
   } else if (status === "revoked") {
     let effective = null;
@@ -91,21 +92,21 @@ function checkCase(c, policy) {
     } catch (e) {
       effective = null;
     }
-    if (effective !== null && now < effective) add("revocation", UNKNOWN, "REVOCATION_NOT_YET_EFFECTIVE");
+    if (effective !== null && now < effective) add("revocation", RECORD, "REVOCATION_NOT_YET_EFFECTIVE");
     else add("revocation", FAIL, "REVOKED");
   } else if (status === "unreachable") {
-    add("revocation", UNKNOWN, "SOURCE_UNREACHABLE");
+    add("revocation", RECORD, "SOURCE_UNREACHABLE");
   } else {
-    add("revocation", UNKNOWN, "REVOCATION_UNKNOWN");
+    add("revocation", RECORD, "REVOCATION_UNKNOWN");
   }
 
   const evidence = c.evidence || {};
   if (evidence.pointer === "reachable") add("evidence", PASS);
-  else add("evidence", UNKNOWN, "POINTER_UNREACHABLE");
+  else add("evidence", RECORD, "POINTER_UNREACHABLE");
 
   const subjectFp = mandate.subjectKeyFingerprint;
   const signerFp = mandate.signatureKeyFingerprint;
-  if (!subjectFp && !signerFp) add("signer-binding", UNKNOWN, "SIGNER_KEY_UNSPECIFIED");
+  if (!subjectFp && !signerFp) add("signer-binding", CHECKER, "SIGNER_KEY_UNSPECIFIED");
   else if (subjectFp && signerFp && subjectFp === signerFp) add("signer-binding", PASS);
   else add("signer-binding", FAIL, "SIGNER_KEY_NOT_BOUND");
 
@@ -113,7 +114,7 @@ function checkCase(c, policy) {
   if (lineage) {
     const chain = lineage.chain || [];
     if (chain.includes(lineage.predecessor)) add("lineage", PASS);
-    else add("lineage", UNKNOWN, "LINEAGE_UNRESOLVED");
+    else add("lineage", RECORD, "LINEAGE_UNRESOLVED");
   }
 
   if (checks.some((x) => x.result === FAIL)) {
@@ -126,13 +127,20 @@ function checkCase(c, policy) {
   }
 
   const results = checks.map((x) => x.result);
-  const result = results.includes(FAIL) ? FAIL : results.includes(UNKNOWN) ? UNKNOWN : PASS;
+  let result = PASS;
+  if (results.includes(FAIL)) result = FAIL;
+  else if (results.includes(RECORD)) result = RECORD;      // a record we cannot resolve outranks a check we cannot run
+  else if (results.includes(CHECKER)) result = CHECKER;
   const first = checks.find((x) => x.code);
   return {
     id: c.id,
     result,
     decision: policy.decisionMap[result],
     code: first ? first.code : "",
+    unknown: {
+      record: checks.filter((x) => x.result === RECORD).map((x) => x.code),
+      checker: checks.filter((x) => x.result === CHECKER).map((x) => x.code),
+    },
   };
 }
 

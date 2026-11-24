@@ -37,7 +37,7 @@
   "about": "Revocation effective far in the future.",
   "why": "A distant effect is still not an effect now.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "record-unresolved",
     "code": "REVOCATION_NOT_YET_EFFECTIVE"
   }
 }

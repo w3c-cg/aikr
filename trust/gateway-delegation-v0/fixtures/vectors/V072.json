@@ -32,7 +32,7 @@
   "receipt": {
     "decision": "allow",
     "caseId": "V072",
-    "policyDigest": "sha256:60515a0f4e5da5be71b715f3716afdb1cdbe6786a2b2c8bcaa889b458e57ed60"
+    "policyDigest": "sha256:3bc9aba593992d8628e332e6f29898beb150958aa83b13f2e379abe6286e0c6d"
   },
   "id": "V072",
   "invariant": [

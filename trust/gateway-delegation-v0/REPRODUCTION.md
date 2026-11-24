@@ -20,16 +20,17 @@ account.
 
 ```
 cd trust/gateway-delegation-v0
-python check.py            # 120 rows (18 curated + 102 vectors), exit 0
-python check.py --selftest # seven [OK] lines, exit 0
-node check.mjs             # the same 120 rows from the second implementation
+python check.py            # 122 rows (18 curated + 104 vectors), exit 0
+python check.py --selftest # nine [OK] lines, exit 0
+node check.mjs             # the same 122 rows from the second implementation
 python crosscheck.py       # both implementations, exit 0 when they agree
+python policy_digest.py --check  # digest recomputed from policy.json, exit 0
 ```
 
 Observed on the run above:
 
 ```
-120 cases: could-not-determine 33, fail 56, pass 31
+122 cases: check-incomplete 9, fail 56, pass 33, record-unresolved 24
 
 [OK] expected.json matches the checker on 18 cases
 [OK] a permissive checker (content ignored, unknown folded into pass) is caught on 13 cases:
@@ -38,25 +39,31 @@ Observed on the run above:
 [OK] bound test: 24h -> 25h changes 1 case(s) (D13)
 [OK] receipt test: D16 refused without a receipt; adding one clears the receipt check
 [OK] lineage test: D18 with the cited digest added to the chain no longer holds as unresolved
-[OK] vector set: 102 rows match their stated expectations (0 mismatches)
-      distribution: pass 30 / could-not-determine 25 / fail 47
+[OK] policy digest: recomputed from policy.json, matches the stored value
+[OK] split test: record-only -> record-unresolved, checker-only -> check-incomplete,
+     mixed -> record-unresolved with POINTER_UNREACHABLE/WINDOW_UNPARSABLE
+[OK] vector set: 104 rows match their stated expectations (0 mismatches)
+      distribution: pass 32 / record-unresolved 18 / check-incomplete 7 / fail 47
+
+rows compared: 122 (curated 18 + vectors 104)
+disagreements: 0
 ```
 
 Exit codes: `0` when the run and the selftest agree; the selftest returns `1`
 if any expectation is missed.
 
-## The seven selftest claims, stated so they can be falsified
+## The nine selftest claims, stated so they can be falsified
 
 1. **Expectation match** — every row of `expected.json` equals the checker's
    result and first code, on all 18 cases.
 2. **Permissive checker is caught** — a checker that ignores content, folds
-   `could-not-determine` into `pass`, ignores staleness and never reads the
+   both kinds of hold into `pass`, ignores staleness and never reads the
    signer key or the lineage disagrees on 13 of 18 cases. If a future edit drops
    that below 5, the selftest fails.
 3. **Tamper moves the result** — D02 with an in-grant scope becomes `pass`,
    which proves the table is computed from fixtures, not asserted in prose.
 4. **Bound is not silently widened** — raising `revocationFreshnessBoundSeconds`
-   from 86400 to 90000 flips D13 from `could-not-determine` to `pass`. A policy
+   from 86400 to 90000 flips D13 from `record-unresolved` to `pass`. A policy
    that loosens the bound without saying so becomes visible in one command.
 5. **The receipt requirement is live** — D16 is a refusal with no receipt; adding
    a receipt that binds the decision, the case id and the policy digest clears the
@@ -64,7 +71,16 @@ if any expectation is missed.
 6. **A citation must be walked** — D18 cites a digest outside its chain; adding
    that digest to the chain clears the unresolved verdict. A gateway that accepts
    a non-empty citation without walking it is caught by the same row.
-7. **The vector set matches what it states** — 102 vectors carry their own
+7. **The policy digest is reproducible** — the digest in `policy.json` is
+   recomputed from the file's own bytes (with the digest field blanked) and must
+   equal the stored value. A receipt that binds to a digest nobody can regenerate
+   from the file would fail here.
+8. **A hold names its side** — three cases built from D01 in memory: record-only
+   (unreachable evidence pointer) gives `record-unresolved`; checker-only
+   (unparsable mandate window) gives `check-incomplete`; one of each gives
+   `record-unresolved` *and* fills both `unknown.record` and `unknown.checker`.
+   If the split is folded back into one bucket, this item fails.
+9. **The vector set matches what it states** — 104 vectors carry their own
    `expect` block, written with the vector rather than derived from a run. If any
    row disagrees the selftest fails; a set that merely reprints the checker's own
    output would pass this item for the wrong reason.
@@ -77,15 +93,15 @@ in a clean directory cloned over the public network with no credentials
 https://github.com/zhaoxinghua09-cell/aikr.git`), at commit `80b495e`.
 
 ```
-python3 check.py            -> 120 rows, exit 0
-  120 cases: could-not-determine 33, fail 56, pass 31
+python3 check.py            -> 122 rows, exit 0
+  122 cases: check-incomplete 9, fail 56, pass 33, record-unresolved 24
 python3 check.py --selftest -> seven [OK] lines, exit 0
-  [OK] vector set: 102 rows match their stated expectations (0 mismatches)
-python3 crosscheck.py       -> rows compared: 120, disagreements: 0, exit 0
+  [OK] vector set: 104 rows match their stated expectations (0 mismatches)
+python3 crosscheck.py       -> rows compared: 122, disagreements: 0, exit 0
 sha256sum -c SHA256SUMS     -> 131 files, 0 mismatches
 ```
 
-Every row matched the Windows run, and both implementations agreed on all 120
+Every row matched the Windows run, and both implementations agreed on all 122
 rows on a third platform-independent pair of interpreters (CPython here, Node
 there). An earlier Linux attempt on the 18-case revision failed at
 `sha256sum -c` only because the manifest carried Windows backslash paths; it now

@@ -36,7 +36,7 @@
   "about": "No revocation, checked 25 hours before the instant.",
   "why": "A bound that can be widened silently is the defect D13 exists to catch.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "record-unresolved",
     "code": "STALE_REVOCATION"
   }
 }

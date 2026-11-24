@@ -41,6 +41,23 @@ def base():
 
 V = []
 
+# A hold states its side. The mapping is by code and is written here, next to
+# the expectations, so the vector set says which of the two kinds each row must
+# produce rather than leaving the checker to decide what "not determined" means.
+RECORD_CODES = {"REVOCATION_UNKNOWN", "STALE_REVOCATION", "SOURCE_UNREACHABLE",
+                "REVOCATION_NOT_YET_EFFECTIVE", "POINTER_UNREACHABLE", "LINEAGE_UNRESOLVED"}
+CHECKER_CODES = {"WINDOW_UNPARSABLE", "NO_DECLARED_SCOPE", "OPAQUE_CONTENT", "SIGNER_KEY_UNSPECIFIED"}
+
+
+def stated(result, code):
+    if result != "could-not-determine":
+        return result
+    if code in RECORD_CODES:
+        return "record-unresolved"
+    if code in CHECKER_CODES:
+        return "check-incomplete"
+    raise SystemExit("unclassified hold code in expectations: %r" % code)
+
 
 def add(inv, about, mutate, result, code, why):
     c = base()
@@ -49,7 +66,7 @@ def add(inv, about, mutate, result, code, why):
     c["invariant"] = [inv]
     c["about"] = about
     c["why"] = why
-    c["expect"] = {"result": result, "code": code}
+    c["expect"] = {"result": stated(result, code), "code": code}
     V.append(c)
 
 
@@ -205,7 +222,7 @@ PAIRS = [
     ("revocation and evidence", BOTH(REV(status="revoked", effectiveFrom="2026-11-01T00:00:00Z"), EV(pointer="unreachable")), None, "REVOKED", "fail"),
     ("evidence and signer (unknown first, fail second)", BOTH(EV(pointer="unreachable"), M(signatureKeyFingerprint=FP_OTHER)), None, "POINTER_UNREACHABLE", "fail"),
     ("signer and lineage", BOTH(M(signatureKeyFingerprint=FP_OTHER), (lambda c: c.update(lineage={"predecessor": "sha256:" + "aa" * 32, "chain": []}))), None, "SIGNER_KEY_NOT_BOUND", "fail"),
-    ("lineage and opaque content", BOTH((lambda c: c.update(lineage={"predecessor": "sha256:" + "aa" * 32, "chain": []})), R(payload={"opaque": True})), None, "OPAQUE_CONTENT", "could-not-determine"),
+    ("lineage and opaque content", BOTH((lambda c: c.update(lineage={"predecessor": "sha256:" + "aa" * 32, "chain": []})), R(payload={"opaque": True})), None, "OPAQUE_CONTENT", "record-unresolved"),
 ]
 for about, mut, alt, code, result in PAIRS:
     def w(c, mut=mut, alt=alt):
@@ -213,8 +230,8 @@ for about, mut, alt, code, result in PAIRS:
         if alt:
             alt(c)
     add("I1-I11", "Combination: %s." % about, w, result, code,
-        "Two defects in one request: the first coded check names the code, and fail outranks "
-        "could-not-determine in the verdict even when the first code is an unknown.")
+        "Two defects in one request: the first coded check names the code, and fail outranks both "
+        "kinds of hold, and a record that cannot be resolved outranks a check we could not run.")
 
 # ---------------- second wave: edge parameters ----------------
 add("I1", "Request agent id is an empty string.", R(agentId=""), "fail", "SUBJECT_MISMATCH", "An empty id is not the subject.")
@@ -243,6 +260,19 @@ add("I6", "Revoked with an effect in the future and a stale check.", REV(status=
 
 add("I7", "Revocation effective at issue time.", REV(status="revoked", effectiveFrom="2026-11-01T00:00:00Z"), "fail", "REVOKED", "An effect that began with the grant ended it.")
 add("I7", "Revocation effective far in the future.", REV(status="revoked", effectiveFrom="2027-01-01T00:00:00Z"), "could-not-determine", "REVOCATION_NOT_YET_EFFECTIVE", "A distant effect is still not an effect now.")
+add("I7", "Source queried one hour before the instant, nothing revoked.", REV(status="none", checkedAt="2026-11-22T23:00:00Z"), "pass", "",
+    "The positive control for the timing class: the same branch that reads effect times must also pass a "
+    "record that carries none, or a checker that always holds this class would look correct.")
+
+# The combination class needs a positive row too: the pair table above is all
+# defects, so on its own it cannot tell a checker that discriminates apart from
+# one that refuses anything with two moving parts.
+add("I1-I11", "Positive combination: declared scope equals the grant and the payload carries plain text.",
+    BOTH(lambda c: c["request"].update(declaredScope=["tool:search", "tool:summarise"]),
+         lambda c: c["request"].update(payload={"text": "compile last quarter's numbers"})),
+    "pass", "",
+    "Two variations at once, neither a defect: the combination class must be able to pass, or its "
+    "failing rows would only prove that it fails.")
 
 # write files
 os.makedirs(VDIR, exist_ok=True)

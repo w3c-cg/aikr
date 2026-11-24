@@ -36,7 +36,7 @@
   "about": "No revocation, checked one second beyond the bound.",
   "why": "One second past the bound is past it.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "record-unresolved",
     "code": "STALE_REVOCATION"
   }
 }

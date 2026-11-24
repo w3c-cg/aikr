@@ -36,7 +36,7 @@
   "about": "issuedAt is not a date.",
   "why": "A window that cannot be read is an unknown, never a pass.",
   "expect": {
-    "result": "could-not-determine",
+    "result": "check-incomplete",
     "code": "WINDOW_UNPARSABLE"
   }
 }

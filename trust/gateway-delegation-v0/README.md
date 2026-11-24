@@ -39,14 +39,38 @@ Every case is evaluated at a pinned instant, 2026-11-23T00:00:00Z. The revocatio
 | D13 | Bound edge: the revocation check is 25 hours old at the evaluation instant, one hour outside the 24 hour bound. | Revocation | could-not-determine | hold | `STALE_REVOCATION` | D11 |
 | D14 | Revocation recorded with `effectiveFrom` in the future: the record exists, its effect does not. | Revocation | could-not-determine | hold | `REVOCATION_NOT_YET_EFFECTIVE` | D09 |
 | D15 | Mandate with no `signature` field at all — absent, not merely wrong. | Signature | fail | refuse | `MANDATE_UNSIGNED` | D01 |
+| D16 | Revoked mandate whose refusal carries no receipt: the decision cannot be accounted for afterwards. | Receipt on refusal | fail | refuse | `REVOKED` (+ `RECEIPT_MISSING_ON_REFUSE`) | D09 |
+| D17 | Mandate signed by a key that is not the subject's key: the grant is attributable to someone else. | Signer key binding | fail | refuse | `SIGNER_KEY_NOT_BOUND` | D01 |
+| D18 | Mandate cites a predecessor by digest that does not resolve in the chain supplied with the case. | Lineage | could-not-determine | hold | `LINEAGE_UNRESOLVED` | D15 |
 
-Seven fails, seven could-not-determine, one pass. The asymmetry is deliberate: most real requests are not clean, and a set that mostly returns pass would not tell implementations apart.
+Nine fails, eight could-not-determine, one pass. The asymmetry is deliberate: most real requests are not clean, and a set that mostly returns pass would not tell implementations apart.
 
 Two files exist so the table can be checked without reading prose:
 `REPRODUCTION.md` (commands, interpreter, exit codes, observed output, the
 second-machine run and the integrity check) and `EVIDENCE-BOARD.html`
 (a single offline page whose row count and tallies are re-computed from
 `expected.json` when opened, and which says so if they disagree).
+
+
+### Invariant coverage
+
+Each case is tagged with the invariant it exercises, so coverage can be compared with sets that organise themselves by invariant rather than by scenario. The eleven here are I1–I11; a class with no case is a class this set does not test, and is listed as such rather than inferred.
+
+| Invariant | Statement | Cases |
+|---|---|---|
+| I1 | the mandate names the agent that presents it | D01, D04 |
+| I2 | the evaluation instant is inside the validity window | D01, D05 |
+| I3 | the mandate carries a signature result | D01, D15 |
+| I4 | declared scope never exceeds the grant | D01, D02, D03 |
+| I5 | the payload is inspected before forwarding | D01, D06, D07, D08 |
+| I6 | revocation status is fresh and effective | D01, D09, D10, D11, D13, D16 |
+| I7 | a revocation recorded with a future effect is not yet an effect | D14 |
+| I8 | what the record points at is reachable at verification time | D01, D12 |
+| I9 | the signing key is bound to the subject | D17 |
+| I10 | a cited predecessor resolves in the supplied chain | D18 |
+| I11 | every refusal carries a receipt binding decision, case and policy | D16 |
+
+Coverage is eleven of eleven classes with eighteen cases. That is coverage, not volume: a set organised by invariant can execute a class with one case, and a class with one case can be passed by a checker that only handles that shape.
 
 ### Why D08 is a hold and not a refusal
 
@@ -67,27 +91,32 @@ The reference checker runs these checks in order and records each one's result:
 5. **content** — the payload is inspected before forwarding (`CONTENT_OVERRIDE`, `ROLE_SPOOF`, `OPAQUE_CONTENT`).
 6. **revocation** — status is known, current within the bound, effective at the evaluation instant, and not revoked (`REVOKED`, `SOURCE_UNREACHABLE`, `STALE_REVOCATION`, `REVOCATION_UNKNOWN`, `REVOCATION_NOT_YET_EFFECTIVE`). A record whose own `effectiveFrom` is later than the evaluation instant is could-not-determine, not a refusal: the gateway cannot decide on an effect that has not begun.
 7. **evidence pointer** — what the record points at is reachable at verification time (`POINTER_UNREACHABLE`).
+8. **signer key binding** — the key that signed the mandate is the key bound to the subject (`SIGNER_KEY_NOT_BOUND`, `SIGNER_KEY_UNSPECIFIED`). A mandate that declares no fingerprint at all is an unknown, not a pass: nothing ties the signature to the subject.
+9. **lineage** — a cited predecessor resolves inside the chain supplied with the case (`LINEAGE_UNRESOLVED`). A citation that exists but cannot be walked is an unknown.
+10. **receipt on refusal** — when the result is a refusal, the case must carry a receipt binding the decision, the case id and the policy digest (`RECEIPT_MISSING_ON_REFUSE`). A refusal nobody can attribute to a policy afterwards is itself a defect; the primary failing code stays first so the reason for the refusal is not buried.
 
-Any fail gives fail. Otherwise any could-not-determine gives could-not-determine. Only if all seven pass is the result pass. A hold is not a refusal, and a refusal is not a finding of malice: the decision map is in `policy.json` so a reader can see which policy this set was evaluated under.
+Any fail gives fail. Otherwise any could-not-determine gives could-not-determine. Only if all ten pass is the result pass. A hold is not a refusal, and a refusal is not a finding of malice: the decision map is in `policy.json` so a reader can see which policy this set was evaluated under.
 
 ## How to run
 
 ```
 python3 check.py                  # the table above
 python3 check.py --json out.json  # machine-readable results
-python3 check.py --selftest       # three checks on the set itself
+python3 check.py --selftest       # six checks on the set itself
 ```
 
-No dependencies beyond the Python standard library, no network, no credentials. `SHA256SUMS` carries a digest for every file in this directory except itself, so a reader can check that what they run is what was reviewed. `--selftest` verifies four things:
+No dependencies beyond the Python standard library, no network, no credentials. `SHA256SUMS` carries a digest for every file in this directory except itself, so a reader can check that what they run is what was reviewed. `--selftest` verifies six things:
 
-1. `expected.json` matches the checker on all fifteen cases;
-2. a deliberately permissive checker — content ignored, unknown folded into pass, staleness ignored — is caught on eleven of the fifteen (`D03, D05, D06, D07, D08, D10, D11, D12, D13, D14, D15`);
+1. `expected.json` matches the checker on all eighteen cases;
+2. a deliberately permissive checker — content ignored, unknown folded into pass, staleness ignored, signer key and lineage unread — is caught on thirteen of the eighteen (`D03, D05, D06, D07, D08, D10, D11, D12, D13, D14, D15, D17, D18`);
 3. changing one fixture moves its result (D02 with an in-grant scope collapses to pass), which shows the table is computed from the fixtures rather than asserted;
-4. widening the revocation bound from 24 to 25 hours changes D13 from `could-not-determine` to `pass`, so a silently loosened bound is visible rather than absorbed.
+4. widening the revocation bound from 24 to 25 hours changes D13 from `could-not-determine` to `pass`, so a silently loosened bound is visible rather than absorbed;
+5. removing a refusal's receipt makes the receipt check fail, and adding a bound receipt clears it (D16), so the receipt requirement is not decorative;
+6. adding the cited digest to D18's chain clears its unresolved verdict, so an empty-but-present citation cannot pass as a walked chain.
 
 ## Boundaries
 
-This set is fifteen synthetic cases, not a certification and not a conformance suite for any product. It says nothing about cryptographic correctness, network identity, or the truth of any statement a record points at. It does not test performance, concurrency, or multi-hop chains; a chain case would need a separate set. The mandate signature field stands in for a verification result so that the runtime checks can be tested in isolation.
+This set is eighteen synthetic cases, not a certification and not a conformance suite for any product. It says nothing about cryptographic correctness, network identity, or the truth of any statement a record points at. It does not test performance, concurrency, or multi-hop chains; a chain case would need a separate set. The mandate signature field stands in for a verification result so that the runtime checks can be tested in isolation.
 
 Where a policy has a choice, `policy.json` records the choice made here. A different policy may legitimately decide D08 differently; the check result would still be could-not-determine, and the decision would differ.
 

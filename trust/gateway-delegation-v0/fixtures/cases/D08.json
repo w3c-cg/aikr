@@ -9,7 +9,9 @@
     ],
     "issuedAt": "2026-11-01T00:00:00Z",
     "expiresAt": "2026-12-01T00:00:00Z",
-    "signature": "ok"
+    "signature": "ok",
+    "subjectKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325",
+    "signatureKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325"
   },
   "request": {
     "agentId": "agent:gw-agent",
@@ -30,5 +32,8 @@
     "pointer": "reachable",
     "checkedAt": "2026-11-22T23:00:00Z"
   },
-  "why": "What cannot be inspected is not thereby safe. Under this policy the result is could-not-determine, not fail: there is no definite violation, only an unknown."
+  "why": "What cannot be inspected is not thereby safe. Under this policy the result is could-not-determine, not fail: there is no definite violation, only an unknown.",
+  "invariant": [
+    "I5"
+  ]
 }

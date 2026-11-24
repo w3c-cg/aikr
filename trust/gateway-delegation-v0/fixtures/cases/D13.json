@@ -9,7 +9,9 @@
     ],
     "issuedAt": "2026-11-01T00:00:00Z",
     "expiresAt": "2026-12-01T00:00:00Z",
-    "signature": "ok"
+    "signature": "ok",
+    "subjectKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325",
+    "signatureKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325"
   },
   "request": {
     "agentId": "agent:gw-agent",
@@ -29,5 +31,8 @@
     "pointer": "reachable",
     "checkedAt": "2026-11-22T23:00:00Z"
   },
-  "why": "Evaluated at 2026-11-23T00:00:00Z; the revocation check is 90000 seconds old against an 86400-second bound. Stale revocation evidence is could-not-determine (hold), never pass. Loose bound test: raising the bound to 90000 seconds makes this case pass, so the selftest detects a bound that was widened without justification."
+  "why": "Evaluated at 2026-11-23T00:00:00Z; the revocation check is 90000 seconds old against an 86400-second bound. Stale revocation evidence is could-not-determine (hold), never pass. Loose bound test: raising the bound to 90000 seconds makes this case pass, so the selftest detects a bound that was widened without justification.",
+  "invariant": [
+    "I6"
+  ]
 }

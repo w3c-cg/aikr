@@ -1,0 +1,38 @@
+{
+  "id": "D17",
+  "about": "Mandate signed by a key that is not the subject's key: the grant is attributable to someone else.",
+  "invariant": [
+    "I9"
+  ],
+  "mandate": {
+    "subject": "agent:gw-agent",
+    "grantedScope": [
+      "tool:search",
+      "tool:summarise"
+    ],
+    "issuedAt": "2026-11-01T00:00:00Z",
+    "expiresAt": "2026-12-01T00:00:00Z",
+    "signature": "ok",
+    "subjectKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325",
+    "signatureKeyFingerprint": "sha256:033b8ffff644cf5927e94ed27cd71a20"
+  },
+  "request": {
+    "agentId": "agent:gw-agent",
+    "declaredScope": [
+      "tool:search"
+    ],
+    "transportPeer": "agent:gw-agent",
+    "payload": {
+      "text": "summarise the attached note"
+    }
+  },
+  "revocation": {
+    "status": "none",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "evidence": {
+    "pointer": "reachable",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "why": "Every other check passes; the only defect is that the signing key is bound to a different subject. A gateway that only reads signature == ok admits a grant that its own subject never held."
+}

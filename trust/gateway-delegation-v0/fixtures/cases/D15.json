@@ -8,7 +8,9 @@
       "tool:summarise"
     ],
     "issuedAt": "2026-11-01T00:00:00Z",
-    "expiresAt": "2026-12-01T00:00:00Z"
+    "expiresAt": "2026-12-01T00:00:00Z",
+    "subjectKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325",
+    "signatureKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325"
   },
   "request": {
     "agentId": "agent:gw-agent",
@@ -28,5 +30,13 @@
     "pointer": "reachable",
     "checkedAt": "2026-11-22T23:00:00Z"
   },
-  "why": "Absence of a signature is not a weaker signature: the mandate was never bound to its issuer. fail with MANDATE_UNSIGNED, never could-not-determine — an unsigned mandate is held by an unknown party, and that is a definite refusal under this policy. Paired control: D01 carries signature \"ok\"."
+  "why": "Absence of a signature is not a weaker signature: the mandate was never bound to its issuer. fail with MANDATE_UNSIGNED, never could-not-determine — an unsigned mandate is held by an unknown party, and that is a definite refusal under this policy. Paired control: D01 carries signature \"ok\".",
+  "invariant": [
+    "I3"
+  ],
+  "receipt": {
+    "decision": "refuse",
+    "caseId": "D15",
+    "policyDigest": "sha256:60515a0f4e5da5be71b715f3716afdb1cdbe6786a2b2c8bcaa889b458e57ed60"
+  }
 }

@@ -20,45 +20,58 @@ account.
 
 ```
 cd trust/gateway-delegation-v0
-python check.py            # table of 15 rows, exit 0
-python check.py --selftest # four [OK] lines, exit 0
+python check.py            # table of 18 rows, exit 0
+python check.py --selftest # six [OK] lines, exit 0
 ```
 
 Observed on the run above:
 
 ```
-15 cases: could-not-determine 7, fail 7, pass 1
+18 cases: could-not-determine 8, fail 9, pass 1
 
-[OK] expected.json matches the checker on 15 cases
-[OK] a permissive checker (content ignored, unknown folded into pass) is caught on 11 cases:
-     D03, D05, D06, D07, D08, D10, D11, D12, D13, D14, D15
+[OK] expected.json matches the checker on 18 cases
+[OK] a permissive checker (content ignored, unknown folded into pass) is caught on 13 cases:
+     D03, D05, D06, D07, D08, D10, D11, D12, D13, D14, D15, D17, D18
 [OK] tamper test: D02 with an in-grant scope now gives pass (was fail)
 [OK] bound test: 24h -> 25h changes 1 case(s) (D13)
+[OK] receipt test: D16 refused without a receipt; adding one clears the receipt check
+[OK] lineage test: D18 with the cited digest added to the chain no longer holds as unresolved
 ```
 
 Exit codes: `0` when the run and the selftest agree; the selftest returns `1`
 if any expectation is missed.
 
-## The four selftest claims, stated so they can be falsified
+## The six selftest claims, stated so they can be falsified
 
 1. **Expectation match** — every row of `expected.json` equals the checker's
-   result and first code, on all 15 cases.
+   result and first code, on all 18 cases.
 2. **Permissive checker is caught** — a checker that ignores content, folds
-   `could-not-determine` into `pass` and ignores staleness disagrees on 11 of
-   15 cases. If a future edit drops that below 5, the selftest fails.
+   `could-not-determine` into `pass`, ignores staleness and never reads the
+   signer key or the lineage disagrees on 13 of 18 cases. If a future edit drops
+   that below 5, the selftest fails.
 3. **Tamper moves the result** — D02 with an in-grant scope becomes `pass`,
    which proves the table is computed from fixtures, not asserted in prose.
 4. **Bound is not silently widened** — raising `revocationFreshnessBoundSeconds`
    from 86400 to 90000 flips D13 from `could-not-determine` to `pass`. A policy
    that loosens the bound without saying so becomes visible in one command.
+5. **The receipt requirement is live** — D16 is a refusal with no receipt; adding
+   a receipt that binds the decision, the case id and the policy digest clears the
+   receipt check. If the requirement is deleted from `check.py`, this item fails.
+6. **A citation must be walked** — D18 cites a digest outside its chain; adding
+   that digest to the chain clears the unresolved verdict. A gateway that accepts
+   a non-empty citation without walking it is caught by the same row.
 
 ## Cross-machine check
 
-The same commands were run on a second machine (Ubuntu 22.04, CPython 3.12.11)
-in a clean directory cloned over the public network with no credentials. Output
-and exit codes matched this run (15 rows, `7/7/1`, four `[OK]` lines). If your
-run differs, the useful report is the row that differs and your interpreter
-version — that is the kind of disagreement this set exists to surface.
+**Status: pending for this revision.** The 15-case version of this package was
+run on a second machine (Ubuntu 22.04, CPython 3.12.11) in a clean directory
+cloned over the public network with no credentials, and matched (`7/7/1`, four
+`[OK]` lines). The 18-case revision has so far been run only on the Windows
+machine above; the Linux re-run is recorded here once it has actually been
+executed, not before. Until that line is replaced, treat the cross-machine claim
+as **not established for this revision**. If your run differs, the useful report
+is the row that differs and your interpreter version — that is the kind of
+disagreement this set exists to surface.
 
 ## Integrity
 

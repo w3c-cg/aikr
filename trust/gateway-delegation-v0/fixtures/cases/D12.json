@@ -9,7 +9,9 @@
     ],
     "issuedAt": "2026-11-01T00:00:00Z",
     "expiresAt": "2026-12-01T00:00:00Z",
-    "signature": "ok"
+    "signature": "ok",
+    "subjectKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325",
+    "signatureKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325"
   },
   "request": {
     "agentId": "agent:gw-agent",
@@ -29,5 +31,8 @@
     "pointer": "unreachable",
     "checkedAt": "2026-11-22T23:00:00Z"
   },
-  "why": "The record is internally consistent, but what it points at cannot be reached at verification time, so the check cannot be completed."
+  "why": "The record is internally consistent, but what it points at cannot be reached at verification time, so the check cannot be completed.",
+  "invariant": [
+    "I8"
+  ]
 }

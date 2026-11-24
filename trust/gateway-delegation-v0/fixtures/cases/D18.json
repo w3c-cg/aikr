@@ -1,0 +1,44 @@
+{
+  "id": "D18",
+  "about": "Mandate cites a predecessor by digest that does not resolve in the chain supplied with the case.",
+  "invariant": [
+    "I10"
+  ],
+  "mandate": {
+    "subject": "agent:gw-agent",
+    "grantedScope": [
+      "tool:search",
+      "tool:summarise"
+    ],
+    "issuedAt": "2026-11-01T00:00:00Z",
+    "expiresAt": "2026-12-01T00:00:00Z",
+    "signature": "ok",
+    "subjectKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325",
+    "signatureKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325"
+  },
+  "request": {
+    "agentId": "agent:gw-agent",
+    "declaredScope": [
+      "tool:search"
+    ],
+    "transportPeer": "agent:gw-agent",
+    "payload": {
+      "text": "summarise the attached note"
+    }
+  },
+  "revocation": {
+    "status": "none",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "evidence": {
+    "pointer": "reachable",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "lineage": {
+    "predecessor": "sha256:abababababababababababababababababababababababababababababababab",
+    "chain": [
+      "sha256:cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd"
+    ]
+  },
+  "why": "The citation exists but points outside the supplied chain, so the chain cannot be walked at verification time. That is an unknown, not a pass: a gateway that treats any non-empty citation as sufficient would admit an unchecked delegation history."
+}

@@ -6,11 +6,15 @@
     "scopeCompleteness": "The granted scope list in each mandate is treated as exhaustive for that agent and grant.",
     "undeclaredScope": "A request that declares no scope is not evidence of a narrower grant; result is could-not-determine, never pass.",
     "opaqueContent": "Content the gateway cannot inspect is could-not-determine, never pass.",
-    "decisionMap": "pass gives allow; fail gives refuse; could-not-determine gives hold."
+    "decisionMap": "pass gives allow; fail gives refuse; could-not-determine gives hold.",
+    "signerKeyBinding": "The key that signed the mandate must be the key bound to the subject. A different key makes the mandate attributable to someone else: fail, SIGNER_KEY_NOT_BOUND. A mandate that declares neither fingerprint is could-not-determine, never pass.",
+    "lineage": "A mandate that cites a predecessor must cite a digest that resolves inside the chain supplied with the case. An unresolvable citation is could-not-determine, LINEAGE_UNRESOLVED.",
+    "receiptOnRefuse": "Every refusal must carry a receipt that binds the decision, the case id and the policy digest. A refusal without one is an unaccountable refusal: fail, RECEIPT_MISSING_ON_REFUSE."
   },
   "decisionMap": {
     "pass": "allow",
     "fail": "refuse",
     "could-not-determine": "hold"
-  }
+  },
+  "policyDigest": "sha256:60515a0f4e5da5be71b715f3716afdb1cdbe6786a2b2c8bcaa889b458e57ed60"
 }

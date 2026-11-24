@@ -139,6 +139,38 @@ def check_case(case, policy):
         checks.append(("evidence", UNKNOWN, "POINTER_UNREACHABLE"))
 
     results = [item[1] for item in checks]
+
+    # 8. the signing key must be the key bound to the subject
+    subject_fp = mandate.get("subjectKeyFingerprint")
+    signer_fp = mandate.get("signatureKeyFingerprint")
+    if not subject_fp and not signer_fp:
+        checks.append(("signer-binding", UNKNOWN, "SIGNER_KEY_UNSPECIFIED"))
+    elif subject_fp and signer_fp and subject_fp == signer_fp:
+        checks.append(("signer-binding", PASS, ""))
+    else:
+        checks.append(("signer-binding", FAIL, "SIGNER_KEY_NOT_BOUND"))
+
+    # 9. a cited predecessor must resolve inside the supplied chain
+    lineage = case.get("lineage")
+    if lineage:
+        predecessor = lineage.get("predecessor")
+        chain = lineage.get("chain") or []
+        if predecessor in chain:
+            checks.append(("lineage", PASS, ""))
+        else:
+            checks.append(("lineage", UNKNOWN, "LINEAGE_UNRESOLVED"))
+
+    # 10. a refusal must be receipted: the receipt binds decision, case and policy
+    if FAIL in [item[1] for item in checks]:
+        receipt = case.get("receipt") or {}
+        if (receipt.get("decision") == "refuse"
+                and receipt.get("caseId") == case["id"]
+                and receipt.get("policyDigest") == policy.get("policyDigest")):
+            checks.append(("receipt", PASS, ""))
+        else:
+            checks.append(("receipt", FAIL, "RECEIPT_MISSING_ON_REFUSE"))
+
+    results = [item[1] for item in checks]
     if FAIL in results:
         result = FAIL
     elif UNKNOWN in results:
@@ -254,6 +286,47 @@ def selftest():
         "OK" if ok else "FAIL", len(flipped), ", ".join(flipped) or "none"))
     if not ok:
         failures += 1
+
+    # A refusal that carries no receipt must show that check failing, and the
+    # same refusal with a bound receipt must clear it. Otherwise the receipt
+    # requirement is decorative.
+    receipt_cases = [c for c in cases if c.get("receipt") is None]
+    no_receipt = None
+    for case in cases:
+        if any(ch[0] == "receipt" and ch[1] == FAIL for ch in check_case(case, policy)[2]):
+            no_receipt = case
+            break
+    if no_receipt is None:
+        print("[FAIL] receipt test: no case shows a refusal without a receipt")
+        failures += 1
+    else:
+        fixed = json.loads(json.dumps(no_receipt))
+        fixed["receipt"] = {"decision": "refuse", "caseId": fixed["id"], "policyDigest": policy["policyDigest"]}
+        checks_after = check_case(fixed, policy)[2]
+        receipt_check = [ch for ch in checks_after if ch[0] == "receipt"]
+        ok = bool(receipt_check) and receipt_check[0][1] == PASS
+        print("[%s] receipt test: %s refused without a receipt; adding one clears the receipt check" % (
+            "OK" if ok else "FAIL", no_receipt["id"]))
+        if not ok:
+            failures += 1
+
+    # A citation that resolves must pass, so an unresolvable one is visible.
+    lineage_case = None
+    for case in cases:
+        if case.get("lineage") and case["lineage"].get("predecessor") not in (case["lineage"].get("chain") or []):
+            lineage_case = case
+            break
+    if lineage_case is None:
+        print("[FAIL] lineage test: no case cites a predecessor outside its chain")
+        failures += 1
+    else:
+        resolved = json.loads(json.dumps(lineage_case))
+        resolved["lineage"]["chain"] = list(resolved["lineage"].get("chain") or []) + [resolved["lineage"]["predecessor"]]
+        ok = check_case(resolved, policy)[0] != UNKNOWN
+        print("[%s] lineage test: %s with the cited digest added to the chain no longer holds as unresolved" % (
+            "OK" if ok else "FAIL", lineage_case["id"]))
+        if not ok:
+            failures += 1
     return 1 if failures else 0
 
 

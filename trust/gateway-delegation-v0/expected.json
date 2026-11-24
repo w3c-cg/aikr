@@ -41,6 +41,11 @@
           "check": "evidence",
           "result": "pass",
           "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
         }
       ],
       "about": "Positive control: mandate valid, declared scope inside the grant, revocation fresh, pointer reachable."
@@ -83,6 +88,16 @@
         },
         {
           "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "receipt",
           "result": "pass",
           "code": ""
         }
@@ -129,6 +144,11 @@
           "check": "evidence",
           "result": "pass",
           "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
         }
       ],
       "about": "No scope declared: caller claims nothing, gateway infers a transport-peer basis."
@@ -171,6 +191,16 @@
         },
         {
           "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "receipt",
           "result": "pass",
           "code": ""
         }
@@ -217,6 +247,16 @@
           "check": "evidence",
           "result": "pass",
           "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "receipt",
+          "result": "pass",
+          "code": ""
         }
       ],
       "about": "Expired mandate: the grant ended before the evaluation instant."
@@ -259,6 +299,16 @@
         },
         {
           "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "receipt",
           "result": "pass",
           "code": ""
         }
@@ -305,6 +355,16 @@
           "check": "evidence",
           "result": "pass",
           "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "receipt",
+          "result": "pass",
+          "code": ""
         }
       ],
       "about": "Role spoofing in content: the payload asserts an authority the caller does not hold."
@@ -347,6 +407,11 @@
         },
         {
           "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
           "result": "pass",
           "code": ""
         }
@@ -393,6 +458,16 @@
           "check": "evidence",
           "result": "pass",
           "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "receipt",
+          "result": "pass",
+          "code": ""
         }
       ],
       "about": "Revoked before the evaluation instant."
@@ -435,6 +510,11 @@
         },
         {
           "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
           "result": "pass",
           "code": ""
         }
@@ -481,6 +561,11 @@
           "check": "evidence",
           "result": "pass",
           "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
         }
       ],
       "about": "Stale revocation check: last successful lookup is older than the 24 hour bound."
@@ -525,6 +610,11 @@
           "check": "evidence",
           "result": "could-not-determine",
           "code": "POINTER_UNREACHABLE"
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
         }
       ],
       "about": "Verification-time reachability: the record points at evidence that cannot be reached."
@@ -567,6 +657,11 @@
         },
         {
           "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
           "result": "pass",
           "code": ""
         }
@@ -613,6 +708,11 @@
           "check": "evidence",
           "result": "pass",
           "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
         }
       ],
       "about": "Revocation recorded but effective in the future: the record exists at the evaluation instant, its effect does not."
@@ -657,9 +757,181 @@
           "check": "evidence",
           "result": "pass",
           "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "receipt",
+          "result": "pass",
+          "code": ""
         }
       ],
       "about": "Mandate with no signature field at all: not a bad signature, an absent one."
+    },
+    {
+      "id": "D16",
+      "result": "fail",
+      "decision": "refuse",
+      "code": "REVOKED",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "fail",
+          "code": "REVOKED"
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "receipt",
+          "result": "fail",
+          "code": "RECEIPT_MISSING_ON_REFUSE"
+        }
+      ],
+      "about": "Revoked mandate, and the refusal was issued without a receipt: the decision cannot be accounted for afterwards."
+    },
+    {
+      "id": "D17",
+      "result": "fail",
+      "decision": "refuse",
+      "code": "SIGNER_KEY_NOT_BOUND",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "fail",
+          "code": "SIGNER_KEY_NOT_BOUND"
+        },
+        {
+          "check": "receipt",
+          "result": "fail",
+          "code": "RECEIPT_MISSING_ON_REFUSE"
+        }
+      ],
+      "about": "Mandate signed by a key that is not the subject's key: the grant is attributable to someone else."
+    },
+    {
+      "id": "D18",
+      "result": "could-not-determine",
+      "decision": "hold",
+      "code": "LINEAGE_UNRESOLVED",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "lineage",
+          "result": "could-not-determine",
+          "code": "LINEAGE_UNRESOLVED"
+        }
+      ],
+      "about": "Mandate cites a predecessor by digest that does not resolve in the chain supplied with the case."
     }
   ]
 }

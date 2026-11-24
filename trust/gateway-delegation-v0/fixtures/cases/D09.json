@@ -9,7 +9,9 @@
     ],
     "issuedAt": "2026-11-01T00:00:00Z",
     "expiresAt": "2026-12-01T00:00:00Z",
-    "signature": "ok"
+    "signature": "ok",
+    "subjectKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325",
+    "signatureKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325"
   },
   "request": {
     "agentId": "agent:gw-agent",
@@ -30,5 +32,13 @@
     "pointer": "reachable",
     "checkedAt": "2026-11-22T23:00:00Z"
   },
-  "why": "The revocation is definite and effective; fail. Paired with D11, where the status is merely old."
+  "why": "The revocation is definite and effective; fail. Paired with D11, where the status is merely old.",
+  "invariant": [
+    "I6"
+  ],
+  "receipt": {
+    "decision": "refuse",
+    "caseId": "D09",
+    "policyDigest": "sha256:60515a0f4e5da5be71b715f3716afdb1cdbe6786a2b2c8bcaa889b458e57ed60"
+  }
 }

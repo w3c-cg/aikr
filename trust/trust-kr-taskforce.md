@@ -30,7 +30,8 @@ About once a quarter, the task force sends a short note to the AI KR CG list: wh
 
 ## Coordination
 
-Larry Lewis volunteered to co-lead and coordinate the task force at the AI KR CG group call of 17 November 2026, and agreed to work with the contributors who had already expressed interest. Draft minutes of the call, for approval: [Google Doc](https://docs.google.com/document/d/1I6VeIVD3EPbw-q5jgQtlfDU3bYRDgBXLJ7yP1MV4uAQ/edit?usp=sharing), circulated on [public-aikr on 18 November 2026](https://lists.w3.org/Archives/Public/public-aikr/2026Nov/0050.html).
+Larry Lewis volunteered to co-lead and coordinate the task force at the AI KR CG group call of 17 November 2026, and agreed to work with the contributors who had already expressed interest. Draft minutes of the call, for approval: [Google Doc](https://docs.google.com/document/d/1I6VeIVD3EPbw-q5jgQtlfDU3bYRDgBXLJ7yP1MV4uAQ/edit?usp=sharing), circulated on [public-aikr on 18 November 2026](https://lists.w3.org/Archives/Public/public-aikr/2026Nov/0050.html)   Nicholas Templeman also agreed to co-lead and coordinate the task force with an email to Larry and Paola.
+Larry and Nicholas will maintain the Taskforce repo https://github.com/w3c-cg/aikr-trust  from 24th November onwards.
 
 ## Invited co-leads
 

@@ -146,14 +146,21 @@ catch each other?** It injects one defect at a time into `checkCase` in
   loudly, so the drift is noticed, but it is counted separately rather than
   scored as a clean catch.
 
-## Timestamps
+## Timestamps and signature
 
-`SHA256SUMS` (146 shipped files) carries an OpenTimestamps proof in
-`SHA256SUMS.ots`: four public calendars accepted the commitment, and the
-attestation is **pending confirmation in the Bitcoin blockchain** at the time
-of writing. `ots info SHA256SUMS.ots` shows the proof; `ots upgrade` completes
-it once a block includes it. The proof commits to the list, and the list is
-what pins the files, so the chain is: block → `SHA256SUMS` → each file.
+`SHA256SUMS` (150 shipped files) carries two independent attestations:
+
+- `SHA256SUMS.sig` — an SSH signature over the manifest, verifiable with
+  `allowed_signers` in this directory and a stock `ssh-keygen`. It binds the
+  list to the maintainer key that pushes to this branch. It is *self-issued*:
+  there is no external identity attestation behind it.
+- `SHA256SUMS.ots` — an OpenTimestamps proof. Four public calendars accepted the
+  commitment and the attestation is **pending confirmation in the Bitcoin
+  blockchain** at the time of writing. `ots info SHA256SUMS.ots` shows the proof;
+  `ots upgrade` completes it once a block includes it.
+
+So the chain is: signature says who; timestamp says when; the manifest says
+which bytes. None of the three says a third party validated anything.
 
 ## Why there is no "certified" wording anywhere in this file
 

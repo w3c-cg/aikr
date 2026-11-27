@@ -134,13 +134,20 @@ is what was reviewed:
 
 ```
 sha256sum -c SHA256SUMS     # or: shasum -a 256 -c SHA256SUMS
+ssh-keygen -Y verify -f allowed_signers -I zhaoxinghua09-cell -n file -s SHA256SUMS.sig < SHA256SUMS
 ```
+
+The second command checks that the manifest was signed by the key named in
+`allowed_signers`, whose public half is in that file, so the check needs nothing
+but a stock `ssh-keygen`. It is a signature by the repository's maintainer key
+— the same key GitHub uses for pushes to this branch — so it says *who* produced
+the list, not that an outside body endorsed it.
 
 Every file is LF line endings (`.gitattributes` enforces it on checkout).
 `expected.json` and the fixtures are UTF-8 without a BOM.
 
 The manifest itself is timestamped: `SHA256SUMS.ots` is an OpenTimestamps proof
-committing to `SHA256SUMS` (146 files). While the attestation is still pending
+committing to `SHA256SUMS` (150 files). While the attestation is still pending
 in Bitcoin, `ots info SHA256SUMS.ots` shows the four calendar attestations and
 **`ots verify` exits non-zero by design** — it reports "pending", not "invalid".
 Once a block includes it, `ots upgrade SHA256SUMS.ots` completes the proof and

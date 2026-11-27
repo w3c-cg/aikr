@@ -75,6 +75,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: verify sums
         run: sha256sum -c SHA256SUMS
+      - name: verify manifest signature
+        run: ssh-keygen -Y verify -f allowed_signers -I zhaoxinghua09-cell -n file -s SHA256SUMS.sig < SHA256SUMS
 
   mutation:
     name: mutation score (report only, not a gate)

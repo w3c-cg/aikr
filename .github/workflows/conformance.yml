@@ -65,6 +65,20 @@ jobs:
       - name: policy digest
         run: python3 policy_digest.py --check
 
+  vectors:
+    name: vector set (aikr-vectors-v1 manifest)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: trust/gateway-delegation-v0
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: vector manifest
+        run: python3 check_vectors_manifest.py
+
   sums:
     name: shipped bytes (SHA256SUMS)
     runs-on: ubuntu-latest

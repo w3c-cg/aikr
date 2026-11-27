@@ -1,11 +1,11 @@
 {
   "schema": "aikr-parity-report/0",
   "subject": "gateway-delegation-v0",
-  "generated_utc": "2026-11-27T23:09:06Z",
+  "generated_utc": "2026-11-27T23:25:28Z",
   "python": "3.13.18",
   "node": "v22.23.2",
   "inputs": {
-    "check.py": "e1cd04b68c8d33edcef2472c5958deba4a8c717175781c36c09ef3595c6d0264",
+    "check.py": "4bfe29f076189e4a0741f9919f37d106909ee8f1af66b12a7fa1b80374b3371d",
     "check.mjs": "d21ef91984e98c38e954da64c36106f5478d693b4527cd57622a9f873a1c7be0",
     "policy.json": "88c523a171351809568adbda538d0093e369a3431637b12e9204784acbe115b4",
     "expected.json": "0201cdb5cc401aaf799ca7721acf6d024ae18ad3d3873c2608269418b27c50fc",

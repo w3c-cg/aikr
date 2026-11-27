@@ -3,6 +3,8 @@
 
 Excluded on purpose:
   - SHA256SUMS itself (it cannot contain its own hash);
+  - SHA256SUMS.ots (an OpenTimestamps proof *of* SHA256SUMS: listing it would
+    change the file the proof commits to, and the proof would stop verifying);
   - the AER-1 fetch cache (aer1/), third-party bytes fetched at build time;
   - regenerated run reports (parity-report.json, mutation-report.json): their
     content changes on every run, so pinning them here would make the check
@@ -15,7 +17,7 @@ import hashlib, io, os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SKIP_DIRS = {"aer1", "__pycache__", ".git"}
-SKIP_FILES = {"SHA256SUMS", "parity-report.json", "mutation-report.json"}
+SKIP_FILES = {"SHA256SUMS", "SHA256SUMS.ots", "parity-report.json", "mutation-report.json"}
 SKIP_EXT = {".pyc"}
 
 entries = []

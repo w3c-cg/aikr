@@ -410,8 +410,21 @@ def selftest():
             "absent": [c[2] for c in mix_checks if c[1] == ABSENT],
             "checker": [c[2] for c in mix_checks if c[1] == CHECKER],
         }
+        # and the row the harness hands out must file each hold in its own
+        # bucket: the check that builds `unknown` is separate code from the
+        # one that computes the verdict, so it needs its own assertion.
+        row_mix = run([mixed], policy)[0]
+        filed = (row_mix["unknown"]["record"] == ["POINTER_UNREACHABLE"]
+                 and row_mix["unknown"]["absent"] == ["NO_DECLARED_SCOPE"]
+                 and row_mix["unknown"]["checker"] == ["WINDOW_UNPARSABLE"])
         ok = (r_rec == RECORD and r_chk == CHECKER and r_abs == ABSENT and r_mix == RECORD
-              and groups["record"] and groups["absent"] and groups["checker"])
+              and groups["record"] and groups["absent"] and groups["checker"]
+              # each hold must land in its own bucket and nowhere else: three
+              # non-empty buckets alone would not notice a code filed twice
+              and groups["record"] == ["POINTER_UNREACHABLE"]
+              and groups["absent"] == ["NO_DECLARED_SCOPE"]
+              and groups["checker"] == ["WINDOW_UNPARSABLE"]
+              and filed)
         print("[%s] split test: record-only -> %s, checker-only -> %s, absent-only -> %s, mixed -> %s with %s" % (
             "OK" if ok else "FAIL", r_rec, r_chk, r_abs, r_mix,
             "/".join(groups["record"] + groups["absent"] + groups["checker"])))
@@ -437,6 +450,66 @@ def selftest():
         sum(1 for v in vrows if v["result"] == ABSENT),
         sum(1 for v in vrows if v["result"] == CHECKER),
         sum(1 for v in vrows if v["result"] == "fail")))
+    # The defect checker must never reject a row the real checker passes:
+    # "content ignored" means it lets defects through, not that it invents
+    # refusals. If it does reject such a row, the caught-on-N count above is
+    # being propped up by the wrong behaviour and a defect planted in
+    # permissive_check can hide behind it.
+    p_all = run(cases + vectors, policy, permissive_check)
+    r_all = run(cases + vectors, policy)
+    stricter = [r_ref["id"] for r_p, r_ref in zip(p_all, r_all)
+                if r_ref["result"] == "pass" and r_p["result"] != "pass"]
+    print("[%s] leniency rule: the permissive checker is never stricter than the real one (%d such rows)" % (
+        "OK" if not stricter else "FAIL", len(stricter)))
+    if stricter:
+        print("      stricter on: %s" % ", ".join(stricter[:8]))
+        failures += 1
+
+    # The defect checker ignores content, but it does check revocation. If a
+    # mutation made it blind to a revoked case, no row would notice: that case
+    # already fails on the real checker, so the disagreement count above stays
+    # healthy either way. Assert the one thing the defect checker must catch.
+    revoked = [c for c in cases if (c.get("revocation") or {}).get("status") == "revoked"]
+    if not revoked:
+        print("[FAIL] revocation test: no revoked case in the corpus")
+        failures += 1
+    else:
+        sample = revoked[0]
+        verdict, code = permissive_check(sample, policy)
+        ok = verdict == FAIL
+        print("[%s] revocation test: the permissive checker still refuses %s (%s/%s)" % (
+            "OK" if ok else "FAIL", sample["id"], verdict, code or "-"))
+        if not ok:
+            failures += 1
+
+    # A receipt that names another case must not clear the receipt check. The
+    # corpus cannot isolate this: the receipt check only runs once something
+    # else has already failed, so the case-level verdict is the same either
+    # way and the binding could be loosened without any row noticing. Assert
+    # the sub-check state directly, on the pair that differs only in caseId.
+    anchor = next((c for c in cases if c.get("id") == "D02"), None)
+    if anchor is None:
+        print("[FAIL] receipt binding test: D02 not found")
+        failures += 1
+    else:
+        bound = json.loads(json.dumps(anchor))
+        bound["receipt"] = {"decision": "refuse", "caseId": bound["id"],
+                            "policyDigest": policy["policyDigest"]}
+        stray = json.loads(json.dumps(anchor))
+        stray["receipt"] = {"decision": "refuse", "caseId": bound["id"] + "-other",
+                            "policyDigest": policy["policyDigest"]}
+
+        def receipt_state(case):
+            return [item[1] for item in check_case(case, policy)[2] if item[0] == "receipt"]
+
+        ok = receipt_state(bound) == [PASS] and receipt_state(stray) == [FAIL]
+        print("[%s] receipt binding test: own caseId -> %s, another case's caseId -> %s" % (
+            "OK" if ok else "FAIL",
+            "/".join(receipt_state(bound)) or "absent",
+            "/".join(receipt_state(stray)) or "absent"))
+        if not ok:
+            failures += 1
+
     return 1 if failures else 0
 
 

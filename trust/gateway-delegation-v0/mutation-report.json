@@ -2,16 +2,47 @@
   "schema": "aikr-mutation-report/0",
   "subject": "gateway-delegation-v0",
   "target": "check.py",
-  "generated_utc": "2026-11-27T23:14:32Z",
-  "checker_sha256": "e1cd04b68c8d33edcef2472c5958deba4a8c717175781c36c09ef3595c6d0264",
+  "generated_utc": "2026-11-27T23:25:18Z",
+  "checker_sha256": "4bfe29f076189e4a0741f9919f37d106909ee8f1af66b12a7fa1b80374b3371d",
   "python": "3.13.18",
   "candidates_found": 35,
-  "mutants": 25,
-  "killed": 23,
-  "survived": 2,
+  "mutants": 35,
+  "killed": 35,
+  "survived": 0,
   "invalid": 0,
-  "score_percent": 92.0,
+  "score_percent": 100.0,
+  "by_operator": {
+    "and-to-or": {
+      "mutants": 6,
+      "killed": 6
+    },
+    "eq-flip": {
+      "mutants": 15,
+      "killed": 15
+    },
+    "ge-to-gt": {
+      "mutants": 1,
+      "killed": 1
+    },
+    "gt-to-ge": {
+      "mutants": 1,
+      "killed": 1
+    },
+    "lt-to-le": {
+      "mutants": 2,
+      "killed": 2
+    },
+    "ne-flip": {
+      "mutants": 1,
+      "killed": 1
+    },
+    "or-to-and": {
+      "mutants": 9,
+      "killed": 9
+    }
+  },
   "method": "one defect per mutant in the decision code only; expected values untouched; selftest must fail for the mutant to count as killed; syntactically broken mutants excluded",
+  "limits": "operator-level mutations inside check.py only; no scenario-level, cross-implementation or fixture mutations are attempted here",
   "results": [
     {
       "state": "KILLED",
@@ -25,7 +56,7 @@
     {
       "state": "KILLED",
       "rc": 1,
-      "last": "      distribution: pass 6 / record-unresolved 0 / absent 0 / check-incomplete 0 / fail 98",
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
       "n": 2,
       "op": "eq-flip",
       "line_no": 76,
@@ -34,7 +65,7 @@
     {
       "state": "KILLED",
       "rc": 1,
-      "last": "      distribution: pass 31 / record-unresolved 18 / absent 2 / check-incomplete 5 / fail 48",
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
       "n": 3,
       "op": "lt-to-le",
       "line_no": 88,
@@ -43,7 +74,7 @@
     {
       "state": "KILLED",
       "rc": 1,
-      "last": "      distribution: pass 34 / record-unresolved 18 / absent 2 / check-incomplete 5 / fail 45",
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
       "n": 4,
       "op": "ge-to-gt",
       "line_no": 90,
@@ -52,35 +83,8 @@
     {
       "state": "KILLED",
       "rc": 1,
-      "last": "      distribution: pass 31 / record-unresolved 19 / absent 2 / check-incomplete 5 / fail 47",
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
       "n": 5,
-      "op": "gt-to-ge",
-      "line_no": 135,
-      "line": "elif (now - checked).total_seconds() > bound:"
-    },
-    {
-      "state": "KILLED",
-      "rc": 1,
-      "last": "TypeError: '<' not supported between instances of 'datetime.datetime' and 'NoneType'",
-      "n": 6,
-      "op": "and-to-or",
-      "line_no": 144,
-      "line": "if effective is not None and now < effective:"
-    },
-    {
-      "state": "SURVIVED",
-      "rc": 0,
-      "last": "      distribution: pass 32 / record-unresolved 18 / absent 2 / check-incomplete 5 / fail 47",
-      "n": 7,
-      "op": "ne-flip",
-      "line_no": 227,
-      "line": "if request.get(\"agentId\") != mandate.get(\"subject\"):"
-    },
-    {
-      "state": "KILLED",
-      "rc": 1,
-      "last": "      distribution: pass 5 / record-unresolved 0 / absent 0 / check-incomplete 0 / fail 99",
-      "n": 8,
       "op": "eq-flip",
       "line_no": 96,
       "line": "if mandate.get(\"signature\") == \"ok\":"
@@ -88,8 +92,8 @@
     {
       "state": "KILLED",
       "rc": 1,
-      "last": "      distribution: pass 0 / record-unresolved 18 / absent 44 / check-incomplete 0 / fail 42",
-      "n": 9,
+      "last": "[FAIL] receipt binding test: own caseId -> absent, another case's caseId -> absent",
+      "n": 6,
       "op": "or-to-and",
       "line_no": 102,
       "line": "declared = request.get(\"declaredScope\") or []"
@@ -98,7 +102,7 @@
       "state": "KILLED",
       "rc": 1,
       "last": "TypeError: argument of type 'NoneType' is not iterable",
-      "n": 10,
+      "n": 7,
       "op": "or-to-and",
       "line_no": 103,
       "line": "granted = mandate.get(\"grantedScope\") or []"
@@ -106,8 +110,8 @@
     {
       "state": "KILLED",
       "rc": 1,
-      "last": "      distribution: pass 0 / record-unresolved 66 / absent 0 / check-incomplete 0 / fail 38",
-      "n": 11,
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
+      "n": 8,
       "op": "or-to-and",
       "line_no": 126,
       "line": "revocation = case.get(\"revocation\") or {}"
@@ -115,8 +119,8 @@
     {
       "state": "KILLED",
       "rc": 1,
-      "last": "      distribution: pass 13 / record-unresolved 53 / absent 0 / check-incomplete 0 / fail 38",
-      "n": 12,
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
+      "n": 9,
       "op": "eq-flip",
       "line_no": 132,
       "line": "if status == \"none\":"
@@ -124,8 +128,17 @@
     {
       "state": "KILLED",
       "rc": 1,
-      "last": "      distribution: pass 32 / record-unresolved 23 / absent 2 / check-incomplete 5 / fail 42",
-      "n": 13,
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
+      "n": 10,
+      "op": "gt-to-ge",
+      "line_no": 135,
+      "line": "elif (now - checked).total_seconds() > bound:"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
+      "n": 11,
       "op": "eq-flip",
       "line_no": 139,
       "line": "elif status == \"revoked\":"
@@ -133,8 +146,8 @@
     {
       "state": "KILLED",
       "rc": 1,
-      "last": "      distribution: pass 32 / record-unresolved 19 / absent 2 / check-incomplete 5 / fail 46",
-      "n": 14,
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
+      "n": 12,
       "op": "lt-to-le",
       "line_no": 144,
       "line": "if effective is not None and now < effective:"
@@ -142,8 +155,17 @@
     {
       "state": "KILLED",
       "rc": 1,
-      "last": "      distribution: pass 32 / record-unresolved 18 / absent 2 / check-incomplete 5 / fail 47",
-      "n": 15,
+      "last": "TypeError: '<' not supported between instances of 'datetime.datetime' and 'NoneType'",
+      "n": 13,
+      "op": "and-to-or",
+      "line_no": 144,
+      "line": "if effective is not None and now < effective:"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
+      "n": 14,
       "op": "eq-flip",
       "line_no": 148,
       "line": "elif status == \"unreachable\":"
@@ -151,8 +173,8 @@
     {
       "state": "KILLED",
       "rc": 1,
-      "last": "      distribution: pass 0 / record-unresolved 57 / absent 0 / check-incomplete 0 / fail 47",
-      "n": 16,
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
+      "n": 15,
       "op": "or-to-and",
       "line_no": 154,
       "line": "evidence = case.get(\"evidence\") or {}"
@@ -160,8 +182,8 @@
     {
       "state": "KILLED",
       "rc": 1,
-      "last": "      distribution: pass 3 / record-unresolved 54 / absent 0 / check-incomplete 0 / fail 47",
-      "n": 17,
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
+      "n": 16,
       "op": "eq-flip",
       "line_no": 155,
       "line": "if evidence.get(\"pointer\") == \"reachable\":"
@@ -169,8 +191,8 @@
     {
       "state": "KILLED",
       "rc": 1,
-      "last": "      distribution: pass 32 / record-unresolved 18 / absent 2 / check-incomplete 6 / fail 46",
-      "n": 18,
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
+      "n": 17,
       "op": "and-to-or",
       "line_no": 165,
       "line": "if not subject_fp and not signer_fp:"
@@ -178,8 +200,8 @@
     {
       "state": "KILLED",
       "rc": 1,
-      "last": "      distribution: pass 1 / record-unresolved 2 / absent 0 / check-incomplete 1 / fail 100",
-      "n": 19,
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
+      "n": 18,
       "op": "eq-flip",
       "line_no": 167,
       "line": "elif subject_fp and signer_fp and subject_fp == signer_fp:"
@@ -187,8 +209,8 @@
     {
       "state": "KILLED",
       "rc": 1,
-      "last": "      distribution: pass 34 / record-unresolved 20 / absent 2 / check-incomplete 5 / fail 43",
-      "n": 20,
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
+      "n": 19,
       "op": "and-to-or",
       "line_no": 167,
       "line": "elif subject_fp and signer_fp and subject_fp == signer_fp:"
@@ -196,8 +218,8 @@
     {
       "state": "KILLED",
       "rc": 1,
-      "last": "      distribution: pass 31 / record-unresolved 19 / absent 2 / check-incomplete 5 / fail 47",
-      "n": 21,
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
+      "n": 20,
       "op": "or-to-and",
       "line_no": 176,
       "line": "chain = lineage.get(\"chain\") or []"
@@ -206,7 +228,7 @@
       "state": "KILLED",
       "rc": 1,
       "last": "AttributeError: 'NoneType' object has no attribute 'get'",
-      "n": 22,
+      "n": 21,
       "op": "or-to-and",
       "line_no": 184,
       "line": "receipt = case.get(\"receipt\") or {}"
@@ -214,8 +236,8 @@
     {
       "state": "KILLED",
       "rc": 1,
-      "last": "      distribution: pass 32 / record-unresolved 18 / absent 2 / check-incomplete 5 / fail 47",
-      "n": 23,
+      "last": "[FAIL] receipt binding test: own caseId -> fail, another case's caseId -> fail",
+      "n": 22,
       "op": "eq-flip",
       "line_no": 185,
       "line": "if (receipt.get(\"decision\") == \"refuse\""
@@ -223,20 +245,119 @@
     {
       "state": "KILLED",
       "rc": 1,
-      "last": "      distribution: pass 32 / record-unresolved 18 / absent 2 / check-incomplete 5 / fail 47",
-      "n": 24,
+      "last": "[FAIL] receipt binding test: own caseId -> fail, another case's caseId -> pass",
+      "n": 23,
       "op": "eq-flip",
       "line_no": 186,
       "line": "and receipt.get(\"caseId\") == case[\"id\"]"
     },
     {
-      "state": "SURVIVED",
-      "rc": 0,
-      "last": "      distribution: pass 32 / record-unresolved 18 / absent 2 / check-incomplete 5 / fail 47",
-      "n": 25,
+      "state": "KILLED",
+      "rc": 1,
+      "last": "[FAIL] receipt binding test: own caseId -> pass, another case's caseId -> pass",
+      "n": 24,
       "op": "and-to-or",
       "line_no": 186,
       "line": "and receipt.get(\"caseId\") == case[\"id\"]"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "[FAIL] receipt binding test: own caseId -> fail, another case's caseId -> fail",
+      "n": 25,
+      "op": "eq-flip",
+      "line_no": 187,
+      "line": "and receipt.get(\"policyDigest\") == policy.get(\"policyDigest\")):"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "[FAIL] receipt binding test: own caseId -> pass, another case's caseId -> pass",
+      "n": 26,
+      "op": "and-to-or",
+      "line_no": 187,
+      "line": "and receipt.get(\"policyDigest\") == policy.get(\"policyDigest\")):"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
+      "n": 27,
+      "op": "ne-flip",
+      "line_no": 227,
+      "line": "if request.get(\"agentId\") != mandate.get(\"subject\"):"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "KeyError: 'declaredScope'",
+      "n": 28,
+      "op": "and-to-or",
+      "line_no": 229,
+      "line": "if request.get(\"declaredScope\") and \\"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "TypeError: argument of type 'NoneType' is not iterable",
+      "n": 29,
+      "op": "or-to-and",
+      "line_no": 230,
+      "line": "any(s not in (mandate.get(\"grantedScope\") or []) for s in request[\"declaredScope\"]):"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
+      "n": 30,
+      "op": "eq-flip",
+      "line_no": 232,
+      "line": "if (case.get(\"revocation\") or {}).get(\"status\") == \"revoked\":"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
+      "n": 31,
+      "op": "or-to-and",
+      "line_no": 232,
+      "line": "if (case.get(\"revocation\") or {}).get(\"status\") == \"revoked\":"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "ValueError: too many values to unpack (expected 2)",
+      "n": 32,
+      "op": "eq-flip",
+      "line_no": 241,
+      "line": "if len(out) == 2:"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
+      "n": 33,
+      "op": "eq-flip",
+      "line_no": 252,
+      "line": "\"record\": [item[2] for item in checks if item[1] == RECORD],"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
+      "n": 34,
+      "op": "eq-flip",
+      "line_no": 253,
+      "line": "\"absent\": [item[2] for item in checks if item[1] == ABSENT],"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "[OK] receipt binding test: own caseId -> pass, another case's caseId -> fail",
+      "n": 35,
+      "op": "eq-flip",
+      "line_no": 254,
+      "line": "\"checker\": [item[2] for item in checks if item[1] == CHECKER],"
     }
   ]
 }

@@ -138,6 +138,23 @@ sha256sum -c SHA256SUMS     # or: shasum -a 256 -c SHA256SUMS
 Every file is LF line endings (`.gitattributes` enforces it on checkout).
 `expected.json` and the fixtures are UTF-8 without a BOM.
 
+The manifest itself is timestamped: `SHA256SUMS.ots` is an OpenTimestamps proof
+committing to `SHA256SUMS` (146 files). While the attestation is still pending
+in Bitcoin, `ots info SHA256SUMS.ots` shows the four calendar attestations and
+**`ots verify` exits non-zero by design** — it reports "pending", not "invalid".
+Once a block includes it, `ots upgrade SHA256SUMS.ots` completes the proof and
+then:
+
+```
+ots verify SHA256SUMS.ots      # exit 0 only when the Bitcoin header is attached
+sha256sum -c SHA256SUMS        # and the files are the ones the list pins
+```
+
+A pending proof is still useful: four independent calendars accepted the same
+commitment at the same time, which is a public record that the list existed
+then. It is not, yet, a Bitcoin-anchored one, and this file says so rather than
+calling it verified.
+
 ## What this does not establish
 
 A pass here means "no violation detected within the declared inputs", not

@@ -79,7 +79,10 @@ def candidates(lines, start, end):
 
 
 def pick(cands, limit):
-    """每个算子先各取一个，再按行号补足，保证 25 个变异体覆盖多种算子。"""
+    """All candidate sites by default (limit<=0); a positive limit keeps the
+    old sampling (one per operator first, then by line number)."""
+    if not limit or limit <= 0:
+        return cands
     by_op = {}
     for c in cands:
         by_op.setdefault(c["op"], []).append(c)
@@ -118,7 +121,8 @@ def run_mutant(mut, src_lines, tmp):
 
 def main():
     parser = argparse.ArgumentParser(description="Mutation-test the checker against its own corpus")
-    parser.add_argument("--limit", type=int, default=25)
+    parser.add_argument("--limit", type=int, default=0,
+                        help="0 (default) = every candidate site; a positive number samples that many")
     parser.add_argument("--json", default="mutation-report.json")
     parser.add_argument("--strict", action="store_true",
                         help="exit 1 when a mutant survives; default is 0 because this is a measurement, not a gate")
@@ -169,8 +173,16 @@ def main():
         "survived": len(survived),
         "invalid": len(invalid),
         "score_percent": round(rate, 1),
+        "by_operator": {
+            op: {"mutants": len(items),
+                 "killed": sum(1 for r in items if r["state"] == "KILLED")}
+            for op, items in sorted(
+                {op: [r for r in results if r["op"] == op] for op in {r["op"] for r in results}}.items())
+        },
         "method": "one defect per mutant in the decision code only; expected values untouched; "
                   "selftest must fail for the mutant to count as killed; syntactically broken mutants excluded",
+        "limits": "operator-level mutations inside check.py only; no scenario-level, "
+                  "cross-implementation or fixture mutations are attempted here",
         "results": results,
     }
     with open(os.path.join(HERE, args.json), "w", encoding="utf-8", newline="\n") as handle:

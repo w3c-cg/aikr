@@ -1,0 +1,242 @@
+{
+  "schema": "aikr-mutation-report/0",
+  "subject": "gateway-delegation-v0",
+  "target": "check.py",
+  "generated_utc": "2026-11-27T23:14:32Z",
+  "checker_sha256": "e1cd04b68c8d33edcef2472c5958deba4a8c717175781c36c09ef3595c6d0264",
+  "python": "3.13.18",
+  "candidates_found": 35,
+  "mutants": 25,
+  "killed": 23,
+  "survived": 2,
+  "invalid": 0,
+  "score_percent": 92.0,
+  "method": "one defect per mutant in the decision code only; expected values untouched; selftest must fail for the mutant to count as killed; syntactically broken mutants excluded",
+  "results": [
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "AttributeError: 'NoneType' object has no attribute 'get'",
+      "n": 1,
+      "op": "or-to-and",
+      "line_no": 72,
+      "line": "payload = request.get(\"payload\") or {}"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "      distribution: pass 6 / record-unresolved 0 / absent 0 / check-incomplete 0 / fail 98",
+      "n": 2,
+      "op": "eq-flip",
+      "line_no": 76,
+      "line": "if request.get(\"agentId\") == mandate.get(\"subject\"):"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "      distribution: pass 31 / record-unresolved 18 / absent 2 / check-incomplete 5 / fail 48",
+      "n": 3,
+      "op": "lt-to-le",
+      "line_no": 88,
+      "line": "if now < issued:"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "      distribution: pass 34 / record-unresolved 18 / absent 2 / check-incomplete 5 / fail 45",
+      "n": 4,
+      "op": "ge-to-gt",
+      "line_no": 90,
+      "line": "elif now >= expires:"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "      distribution: pass 31 / record-unresolved 19 / absent 2 / check-incomplete 5 / fail 47",
+      "n": 5,
+      "op": "gt-to-ge",
+      "line_no": 135,
+      "line": "elif (now - checked).total_seconds() > bound:"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "TypeError: '<' not supported between instances of 'datetime.datetime' and 'NoneType'",
+      "n": 6,
+      "op": "and-to-or",
+      "line_no": 144,
+      "line": "if effective is not None and now < effective:"
+    },
+    {
+      "state": "SURVIVED",
+      "rc": 0,
+      "last": "      distribution: pass 32 / record-unresolved 18 / absent 2 / check-incomplete 5 / fail 47",
+      "n": 7,
+      "op": "ne-flip",
+      "line_no": 227,
+      "line": "if request.get(\"agentId\") != mandate.get(\"subject\"):"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "      distribution: pass 5 / record-unresolved 0 / absent 0 / check-incomplete 0 / fail 99",
+      "n": 8,
+      "op": "eq-flip",
+      "line_no": 96,
+      "line": "if mandate.get(\"signature\") == \"ok\":"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "      distribution: pass 0 / record-unresolved 18 / absent 44 / check-incomplete 0 / fail 42",
+      "n": 9,
+      "op": "or-to-and",
+      "line_no": 102,
+      "line": "declared = request.get(\"declaredScope\") or []"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "TypeError: argument of type 'NoneType' is not iterable",
+      "n": 10,
+      "op": "or-to-and",
+      "line_no": 103,
+      "line": "granted = mandate.get(\"grantedScope\") or []"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "      distribution: pass 0 / record-unresolved 66 / absent 0 / check-incomplete 0 / fail 38",
+      "n": 11,
+      "op": "or-to-and",
+      "line_no": 126,
+      "line": "revocation = case.get(\"revocation\") or {}"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "      distribution: pass 13 / record-unresolved 53 / absent 0 / check-incomplete 0 / fail 38",
+      "n": 12,
+      "op": "eq-flip",
+      "line_no": 132,
+      "line": "if status == \"none\":"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "      distribution: pass 32 / record-unresolved 23 / absent 2 / check-incomplete 5 / fail 42",
+      "n": 13,
+      "op": "eq-flip",
+      "line_no": 139,
+      "line": "elif status == \"revoked\":"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "      distribution: pass 32 / record-unresolved 19 / absent 2 / check-incomplete 5 / fail 46",
+      "n": 14,
+      "op": "lt-to-le",
+      "line_no": 144,
+      "line": "if effective is not None and now < effective:"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "      distribution: pass 32 / record-unresolved 18 / absent 2 / check-incomplete 5 / fail 47",
+      "n": 15,
+      "op": "eq-flip",
+      "line_no": 148,
+      "line": "elif status == \"unreachable\":"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "      distribution: pass 0 / record-unresolved 57 / absent 0 / check-incomplete 0 / fail 47",
+      "n": 16,
+      "op": "or-to-and",
+      "line_no": 154,
+      "line": "evidence = case.get(\"evidence\") or {}"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "      distribution: pass 3 / record-unresolved 54 / absent 0 / check-incomplete 0 / fail 47",
+      "n": 17,
+      "op": "eq-flip",
+      "line_no": 155,
+      "line": "if evidence.get(\"pointer\") == \"reachable\":"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "      distribution: pass 32 / record-unresolved 18 / absent 2 / check-incomplete 6 / fail 46",
+      "n": 18,
+      "op": "and-to-or",
+      "line_no": 165,
+      "line": "if not subject_fp and not signer_fp:"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "      distribution: pass 1 / record-unresolved 2 / absent 0 / check-incomplete 1 / fail 100",
+      "n": 19,
+      "op": "eq-flip",
+      "line_no": 167,
+      "line": "elif subject_fp and signer_fp and subject_fp == signer_fp:"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "      distribution: pass 34 / record-unresolved 20 / absent 2 / check-incomplete 5 / fail 43",
+      "n": 20,
+      "op": "and-to-or",
+      "line_no": 167,
+      "line": "elif subject_fp and signer_fp and subject_fp == signer_fp:"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "      distribution: pass 31 / record-unresolved 19 / absent 2 / check-incomplete 5 / fail 47",
+      "n": 21,
+      "op": "or-to-and",
+      "line_no": 176,
+      "line": "chain = lineage.get(\"chain\") or []"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "AttributeError: 'NoneType' object has no attribute 'get'",
+      "n": 22,
+      "op": "or-to-and",
+      "line_no": 184,
+      "line": "receipt = case.get(\"receipt\") or {}"
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "      distribution: pass 32 / record-unresolved 18 / absent 2 / check-incomplete 5 / fail 47",
+      "n": 23,
+      "op": "eq-flip",
+      "line_no": 185,
+      "line": "if (receipt.get(\"decision\") == \"refuse\""
+    },
+    {
+      "state": "KILLED",
+      "rc": 1,
+      "last": "      distribution: pass 32 / record-unresolved 18 / absent 2 / check-incomplete 5 / fail 47",
+      "n": 24,
+      "op": "eq-flip",
+      "line_no": 186,
+      "line": "and receipt.get(\"caseId\") == case[\"id\"]"
+    },
+    {
+      "state": "SURVIVED",
+      "rc": 0,
+      "last": "      distribution: pass 32 / record-unresolved 18 / absent 2 / check-incomplete 5 / fail 47",
+      "n": 25,
+      "op": "and-to-or",
+      "line_no": 186,
+      "line": "and receipt.get(\"caseId\") == case[\"id\"]"
+    }
+  ]
+}

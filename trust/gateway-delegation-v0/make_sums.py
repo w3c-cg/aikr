@@ -1,14 +1,21 @@
 # -*- coding: utf-8 -*-
 """Rebuild SHA256SUMS: one line per shipped file, lowercase sha256, posix path.
 
-Excluded: SHA256SUMS itself, and the AER-1 fetch cache (aer1/), which is
-third-party bytes fetched at build time and never shipped.
+Excluded on purpose:
+  - SHA256SUMS itself (it cannot contain its own hash);
+  - the AER-1 fetch cache (aer1/), third-party bytes fetched at build time;
+  - regenerated run reports (parity-report.json, mutation-report.json): their
+    content changes on every run, so pinning them here would make the check
+    fail for reasons that are not drift.
+
+The directory is taken from this file's location, so the same script runs on a
+Linux runner and on a Windows checkout.
 """
 import hashlib, io, os
 
-HERE = r"D:\Workbuddy\_aikr_fork\trust\gateway-delegation-v0"
+HERE = os.path.dirname(os.path.abspath(__file__))
 SKIP_DIRS = {"aer1", "__pycache__", ".git"}
-SKIP_FILES = {"SHA256SUMS"}
+SKIP_FILES = {"SHA256SUMS", "parity-report.json", "mutation-report.json"}
 SKIP_EXT = {".pyc"}
 
 entries = []

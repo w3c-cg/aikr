@@ -1,0 +1,99 @@
+name: conformance
+
+# 四道闸：语料自检、双实现一致性、收据摘要、出厂字节。
+# 任一失败即红，不合并。全部只读，不发布任何东西。
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  selftest:
+    name: corpus selftest (check.py --selftest)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: trust/gateway-delegation-v0
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: selftest
+        run: python3 check.py --selftest
+
+  parity:
+    name: parity (python vs javascript, 122 rows)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: trust/gateway-delegation-v0
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: crosscheck
+        run: python3 crosscheck.py --json parity-report.json
+      - name: upload parity report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: parity-report
+          path: trust/gateway-delegation-v0/parity-report.json
+          if-no-files-found: warn
+
+  digest:
+    name: receipt digest (policy.json)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: trust/gateway-delegation-v0
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: policy digest
+        run: python3 policy_digest.py --check
+
+  sums:
+    name: shipped bytes (SHA256SUMS)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: trust/gateway-delegation-v0
+    steps:
+      - uses: actions/checkout@v4
+      - name: verify sums
+        run: sha256sum -c SHA256SUMS
+
+  mutation:
+    name: mutation score (report only, not a gate)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    defaults:
+      run:
+        working-directory: trust/gateway-delegation-v0
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: mutation check
+        run: python3 mutation_check.py
+      - name: upload mutation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mutation-report
+          path: trust/gateway-delegation-v0/mutation-report.json
+          if-no-files-found: warn

@@ -97,3 +97,28 @@ jobs:
           name: mutation-report
           path: trust/gateway-delegation-v0/mutation-report.json
           if-no-files-found: warn
+
+  mutation-cross:
+    name: cross-implementation mutation (report only, not a gate)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    defaults:
+      run:
+        working-directory: trust/gateway-delegation-v0
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: cross mutation check
+        run: python3 mutation_check_cross.py
+      - name: upload cross mutation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mutation-cross-report
+          path: trust/gateway-delegation-v0/mutation-cross-report.json
+          if-no-files-found: warn

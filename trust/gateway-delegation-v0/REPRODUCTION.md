@@ -21,10 +21,11 @@ account.
 ```
 cd trust/gateway-delegation-v0
 python check.py            # 122 rows (18 curated + 104 vectors), exit 0
-python check.py --selftest # nine [OK] lines, exit 0
+python check.py --selftest # the [OK] lines, exit 0
 node check.mjs             # the same 122 rows from the second implementation
 python crosscheck.py       # both implementations, exit 0 when they agree
 python policy_digest.py --check  # digest recomputed from policy.json, exit 0
+python mutation_check_cross.py   # report only: 40 defects injected into check.mjs, crosscheck as oracle
 ```
 
 Observed on the run above:

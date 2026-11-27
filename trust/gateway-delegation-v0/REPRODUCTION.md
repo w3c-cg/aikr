@@ -105,7 +105,7 @@ python3 check.py --selftest -> nine [OK] lines plus the distribution line, exit 
           absent-only -> absent, mixed -> record-unresolved with
           POINTER_UNREACHABLE/NO_DECLARED_SCOPE/WINDOW_UNPARSABLE
 python3 crosscheck.py       -> rows compared: 122, disagreements: 0, exit 0
-sha256sum -c SHA256SUMS     -> 144 files, all OK
+sha256sum -c SHA256SUMS     -> 143 files, all OK
 
 # at 8d9dc45, for comparison
 python3 check.py            -> 122 rows, exit 0
@@ -133,7 +133,13 @@ is what was reviewed:
 
 ```
 sha256sum -c SHA256SUMS     # or: shasum -a 256 -c SHA256SUMS
+python make_sums.py --check # same check, reporting missing and mismatched per line
 ```
+
+143 files, because `policy.json.bak` is gone: an earlier revision left the manifest
+naming a file that no longer existed, and `sha256sum -c` failed on it. The manifest
+is now regenerated from the tree, and `make_sums.py --check` exits 1 if a line ever
+names a file that is not there.
 
 Every file is LF line endings (`.gitattributes` enforces it on checkout).
 `expected.json` and the fixtures are UTF-8 without a BOM.

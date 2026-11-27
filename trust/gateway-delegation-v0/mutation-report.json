@@ -2,7 +2,7 @@
   "schema": "aikr-mutation-report/0",
   "subject": "gateway-delegation-v0",
   "target": "check.py",
-  "generated_utc": "2026-11-27T23:31:43Z",
+  "generated_utc": "2026-11-27T23:40:31Z",
   "checker_sha256": "4bfe29f076189e4a0741f9919f37d106909ee8f1af66b12a7fa1b80374b3371d",
   "python": "3.13.18",
   "candidates_found": 35,

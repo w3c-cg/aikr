@@ -123,7 +123,7 @@ The corpus stayed at 122 rows. No row was added to chase a mutant score.
 
 ## Timestamps
 
-`SHA256SUMS` (146 shipped files) carries an OpenTimestamps proof in
+`SHA256SUMS` (147 shipped files) carries an OpenTimestamps proof in
 `SHA256SUMS.ots`: four public calendars accepted the commitment, and the
 attestation is **pending confirmation in the Bitcoin blockchain** at the time
 of writing. `ots info SHA256SUMS.ots` shows the proof; `ots upgrade` completes

@@ -85,7 +85,32 @@ All six were holes in *this repository's own assertions*, not in the rows:
 | `==` → `!=` ×3 | `run()`, the three `unknown` buckets | the split test built its own buckets and never inspected the row `run()` hands out | each hold must be filed in exactly one bucket, checked on the emitted row |
 
 So the score is 100% of 35, and that is a statement about the assertions, not
-about the suite's strength. What it still does **not** cover:
+about the suite's strength.
+
+Per class, so that a reader can see what a 100% is a 100% *of*. The harness
+declares 12 operator classes; the decision code gives a site to 7 of them and
+`sites 0` to the other 5 — those five are listed rather than dropped, because
+"12 classes, all killed" and "7 classes, all killed, 5 unmeasured" are different
+claims:
+
+| Class | Sites in the decision code | Killed |
+|---|---|---|
+| `eq-flip` (`==`→`!=`) | 15 | 15/15 |
+| `ne-flip` (`!=`→`==`) | 1 | 1/1 |
+| `ge-to-gt` (`>=`→`>`) | 1 | 1/1 |
+| `gt-to-ge` (`>`→`>=`) | 1 | 1/1 |
+| `lt-to-le` (`<`→`<=`) | 2 | 2/2 |
+| `and-to-or` | 6 | 6/6 |
+| `or-to-and` | 9 | 9/9 |
+| `le-to-lt`, `true-to-false`, `false-to-true`, `pass-to-fail`, `fail-to-pass` | 0 each | not measured |
+
+`check.py`'s decision region contains no `<=`, no `True`/`False` literal and no
+`"pass"`/`"fail"` literal to mutate, so five of the twelve declared classes have
+nothing to bite on. Widening the region would not help: the tokens are absent
+from the whole file's decision paths, not merely outside the current window. The
+gap is real and it is filed as a gap, not as coverage.
+
+What it still does **not** cover:
 
 - only operator-level defects inside `check.py`; no scenario-level, fixture-level
   or cross-implementation mutations, and no mutations of `check.mjs`;

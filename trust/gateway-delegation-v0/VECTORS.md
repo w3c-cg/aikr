@@ -12,6 +12,31 @@ with the vector and then checked against both implementations. A disagreement
 fails `check.py --selftest` and `crosscheck.py`, so a checker that drifts cannot
 rewrite its own verdicts.
 
+## Version
+
+This set is versioned as a unit, so that "I reproduced v1" and "I reproduced
+whatever was on main that day" are different statements:
+
+| item | value |
+|---|---|
+| set id | `aikr-vectors-v1` |
+| vectors | 104 (`V001.json` … `V104.json`) |
+| manifest | `fixtures/vectors/vectors-v1.manifest` — one sha256 per vector plus a set root |
+| set root | `abed1e536a87543ecbe12a2e6bb1e3a2b5f8424587343da7cbe7d3f311c24472` |
+
+Root rule, so it can be recomputed by anyone: concatenate `<sha256>  <path>\n`
+for every row, ordered by path, and sha256 that concatenation.
+
+Check it against disk and against the frozen sums in one command:
+
+```
+python check_vectors_manifest.py     # exit 0 only if files, root and SHA256SUMS all agree
+```
+
+If a vector changes, the manifest root changes and `check_vectors_manifest.py`
+fails — the version cannot drift silently. Adding vectors means publishing a v2
+manifest; v1 stays as published.
+
 ## Why both curated cases and vectors
 
 The 18 curated cases in `fixtures/cases/` are the ones with names and prose
@@ -51,6 +76,7 @@ python check.py                    # curated cases plus vectors, 122 rows
 python check.py --selftest         # includes "vector set matches its stated expectations"
 node check.mjs                     # the same 122 rows from the JavaScript implementation
 python crosscheck.py               # both implementations, row by row; exit 1 on any disagreement
+python check_vectors_manifest.py   # is this set the published v1, byte for byte
 ```
 
 ## What a vector does not prove

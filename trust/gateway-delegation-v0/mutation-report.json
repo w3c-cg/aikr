@@ -2,7 +2,7 @@
   "schema": "aikr-mutation-report/0",
   "subject": "gateway-delegation-v0",
   "target": "check.py",
-  "generated_utc": "2026-11-27T23:25:18Z",
+  "generated_utc": "2026-11-27T23:31:43Z",
   "checker_sha256": "4bfe29f076189e4a0741f9919f37d106909ee8f1af66b12a7fa1b80374b3371d",
   "python": "3.13.18",
   "candidates_found": 35,
@@ -40,6 +40,91 @@
       "mutants": 9,
       "killed": 9
     }
+  },
+  "by_operator_declared": {
+    "eq-flip": {
+      "sites_in_decision_code": 15,
+      "mutants": 15,
+      "killed": 15,
+      "rate_percent": 100.0
+    },
+    "ne-flip": {
+      "sites_in_decision_code": 1,
+      "mutants": 1,
+      "killed": 1,
+      "rate_percent": 100.0
+    },
+    "ge-to-gt": {
+      "sites_in_decision_code": 1,
+      "mutants": 1,
+      "killed": 1,
+      "rate_percent": 100.0
+    },
+    "gt-to-ge": {
+      "sites_in_decision_code": 1,
+      "mutants": 1,
+      "killed": 1,
+      "rate_percent": 100.0
+    },
+    "le-to-lt": {
+      "sites_in_decision_code": 0,
+      "mutants": 0,
+      "killed": 0,
+      "rate_percent": null
+    },
+    "lt-to-le": {
+      "sites_in_decision_code": 2,
+      "mutants": 2,
+      "killed": 2,
+      "rate_percent": 100.0
+    },
+    "and-to-or": {
+      "sites_in_decision_code": 6,
+      "mutants": 6,
+      "killed": 6,
+      "rate_percent": 100.0
+    },
+    "or-to-and": {
+      "sites_in_decision_code": 9,
+      "mutants": 9,
+      "killed": 9,
+      "rate_percent": 100.0
+    },
+    "true-to-false": {
+      "sites_in_decision_code": 0,
+      "mutants": 0,
+      "killed": 0,
+      "rate_percent": null
+    },
+    "false-to-true": {
+      "sites_in_decision_code": 0,
+      "mutants": 0,
+      "killed": 0,
+      "rate_percent": null
+    },
+    "pass-to-fail": {
+      "sites_in_decision_code": 0,
+      "mutants": 0,
+      "killed": 0,
+      "rate_percent": null
+    },
+    "fail-to-pass": {
+      "sites_in_decision_code": 0,
+      "mutants": 0,
+      "killed": 0,
+      "rate_percent": null
+    }
+  },
+  "classes": {
+    "declared": 12,
+    "with_sites": 7,
+    "without_sites": [
+      "le-to-lt",
+      "true-to-false",
+      "false-to-true",
+      "pass-to-fail",
+      "fail-to-pass"
+    ]
   },
   "method": "one defect per mutant in the decision code only; expected values untouched; selftest must fail for the mutant to count as killed; syntactically broken mutants excluded",
   "limits": "operator-level mutations inside check.py only; no scenario-level, cross-implementation or fixture mutations are attempted here",

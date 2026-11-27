@@ -160,6 +160,15 @@ def main():
         for r in survived:
             print("  L%-4d %-13s %s" % (r["line_no"], r["op"], r["line"]))
 
+    print("\nper class (declared %d, with sites %d):" % (
+        len(OPERATORS), len({r["op"] for r in results})))
+    for name, _p, _r in OPERATORS:
+        site = sum(1 for c in all_cands if c["op"] == name)
+        k = len([r for r in results if r["op"] == name and r["state"] == "KILLED"])
+        n = len([r for r in results if r["op"] == name])
+        print("  %-13s sites %2d  killed %2d/%2d %s" % (
+            name, site, k, n, "" if n else "(no site in the decision code)"))
+
     report = {
         "schema": "aikr-mutation-report/0",
         "subject": "gateway-delegation-v0",
@@ -178,6 +187,27 @@ def main():
                  "killed": sum(1 for r in items if r["state"] == "KILLED")}
             for op, items in sorted(
                 {op: [r for r in results if r["op"] == op] for op in {r["op"] for r in results}}.items())
+        },
+        # Every operator class this harness declares, including the ones the decision
+        # code gives no site to. Without this block a reader sees 7 classes and cannot
+        # tell whether the list was 7 long or whether 5 were quietly dropped.
+        "by_operator_declared": {
+            op: {
+                "sites_in_decision_code": sum(1 for c in all_cands if c["op"] == op),
+                "mutants": len([r for r in results if r["op"] == op]),
+                "killed": len([r for r in results if r["op"] == op and r["state"] == "KILLED"]),
+                "rate_percent": (
+                    round(100.0 * len([r for r in results if r["op"] == op and r["state"] == "KILLED"])
+                          / len([r for r in results if r["op"] == op]), 1)
+                    if [r for r in results if r["op"] == op] else None),
+            }
+            for op, _unused in [(o[0], None) for o in OPERATORS]
+        },
+        "classes": {
+            "declared": len(OPERATORS),
+            "with_sites": len({r["op"] for r in results}),
+            "without_sites": [o[0] for o in OPERATORS
+                              if not [r for r in results if r["op"] == o[0]]],
         },
         "method": "one defect per mutant in the decision code only; expected values untouched; "
                   "selftest must fail for the mutant to count as killed; syntactically broken mutants excluded",

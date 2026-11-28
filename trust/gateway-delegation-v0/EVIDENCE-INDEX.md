@@ -20,7 +20,7 @@ facts below are stated for `3b683a1` unless noted.
 | Mutation coverage, first implementation | `mutation-report.json` | `python3 mutation_check.py` — 37 sites, 37 killed, 0 survived; the 12 declared operator classes are reconciled in `operator-coverage.json` |
 | Operator class coverage | `operator-coverage.json`, `operator_coverage.py` | `python3 operator_coverage.py` — 12 declared, 9 covered (all killed), 3 absent by construction (`<=`, `true`, `false` occur 0 times), 0 gap |
 | Mutation coverage, second implementation | `mutation-cross-report.json`, `mutation_check_cross.py` | `python3 mutation_check_cross.py` — 40 sites, **28 killed, 0 survived**, 8 invalid, 4 error (the two survivors reported earlier disappeared once the oracle compared per-check results, not just the verdict) |
-| Every check's rejecting path has actually run | `exercise-matrix.json`, `exercise_matrix.py` | `python3 exercise_matrix.py` — 10 checks, 0 unexercised, 9 with sole-cause rows; `receipt` is conditional (56 refuse-only rows, 8 pass / 48 non-pass) and the script exits 1 if it ever runs on an `allow` row |
+| Every check that runs reaches its rejecting path | `exercise-matrix.json`, `exercise_matrix.py` | `python3 exercise_matrix.py` — 10 checks, 0 unexercised, 9 with sole-cause rows; the exception is stated rather than hidden: `receipt` only evaluates on `refuse` rows (56 of them, 8 pass / 48 non-pass) and the script exits 1 if it ever runs on an `allow` row |
 | The suite runs on every push | `.github/workflows/conformance.yml` (8 jobs) | fork Actions run for `3b683a1`: all 7 completed/success at `3b683a1` (8 jobs from the exercise-matrix commit onward) |
 
 ## Outside runs on record

@@ -17,7 +17,8 @@ facts below are stated for `3b683a1` unless noted.
 | Shipped bytes are pinned | `SHA256SUMS` (149 lines) | `sha256sum -c SHA256SUMS` |
 | The manifest came from this key | `SHA256SUMS.sig`, `allowed_signers` | `ssh-keygen -Y verify -f allowed_signers -I zhaoxinghua09-cell -n file -s SHA256SUMS.sig < SHA256SUMS` |
 | The vector set is versioned as a unit | `fixtures/vectors/vectors-v1.manifest`, `check_vectors_manifest.py` | `python3 check_vectors_manifest.py` |
-| Mutation coverage, first implementation | `mutation-report.json` | `python3 mutation_check.py` — 35 sites, 35 killed, 0 survived; five classes with no site are listed at `sites 0` |
+| Mutation coverage, first implementation | `mutation-report.json` | `python3 mutation_check.py` — 37 sites, 37 killed, 0 survived; the 12 declared operator classes are reconciled in `operator-coverage.json` |
+| Operator class coverage | `operator-coverage.json`, `operator_coverage.py` | `python3 operator_coverage.py` — 12 declared, 9 covered (all killed), 3 absent by construction (`<=`, `true`, `false` occur 0 times), 0 gap |
 | Mutation coverage, second implementation | `mutation-cross-report.json`, `mutation_check_cross.py` | `python3 mutation_check_cross.py` — 40 sites, **28 killed, 0 survived**, 8 invalid, 4 error (the two survivors reported earlier disappeared once the oracle compared per-check results, not just the verdict) |
 | The suite runs on every push | `.github/workflows/conformance.yml` (7 jobs) | fork Actions run for `3b683a1`: all 7 completed/success |
 

@@ -56,12 +56,19 @@ def read_source():
 
 
 def allowed_region(lines):
-    """判定代码所在区间：从 check_case 起，到 selftest 之前。"""
+    """判定代码所在区间：模块常量块 + check_case 起，到 selftest 之前。
+
+    起点从 check_case 上移到模块常量（PASS/FAIL 等）所在处，是因为"pass 写成 fail"
+    这类缺陷最典型的位置就是常量定义本身；只扫 check_case 会让这一类永远 0 位点，
+    读者无法分辨"代码里没有"与"扫描器没扫"。
+    """
     start = next((i for i, ln in enumerate(lines) if ln.startswith("def check_case")), None)
     end = next((i for i, ln in enumerate(lines) if ln.startswith("def selftest")), None)
     if start is None or end is None:
         raise SystemExit("check_case / selftest not found: the harness is out of date")
-    return start, end
+    const_start = next((i for i, ln in enumerate(lines[:start])
+                        if re.match(r'^[A-Z][A-Z0-9_]*(,\s*[A-Z][A-Z0-9_]*)*\s*=', ln)), start)
+    return const_start, end
 
 
 def candidates(lines, start, end):

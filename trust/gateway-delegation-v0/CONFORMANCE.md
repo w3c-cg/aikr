@@ -70,8 +70,12 @@ system whose owner is not independent).
 
 Mutation testing (`mutation_check.py`) injects one defect at a time into the
 decision code and runs `check.py --selftest` with expectations untouched. All
-**35 candidate sites** in `check.py` are used, not a sample: **35 killed, 0
+**37 candidate sites** in `check.py` are used, not a sample: **37 killed, 0
 survived, 0 invalid** (`mutation-report.json` carries the per-operator tally).
+
+The scan region now starts at the module constants, not at `check_case`: a
+`"pass"` written as `"fail"` in the constant block is the most ordinary defect
+this suite must catch, and a scan that begins below it can never report it.
 
 Getting there changed the harness, not the corpus. The first pass (25 sampled
 mutants) left two alive, and expanding to every candidate site left four more.
@@ -144,10 +148,15 @@ catch each other?** It injects one defect at a time into `checkCase` in
   addition to the verdict, the first code and the hold group. Both mutants are
   killed under that oracle, and the 122 rows still agree per check (0
   disagreements), so the tightening cost nothing in parity.
-- What remains untouched: five declared reason codes still have no mutation
-  site at all (`sites 0` in `mutation-report.json`). Zero survivors does not
-  mean full coverage; it means every site that exists is caught by at least one
-  of the two implementations.
+- Twelve operator classes are declared. Nine of them have at least one site
+  here and every one of those sites is killed. The other three — `<=` (`le-to-lt`),
+  `true` (`true-to-false`) and `false` (`false-to-true`) — do not occur in the
+  decision code of either implementation at all; `operator_coverage.py` proves
+  that by counting occurrences rather than asserting it in prose
+  (`operator-coverage.json`: 12 declared, 9 covered, 3 absent, 0 gap). A class
+  that occurs without a site, or keeps a survivor, is a GAP and exits 1.
+- Zero survivors still does not mean full coverage of *behaviour*: this is
+  operator-level mutation of two checkers, not scenario-level testing.
 - "error" rows are mutants where the mutated JS throws: `crosscheck.py` fails
   loudly, so the drift is noticed, but it is counted separately rather than
   scored as a clean catch.

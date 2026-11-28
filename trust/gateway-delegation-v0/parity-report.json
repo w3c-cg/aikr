@@ -1,12 +1,12 @@
 {
   "schema": "aikr-parity-report/0",
   "subject": "gateway-delegation-v0",
-  "generated_utc": "2026-11-28T12:28:14Z",
+  "generated_utc": "2026-11-28T13:41:02Z",
   "python": "3.13.18",
   "node": "v22.23.2",
   "inputs": {
     "check.py": "4bfe29f076189e4a0741f9919f37d106909ee8f1af66b12a7fa1b80374b3371d",
-    "check.mjs": "d21ef91984e98c38e954da64c36106f5478d693b4527cd57622a9f873a1c7be0",
+    "check.mjs": "2a49440ec33f77dfa4065bb69144cef07646406adebd52b5f34b1fa6dfa6eb60",
     "policy.json": "88c523a171351809568adbda538d0093e369a3431637b12e9204784acbe115b4",
     "expected.json": "0201cdb5cc401aaf799ca7721acf6d024ae18ad3d3873c2608269418b27c50fc",
     "policyDigest": "sha256:e94bf7b1822302f8e565d8594911d52a45b52796a16fe3984ce76a53bd046744"
@@ -14,8 +14,8 @@
   "rows_total": 122,
   "curated": 18,
   "vectors": 104,
-  "disagreements": 122,
-  "verdict": "diverge",
+  "disagreements": 0,
+  "verdict": "agree",
   "rows": [
     {
       "id": "D01",
@@ -27,7 +27,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -41,7 +41,7 @@
         "result": "fail",
         "code": "SCOPE_WIDENED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -55,7 +55,7 @@
         "result": "absent",
         "code": "NO_DECLARED_SCOPE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "absent"
     },
@@ -69,7 +69,7 @@
         "result": "fail",
         "code": "SUBJECT_MISMATCH"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -83,7 +83,7 @@
         "result": "fail",
         "code": "MANDATE_EXPIRED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -97,7 +97,7 @@
         "result": "fail",
         "code": "CONTENT_OVERRIDE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -111,7 +111,7 @@
         "result": "fail",
         "code": "ROLE_SPOOF"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -125,7 +125,7 @@
         "result": "check-incomplete",
         "code": "OPAQUE_CONTENT"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "check-incomplete"
     },
@@ -139,7 +139,7 @@
         "result": "fail",
         "code": "REVOKED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -153,7 +153,7 @@
         "result": "record-unresolved",
         "code": "SOURCE_UNREACHABLE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -167,7 +167,7 @@
         "result": "record-unresolved",
         "code": "STALE_REVOCATION"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -181,7 +181,7 @@
         "result": "record-unresolved",
         "code": "POINTER_UNREACHABLE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -195,7 +195,7 @@
         "result": "record-unresolved",
         "code": "STALE_REVOCATION"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -209,7 +209,7 @@
         "result": "record-unresolved",
         "code": "REVOCATION_NOT_YET_EFFECTIVE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -223,7 +223,7 @@
         "result": "fail",
         "code": "MANDATE_UNSIGNED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -237,7 +237,7 @@
         "result": "fail",
         "code": "REVOKED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -251,7 +251,7 @@
         "result": "fail",
         "code": "SIGNER_KEY_NOT_BOUND"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -265,7 +265,7 @@
         "result": "record-unresolved",
         "code": "LINEAGE_UNRESOLVED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -279,7 +279,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -293,7 +293,7 @@
         "result": "fail",
         "code": "SUBJECT_MISMATCH"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -307,7 +307,7 @@
         "result": "fail",
         "code": "SUBJECT_MISMATCH"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -321,7 +321,7 @@
         "result": "fail",
         "code": "SUBJECT_MISMATCH"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -335,7 +335,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -349,7 +349,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -363,7 +363,7 @@
         "result": "fail",
         "code": "MANDATE_EXPIRED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -377,7 +377,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -391,7 +391,7 @@
         "result": "fail",
         "code": "MANDATE_EXPIRED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -405,7 +405,7 @@
         "result": "fail",
         "code": "MANDATE_NOT_YET_VALID"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -419,7 +419,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -433,7 +433,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -447,7 +447,7 @@
         "result": "fail",
         "code": "MANDATE_NOT_YET_VALID"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -461,7 +461,7 @@
         "result": "check-incomplete",
         "code": "WINDOW_UNPARSABLE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "check-incomplete"
     },
@@ -475,7 +475,7 @@
         "result": "check-incomplete",
         "code": "WINDOW_UNPARSABLE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "check-incomplete"
     },
@@ -489,7 +489,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -503,7 +503,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -517,7 +517,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -531,7 +531,7 @@
         "result": "fail",
         "code": "MANDATE_UNSIGNED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -545,7 +545,7 @@
         "result": "fail",
         "code": "MANDATE_UNSIGNED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -559,7 +559,7 @@
         "result": "fail",
         "code": "MANDATE_UNSIGNED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -573,7 +573,7 @@
         "result": "fail",
         "code": "MANDATE_UNSIGNED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -587,7 +587,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -601,7 +601,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -615,7 +615,7 @@
         "result": "fail",
         "code": "SCOPE_WIDENED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -629,7 +629,7 @@
         "result": "fail",
         "code": "SCOPE_WIDENED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -643,7 +643,7 @@
         "result": "absent",
         "code": "NO_DECLARED_SCOPE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "absent"
     },
@@ -657,7 +657,7 @@
         "result": "absent",
         "code": "NO_DECLARED_SCOPE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "absent"
     },
@@ -671,7 +671,7 @@
         "result": "fail",
         "code": "SCOPE_WIDENED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -685,7 +685,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -699,7 +699,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -713,7 +713,7 @@
         "result": "fail",
         "code": "CONTENT_OVERRIDE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -727,7 +727,7 @@
         "result": "fail",
         "code": "ROLE_SPOOF"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -741,7 +741,7 @@
         "result": "check-incomplete",
         "code": "OPAQUE_CONTENT"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "check-incomplete"
     },
@@ -755,7 +755,7 @@
         "result": "check-incomplete",
         "code": "OPAQUE_CONTENT"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "check-incomplete"
     },
@@ -769,7 +769,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -783,7 +783,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -797,7 +797,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -811,7 +811,7 @@
         "result": "record-unresolved",
         "code": "STALE_REVOCATION"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -825,7 +825,7 @@
         "result": "record-unresolved",
         "code": "STALE_REVOCATION"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -839,7 +839,7 @@
         "result": "fail",
         "code": "REVOKED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -853,7 +853,7 @@
         "result": "record-unresolved",
         "code": "SOURCE_UNREACHABLE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -867,7 +867,7 @@
         "result": "record-unresolved",
         "code": "REVOCATION_UNKNOWN"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -881,7 +881,7 @@
         "result": "record-unresolved",
         "code": "REVOCATION_UNKNOWN"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -895,7 +895,7 @@
         "result": "record-unresolved",
         "code": "REVOCATION_UNKNOWN"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -909,7 +909,7 @@
         "result": "fail",
         "code": "REVOKED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -923,7 +923,7 @@
         "result": "fail",
         "code": "REVOKED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -937,7 +937,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -951,7 +951,7 @@
         "result": "record-unresolved",
         "code": "REVOCATION_NOT_YET_EFFECTIVE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -965,7 +965,7 @@
         "result": "record-unresolved",
         "code": "REVOCATION_NOT_YET_EFFECTIVE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -979,7 +979,7 @@
         "result": "fail",
         "code": "REVOKED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -993,7 +993,7 @@
         "result": "fail",
         "code": "REVOKED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1007,7 +1007,7 @@
         "result": "fail",
         "code": "REVOKED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1021,7 +1021,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1035,7 +1035,7 @@
         "result": "record-unresolved",
         "code": "POINTER_UNREACHABLE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -1049,7 +1049,7 @@
         "result": "record-unresolved",
         "code": "POINTER_UNREACHABLE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -1063,7 +1063,7 @@
         "result": "record-unresolved",
         "code": "POINTER_UNREACHABLE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -1077,7 +1077,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1091,7 +1091,7 @@
         "result": "fail",
         "code": "SIGNER_KEY_NOT_BOUND"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1105,7 +1105,7 @@
         "result": "fail",
         "code": "SIGNER_KEY_NOT_BOUND"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1119,7 +1119,7 @@
         "result": "check-incomplete",
         "code": "SIGNER_KEY_UNSPECIFIED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "check-incomplete"
     },
@@ -1133,7 +1133,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1147,7 +1147,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1161,7 +1161,7 @@
         "result": "record-unresolved",
         "code": "LINEAGE_UNRESOLVED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -1175,7 +1175,7 @@
         "result": "record-unresolved",
         "code": "LINEAGE_UNRESOLVED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -1189,7 +1189,7 @@
         "result": "record-unresolved",
         "code": "LINEAGE_UNRESOLVED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -1203,7 +1203,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1217,7 +1217,7 @@
         "result": "fail",
         "code": "MANDATE_EXPIRED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1231,7 +1231,7 @@
         "result": "fail",
         "code": "MANDATE_EXPIRED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1245,7 +1245,7 @@
         "result": "fail",
         "code": "MANDATE_EXPIRED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1259,7 +1259,7 @@
         "result": "fail",
         "code": "MANDATE_EXPIRED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1273,7 +1273,7 @@
         "result": "fail",
         "code": "MANDATE_EXPIRED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1287,7 +1287,7 @@
         "result": "fail",
         "code": "SUBJECT_MISMATCH"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1301,7 +1301,7 @@
         "result": "fail",
         "code": "SUBJECT_MISMATCH"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1315,7 +1315,7 @@
         "result": "fail",
         "code": "MANDATE_EXPIRED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1329,7 +1329,7 @@
         "result": "fail",
         "code": "MANDATE_UNSIGNED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1343,7 +1343,7 @@
         "result": "fail",
         "code": "SCOPE_WIDENED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1357,7 +1357,7 @@
         "result": "fail",
         "code": "CONTENT_OVERRIDE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1371,7 +1371,7 @@
         "result": "fail",
         "code": "REVOKED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1385,7 +1385,7 @@
         "result": "fail",
         "code": "POINTER_UNREACHABLE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1399,7 +1399,7 @@
         "result": "fail",
         "code": "SIGNER_KEY_NOT_BOUND"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1413,7 +1413,7 @@
         "result": "record-unresolved",
         "code": "OPAQUE_CONTENT"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -1427,7 +1427,7 @@
         "result": "fail",
         "code": "SUBJECT_MISMATCH"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1441,7 +1441,7 @@
         "result": "fail",
         "code": "SUBJECT_MISMATCH"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1455,7 +1455,7 @@
         "result": "fail",
         "code": "SUBJECT_MISMATCH"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1469,7 +1469,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1483,7 +1483,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1497,7 +1497,7 @@
         "result": "fail",
         "code": "MANDATE_EXPIRED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1511,7 +1511,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1525,7 +1525,7 @@
         "result": "fail",
         "code": "MANDATE_UNSIGNED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1539,7 +1539,7 @@
         "result": "fail",
         "code": "SCOPE_WIDENED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1553,7 +1553,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1567,7 +1567,7 @@
         "result": "fail",
         "code": "SCOPE_WIDENED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1581,7 +1581,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1595,7 +1595,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1609,7 +1609,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1623,7 +1623,7 @@
         "result": "fail",
         "code": "REVOKED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1637,7 +1637,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1651,7 +1651,7 @@
         "result": "record-unresolved",
         "code": "SOURCE_UNREACHABLE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -1665,7 +1665,7 @@
         "result": "record-unresolved",
         "code": "REVOCATION_NOT_YET_EFFECTIVE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -1679,7 +1679,7 @@
         "result": "fail",
         "code": "REVOKED"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1693,7 +1693,7 @@
         "result": "record-unresolved",
         "code": "REVOCATION_NOT_YET_EFFECTIVE"
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": "record-unresolved"
     },
@@ -1707,7 +1707,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     },
@@ -1721,7 +1721,7 @@
         "result": "pass",
         "code": ""
       },
-      "agree": false,
+      "agree": true,
       "checks_compared": true,
       "hold_group": ""
     }

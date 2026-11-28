@@ -79,6 +79,27 @@ jobs:
       - name: vector manifest
         run: python3 check_vectors_manifest.py
 
+  exercise:
+    name: exercised rejection paths (EXR-1 style)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: trust/gateway-delegation-v0
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: exercise matrix
+        run: python3 exercise_matrix.py | tee exercise-matrix.log
+      - name: upload exercise matrix
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: exercise-matrix
+          path: trust/gateway-delegation-v0/exercise-matrix.json
+          if-no-files-found: warn
+
   sums:
     name: shipped bytes (SHA256SUMS)
     runs-on: ubuntu-latest

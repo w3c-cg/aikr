@@ -1,0 +1,123 @@
+{
+  "schema": "aikr-exercise-matrix/0",
+  "rows": 122,
+  "checks": 10,
+  "unexercised": [],
+  "no_sole_cause": [
+    "receipt"
+  ],
+  "receipt_domain": {
+    "rows_with_receipt_check": 56,
+    "on_allow_decision": [],
+    "pass": 8,
+    "nonpass": 48,
+    "note": "条件检查：仅在 refuse 路径求值，故不存在 single-cause 行；域内 8 pass / 48 non-pass 构成同域正负对照"
+  },
+  "detail": {
+    "subject": {
+      "rows": 122,
+      "pass": 113,
+      "nonpass": 9,
+      "sole": 1,
+      "codes": {
+        "SUBJECT_MISMATCH": 9
+      }
+    },
+    "window": {
+      "rows": 122,
+      "pass": 107,
+      "nonpass": 15,
+      "sole": 4,
+      "codes": {
+        "MANDATE_EXPIRED": 11,
+        "MANDATE_NOT_YET_VALID": 2,
+        "WINDOW_UNPARSABLE": 2
+      }
+    },
+    "signature": {
+      "rows": 122,
+      "pass": 114,
+      "nonpass": 8,
+      "sole": 1,
+      "codes": {
+        "MANDATE_UNSIGNED": 8
+      }
+    },
+    "attenuation": {
+      "rows": 122,
+      "pass": 111,
+      "nonpass": 11,
+      "sole": 4,
+      "codes": {
+        "SCOPE_WIDENED": 8,
+        "NO_DECLARED_SCOPE": 3
+      }
+    },
+    "content": {
+      "rows": 122,
+      "pass": 111,
+      "nonpass": 11,
+      "sole": 5,
+      "codes": {
+        "CONTENT_OVERRIDE": 4,
+        "ROLE_SPOOF": 3,
+        "OPAQUE_CONTENT": 4
+      }
+    },
+    "revocation": {
+      "rows": 122,
+      "pass": 95,
+      "nonpass": 27,
+      "sole": 16,
+      "codes": {
+        "REVOKED": 12,
+        "SOURCE_UNREACHABLE": 3,
+        "STALE_REVOCATION": 4,
+        "REVOCATION_NOT_YET_EFFECTIVE": 5,
+        "REVOCATION_UNKNOWN": 3
+      }
+    },
+    "evidence": {
+      "rows": 122,
+      "pass": 116,
+      "nonpass": 6,
+      "sole": 4,
+      "codes": {
+        "POINTER_UNREACHABLE": 6
+      }
+    },
+    "signer-binding": {
+      "rows": 122,
+      "pass": 116,
+      "nonpass": 6,
+      "sole": 1,
+      "codes": {
+        "SIGNER_KEY_NOT_BOUND": 5,
+        "SIGNER_KEY_UNSPECIFIED": 1
+      }
+    },
+    "receipt": {
+      "rows": 56,
+      "pass": 8,
+      "nonpass": 48,
+      "sole": 0,
+      "codes": {
+        "RECEIPT_MISSING_ON_REFUSE": 48
+      }
+    },
+    "lineage": {
+      "rows": 7,
+      "pass": 1,
+      "nonpass": 6,
+      "sole": 4,
+      "codes": {
+        "LINEAGE_UNRESOLVED": 6
+      }
+    }
+  },
+  "method": "EXR-1 口径：一项检查的拒绝通路被走到过才算 exercised；single-cause 指该行只有它非 pass",
+  "limits": [
+    "exercised + 单因 不等于 discriminating pair：本表没有事先声明的反事实种群",
+    "只覆盖当前 122 行，新增语料可能改变结论"
+  ]
+}

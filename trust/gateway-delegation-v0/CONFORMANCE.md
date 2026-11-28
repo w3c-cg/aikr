@@ -161,9 +161,39 @@ catch each other?** It injects one defect at a time into `checkCase` in
   loudly, so the drift is noticed, but it is counted separately rather than
   scored as a clean catch.
 
+### Did the rejecting path ever run?
+
+A conformance row that says "pass" is worth nothing if the check could not have
+said anything else. `exercise_matrix.py` answers that for every check in
+`check.py`: for each of the 122 rows it records which checks passed and which
+did not, so a check with zero non-pass observations is visible as
+**implemented-but-unexercised** rather than hidden behind a green row
+(`exercise-matrix.json`).
+
+- All ten checks that appear in the corpus reach their rejecting outcome at
+  least once: 0 unexercised. Non-pass counts range from 6 (`evidence`,
+  `signer-binding`) to 48 (`receipt`).
+- Nine checks also reject as the **sole** cause of a row (a row where it is
+  the only non-pass check), which is what makes the rejection attributable to
+  that check rather than to a neighbour: `attenuation` 4, `content` 5,
+  `evidence` 4, `lineage` 4, `revocation` 16, `signature` 1,
+  `signer-binding` 1, `subject` 1, `window` 4.
+- `receipt` is the exception, and structurally so: it is a conditional check
+  evaluated only on rows whose decision is `refuse`, so it can never be the
+  sole cause — the row already failed elsewhere. Its domain is stated and
+  checked instead: 56 rows evaluate it, none of them on an `allow` decision
+  (the script exits non-zero if that ever changes), and inside that domain it
+  records 8 pass / 48 non-pass.
+- This metric is taken from `draft-he-agentproto-verifier-evidence` (EXR-1 /
+  CMP-1). Their vectors were **not** run here; only the reporting discipline was
+  adopted.
+- Exercised is not the same as *discriminating*: this table has no pre-declared
+  counterfactual population per check, and it is bounded by this corpus. A
+  new vector can change a count.
+
 ## Timestamps and signature
 
-`SHA256SUMS` (149 shipped files) carries two independent attestations:
+`SHA256SUMS` (152 shipped files) carries two independent attestations:
 
 - `SHA256SUMS.sig` — an SSH signature over the manifest, verifiable with
   `allowed_signers` in this directory and a stock `ssh-keygen`. It binds the

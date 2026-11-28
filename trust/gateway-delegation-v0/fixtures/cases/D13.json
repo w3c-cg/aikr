@@ -1,0 +1,38 @@
+{
+  "id": "D13",
+  "about": "Revocation evidence just outside the freshness bound: 25 hours old at the evaluation instant, one hour past the 24-hour bound.",
+  "mandate": {
+    "subject": "agent:gw-agent",
+    "grantedScope": [
+      "tool:search",
+      "tool:summarise"
+    ],
+    "issuedAt": "2026-11-01T00:00:00Z",
+    "expiresAt": "2026-12-01T00:00:00Z",
+    "signature": "ok",
+    "subjectKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325",
+    "signatureKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325"
+  },
+  "request": {
+    "agentId": "agent:gw-agent",
+    "declaredScope": [
+      "tool:search"
+    ],
+    "transportPeer": "agent:gw-agent",
+    "payload": {
+      "text": "summarise the attached note"
+    }
+  },
+  "revocation": {
+    "status": "none",
+    "checkedAt": "2026-11-21T23:00:00Z"
+  },
+  "evidence": {
+    "pointer": "reachable",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "why": "Evaluated at 2026-11-23T00:00:00Z; the revocation check is 90000 seconds old against an 86400-second bound. Stale revocation evidence is could-not-determine (hold), never pass. Loose bound test: raising the bound to 90000 seconds makes this case pass, so the selftest detects a bound that was widened without justification.",
+  "invariant": [
+    "I6"
+  ]
+}

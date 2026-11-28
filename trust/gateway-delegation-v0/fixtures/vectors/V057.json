@@ -1,0 +1,42 @@
+{
+  "mandate": {
+    "subject": "agent:gw-agent",
+    "grantedScope": [
+      "tool:search",
+      "tool:summarise"
+    ],
+    "issuedAt": "2026-11-01T00:00:00Z",
+    "expiresAt": "2026-12-01T00:00:00Z",
+    "signature": "ok",
+    "subjectKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325",
+    "signatureKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325"
+  },
+  "request": {
+    "agentId": "agent:gw-agent",
+    "declaredScope": [
+      "tool:search"
+    ],
+    "transportPeer": "agent:gw-agent",
+    "payload": {
+      "text": "summarise the attached note"
+    }
+  },
+  "revocation": {
+    "status": "none",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "evidence": {
+    "pointer": "maybe",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "id": "V057",
+  "invariant": [
+    "I8"
+  ],
+  "about": "Pointer value outside the known set.",
+  "why": "Only a recorded reachability result counts.",
+  "expect": {
+    "result": "record-unresolved",
+    "code": "POINTER_UNREACHABLE"
+  }
+}

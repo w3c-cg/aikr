@@ -1,0 +1,44 @@
+{
+  "id": "D02",
+  "about": "Attenuation under delegation: declared scope adds a tool outside the grant.",
+  "mandate": {
+    "subject": "agent:gw-agent",
+    "grantedScope": [
+      "tool:search",
+      "tool:summarise"
+    ],
+    "issuedAt": "2026-11-01T00:00:00Z",
+    "expiresAt": "2026-12-01T00:00:00Z",
+    "signature": "ok",
+    "subjectKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325",
+    "signatureKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325"
+  },
+  "request": {
+    "agentId": "agent:gw-agent",
+    "declaredScope": [
+      "tool:search",
+      "tool:billing"
+    ],
+    "transportPeer": "agent:gw-agent",
+    "payload": {
+      "text": "summarise the attached note"
+    }
+  },
+  "revocation": {
+    "status": "none",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "evidence": {
+    "pointer": "reachable",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "why": "Scope may narrow but not widen. Paired control: D01, same mandate with an in-grant scope.",
+  "invariant": [
+    "I4"
+  ],
+  "receipt": {
+    "decision": "refuse",
+    "caseId": "D02",
+    "policyDigest": "sha256:e94bf7b1822302f8e565d8594911d52a45b52796a16fe3984ce76a53bd046744"
+  }
+}

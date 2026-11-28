@@ -1,0 +1,1729 @@
+{
+  "schema": "aikr-parity-report/0",
+  "subject": "gateway-delegation-v0",
+  "generated_utc": "2026-11-28T13:41:02Z",
+  "python": "3.13.18",
+  "node": "v22.23.2",
+  "inputs": {
+    "check.py": "4bfe29f076189e4a0741f9919f37d106909ee8f1af66b12a7fa1b80374b3371d",
+    "check.mjs": "2a49440ec33f77dfa4065bb69144cef07646406adebd52b5f34b1fa6dfa6eb60",
+    "policy.json": "88c523a171351809568adbda538d0093e369a3431637b12e9204784acbe115b4",
+    "expected.json": "0201cdb5cc401aaf799ca7721acf6d024ae18ad3d3873c2608269418b27c50fc",
+    "policyDigest": "sha256:e94bf7b1822302f8e565d8594911d52a45b52796a16fe3984ce76a53bd046744"
+  },
+  "rows_total": 122,
+  "curated": 18,
+  "vectors": 104,
+  "disagreements": 0,
+  "verdict": "agree",
+  "rows": [
+    {
+      "id": "D01",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "D02",
+      "python": {
+        "result": "fail",
+        "code": "SCOPE_WIDENED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "SCOPE_WIDENED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "D03",
+      "python": {
+        "result": "absent",
+        "code": "NO_DECLARED_SCOPE"
+      },
+      "javascript": {
+        "result": "absent",
+        "code": "NO_DECLARED_SCOPE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "absent"
+    },
+    {
+      "id": "D04",
+      "python": {
+        "result": "fail",
+        "code": "SUBJECT_MISMATCH"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "SUBJECT_MISMATCH"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "D05",
+      "python": {
+        "result": "fail",
+        "code": "MANDATE_EXPIRED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "MANDATE_EXPIRED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "D06",
+      "python": {
+        "result": "fail",
+        "code": "CONTENT_OVERRIDE"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "CONTENT_OVERRIDE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "D07",
+      "python": {
+        "result": "fail",
+        "code": "ROLE_SPOOF"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "ROLE_SPOOF"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "D08",
+      "python": {
+        "result": "check-incomplete",
+        "code": "OPAQUE_CONTENT"
+      },
+      "javascript": {
+        "result": "check-incomplete",
+        "code": "OPAQUE_CONTENT"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "check-incomplete"
+    },
+    {
+      "id": "D09",
+      "python": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "D10",
+      "python": {
+        "result": "record-unresolved",
+        "code": "SOURCE_UNREACHABLE"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "SOURCE_UNREACHABLE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "D11",
+      "python": {
+        "result": "record-unresolved",
+        "code": "STALE_REVOCATION"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "STALE_REVOCATION"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "D12",
+      "python": {
+        "result": "record-unresolved",
+        "code": "POINTER_UNREACHABLE"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "POINTER_UNREACHABLE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "D13",
+      "python": {
+        "result": "record-unresolved",
+        "code": "STALE_REVOCATION"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "STALE_REVOCATION"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "D14",
+      "python": {
+        "result": "record-unresolved",
+        "code": "REVOCATION_NOT_YET_EFFECTIVE"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "REVOCATION_NOT_YET_EFFECTIVE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "D15",
+      "python": {
+        "result": "fail",
+        "code": "MANDATE_UNSIGNED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "MANDATE_UNSIGNED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "D16",
+      "python": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "D17",
+      "python": {
+        "result": "fail",
+        "code": "SIGNER_KEY_NOT_BOUND"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "SIGNER_KEY_NOT_BOUND"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "D18",
+      "python": {
+        "result": "record-unresolved",
+        "code": "LINEAGE_UNRESOLVED"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "LINEAGE_UNRESOLVED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "V001",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V002",
+      "python": {
+        "result": "fail",
+        "code": "SUBJECT_MISMATCH"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "SUBJECT_MISMATCH"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V003",
+      "python": {
+        "result": "fail",
+        "code": "SUBJECT_MISMATCH"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "SUBJECT_MISMATCH"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V004",
+      "python": {
+        "result": "fail",
+        "code": "SUBJECT_MISMATCH"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "SUBJECT_MISMATCH"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V005",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V006",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V007",
+      "python": {
+        "result": "fail",
+        "code": "MANDATE_EXPIRED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "MANDATE_EXPIRED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V008",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V009",
+      "python": {
+        "result": "fail",
+        "code": "MANDATE_EXPIRED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "MANDATE_EXPIRED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V010",
+      "python": {
+        "result": "fail",
+        "code": "MANDATE_NOT_YET_VALID"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "MANDATE_NOT_YET_VALID"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V011",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V012",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V013",
+      "python": {
+        "result": "fail",
+        "code": "MANDATE_NOT_YET_VALID"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "MANDATE_NOT_YET_VALID"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V014",
+      "python": {
+        "result": "check-incomplete",
+        "code": "WINDOW_UNPARSABLE"
+      },
+      "javascript": {
+        "result": "check-incomplete",
+        "code": "WINDOW_UNPARSABLE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "check-incomplete"
+    },
+    {
+      "id": "V015",
+      "python": {
+        "result": "check-incomplete",
+        "code": "WINDOW_UNPARSABLE"
+      },
+      "javascript": {
+        "result": "check-incomplete",
+        "code": "WINDOW_UNPARSABLE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "check-incomplete"
+    },
+    {
+      "id": "V016",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V017",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V018",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V019",
+      "python": {
+        "result": "fail",
+        "code": "MANDATE_UNSIGNED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "MANDATE_UNSIGNED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V020",
+      "python": {
+        "result": "fail",
+        "code": "MANDATE_UNSIGNED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "MANDATE_UNSIGNED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V021",
+      "python": {
+        "result": "fail",
+        "code": "MANDATE_UNSIGNED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "MANDATE_UNSIGNED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V022",
+      "python": {
+        "result": "fail",
+        "code": "MANDATE_UNSIGNED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "MANDATE_UNSIGNED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V023",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V024",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V025",
+      "python": {
+        "result": "fail",
+        "code": "SCOPE_WIDENED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "SCOPE_WIDENED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V026",
+      "python": {
+        "result": "fail",
+        "code": "SCOPE_WIDENED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "SCOPE_WIDENED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V027",
+      "python": {
+        "result": "absent",
+        "code": "NO_DECLARED_SCOPE"
+      },
+      "javascript": {
+        "result": "absent",
+        "code": "NO_DECLARED_SCOPE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "absent"
+    },
+    {
+      "id": "V028",
+      "python": {
+        "result": "absent",
+        "code": "NO_DECLARED_SCOPE"
+      },
+      "javascript": {
+        "result": "absent",
+        "code": "NO_DECLARED_SCOPE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "absent"
+    },
+    {
+      "id": "V029",
+      "python": {
+        "result": "fail",
+        "code": "SCOPE_WIDENED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "SCOPE_WIDENED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V030",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V031",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V032",
+      "python": {
+        "result": "fail",
+        "code": "CONTENT_OVERRIDE"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "CONTENT_OVERRIDE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V033",
+      "python": {
+        "result": "fail",
+        "code": "ROLE_SPOOF"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "ROLE_SPOOF"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V034",
+      "python": {
+        "result": "check-incomplete",
+        "code": "OPAQUE_CONTENT"
+      },
+      "javascript": {
+        "result": "check-incomplete",
+        "code": "OPAQUE_CONTENT"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "check-incomplete"
+    },
+    {
+      "id": "V035",
+      "python": {
+        "result": "check-incomplete",
+        "code": "OPAQUE_CONTENT"
+      },
+      "javascript": {
+        "result": "check-incomplete",
+        "code": "OPAQUE_CONTENT"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "check-incomplete"
+    },
+    {
+      "id": "V036",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V037",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V038",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V039",
+      "python": {
+        "result": "record-unresolved",
+        "code": "STALE_REVOCATION"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "STALE_REVOCATION"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "V040",
+      "python": {
+        "result": "record-unresolved",
+        "code": "STALE_REVOCATION"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "STALE_REVOCATION"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "V041",
+      "python": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V042",
+      "python": {
+        "result": "record-unresolved",
+        "code": "SOURCE_UNREACHABLE"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "SOURCE_UNREACHABLE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "V043",
+      "python": {
+        "result": "record-unresolved",
+        "code": "REVOCATION_UNKNOWN"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "REVOCATION_UNKNOWN"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "V044",
+      "python": {
+        "result": "record-unresolved",
+        "code": "REVOCATION_UNKNOWN"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "REVOCATION_UNKNOWN"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "V045",
+      "python": {
+        "result": "record-unresolved",
+        "code": "REVOCATION_UNKNOWN"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "REVOCATION_UNKNOWN"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "V046",
+      "python": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V047",
+      "python": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V048",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V049",
+      "python": {
+        "result": "record-unresolved",
+        "code": "REVOCATION_NOT_YET_EFFECTIVE"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "REVOCATION_NOT_YET_EFFECTIVE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "V050",
+      "python": {
+        "result": "record-unresolved",
+        "code": "REVOCATION_NOT_YET_EFFECTIVE"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "REVOCATION_NOT_YET_EFFECTIVE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "V051",
+      "python": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V052",
+      "python": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V053",
+      "python": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V054",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V055",
+      "python": {
+        "result": "record-unresolved",
+        "code": "POINTER_UNREACHABLE"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "POINTER_UNREACHABLE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "V056",
+      "python": {
+        "result": "record-unresolved",
+        "code": "POINTER_UNREACHABLE"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "POINTER_UNREACHABLE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "V057",
+      "python": {
+        "result": "record-unresolved",
+        "code": "POINTER_UNREACHABLE"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "POINTER_UNREACHABLE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "V058",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V059",
+      "python": {
+        "result": "fail",
+        "code": "SIGNER_KEY_NOT_BOUND"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "SIGNER_KEY_NOT_BOUND"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V060",
+      "python": {
+        "result": "fail",
+        "code": "SIGNER_KEY_NOT_BOUND"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "SIGNER_KEY_NOT_BOUND"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V061",
+      "python": {
+        "result": "check-incomplete",
+        "code": "SIGNER_KEY_UNSPECIFIED"
+      },
+      "javascript": {
+        "result": "check-incomplete",
+        "code": "SIGNER_KEY_UNSPECIFIED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "check-incomplete"
+    },
+    {
+      "id": "V062",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V063",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V064",
+      "python": {
+        "result": "record-unresolved",
+        "code": "LINEAGE_UNRESOLVED"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "LINEAGE_UNRESOLVED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "V065",
+      "python": {
+        "result": "record-unresolved",
+        "code": "LINEAGE_UNRESOLVED"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "LINEAGE_UNRESOLVED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "V066",
+      "python": {
+        "result": "record-unresolved",
+        "code": "LINEAGE_UNRESOLVED"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "LINEAGE_UNRESOLVED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "V067",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V068",
+      "python": {
+        "result": "fail",
+        "code": "MANDATE_EXPIRED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "MANDATE_EXPIRED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V069",
+      "python": {
+        "result": "fail",
+        "code": "MANDATE_EXPIRED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "MANDATE_EXPIRED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V070",
+      "python": {
+        "result": "fail",
+        "code": "MANDATE_EXPIRED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "MANDATE_EXPIRED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V071",
+      "python": {
+        "result": "fail",
+        "code": "MANDATE_EXPIRED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "MANDATE_EXPIRED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V072",
+      "python": {
+        "result": "fail",
+        "code": "MANDATE_EXPIRED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "MANDATE_EXPIRED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V073",
+      "python": {
+        "result": "fail",
+        "code": "SUBJECT_MISMATCH"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "SUBJECT_MISMATCH"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V074",
+      "python": {
+        "result": "fail",
+        "code": "SUBJECT_MISMATCH"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "SUBJECT_MISMATCH"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V075",
+      "python": {
+        "result": "fail",
+        "code": "MANDATE_EXPIRED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "MANDATE_EXPIRED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V076",
+      "python": {
+        "result": "fail",
+        "code": "MANDATE_UNSIGNED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "MANDATE_UNSIGNED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V077",
+      "python": {
+        "result": "fail",
+        "code": "SCOPE_WIDENED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "SCOPE_WIDENED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V078",
+      "python": {
+        "result": "fail",
+        "code": "CONTENT_OVERRIDE"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "CONTENT_OVERRIDE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V079",
+      "python": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V080",
+      "python": {
+        "result": "fail",
+        "code": "POINTER_UNREACHABLE"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "POINTER_UNREACHABLE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V081",
+      "python": {
+        "result": "fail",
+        "code": "SIGNER_KEY_NOT_BOUND"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "SIGNER_KEY_NOT_BOUND"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V082",
+      "python": {
+        "result": "record-unresolved",
+        "code": "OPAQUE_CONTENT"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "OPAQUE_CONTENT"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "V083",
+      "python": {
+        "result": "fail",
+        "code": "SUBJECT_MISMATCH"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "SUBJECT_MISMATCH"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V084",
+      "python": {
+        "result": "fail",
+        "code": "SUBJECT_MISMATCH"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "SUBJECT_MISMATCH"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V085",
+      "python": {
+        "result": "fail",
+        "code": "SUBJECT_MISMATCH"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "SUBJECT_MISMATCH"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V086",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V087",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V088",
+      "python": {
+        "result": "fail",
+        "code": "MANDATE_EXPIRED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "MANDATE_EXPIRED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V089",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V090",
+      "python": {
+        "result": "fail",
+        "code": "MANDATE_UNSIGNED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "MANDATE_UNSIGNED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V091",
+      "python": {
+        "result": "fail",
+        "code": "SCOPE_WIDENED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "SCOPE_WIDENED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V092",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V093",
+      "python": {
+        "result": "fail",
+        "code": "SCOPE_WIDENED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "SCOPE_WIDENED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V094",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V095",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V096",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V097",
+      "python": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V098",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V099",
+      "python": {
+        "result": "record-unresolved",
+        "code": "SOURCE_UNREACHABLE"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "SOURCE_UNREACHABLE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "V100",
+      "python": {
+        "result": "record-unresolved",
+        "code": "REVOCATION_NOT_YET_EFFECTIVE"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "REVOCATION_NOT_YET_EFFECTIVE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "V101",
+      "python": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "javascript": {
+        "result": "fail",
+        "code": "REVOKED"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V102",
+      "python": {
+        "result": "record-unresolved",
+        "code": "REVOCATION_NOT_YET_EFFECTIVE"
+      },
+      "javascript": {
+        "result": "record-unresolved",
+        "code": "REVOCATION_NOT_YET_EFFECTIVE"
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": "record-unresolved"
+    },
+    {
+      "id": "V103",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    },
+    {
+      "id": "V104",
+      "python": {
+        "result": "pass",
+        "code": ""
+      },
+      "javascript": {
+        "result": "pass",
+        "code": ""
+      },
+      "agree": true,
+      "checks_compared": true,
+      "hold_group": ""
+    }
+  ]
+}

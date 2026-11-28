@@ -1,0 +1,26 @@
+{
+  "schema": "aikr-gateway-delegation-policy/0",
+  "evaluatedAt": "2026-11-23T00:00:00Z",
+  "revocationFreshnessBoundSeconds": 86400,
+  "notes": {
+    "scopeCompleteness": "The granted scope list in each mandate is treated as exhaustive for that agent and grant.",
+    "undeclaredScope": "A request that declares no scope is not evidence of a narrower grant; result is absent, never pass. The distinction is the remedy: absent says nothing was declared, so the next step is to ask the caller for a declaration, whereas check-incomplete says the checker could not finish and the next step is to rerun it.",
+    "opaqueContent": "Content the gateway cannot inspect leaves the check incomplete, never pass.",
+    "opaqueContentIsAPolicyChoice": "The check result for opaque content is check-incomplete under any policy; only the decision is a choice. This policy maps check-incomplete to hold, on the argument that an uninspected payload is a gap in evidence rather than a defect in the request, and that refusing would let a caller evade review by sending a payload shaped to be opaque. A deployment that owns the payload pipeline may map check-incomplete to refuse instead, and the case would still report check-incomplete; the row the checker produces is the finding, the decision is the deployer's. D08 is the row where that choice is visible.",
+    "twoKindsOfHold": "A row that is not determined says which side it is on, and there are now three sides. record-unresolved: the record, or what it points at, cannot be resolved (missing, unreachable, stale, not yet effective, or a citation that does not walk). absent: the record carries no declaration for a check that needs one, so there was nothing to compare against (no declared scope). check-incomplete: the check itself could not be completed on the inputs supplied (unparsable window, opaque content, no key binding). All three give hold, so the decision is unchanged; the reported outcome separates them, because the remedy differs — obtain the record, obtain the declaration, or rerun the check.",
+    "decisionMap": "pass gives allow; fail gives refuse; record-unresolved, absent and check-incomplete give hold.",
+    "signerKeyBinding": "The key that signed the mandate must be the key bound to the subject. A different key makes the mandate attributable to someone else: fail, SIGNER_KEY_NOT_BOUND. A mandate that declares neither fingerprint leaves the binding check incomplete, never pass.",
+    "lineage": "A mandate that cites a predecessor must cite a digest that resolves inside the chain supplied with the case. An unresolvable citation is record-unresolved, LINEAGE_UNRESOLVED.",
+    "receiptOnRefuse": "Every refusal must carry a receipt that binds the decision, the case id and the policy digest. A refusal without one is an unaccountable refusal: fail, RECEIPT_MISSING_ON_REFUSE.",
+    "howTheDigestIsComputed": "sha256 over policy.json as written, with an empty string in place of the top-level digest value. Recompute with python policy_digest.py --check; the self-test fails when this drifts.",
+    "whyAbsentIsItsOwnState": "A fourth non-pass state costs downstream readers one more word and saves them from a wrong next step. Reporting no-declared-scope as check-incomplete tells a reader to rerun a check that completed correctly: every other check in that row passed, and attenuation could not run only because there was nothing to attenuate against. The reader's remedy sits on the caller's side, so the outcome should too. Where the boundary is contested, it is drawn at what the record asserts: a record that commits to a form it does not deliver is a fail, because a committed value that does not match is a finding; a record that commits to nothing is absent, because there is no finding to make. This package adopts the state for its own vocabulary; whether the group's wider vocabulary carries it is the group's decision."
+  },
+  "decisionMap": {
+    "pass": "allow",
+    "fail": "refuse",
+    "record-unresolved": "hold",
+    "absent": "hold",
+    "check-incomplete": "hold"
+  },
+  "policyDigest": "sha256:e94bf7b1822302f8e565d8594911d52a45b52796a16fe3984ce76a53bd046744"
+}

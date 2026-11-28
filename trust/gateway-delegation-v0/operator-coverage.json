@@ -1,0 +1,235 @@
+{
+  "schema": "aikr-operator-coverage/0",
+  "subject": "gateway-delegation-v0",
+  "inputs": {
+    "mutation_report": "mutation-report.json",
+    "mutation_cross_report": "mutation-cross-report.json"
+  },
+  "scanned_regions": {
+    "check.py": [
+      66,
+      272
+    ],
+    "check.mjs": [
+      41,
+      150
+    ]
+  },
+  "declared": 12,
+  "covered": 9,
+  "absent": 3,
+  "gap": 0,
+  "classes": [
+    {
+      "class": "eq-flip",
+      "what": "等于改不等",
+      "sites": 15,
+      "mutants": 15,
+      "killed": 15,
+      "occurrences_check_py": 15,
+      "occurrences_check_mjs": 15,
+      "where_py": [
+        76,
+        96,
+        132,
+        139,
+        148
+      ],
+      "where_js": [
+        50,
+        63,
+        85,
+        86,
+        89
+      ],
+      "cross_impl_killed": false,
+      "status": "COVERED"
+    },
+    {
+      "class": "ne-flip",
+      "what": "不等改等于",
+      "sites": 1,
+      "mutants": 1,
+      "killed": 1,
+      "occurrences_check_py": 1,
+      "occurrences_check_mjs": 1,
+      "where_py": [
+        227
+      ],
+      "where_js": [
+        96
+      ],
+      "cross_impl_killed": false,
+      "status": "COVERED"
+    },
+    {
+      "class": "ge-to-gt",
+      "what": ">= 改 >",
+      "sites": 1,
+      "mutants": 1,
+      "killed": 1,
+      "occurrences_check_py": 1,
+      "occurrences_check_mjs": 1,
+      "where_py": [
+        90
+      ],
+      "where_js": [
+        57
+      ],
+      "cross_impl_killed": true,
+      "status": "COVERED"
+    },
+    {
+      "class": "gt-to-ge",
+      "what": "> 改 >=",
+      "sites": 1,
+      "mutants": 1,
+      "killed": 1,
+      "occurrences_check_py": 1,
+      "occurrences_check_mjs": 1,
+      "where_py": [
+        135
+      ],
+      "where_js": [
+        87
+      ],
+      "cross_impl_killed": true,
+      "status": "COVERED"
+    },
+    {
+      "class": "le-to-lt",
+      "what": "<= 改 <",
+      "sites": 0,
+      "mutants": 0,
+      "killed": 0,
+      "occurrences_check_py": 0,
+      "occurrences_check_mjs": 0,
+      "where_py": [],
+      "where_js": [],
+      "cross_impl_killed": false,
+      "status": "ABSENT"
+    },
+    {
+      "class": "lt-to-le",
+      "what": "< 改 <=",
+      "sites": 2,
+      "mutants": 2,
+      "killed": 2,
+      "occurrences_check_py": 2,
+      "occurrences_check_mjs": 2,
+      "where_py": [
+        88,
+        144
+      ],
+      "where_js": [
+        56,
+        96
+      ],
+      "cross_impl_killed": true,
+      "status": "COVERED"
+    },
+    {
+      "class": "and-to-or",
+      "what": "and 改 or",
+      "sites": 6,
+      "mutants": 6,
+      "killed": 6,
+      "occurrences_check_py": 7,
+      "occurrences_check_mjs": 6,
+      "where_py": [
+        144,
+        165,
+        167,
+        167,
+        186
+      ],
+      "where_js": [
+        96,
+        110,
+        111,
+        111,
+        123
+      ],
+      "cross_impl_killed": true,
+      "status": "COVERED"
+    },
+    {
+      "class": "or-to-and",
+      "what": "or 改 and",
+      "sites": 9,
+      "mutants": 9,
+      "killed": 9,
+      "occurrences_check_py": 9,
+      "occurrences_check_mjs": 10,
+      "where_py": [
+        72,
+        102,
+        103,
+        126,
+        154
+      ],
+      "where_js": [
+        44,
+        45,
+        46,
+        48,
+        66
+      ],
+      "cross_impl_killed": true,
+      "status": "COVERED"
+    },
+    {
+      "class": "true-to-false",
+      "what": "真改假",
+      "sites": 0,
+      "mutants": 0,
+      "killed": 0,
+      "occurrences_check_py": 0,
+      "occurrences_check_mjs": 0,
+      "where_py": [],
+      "where_js": [],
+      "cross_impl_killed": false,
+      "status": "ABSENT"
+    },
+    {
+      "class": "false-to-true",
+      "what": "假改真",
+      "sites": 0,
+      "mutants": 0,
+      "killed": 0,
+      "occurrences_check_py": 0,
+      "occurrences_check_mjs": 0,
+      "where_py": [],
+      "where_js": [],
+      "cross_impl_killed": false,
+      "status": "ABSENT"
+    },
+    {
+      "class": "pass-to-fail",
+      "what": "pass 改 fail",
+      "sites": 1,
+      "mutants": 1,
+      "killed": 1,
+      "occurrences_check_py": 0,
+      "occurrences_check_mjs": 0,
+      "where_py": [],
+      "where_js": [],
+      "cross_impl_killed": false,
+      "status": "COVERED"
+    },
+    {
+      "class": "fail-to-pass",
+      "what": "fail 改 pass",
+      "sites": 1,
+      "mutants": 1,
+      "killed": 1,
+      "occurrences_check_py": 0,
+      "occurrences_check_mjs": 0,
+      "where_py": [],
+      "where_js": [],
+      "cross_impl_killed": false,
+      "status": "COVERED"
+    }
+  ],
+  "note": "ABSENT means the construct does not occur in the decision code of either implementation; it is proven here by a zero occurrence count, not excused by a comment. Any class that occurs but has no site, or has a surviving mutant, is a GAP and exits 1."
+}

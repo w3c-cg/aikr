@@ -1,0 +1,47 @@
+{
+  "mandate": {
+    "subject": "agent:gw-agent",
+    "grantedScope": [
+      "tool:search",
+      "tool:summarise"
+    ],
+    "issuedAt": "2026-11-01T00:00:00Z",
+    "expiresAt": "2026-11-02T00:00:00Z",
+    "signature": "ok",
+    "subjectKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325",
+    "signatureKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325"
+  },
+  "request": {
+    "agentId": "agent:gw-agent",
+    "declaredScope": [
+      "tool:search"
+    ],
+    "transportPeer": "agent:gw-agent",
+    "payload": {
+      "text": "summarise the attached note"
+    }
+  },
+  "revocation": {
+    "status": "none",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "evidence": {
+    "pointer": "reachable",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "receipt": {
+    "decision": "refuse",
+    "caseId": "V070",
+    "policyDigest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "id": "V070",
+  "invariant": [
+    "I11"
+  ],
+  "about": "Refusal with a receipt for a different policy.",
+  "why": "A receipt bound to another policy does not account for this refusal.",
+  "expect": {
+    "result": "fail",
+    "code": "MANDATE_EXPIRED"
+  }
+}

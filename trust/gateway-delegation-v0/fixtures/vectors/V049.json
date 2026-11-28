@@ -1,0 +1,43 @@
+{
+  "mandate": {
+    "subject": "agent:gw-agent",
+    "grantedScope": [
+      "tool:search",
+      "tool:summarise"
+    ],
+    "issuedAt": "2026-11-01T00:00:00Z",
+    "expiresAt": "2026-12-01T00:00:00Z",
+    "signature": "ok",
+    "subjectKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325",
+    "signatureKeyFingerprint": "sha256:b89f85ac709515db856d6f01761fa325"
+  },
+  "request": {
+    "agentId": "agent:gw-agent",
+    "declaredScope": [
+      "tool:search"
+    ],
+    "transportPeer": "agent:gw-agent",
+    "payload": {
+      "text": "summarise the attached note"
+    }
+  },
+  "revocation": {
+    "status": "revoked",
+    "checkedAt": "2026-11-22T23:00:00Z",
+    "effectiveFrom": "2026-11-23T01:00:00Z"
+  },
+  "evidence": {
+    "pointer": "reachable",
+    "checkedAt": "2026-11-22T23:00:00Z"
+  },
+  "id": "V049",
+  "invariant": [
+    "I7"
+  ],
+  "about": "Revocation effective one hour after the instant.",
+  "why": "A record whose effect has not begun is a hold, not a refusal.",
+  "expect": {
+    "result": "record-unresolved",
+    "code": "REVOCATION_NOT_YET_EFFECTIVE"
+  }
+}

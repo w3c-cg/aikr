@@ -1,0 +1,937 @@
+{
+  "schema": "aikr-gateway-delegation-results/0",
+  "results": [
+    {
+      "id": "D01",
+      "result": "pass",
+      "decision": "allow",
+      "code": "",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        }
+      ],
+      "about": "Positive control: mandate valid, declared scope inside the grant, revocation fresh, pointer reachable."
+    },
+    {
+      "id": "D02",
+      "result": "fail",
+      "decision": "refuse",
+      "code": "SCOPE_WIDENED",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "fail",
+          "code": "SCOPE_WIDENED"
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "receipt",
+          "result": "pass",
+          "code": ""
+        }
+      ],
+      "about": "Attenuation under delegation: declared scope adds a tool outside the grant."
+    },
+    {
+      "id": "D03",
+      "result": "absent",
+      "decision": "hold",
+      "code": "NO_DECLARED_SCOPE",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "check-incomplete",
+          "code": "NO_DECLARED_SCOPE"
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        }
+      ],
+      "about": "No scope declared: caller claims nothing, gateway infers a transport-peer basis."
+    },
+    {
+      "id": "D04",
+      "result": "fail",
+      "decision": "refuse",
+      "code": "SUBJECT_MISMATCH",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "fail",
+          "code": "SUBJECT_MISMATCH"
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "receipt",
+          "result": "pass",
+          "code": ""
+        }
+      ],
+      "about": "Subject mismatch: a different agent presents the mandate of gw-agent."
+    },
+    {
+      "id": "D05",
+      "result": "fail",
+      "decision": "refuse",
+      "code": "MANDATE_EXPIRED",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "fail",
+          "code": "MANDATE_EXPIRED"
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "receipt",
+          "result": "pass",
+          "code": ""
+        }
+      ],
+      "about": "Expired mandate: the grant ended before the evaluation instant."
+    },
+    {
+      "id": "D06",
+      "result": "fail",
+      "decision": "refuse",
+      "code": "CONTENT_OVERRIDE",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "fail",
+          "code": "CONTENT_OVERRIDE"
+        },
+        {
+          "check": "revocation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "receipt",
+          "result": "pass",
+          "code": ""
+        }
+      ],
+      "about": "Confused deputy by content: a valid mandate carries inline instructions in the payload."
+    },
+    {
+      "id": "D07",
+      "result": "fail",
+      "decision": "refuse",
+      "code": "ROLE_SPOOF",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "fail",
+          "code": "ROLE_SPOOF"
+        },
+        {
+          "check": "revocation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "receipt",
+          "result": "pass",
+          "code": ""
+        }
+      ],
+      "about": "Role spoofing in content: the payload asserts an authority the caller does not hold."
+    },
+    {
+      "id": "D08",
+      "result": "check-incomplete",
+      "decision": "hold",
+      "code": "OPAQUE_CONTENT",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "check-incomplete",
+          "code": "OPAQUE_CONTENT"
+        },
+        {
+          "check": "revocation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        }
+      ],
+      "about": "Opaque content: the gateway cannot inspect the payload it is asked to forward."
+    },
+    {
+      "id": "D09",
+      "result": "fail",
+      "decision": "refuse",
+      "code": "REVOKED",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "fail",
+          "code": "REVOKED"
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "receipt",
+          "result": "pass",
+          "code": ""
+        }
+      ],
+      "about": "Revoked before the evaluation instant."
+    },
+    {
+      "id": "D10",
+      "result": "record-unresolved",
+      "decision": "hold",
+      "code": "SOURCE_UNREACHABLE",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "record-unresolved",
+          "code": "SOURCE_UNREACHABLE"
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        }
+      ],
+      "about": "Revocation source unreachable at evaluation time."
+    },
+    {
+      "id": "D11",
+      "result": "record-unresolved",
+      "decision": "hold",
+      "code": "STALE_REVOCATION",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "record-unresolved",
+          "code": "STALE_REVOCATION"
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        }
+      ],
+      "about": "Stale revocation check: last successful lookup is older than the 24 hour bound."
+    },
+    {
+      "id": "D12",
+      "result": "record-unresolved",
+      "decision": "hold",
+      "code": "POINTER_UNREACHABLE",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "evidence",
+          "result": "record-unresolved",
+          "code": "POINTER_UNREACHABLE"
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        }
+      ],
+      "about": "Verification-time reachability: the record points at evidence that cannot be reached."
+    },
+    {
+      "id": "D13",
+      "result": "record-unresolved",
+      "decision": "hold",
+      "code": "STALE_REVOCATION",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "record-unresolved",
+          "code": "STALE_REVOCATION"
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        }
+      ],
+      "about": "Revocation evidence just outside the freshness bound: 25 hours old at the evaluation instant, one hour past the 24-hour bound."
+    },
+    {
+      "id": "D14",
+      "result": "record-unresolved",
+      "decision": "hold",
+      "code": "REVOCATION_NOT_YET_EFFECTIVE",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "record-unresolved",
+          "code": "REVOCATION_NOT_YET_EFFECTIVE"
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        }
+      ],
+      "about": "Revocation recorded but effective in the future: the record exists at the evaluation instant, its effect does not."
+    },
+    {
+      "id": "D15",
+      "result": "fail",
+      "decision": "refuse",
+      "code": "MANDATE_UNSIGNED",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "fail",
+          "code": "MANDATE_UNSIGNED"
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "receipt",
+          "result": "pass",
+          "code": ""
+        }
+      ],
+      "about": "Mandate with no signature field at all: not a bad signature, an absent one."
+    },
+    {
+      "id": "D16",
+      "result": "fail",
+      "decision": "refuse",
+      "code": "REVOKED",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "fail",
+          "code": "REVOKED"
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "receipt",
+          "result": "fail",
+          "code": "RECEIPT_MISSING_ON_REFUSE"
+        }
+      ],
+      "about": "Revoked mandate, and the refusal was issued without a receipt: the decision cannot be accounted for afterwards."
+    },
+    {
+      "id": "D17",
+      "result": "fail",
+      "decision": "refuse",
+      "code": "SIGNER_KEY_NOT_BOUND",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "fail",
+          "code": "SIGNER_KEY_NOT_BOUND"
+        },
+        {
+          "check": "receipt",
+          "result": "fail",
+          "code": "RECEIPT_MISSING_ON_REFUSE"
+        }
+      ],
+      "about": "Mandate signed by a key that is not the subject's key: the grant is attributable to someone else."
+    },
+    {
+      "id": "D18",
+      "result": "record-unresolved",
+      "decision": "hold",
+      "code": "LINEAGE_UNRESOLVED",
+      "checks": [
+        {
+          "check": "subject",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "window",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signature",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "attenuation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "content",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "revocation",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "evidence",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "signer-binding",
+          "result": "pass",
+          "code": ""
+        },
+        {
+          "check": "lineage",
+          "result": "record-unresolved",
+          "code": "LINEAGE_UNRESOLVED"
+        }
+      ],
+      "about": "Mandate cites a predecessor by digest that does not resolve in the chain supplied with the case."
+    }
+  ]
+}

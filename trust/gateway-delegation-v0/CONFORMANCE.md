@@ -112,23 +112,55 @@ gap is real and it is filed as a gap, not as coverage.
 
 What it still does **not** cover:
 
-- only operator-level defects inside `check.py`; no scenario-level, fixture-level
-  or cross-implementation mutations, and no mutations of `check.mjs`;
+- only operator-level defects inside `check.py`; no scenario-level or
+  fixture-level mutations, and the expected values are never mutated;
 - one defect at a time; no combined or adversarial sequences;
-- the expected values themselves are never mutated (deliberately — see
-  `VECTORS.md`), so a wrong-but-consistent expectation is out of scope for this
-  measure.
+- the four inline assertions name reason codes (`POINTER_UNREACHABLE`,
+  `NO_DECLARED_SCOPE`, `WINDOW_UNPARSABLE`) as literals: if those names ever
+  change meaning, the assertions misfire rather than stay silent. That is the
+  trade taken deliberately — a named code is stronger than "the bucket is
+  non-empty" — and an external review flagged it as the one place to document.
 
 The corpus stayed at 122 rows. No row was added to chase a mutant score.
 
-## Timestamps
+### Cross-implementation mutation (the other direction)
 
-`SHA256SUMS` (147 shipped files) carries an OpenTimestamps proof in
-`SHA256SUMS.ots`: four public calendars accepted the commitment, and the
-attestation is **pending confirmation in the Bitcoin blockchain** at the time
-of writing. `ots info SHA256SUMS.ots` shows the proof; `ots upgrade` completes
-it once a block includes it. The proof commits to the list, and the list is
-what pins the files, so the chain is: block → `SHA256SUMS` → each file.
+`check.py` mutating itself only answers "can our corpus catch our checker".
+`mutation_check_cross.py` asks the other question: **can the two implementations
+catch each other?** It injects one defect at a time into `checkCase` in
+`check.mjs` and runs `crosscheck.py`; a disagreement counts as caught.
+
+- 40 candidate sites in `check.mjs`: **26 caught, 2 survived, 8 invalid
+  (syntax), 4 error** (`mutation-cross-report.json`; score 92.9% of the 28
+  scoreable mutants).
+- Both survivors sit on one JavaScript line — the receipt condition
+  `receipt.decision === "refuse" && receipt.caseId === c.id && receipt.policyDigest === policy.policyDigest`.
+  `===`→`!==` and `&&`→`||` there change no verdict, because the receipt check
+  only runs after another check has already failed.
+- That is not a `check.mjs` bug. It is a limit of `crosscheck.py`: it compares
+  verdict and hold group, not the per-check list, so a drift confined to a
+  sub-check is invisible to the second implementation. Fixing it means
+  comparing the check list too, which changes the parity report's shape; it is
+  a separate, larger change and is recorded here instead of smuggled in.
+- "error" rows are mutants where the mutated JS throws: `crosscheck.py` fails
+  loudly, so the drift is noticed, but it is counted separately rather than
+  scored as a clean catch.
+
+## Timestamps and signature
+
+`SHA256SUMS` (149 shipped files) carries two independent attestations:
+
+- `SHA256SUMS.sig` — an SSH signature over the manifest, verifiable with
+  `allowed_signers` in this directory and a stock `ssh-keygen`. It binds the
+  list to the maintainer key that pushes to this branch. It is *self-issued*:
+  there is no external identity attestation behind it.
+- `SHA256SUMS.ots` — an OpenTimestamps proof. Four public calendars accepted the
+  commitment and the attestation is **pending confirmation in the Bitcoin
+  blockchain** at the time of writing. `ots info SHA256SUMS.ots` shows the proof;
+  `ots upgrade` completes it once a block includes it.
+
+So the chain is: signature says who; timestamp says when; the manifest says
+which bytes. None of the three says a third party validated anything.
 
 ## Why there is no "certified" wording anywhere in this file
 

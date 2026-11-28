@@ -65,6 +65,20 @@ jobs:
       - name: policy digest
         run: python3 policy_digest.py --check
 
+  vectors:
+    name: vector set (aikr-vectors-v1 manifest)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: trust/gateway-delegation-v0
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: vector manifest
+        run: python3 check_vectors_manifest.py
+
   sums:
     name: shipped bytes (SHA256SUMS)
     runs-on: ubuntu-latest
@@ -75,6 +89,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: verify sums
         run: sha256sum -c SHA256SUMS
+      - name: verify manifest signature
+        run: ssh-keygen -Y verify -f allowed_signers -I zhaoxinghua09-cell -n file -s SHA256SUMS.sig < SHA256SUMS
 
   mutation:
     name: mutation score (report only, not a gate)
@@ -96,4 +112,29 @@ jobs:
         with:
           name: mutation-report
           path: trust/gateway-delegation-v0/mutation-report.json
+          if-no-files-found: warn
+
+  mutation-cross:
+    name: cross-implementation mutation (report only, not a gate)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    defaults:
+      run:
+        working-directory: trust/gateway-delegation-v0
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: cross mutation check
+        run: python3 mutation_check_cross.py
+      - name: upload cross mutation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mutation-cross-report
+          path: trust/gateway-delegation-v0/mutation-cross-report.json
           if-no-files-found: warn

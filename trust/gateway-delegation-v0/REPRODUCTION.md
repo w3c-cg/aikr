@@ -21,10 +21,11 @@ account.
 ```
 cd trust/gateway-delegation-v0
 python check.py            # 122 rows (18 curated + 104 vectors), exit 0
-python check.py --selftest # nine [OK] lines, exit 0
+python check.py --selftest # the [OK] lines, exit 0
 node check.mjs             # the same 122 rows from the second implementation
 python crosscheck.py       # both implementations, exit 0 when they agree
 python policy_digest.py --check  # digest recomputed from policy.json, exit 0
+python mutation_check_cross.py   # report only: 40 defects injected into check.mjs, crosscheck as oracle
 ```
 
 Observed on the run above:
@@ -105,7 +106,7 @@ python3 check.py --selftest -> nine [OK] lines plus the distribution line, exit 
           absent-only -> absent, mixed -> record-unresolved with
           POINTER_UNREACHABLE/NO_DECLARED_SCOPE/WINDOW_UNPARSABLE
 python3 crosscheck.py       -> rows compared: 122, disagreements: 0, exit 0
-sha256sum -c SHA256SUMS     -> 143 files, all OK
+sha256sum -c SHA256SUMS     -> 144 files, all OK
 
 # at 8d9dc45, for comparison
 python3 check.py            -> 122 rows, exit 0
@@ -133,19 +134,20 @@ is what was reviewed:
 
 ```
 sha256sum -c SHA256SUMS     # or: shasum -a 256 -c SHA256SUMS
-python make_sums.py --check # same check, reporting missing and mismatched per line
+ssh-keygen -Y verify -f allowed_signers -I zhaoxinghua09-cell -n file -s SHA256SUMS.sig < SHA256SUMS
 ```
 
-143 files, because `policy.json.bak` is gone: an earlier revision left the manifest
-naming a file that no longer existed, and `sha256sum -c` failed on it. The manifest
-is now regenerated from the tree, and `make_sums.py --check` exits 1 if a line ever
-names a file that is not there.
+The second command checks that the manifest was signed by the key named in
+`allowed_signers`, whose public half is in that file, so the check needs nothing
+but a stock `ssh-keygen`. It is a signature by the repository's maintainer key
+— the same key GitHub uses for pushes to this branch — so it says *who* produced
+the list, not that an outside body endorsed it.
 
 Every file is LF line endings (`.gitattributes` enforces it on checkout).
 `expected.json` and the fixtures are UTF-8 without a BOM.
 
 The manifest itself is timestamped: `SHA256SUMS.ots` is an OpenTimestamps proof
-committing to `SHA256SUMS` (147 files). While the attestation is still pending
+committing to `SHA256SUMS` (149 files). While the attestation is still pending
 in Bitcoin, `ots info SHA256SUMS.ots` shows the four calendar attestations and
 **`ots verify` exits non-zero by design** — it reports "pending", not "invalid".
 Once a block includes it, `ots upgrade SHA256SUMS.ots` completes the proof and

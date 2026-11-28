@@ -1,0 +1,369 @@
+{
+  "schema": "aikr-mutation-cross-report/0",
+  "subject": "gateway-delegation-v0 cross-implementation mutation",
+  "target": "check.mjs",
+  "oracle": "crosscheck.py (python vs javascript verdict + hold group)",
+  "candidates_found": 40,
+  "mutants": 40,
+  "killed": 26,
+  "survived": 2,
+  "invalid": 8,
+  "error": 4,
+  "score_percent": 92.9,
+  "method": "one defect per mutant inside checkCase; crosscheck disagreement counts as killed; syntactically broken mutants excluded; other failures recorded as error, not scored",
+  "limits": "operator-level only; does not mutate the corpus, the expectations or check.py",
+  "results": [
+    {
+      "state": "KILLED",
+      "disagreements": 122,
+      "rc": 1,
+      "n": 1,
+      "op": "or-to-and",
+      "line_no": 44,
+      "line": "const mandate = c.mandate || {};"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 122,
+      "rc": 1,
+      "n": 2,
+      "op": "or-to-and",
+      "line_no": 45,
+      "line": "const request = c.request || {};"
+    },
+    {
+      "state": "ERROR",
+      "rc": 1,
+      "last": "Node.js v22.23.2",
+      "n": 3,
+      "op": "or-to-and",
+      "line_no": 46,
+      "line": "const payload = request.payload || {};"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 89,
+      "rc": 1,
+      "n": 4,
+      "op": "or-to-and",
+      "line_no": 48,
+      "line": "const add = (name, result, code) => checks.push({ check: name, result, code: code || \"\" });"
+    },
+    {
+      "state": "INVALID",
+      "why": "mutant does not parse",
+      "n": 5,
+      "op": "gt-to-ge",
+      "line_no": 48,
+      "line": "const add = (name, result, code) => checks.push({ check: name, result, code: code || \"\" });"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 122,
+      "rc": 1,
+      "n": 6,
+      "op": "eqeq-flip",
+      "line_no": 50,
+      "line": "if (request.agentId === mandate.subject) add(\"subject\", PASS);"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 2,
+      "rc": 1,
+      "n": 7,
+      "op": "lt-to-le",
+      "line_no": 56,
+      "line": "if (now < issued) add(\"window\", FAIL, \"MANDATE_NOT_YET_VALID\");"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 2,
+      "rc": 1,
+      "n": 8,
+      "op": "ge-to-gt",
+      "line_no": 57,
+      "line": "else if (now >= expires) add(\"window\", FAIL, \"MANDATE_EXPIRED\");"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 101,
+      "rc": 1,
+      "n": 9,
+      "op": "eqeq-flip",
+      "line_no": 63,
+      "line": "if (mandate.signature === \"ok\") add(\"signature\", PASS);"
+    },
+    {
+      "state": "ERROR",
+      "rc": 1,
+      "last": "Node.js v22.23.2",
+      "n": 10,
+      "op": "or-to-and",
+      "line_no": 66,
+      "line": "const declared = request.declaredScope || [];"
+    },
+    {
+      "state": "ERROR",
+      "rc": 1,
+      "last": "Node.js v22.23.2",
+      "n": 11,
+      "op": "or-to-and",
+      "line_no": 67,
+      "line": "const granted = mandate.grantedScope || [];"
+    },
+    {
+      "state": "INVALID",
+      "why": "mutant does not parse",
+      "n": 12,
+      "op": "gt-to-ge",
+      "line_no": 69,
+      "line": "else if (declared.some((s) => !granted.includes(s))) add(\"attenuation\", FAIL, \"SCOPE_WIDENED\");"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 119,
+      "rc": 1,
+      "n": 13,
+      "op": "or-to-and",
+      "line_no": 77,
+      "line": "const rev = c.revocation || {};"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 120,
+      "rc": 1,
+      "n": 14,
+      "op": "eqeq-flip",
+      "line_no": 85,
+      "line": "if (status === \"none\") {"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 100,
+      "rc": 1,
+      "n": 15,
+      "op": "eqeq-flip",
+      "line_no": 86,
+      "line": "if (checked === null) add(\"revocation\", RECORD, \"REVOCATION_UNKNOWN\");"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 1,
+      "rc": 1,
+      "n": 16,
+      "op": "gt-to-ge",
+      "line_no": 87,
+      "line": "else if (now - checked > bound) add(\"revocation\", RECORD, \"STALE_REVOCATION\");"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 22,
+      "rc": 1,
+      "n": 17,
+      "op": "eqeq-flip",
+      "line_no": 89,
+      "line": "} else if (status === \"revoked\") {"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 5,
+      "rc": 1,
+      "n": 18,
+      "op": "neeq-flip",
+      "line_no": 96,
+      "line": "if (effective !== null && now < effective) add(\"revocation\", RECORD, \"REVOCATION_NOT_YET_EFFECTIVE\");"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 9,
+      "rc": 1,
+      "n": 19,
+      "op": "and-to-or",
+      "line_no": 96,
+      "line": "if (effective !== null && now < effective) add(\"revocation\", RECORD, \"REVOCATION_NOT_YET_EFFECTIVE\");"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 1,
+      "rc": 1,
+      "n": 20,
+      "op": "lt-to-le",
+      "line_no": 96,
+      "line": "if (effective !== null && now < effective) add(\"revocation\", RECORD, \"REVOCATION_NOT_YET_EFFECTIVE\");"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 5,
+      "rc": 1,
+      "n": 21,
+      "op": "eqeq-flip",
+      "line_no": 98,
+      "line": "} else if (status === \"unreachable\") {"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 116,
+      "rc": 1,
+      "n": 22,
+      "op": "or-to-and",
+      "line_no": 104,
+      "line": "const evidence = c.evidence || {};"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 122,
+      "rc": 1,
+      "n": 23,
+      "op": "eqeq-flip",
+      "line_no": 105,
+      "line": "if (evidence.pointer === \"reachable\") add(\"evidence\", PASS);"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 1,
+      "rc": 1,
+      "n": 24,
+      "op": "and-to-or",
+      "line_no": 110,
+      "line": "if (!subjectFp && !signerFp) add(\"signer-binding\", CHECKER, \"SIGNER_KEY_UNSPECIFIED\");"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 69,
+      "rc": 1,
+      "n": 25,
+      "op": "eqeq-flip",
+      "line_no": 111,
+      "line": "else if (subjectFp && signerFp && subjectFp === signerFp) add(\"signer-binding\", PASS);"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 5,
+      "rc": 1,
+      "n": 26,
+      "op": "and-to-or",
+      "line_no": 111,
+      "line": "else if (subjectFp && signerFp && subjectFp === signerFp) add(\"signer-binding\", PASS);"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 1,
+      "rc": 1,
+      "n": 27,
+      "op": "or-to-and",
+      "line_no": 116,
+      "line": "const chain = lineage.chain || [];"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 66,
+      "rc": 1,
+      "n": 28,
+      "op": "eqeq-flip",
+      "line_no": 121,
+      "line": "if (checks.some((x) => x.result === FAIL)) {"
+    },
+    {
+      "state": "INVALID",
+      "why": "mutant does not parse",
+      "n": 29,
+      "op": "gt-to-ge",
+      "line_no": 121,
+      "line": "if (checks.some((x) => x.result === FAIL)) {"
+    },
+    {
+      "state": "ERROR",
+      "rc": 1,
+      "last": "Node.js v22.23.2",
+      "n": 30,
+      "op": "or-to-and",
+      "line_no": 122,
+      "line": "const receipt = c.receipt || {};"
+    },
+    {
+      "state": "SURVIVED",
+      "rc": 0,
+      "last": "two implementations, same verdict and same hold group on every row",
+      "n": 31,
+      "op": "eqeq-flip",
+      "line_no": 123,
+      "line": "if (receipt.decision === \"refuse\" && receipt.caseId === c.id && receipt.policyDigest === policy.policyDigest) "
+    },
+    {
+      "state": "SURVIVED",
+      "rc": 0,
+      "last": "two implementations, same verdict and same hold group on every row",
+      "n": 32,
+      "op": "and-to-or",
+      "line_no": 123,
+      "line": "if (receipt.decision === \"refuse\" && receipt.caseId === c.id && receipt.policyDigest === policy.policyDigest) "
+    },
+    {
+      "state": "INVALID",
+      "why": "mutant does not parse",
+      "n": 33,
+      "op": "gt-to-ge",
+      "line_no": 130,
+      "line": "const results = checks.map((x) => x.result);"
+    },
+    {
+      "state": "INVALID",
+      "why": "mutant does not parse",
+      "n": 34,
+      "op": "gt-to-ge",
+      "line_no": 136,
+      "line": "const first = checks.find((x) => x.code);"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 122,
+      "rc": 1,
+      "n": 35,
+      "op": "eqeq-flip",
+      "line_no": 143,
+      "line": "record: checks.filter((x) => x.result === RECORD).map((x) => x.code),"
+    },
+    {
+      "state": "INVALID",
+      "why": "mutant does not parse",
+      "n": 36,
+      "op": "gt-to-ge",
+      "line_no": 143,
+      "line": "record: checks.filter((x) => x.result === RECORD).map((x) => x.code),"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 122,
+      "rc": 1,
+      "n": 37,
+      "op": "eqeq-flip",
+      "line_no": 144,
+      "line": "absent: checks.filter((x) => x.result === ABSENT).map((x) => x.code),"
+    },
+    {
+      "state": "INVALID",
+      "why": "mutant does not parse",
+      "n": 38,
+      "op": "gt-to-ge",
+      "line_no": 144,
+      "line": "absent: checks.filter((x) => x.result === ABSENT).map((x) => x.code),"
+    },
+    {
+      "state": "KILLED",
+      "disagreements": 122,
+      "rc": 1,
+      "n": 39,
+      "op": "eqeq-flip",
+      "line_no": 145,
+      "line": "checker: checks.filter((x) => x.result === CHECKER).map((x) => x.code),"
+    },
+    {
+      "state": "INVALID",
+      "why": "mutant does not parse",
+      "n": 40,
+      "op": "gt-to-ge",
+      "line_no": 145,
+      "line": "checker: checks.filter((x) => x.result === CHECKER).map((x) => x.code),"
+    }
+  ]
+}

@@ -130,18 +130,24 @@ The corpus stayed at 122 rows. No row was added to chase a mutant score.
 catch each other?** It injects one defect at a time into `checkCase` in
 `check.mjs` and runs `crosscheck.py`; a disagreement counts as caught.
 
-- 40 candidate sites in `check.mjs`: **26 caught, 2 survived, 8 invalid
-  (syntax), 4 error** (`mutation-cross-report.json`; score 92.9% of the 28
+- 40 candidate sites in `check.mjs`: **28 caught, 0 survived, 8 invalid
+  (syntax), 4 error** (`mutation-cross-report.json`; score 100% of the 28
   scoreable mutants).
-- Both survivors sit on one JavaScript line — the receipt condition
+- The two sites that survived in the previous revision sit on one JavaScript
+  line — the receipt condition
   `receipt.decision === "refuse" && receipt.caseId === c.id && receipt.policyDigest === policy.policyDigest`.
-  `===`→`!==` and `&&`→`||` there change no verdict, because the receipt check
-  only runs after another check has already failed.
-- That is not a `check.mjs` bug. It is a limit of `crosscheck.py`: it compares
-  verdict and hold group, not the per-check list, so a drift confined to a
-  sub-check is invisible to the second implementation. Fixing it means
-  comparing the check list too, which changes the parity report's shape; it is
-  a separate, larger change and is recorded here instead of smuggled in.
+  They survived **because the oracle was too coarse**, not because the defect
+  was harmless: a receipt-branch change cannot move the verdict or the first
+  code when another check has already failed.
+- That gap is now closed. `check.mjs` emits its per-check list, and
+  `crosscheck.py` compares it field by field (`check`, `result`, `code`) in
+  addition to the verdict, the first code and the hold group. Both mutants are
+  killed under that oracle, and the 122 rows still agree per check (0
+  disagreements), so the tightening cost nothing in parity.
+- What remains untouched: five declared reason codes still have no mutation
+  site at all (`sites 0` in `mutation-report.json`). Zero survivors does not
+  mean full coverage; it means every site that exists is caught by at least one
+  of the two implementations.
 - "error" rows are mutants where the mutated JS throws: `crosscheck.py` fails
   loudly, so the drift is noticed, but it is counted separately rather than
   scored as a clean catch.

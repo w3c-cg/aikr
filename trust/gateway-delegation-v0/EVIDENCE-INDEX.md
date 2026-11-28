@@ -18,7 +18,7 @@ facts below are stated for `3b683a1` unless noted.
 | The manifest came from this key | `SHA256SUMS.sig`, `allowed_signers` | `ssh-keygen -Y verify -f allowed_signers -I zhaoxinghua09-cell -n file -s SHA256SUMS.sig < SHA256SUMS` |
 | The vector set is versioned as a unit | `fixtures/vectors/vectors-v1.manifest`, `check_vectors_manifest.py` | `python3 check_vectors_manifest.py` |
 | Mutation coverage, first implementation | `mutation-report.json` | `python3 mutation_check.py` — 35 sites, 35 killed, 0 survived; five classes with no site are listed at `sites 0` |
-| Mutation coverage, second implementation | `mutation-cross-report.json`, `mutation_check_cross.py` | `python3 mutation_check_cross.py` — 40 sites, 26 killed, **2 survived**, 8 invalid, 4 error |
+| Mutation coverage, second implementation | `mutation-cross-report.json`, `mutation_check_cross.py` | `python3 mutation_check_cross.py` — 40 sites, **28 killed, 0 survived**, 8 invalid, 4 error (the two survivors reported earlier disappeared once the oracle compared per-check results, not just the verdict) |
 | The suite runs on every push | `.github/workflows/conformance.yml` (7 jobs) | fork Actions run for `3b683a1`: all 7 completed/success |
 
 ## Outside runs on record
@@ -26,7 +26,7 @@ facts below are stated for `3b683a1` unless noted.
 | Date | Who | Head | Result | Record |
 |---|---|---|---|---|
 | 2026-11-27 | `zambodotdev` (no role in this repository) | `365a052` | 143/143 `sha256sum -c`, `check.py` 122 rows, `crosscheck` 0 divergences | PR #43 comment `#issuecomment-7230440157` |
-| 2026-11-28 | `zambodotdev` | `3b683a1` | 149/149 `sha256sum -c`; **signature verify: Good**; policy digest unchanged; 122 rows same distribution; mutation 35/35 and 40 (26 killed, 2 survived) reproduced site for site; 7 CI jobs success | PR #43 comment `#issuecomment-7238629003` |
+| 2026-11-28 | `zambodotdev` | `3b683a1` | 149/149 `sha256sum -c`; **signature verify: Good**; policy digest unchanged; 122 rows same distribution; mutation 35/35 and 40 (26 killed, 2 survived — the then-current oracle) reproduced site for site; 7 CI jobs success | PR #43 comment `#issuecomment-7238629003` |
 
 These are third-party **reruns of our two implementations**, not entries
 produced by an independent implementation. The conformance intake table in

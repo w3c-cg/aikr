@@ -144,6 +144,7 @@ function checkCase(c, policy) {
       absent: checks.filter((x) => x.result === ABSENT).map((x) => x.code),
       checker: checks.filter((x) => x.result === CHECKER).map((x) => x.code),
     },
+    checks,   // per-check detail: same shape as the Python implementation emits
   };
 }
 

@@ -78,7 +78,11 @@ def main():
     disagree = []
     joined = []
     for a, b in zip(rows_py, rows_js):
-        same = (a["result"], a["code"]) == (b["result"], b["code"]) and a.get("unknown") == b.get("unknown")
+        def _ck(row):
+            return [(x.get("check"), x.get("result"), x.get("code")) for x in (row.get("checks") or [])]
+        same = ((a["result"], a["code"]) == (b["result"], b["code"])
+                and a.get("unknown") == b.get("unknown")
+                and _ck(a) == _ck(b))
         if not same:
             disagree.append((a["id"], (a["result"], a["code"]), (b["result"], b["code"])))
         joined.append({
@@ -86,10 +90,11 @@ def main():
             "python": {"result": a["result"], "code": a["code"]},
             "javascript": {"result": b["result"], "code": b["code"]},
             "agree": same,
+            "checks_compared": True,
             "hold_group": "" if a["result"] in ("pass", "fail") else a["result"],
         })
 
-    print("rows compared: %d (curated %d + vectors %d)" % (len(rows_py), len(cases), len(vectors)))
+    print("rows compared: %d (curated %d + vectors %d); per-check compared: yes" % (len(rows_py), len(cases), len(vectors)))
     print("disagreements: %d" % len(disagree))
     for row in disagree:
         print("  %s  python=%s/%s  javascript=%s/%s" % (row[0], row[1][0], row[1][1], row[2][0], row[2][1]))
@@ -117,7 +122,7 @@ def main():
 
     if disagree:
         return 1
-    print("two implementations, same verdict and same hold group on every row")
+    print("two implementations, same verdict, same hold group and same per-check results on every row")
     return 0
 
 

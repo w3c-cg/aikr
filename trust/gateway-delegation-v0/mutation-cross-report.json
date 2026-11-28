@@ -5,11 +5,11 @@
   "oracle": "crosscheck.py (python vs javascript verdict + hold group)",
   "candidates_found": 40,
   "mutants": 40,
-  "killed": 26,
-  "survived": 2,
+  "killed": 28,
+  "survived": 0,
   "invalid": 8,
   "error": 4,
-  "score_percent": 92.9,
+  "score_percent": 100.0,
   "method": "one defect per mutant inside checkCase; crosscheck disagreement counts as killed; syntactically broken mutants excluded; other failures recorded as error, not scored",
   "limits": "operator-level only; does not mutate the corpus, the expectations or check.py",
   "results": [
@@ -42,7 +42,7 @@
     },
     {
       "state": "KILLED",
-      "disagreements": 89,
+      "disagreements": 122,
       "rc": 1,
       "n": 4,
       "op": "or-to-and",
@@ -86,7 +86,7 @@
     },
     {
       "state": "KILLED",
-      "disagreements": 101,
+      "disagreements": 122,
       "rc": 1,
       "n": 9,
       "op": "eqeq-flip",
@@ -130,7 +130,7 @@
     },
     {
       "state": "KILLED",
-      "disagreements": 120,
+      "disagreements": 121,
       "rc": 1,
       "n": 14,
       "op": "eqeq-flip",
@@ -229,7 +229,7 @@
     },
     {
       "state": "KILLED",
-      "disagreements": 69,
+      "disagreements": 120,
       "rc": 1,
       "n": 25,
       "op": "eqeq-flip",
@@ -281,18 +281,18 @@
       "line": "const receipt = c.receipt || {};"
     },
     {
-      "state": "SURVIVED",
-      "rc": 0,
-      "last": "two implementations, same verdict and same hold group on every row",
+      "state": "KILLED",
+      "disagreements": 9,
+      "rc": 1,
       "n": 31,
       "op": "eqeq-flip",
       "line_no": 123,
       "line": "if (receipt.decision === \"refuse\" && receipt.caseId === c.id && receipt.policyDigest === policy.policyDigest) "
     },
     {
-      "state": "SURVIVED",
-      "rc": 0,
-      "last": "two implementations, same verdict and same hold group on every row",
+      "state": "KILLED",
+      "disagreements": 3,
+      "rc": 1,
       "n": 32,
       "op": "and-to-or",
       "line_no": 123,
